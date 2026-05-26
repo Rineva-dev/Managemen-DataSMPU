@@ -74,8 +74,6 @@ def seed_mapel_kegiatan():
 @roles_required("admin", "waka_kurikulum")
 def index():
 
-    seed_mapel_wajib()
-
     conn = db()
     cur = conn.cursor()
 
