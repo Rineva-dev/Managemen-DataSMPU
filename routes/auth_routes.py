@@ -15,7 +15,7 @@ def login():
                 SELECT a.*, g.nama, g.foto
                 FROM akun a
                 JOIN guru g ON a.guru_id = g.id
-                WHERE a.username=%s
+                WHERE a.username=?
             """, (username,)).fetchone()
 
             if akun and check_password_hash(akun["password"], password):

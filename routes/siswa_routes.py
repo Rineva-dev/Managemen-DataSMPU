@@ -186,7 +186,7 @@ def tambah_siswa():
                         status_masuk,
                         status
                     )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                         nis,
                         nisn,
@@ -292,7 +292,7 @@ def tambah_siswa_pindahan():
                         status_masuk,
                         status
                     )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     nis, nisn, nik, nama, jk,
                     tempat_lahir, tanggal_lahir,
@@ -352,7 +352,7 @@ def detail_siswa(nisn):
             FROM siswa s
             LEFT JOIN kelas_siswa ks ON ks.siswa_id = s.id
             LEFT JOIN kelas k ON k.id = ks.kelas_id
-            WHERE s.nisn = %s
+            WHERE s.nisn = ?
         """, (nisn,)).fetchone()
 
     if not siswa:
@@ -378,7 +378,7 @@ def delete_siswa(siswa_id):
         siswa = d.execute("""
             SELECT status
             FROM siswa
-            WHERE id = %s
+            WHERE id = ?
         """, (siswa_id,)).fetchone()
 
         if not siswa:
@@ -395,7 +395,7 @@ def delete_siswa(siswa_id):
         rombel = d.execute("""
             SELECT id
             FROM kelas_siswa
-            WHERE siswa_id = %s
+            WHERE siswa_id = ?
         """, (siswa_id,)).fetchone()
 
         if rombel:
@@ -407,7 +407,7 @@ def delete_siswa(siswa_id):
         # jika lolos semua
         d.execute("""
             DELETE FROM siswa
-            WHERE id = %s
+            WHERE id = ?
         """, (siswa_id,))
 
     return {"success": True}
@@ -438,7 +438,7 @@ def ubah_status():
         rombel = d.execute("""
             SELECT id
             FROM kelas_siswa
-            WHERE siswa_id = %s
+            WHERE siswa_id = ?
         """, (siswa_id,)).fetchone()
 
         if rombel and status_baru == "nonaktif":
@@ -449,10 +449,10 @@ def ubah_status():
 
         d.execute("""
             UPDATE siswa
-            SET status = %s,
+            SET status = ?,
                 sekolah_tujuan = NULL,
                 alasan_pindah = NULL
-            WHERE id = %s
+            WHERE id = ?
         """, (status_baru, siswa_id))
 
     return jsonify({
@@ -492,7 +492,7 @@ def pindah_siswa():
         siswa = d.execute("""
             SELECT id, status
             FROM siswa
-            WHERE id = %s
+            WHERE id = ?
         """, (siswa_id,)).fetchone()
 
         if not siswa:
@@ -506,7 +506,7 @@ def pindah_siswa():
         # =========================
         d.execute("""
             DELETE FROM kelas_siswa
-            WHERE siswa_id = %s
+            WHERE siswa_id = ?
         """, (siswa_id,))
 
         # =========================
@@ -515,9 +515,9 @@ def pindah_siswa():
         d.execute("""
             UPDATE siswa
             SET status = 'pindah',
-                sekolah_tujuan = %s,
-                alasan_pindah = %s
-            WHERE id = %s
+                sekolah_tujuan = ?,
+                alasan_pindah = ?
+            WHERE id = ?
         """, (sekolah, alasan, siswa_id))
 
     return jsonify({
@@ -677,7 +677,7 @@ def edit_siswa(nisn):
         siswa = d.execute("""
             SELECT *
             FROM siswa
-            WHERE nisn = %s
+            WHERE nisn = ?
         """, (nisn,)).fetchone()
 
     if not siswa:
@@ -967,7 +967,7 @@ def import_siswa_baru():
                         no_hp,
                         status_masuk, status
                     )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     nis, nisn, nik, row["nama"], row["jenis_kelamin"],
                     row["tempat_lahir"], normalize_date(row["tanggal_lahir"]),
@@ -1132,7 +1132,7 @@ def import_siswa_pindahan():
                         alasan_pindah,
                         status_masuk, status
                     )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     nis, nisn, nik, row.get("nama"), row.get("jenis_kelamin"),
                     row.get("tempat_lahir"), normalize_date(row.get("tanggal_lahir")),

@@ -102,7 +102,7 @@ def update_kkm():
         existing = d.execute("""
             SELECT id
             FROM kkm
-            WHERE id = %s
+            WHERE id = ?
         """, (kkm_id,)).fetchone()
 
         if not existing:
@@ -113,8 +113,8 @@ def update_kkm():
 
         d.execute("""
             UPDATE kkm
-            SET kkm = %s
-            WHERE id = %s
+            SET kkm = ?
+            WHERE id = ?
         """, (
             nilai_kkm,
             kkm_id
@@ -172,9 +172,9 @@ def bulk_update_kkm():
 
             d.execute("""
                 UPDATE kkm
-                SET kkm = %s
-                WHERE mapel_id = %s
-                AND tingkat = %s
+                SET kkm = ?
+                WHERE mapel_id = ?
+                AND tingkat = ?
             """, (
                 nilai_kkm,
                 mapel_id,
@@ -222,7 +222,7 @@ def detail_kkm(kkm_id):
             JOIN mata_pelajaran mp
                 ON mp.id = k.mapel_id
 
-            WHERE k.id = %s
+            WHERE k.id = ?
         """, (kkm_id,)).fetchone()
 
     if not row:

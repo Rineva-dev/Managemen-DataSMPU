@@ -3,22 +3,8 @@ from utils.time_helper import now_wita
 from utils.db import db
 import os
 from utils.init_db import init_db
-from flask import send_from_directory
 
-app = Flask(
-    __name__,
-    static_folder="static",
-    static_url_path="/static"
-)
-
-@app.route("/assets/<path:filename>")
-def assets(filename):
-    return send_from_directory("static", filename)
-
-@app.route("/static/<path:filename>")
-def custom_static(filename):
-    return send_from_directory("static", filename)
-
+app = Flask(__name__)
 app.secret_key = "SMPU_Absensi_2026_SuperSecretKey_!@#987654"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
@@ -81,7 +67,7 @@ def inject_global_data():
     if "user_id" in session:
         with db() as d:
             guru_data = d.execute(
-                "SELECT * FROM guru WHERE id=%s",
+                "SELECT * FROM guru WHERE id=?",
                 (session["user_id"],)
             ).fetchone()
 
@@ -120,7 +106,7 @@ def get_admin_data():
             SELECT g.*, a.username
             FROM guru g
             LEFT JOIN akun a ON a.guru_id = g.id
-            WHERE g.id=%s
+            WHERE g.id=?
         """, (session["user_id"],)).fetchone()
 
     return admin_data
@@ -129,4 +115,5 @@ def get_admin_data():
 # RUN APP
 # =========================
 if __name__ == "__main__":
+    init_db()
     app.run(host="0.0.0.0", port=5000, debug=False)

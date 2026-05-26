@@ -65,8 +65,8 @@ def menu_kelas():
             aktif = d.execute("""
                 SELECT id
                 FROM tahun_pelajaran
-                WHERE semester_mulai <= %s
-                AND semester_akhir >= %s
+                WHERE semester_mulai <= ?
+                AND semester_akhir >= ?
                 LIMIT 1
             """, (today, today)).fetchone()
 
@@ -78,7 +78,7 @@ def menu_kelas():
             row = d.execute("""
                 SELECT semester_mulai, semester_akhir
                 FROM tahun_pelajaran
-                WHERE id = %s
+                WHERE id = ?
             """, (tahun_id,)).fetchone()
 
             if row:
@@ -111,7 +111,7 @@ def menu_kelas():
                 FROM kelas k
                 LEFT JOIN guru g ON k.wali_kelas_id = g.id
 
-                WHERE k.tahun_pelajaran_id = %s
+                WHERE k.tahun_pelajaran_id = ?
 
                 ORDER BY k.tingkat ASC, k.sub_kelas ASC
             """, (tahun_id,)).fetchall()
@@ -174,7 +174,7 @@ def api_add_guru():
             d.execute(
                 """INSERT INTO guru
                 (nama, jabatan, tempat, tahun, jk, status, hp, alamat, email, role)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                VALUES (?,?,?,?,?,?,?,?,?,?)""",
                 (
                     data["nama"],
                     data["jabatan"],
@@ -206,7 +206,7 @@ def api_update_guru(id):
     with db() as d:
         try:
             d.execute(
-                "UPDATE guru SET nama=%s, jabatan=%s, tempat=%s, tahun=%s, jk=%s, status=%s, hp=%s, alamat=%s, email=%s WHERE id=%s",
+                "UPDATE guru SET nama=?, jabatan=?, tempat=?, tahun=?, jk=?, status=?, hp=?, alamat=?, email=? WHERE id=?",
                 (data["nama"], data["jabatan"], data.get("tempat",""), data.get("tahun",""),
                 data.get("jk",""), data.get("status",""), data.get("hp",""), data.get("alamat",""), data.get("email",""), id)
             )
@@ -222,7 +222,7 @@ def api_delete_guru(id):
         try:
             # 🔎 CEK APAKAH MASIH ADA AKUN
             akun = d.execute(
-                "SELECT id FROM akun WHERE guru_id=%s",
+                "SELECT id FROM akun WHERE guru_id=?",
                 (id,)
             ).fetchone()
 
@@ -233,7 +233,7 @@ def api_delete_guru(id):
                 })
 
             # ✅ Kalau tidak ada akun, baru hapus guru
-            d.execute("DELETE FROM guru WHERE id=%s", (id,))
+            d.execute("DELETE FROM guru WHERE id=?", (id,))
             d.commit()
 
             return jsonify({
@@ -267,12 +267,12 @@ def api_add_akun():
     with db() as d:
         try:
             # cek username unik
-            exists_user = d.execute("SELECT * FROM akun WHERE username=%s", (data["username"],)).fetchone()
+            exists_user = d.execute("SELECT * FROM akun WHERE username=?", (data["username"],)).fetchone()
             if exists_user:
                 return jsonify({"status":"error","message":"Username sudah digunakan"})
 
             # cek guru sudah punya akun
-            exists_guru = d.execute("SELECT * FROM akun WHERE guru_id=%s", (data["guru_id"],)).fetchone()
+            exists_guru = d.execute("SELECT * FROM akun WHERE guru_id=?", (data["guru_id"],)).fetchone()
             if exists_guru:
                 return jsonify({"status":"error","message":"Guru ini sudah memiliki akun"})
 
@@ -281,7 +281,7 @@ def api_add_akun():
             hashed_password = generate_password_hash(data["password"])
 
             d.execute(
-                "INSERT INTO akun (guru_id, username, password, role, status) VALUES (%s,%s,%s,%s,%s)",
+                "INSERT INTO akun (guru_id, username, password, role, status) VALUES (?,?,?,?,?)",
                 (data["guru_id"], data["username"], hashed_password, role, "aktif")
             )
             d.commit()
@@ -298,7 +298,7 @@ def api_update_akun(id):
         try:
             # cek username unik kecuali akun ini
             exists_user = d.execute(
-                "SELECT * FROM akun WHERE username=%s AND id!=%s",
+                "SELECT * FROM akun WHERE username=? AND id!=?",
                 (data["username"], id)
             ).fetchone()
 
@@ -310,7 +310,7 @@ def api_update_akun(id):
 
             # cek guru unik kecuali akun ini
             exists_guru = d.execute(
-                "SELECT * FROM akun WHERE guru_id=%s AND id!=%s",
+                "SELECT * FROM akun WHERE guru_id=? AND id!=?",
                 (data["guru_id"], id)
             ).fetchone()
 
@@ -328,8 +328,8 @@ def api_update_akun(id):
                 hashed_password = generate_password_hash(data["password"])
                 d.execute("""
                     UPDATE akun
-                    SET guru_id=%s, username=%s, password=%s, role=%s
-                    WHERE id=%s
+                    SET guru_id=?, username=?, password=?, role=?
+                    WHERE id=?
                 """, (
                     data["guru_id"],
                     data["username"],
@@ -341,8 +341,8 @@ def api_update_akun(id):
                 # kalau password kosong → JANGAN sentuh password
                 d.execute("""
                     UPDATE akun
-                    SET guru_id=%s, username=%s role=%s
-                    WHERE id=%s
+                    SET guru_id=?, username=?, role=?
+                    WHERE id=?
                 """, (
                     data["guru_id"],
                     data["username"],
@@ -368,7 +368,7 @@ def api_update_akun(id):
 def api_delete_akun(id):
     with db() as d:
         try:
-            d.execute("DELETE FROM akun WHERE id=%s", (id,))
+            d.execute("DELETE FROM akun WHERE id=?", (id,))
             d.commit()
             return jsonify({"status":"success","message":"Akun guru berhasil dihapus"})
         except Exception as e:
@@ -382,7 +382,7 @@ def delete_kelas(id):
         try:
             # 🔎 Cek apakah ada siswa di kelas ini
             siswa = d.execute(
-                "SELECT id FROM siswa WHERE kelas_id = %s LIMIT 1",
+                "SELECT id FROM siswa WHERE kelas_id = ? LIMIT 1",
                 (id,)
             ).fetchone()
 
@@ -393,7 +393,7 @@ def delete_kelas(id):
                 })
 
             # ✅ Kalau tidak ada siswa → hapus
-            d.execute("DELETE FROM kelas WHERE id = %s", (id,))
+            d.execute("DELETE FROM kelas WHERE id = ?", (id,))
             d.commit()
 
             return jsonify({

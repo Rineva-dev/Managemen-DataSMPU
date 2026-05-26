@@ -12,7 +12,7 @@ def log_activity(action, tahun_pelajaran, semester, field_changed=None):
         d.execute("""
             INSERT INTO activity_log
             (user_id, action, field_changed, tahun_pelajaran, semester, created_at)
-            VALUES (%s, %s, %s, %s, %s, %s)
+            VALUES (?, ?, ?, ?, ?, ?)
         """, (
             session.get("user_id"),
             action,

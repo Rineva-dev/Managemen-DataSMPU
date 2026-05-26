@@ -88,7 +88,7 @@ def index():
                     ON kj.kelas_id = km.kelas_id
                     AND kj.mapel_id = km.mapel_id
 
-                WHERE km.guru_id = %s
+                WHERE km.guru_id = ?
 
                 ORDER BY
                     k.tingkat ASC,
@@ -144,7 +144,7 @@ def index():
                     ON kj.kelas_id = km.kelas_id
                     AND kj.mapel_id = km.mapel_id
 
-                WHERE km.guru_id = %s
+                WHERE km.guru_id = ?
 
                 ORDER BY
                     k.tingkat ASC,
@@ -252,7 +252,7 @@ def get_jadwal_default(kelas_mapel_id):
             JOIN tahun_pelajaran tp
                 ON tp.id = k.tahun_pelajaran_id
 
-            WHERE km.id = %s
+            WHERE km.id = ?
         """, (kelas_mapel_id,)).fetchone()
 
     if not row:
@@ -291,7 +291,7 @@ def api_absensi(absensi_id):
             LEFT JOIN absensi_detail ad 
                 ON ad.siswa_id = s.id 
                 AND ad.absensi_id = am.id
-            WHERE am.id = %s
+            WHERE am.id = ?
             ORDER BY s.nama
         """, (absensi_id,)).fetchall()
 
@@ -349,7 +349,7 @@ def start_absensi():
         last = d.execute("""
             SELECT MAX(pertemuan_ke) as last_pertemuan
             FROM absensi_mengajar
-            WHERE kelas_mapel_id = %s
+            WHERE kelas_mapel_id = ?
         """, (kelas_mapel_id,)).fetchone()
 
         pertemuan_ke = (last["last_pertemuan"] or 0) + 1
@@ -369,7 +369,7 @@ def start_absensi():
                 indikator,
                 kegiatan
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             kelas_mapel_id,
             pertemuan_ke,
@@ -418,7 +418,7 @@ def absensi_siswa(absensi_id):
             JOIN kelas_mapel km ON km.id = am.kelas_mapel_id
             JOIN kelas k ON k.id = km.kelas_id
             JOIN mata_pelajaran mp ON mp.id = km.mapel_id
-            WHERE am.id = %s
+            WHERE am.id = ?
         """, (absensi_id,)).fetchone()
 
     if not absensi:
@@ -446,7 +446,7 @@ def finalize_absensi():
         existing = d.execute("""
             SELECT status_final
             FROM absensi_mengajar
-            WHERE id = %s
+            WHERE id = ?
         """, (absensi_id,)).fetchone()
 
         if existing and existing["status_final"]:
@@ -458,8 +458,8 @@ def finalize_absensi():
         d.execute("""
             UPDATE absensi_mengajar
             SET status_final = 1,
-                finalized_at = %s
-            WHERE id = %s
+                finalized_at = ?
+            WHERE id = ?
         """, (datetime.now().isoformat(), absensi_id))
 
     return jsonify({
@@ -484,7 +484,7 @@ def set_status():
         absensi = d.execute("""
             SELECT status_final
             FROM absensi_mengajar
-            WHERE id = %s
+            WHERE id = ?
         """, (absensi_id,)).fetchone()
 
         if absensi and absensi["status_final"]:
@@ -496,22 +496,22 @@ def set_status():
         # cek apakah sudah ada
         existing = d.execute("""
             SELECT id FROM absensi_detail
-            WHERE absensi_id = %s AND siswa_id = %s
+            WHERE absensi_id = ? AND siswa_id = ?
         """, (absensi_id, siswa_id)).fetchone()
 
         if existing:
 
             d.execute("""
                 UPDATE absensi_detail
-                SET status = %s
-                WHERE absensi_id = %s AND siswa_id = %s
+                SET status = ?
+                WHERE absensi_id = ? AND siswa_id = ?
             """, (status, absensi_id, siswa_id))
 
         else:
 
             d.execute("""
                 INSERT INTO absensi_detail (absensi_id, siswa_id, status)
-                VALUES (%s, %s, %s)
+                VALUES (?, ?, ?)
             """, (absensi_id, siswa_id, status))
 
     return jsonify({"success": True})
@@ -536,7 +536,7 @@ def set_keterangan():
         absensi = d.execute("""
             SELECT status_final
             FROM absensi_mengajar
-            WHERE id = %s
+            WHERE id = ?
         """, (absensi_id,)).fetchone()
 
         if absensi and absensi["status_final"]:
@@ -548,22 +548,22 @@ def set_keterangan():
         # cek apakah sudah ada
         existing = d.execute("""
             SELECT id FROM absensi_detail
-            WHERE absensi_id = %s AND siswa_id = %s
+            WHERE absensi_id = ? AND siswa_id = ?
         """, (absensi_id, siswa_id)).fetchone()
 
         if existing:
 
             d.execute("""
                 UPDATE absensi_detail
-                SET keterangan = %s
-                WHERE absensi_id = %s AND siswa_id = %s
+                SET keterangan = ?
+                WHERE absensi_id = ? AND siswa_id = ?
             """, (keterangan, absensi_id, siswa_id))
 
         else:
 
             d.execute("""
                 INSERT INTO absensi_detail (absensi_id, siswa_id, keterangan, status)
-                VALUES (%s, %s, %s, 'H')
+                VALUES (?, ?, ?, 'H')
             """, (absensi_id, siswa_id, keterangan))
 
     return jsonify({"success": True})
@@ -603,7 +603,7 @@ def overview(kelas_mapel_id):
             JOIN tahun_pelajaran tp
                 ON tp.id = k.tahun_pelajaran_id
 
-            WHERE km.id = %s
+            WHERE km.id = ?
         """, (kelas_mapel_id,)).fetchone()
 
         # =========================
@@ -639,7 +639,7 @@ def overview(kelas_mapel_id):
                 ) AS total_siswa
 
             FROM absensi_mengajar am
-            WHERE am.kelas_mapel_id = %s
+            WHERE am.kelas_mapel_id = ?
             ORDER BY
                 am.pertemuan_ke DESC
         """, (kelas_mapel_id,)).fetchall()
@@ -684,7 +684,7 @@ def delete_jurnal():
         jurnal = d.execute("""
             SELECT id
             FROM absensi_mengajar
-            WHERE id = %s
+            WHERE id = ?
         """, (jurnal_id,)).fetchone()
 
         if not jurnal:
@@ -698,7 +698,7 @@ def delete_jurnal():
         # =========================
         d.execute("""
             DELETE FROM absensi_detail
-            WHERE absensi_id = %s
+            WHERE absensi_id = ?
         """, (jurnal_id,))
 
         # =========================
@@ -706,7 +706,7 @@ def delete_jurnal():
         # =========================
         d.execute("""
             DELETE FROM absensi_mengajar
-            WHERE id = %s
+            WHERE id = ?
         """, (jurnal_id,))
 
     return jsonify({
@@ -747,7 +747,7 @@ def update_catatan():
         jurnal = d.execute("""
             SELECT id
             FROM absensi_mengajar
-            WHERE id = %s
+            WHERE id = ?
         """, (jurnal_id,)).fetchone()
 
         if not jurnal:
@@ -761,8 +761,8 @@ def update_catatan():
         # =========================
         d.execute("""
             UPDATE absensi_mengajar
-            SET catatan = %s
-            WHERE id = %s
+            SET catatan = ?
+            WHERE id = ?
         """, (
             catatan,
             jurnal_id
@@ -817,7 +817,7 @@ def edit_jurnal(jurnal_id):
             JOIN mata_pelajaran mp
                 ON mp.id = km.mapel_id
 
-            WHERE am.id = %s
+            WHERE am.id = ?
         """, (jurnal_id,)).fetchone()
 
         # =====================================
@@ -850,7 +850,7 @@ def edit_jurnal(jurnal_id):
                 ON ad.absensi_id = am.id
                 AND ad.siswa_id = s.id
 
-            WHERE am.id = %s
+            WHERE am.id = ?
 
             ORDER BY s.nama ASC
         """, (jurnal_id,)).fetchall()
@@ -889,13 +889,13 @@ def update_jurnal(jurnal_id):
 
         d.execute("""
             UPDATE absensi_mengajar
-            SET tanggal = %s,
-                jam_mulai = %s,
-                jam_selesai = %s,
-                materi = %s,
-                indikator = %s,
-                kegiatan = %s
-            WHERE id = %s
+            SET tanggal = ?,
+                jam_mulai = ?,
+                jam_selesai = ?,
+                materi = ?,
+                indikator = ?,
+                kegiatan = ?
+            WHERE id = ?
         """, (
             tanggal,
             jam_mulai,
@@ -914,20 +914,20 @@ def update_jurnal(jurnal_id):
 
                 existing = d.execute("""
                     SELECT id FROM absensi_detail
-                    WHERE absensi_id = %s AND siswa_id = %s
+                    WHERE absensi_id = ? AND siswa_id = ?
                 """, (jurnal_id, siswa_id)).fetchone()
 
                 if existing:
                     d.execute("""
                         UPDATE absensi_detail
-                        SET status = %s, keterangan = %s
-                        WHERE absensi_id = %s AND siswa_id = %s
+                        SET status = ?, keterangan = ?
+                        WHERE absensi_id = ? AND siswa_id = ?
                     """, (status, keterangan, jurnal_id, siswa_id))
                 else:
                     d.execute("""
                         INSERT INTO absensi_detail
                         (absensi_id, siswa_id, status, keterangan)
-                        VALUES (%s, %s, %s, %s)
+                        VALUES (?, ?, ?, ?)
                     """, (jurnal_id, siswa_id, status, keterangan))
 
     return redirect(
@@ -969,7 +969,7 @@ def nilai_kelas(kelas_mapel_id):
                 ON kkm.tingkat = k.tingkat
                 AND kkm.mapel_id = km.mapel_id
 
-            WHERE km.id = %s
+            WHERE km.id = ?
         """, (kelas_mapel_id,)).fetchone()
 
         # =========================
@@ -1031,7 +1031,7 @@ def nilai_kelas(kelas_mapel_id):
                 ON s.id = ks.siswa_id
 
             JOIN kelas_mapel km
-                ON km.id = %s
+                ON km.id = ?
 
             LEFT JOIN nilai_siswa n
                 ON n.siswa_id = s.id
@@ -1178,20 +1178,20 @@ def update_nilai_bulk():
 
             existing = d.execute("""
                 SELECT id FROM nilai_siswa
-                WHERE kelas_mapel_id = %s AND siswa_id = %s
+                WHERE kelas_mapel_id = ? AND siswa_id = ?
             """, (kelas_mapel_id, siswa_id)).fetchone()
 
             if existing:
                 d.execute(f"""
                     UPDATE nilai_siswa
-                    SET {tipe} = %s
-                    WHERE kelas_mapel_id = %s AND siswa_id = %s
+                    SET {tipe} = ?
+                    WHERE kelas_mapel_id = ? AND siswa_id = ?
                 """, (nilai, kelas_mapel_id, siswa_id))
             else:
                 d.execute(f"""
                     INSERT INTO nilai_siswa
                     (kelas_mapel_id, siswa_id, {tipe})
-                    VALUES (%s, %s, %s)
+                    VALUES (?, ?, ?)
                 """, (kelas_mapel_id, siswa_id, nilai))
 
     return jsonify({

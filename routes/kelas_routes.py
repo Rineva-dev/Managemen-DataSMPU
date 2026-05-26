@@ -34,8 +34,8 @@ def index():
             aktif = d.execute("""
                 SELECT id
                 FROM tahun_pelajaran
-                WHERE semester_mulai <= %s
-                AND semester_akhir >= %s
+                WHERE semester_mulai <= ?
+                AND semester_akhir >= ?
                 LIMIT 1
             """, (today, today)).fetchone()
 
@@ -48,7 +48,7 @@ def index():
             row = d.execute("""
                 SELECT semester_mulai, semester_akhir
                 FROM tahun_pelajaran
-                WHERE id = %s
+                WHERE id = ?
             """, (tahun_id,)).fetchone()
 
             if row:
@@ -86,7 +86,7 @@ def index():
                 LEFT JOIN guru g 
                     ON g.id = k.wali_kelas_id
 
-                WHERE k.tahun_pelajaran_id = %s
+                WHERE k.tahun_pelajaran_id = ?
 
                 ORDER BY k.tingkat ASC, k.sub_kelas ASC
             """, (tahun_id,)).fetchall()
@@ -104,7 +104,7 @@ def index():
 
             LEFT JOIN kelas k
                 ON g.id = k.wali_kelas_id
-                AND k.tahun_pelajaran_id = %s
+                AND k.tahun_pelajaran_id = ?
 
             WHERE g.jabatan = 'wali_kelas'
             AND k.id IS NULL
@@ -143,7 +143,7 @@ def create_kelas():
         cek = d.execute("""
             SELECT semester_mulai, semester_akhir
             FROM tahun_pelajaran
-            WHERE id=%s
+            WHERE id=?
         """, (tahun_id,)).fetchone()
 
         if not cek:
@@ -161,7 +161,7 @@ def create_kelas():
         # 🔥 Cek duplikat
         duplikat = d.execute("""
             SELECT id FROM kelas
-            WHERE tingkat=%s AND sub_kelas=%s AND tahun_pelajaran_id=%s
+            WHERE tingkat=? AND sub_kelas=? AND tahun_pelajaran_id=?
         """, (tingkat, sub_kelas, tahun_id)).fetchone()
 
         if wali_kelas_id:
@@ -169,8 +169,8 @@ def create_kelas():
             wali_dipakai = d.execute("""
                 SELECT id
                 FROM kelas
-                WHERE wali_kelas_id = %s
-                AND tahun_pelajaran_id = %s
+                WHERE wali_kelas_id = ?
+                AND tahun_pelajaran_id = ?
             """, (wali_kelas_id, tahun_id)).fetchone()
 
             if wali_dipakai:
@@ -188,7 +188,7 @@ def create_kelas():
         # 🔥 Insert
         d.execute("""
             INSERT INTO kelas (tingkat, sub_kelas, tahun_pelajaran_id, wali_kelas_id)
-            VALUES (%s, %s, %s, %s)
+            VALUES (?, ?, ?, ?)
         """, (tingkat, sub_kelas, tahun_id, wali_kelas_id))
 
         d.commit()
@@ -216,7 +216,7 @@ def update_kelas(id):
         cek = d.execute("""
             SELECT semester_mulai, semester_akhir
             FROM tahun_pelajaran
-            WHERE id=%s
+            WHERE id=?
         """, (tahun_id,)).fetchone()
 
         if not cek:
@@ -236,9 +236,9 @@ def update_kelas(id):
             wali_dipakai = d.execute("""
                 SELECT id
                 FROM kelas
-                WHERE wali_kelas_id = %s
-                AND tahun_pelajaran_id = %s
-                AND id != %s
+                WHERE wali_kelas_id = ?
+                AND tahun_pelajaran_id = ?
+                AND id != ?
             """, (wali_kelas_id, tahun_id, id)).fetchone()
 
             if wali_dipakai:
@@ -250,8 +250,8 @@ def update_kelas(id):
         # 🔥 Update
         d.execute("""
             UPDATE kelas
-            SET tingkat=%s, sub_kelas=%s, wali_kelas_id=%s
-            WHERE id=%s
+            SET tingkat=?, sub_kelas=?, wali_kelas_id=?
+            WHERE id=?
         """, (tingkat, sub_kelas, wali_kelas_id, id))
 
         d.commit()
@@ -271,7 +271,7 @@ def delete_kelas(id):
         # 🔥 Cek apakah masih ada siswa
         siswa = d.execute("""
             SELECT 1 FROM kelas_siswa
-            WHERE kelas_id = %s
+            WHERE kelas_id = ?
             LIMIT 1
         """, (id,)).fetchone()
 
@@ -281,7 +281,7 @@ def delete_kelas(id):
                 "message": "Kelas tidak bisa dihapus karena masih memiliki siswa."
             })
 
-        d.execute("DELETE FROM kelas WHERE id = %s", (id,))
+        d.execute("DELETE FROM kelas WHERE id = ?", (id,))
         d.commit()
 
     return jsonify({"success": True})
@@ -296,7 +296,7 @@ def detail_kelas(id):
         kelas = d.execute("""
             SELECT id, tingkat, sub_kelas, wali_kelas_id
             FROM kelas
-            WHERE id=%s
+            WHERE id=?
         """, (id,)).fetchone()
 
     if not kelas:
@@ -326,7 +326,7 @@ def rombel_data(kelas_id):
         kelas = d.execute("""
             SELECT tingkat, tahun_pelajaran_id
             FROM kelas
-            WHERE id = %s
+            WHERE id = ?
         """, (kelas_id,)).fetchone()
 
         if not kelas:
@@ -345,7 +345,7 @@ def rombel_data(kelas_id):
             SELECT s.id, s.nama, s.nis
             FROM siswa s
             JOIN kelas_siswa ks ON ks.siswa_id = s.id
-            WHERE ks.kelas_id = %s
+            WHERE ks.kelas_id = ?
             ORDER BY s.nama ASC
         """, (kelas_id,)).fetchall()
 
@@ -356,12 +356,12 @@ def rombel_data(kelas_id):
             SELECT s.id, s.nama, s.nis
             FROM siswa s
             WHERE s.status = 'aktif'
-            AND s.tingkat_default = %s
+            AND s.tingkat_default = ?
             AND s.id NOT IN (
                 SELECT ks.siswa_id
                 FROM kelas_siswa ks
                 JOIN kelas k ON k.id = ks.kelas_id
-                WHERE k.tahun_pelajaran_id = %s
+                WHERE k.tahun_pelajaran_id = ?
             )
             ORDER BY s.nama ASC
         """, (tingkat, tahun_id)).fetchall()
@@ -388,7 +388,7 @@ def update_rombel():
         # hapus siswa lama dari kelas ini
         d.execute("""
             DELETE FROM kelas_siswa
-            WHERE kelas_id = %s
+            WHERE kelas_id = ?
         """, (kelas_id,))
 
         # insert ulang
@@ -396,7 +396,7 @@ def update_rombel():
 
             d.execute("""
                 INSERT INTO kelas_siswa (kelas_id, siswa_id)
-                VALUES (%s, %s)
+                VALUES (?, ?)
             """, (kelas_id, siswa_id))
 
         d.commit()
@@ -419,7 +419,7 @@ def get_siswa_kelas(kelas_id):
                 s.status_masuk
             FROM kelas_siswa ks
             JOIN siswa s ON s.id = ks.siswa_id
-            WHERE ks.kelas_id = %s
+            WHERE ks.kelas_id = ?
             ORDER BY s.nama ASC
         """, (kelas_id,)).fetchall()
 
@@ -461,7 +461,7 @@ def get_mapel_kelas(kelas_id):
                 jam_mulai,
                 jam_selesai
             FROM kelas_mapel
-            WHERE kelas_id = %s
+            WHERE kelas_id = ?
         """, (kelas_id,)).fetchall()
 
     return jsonify({
@@ -480,7 +480,7 @@ def save_mapel_kelas():
     with db() as d:
         d.execute("""
                 DELETE FROM kelas_mapel
-                WHERE kelas_id = %s
+                WHERE kelas_id = ?
             """, (kelas_id,))
 
         for item in items:
@@ -508,11 +508,11 @@ def save_mapel_kelas():
                 konflik_kelas = d.execute("""
                     SELECT 1
                     FROM kelas_mapel
-                    WHERE kelas_id = %s
-                    AND hari = %s
+                    WHERE kelas_id = ?
+                    AND hari = ?
                     AND (
-                        %s < jam_selesai
-                        AND %s > jam_mulai
+                        ? < jam_selesai
+                        AND ? > jam_mulai
                     )
                 """, (
                     kelas_id,
@@ -533,12 +533,12 @@ def save_mapel_kelas():
                     konflik_guru = d.execute("""
                         SELECT 1
                         FROM kelas_mapel
-                        WHERE guru_id = %s
-                        AND hari = %s
-                        AND kelas_id != %s
+                        WHERE guru_id = ?
+                        AND hari = ?
+                        AND kelas_id != ?
                         AND (
-                            %s < jam_selesai
-                            AND %s > jam_mulai
+                            ? < jam_selesai
+                            AND ? > jam_mulai
                         )
                     """, (
                         guru_id,
@@ -568,7 +568,7 @@ def save_mapel_kelas():
                     jam_mulai,
                     jam_selesai
                 )
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
             """, (
                 kelas_id,
                 mapel_id,
@@ -603,7 +603,7 @@ def save_jadwal():
         # hapus jadwal lama
         d.execute("""
             DELETE FROM kelas_jadwal
-            WHERE kelas_id = %s
+            WHERE kelas_id = ?
         """, (kelas_id,))
 
         for item in jadwal:
@@ -617,9 +617,9 @@ def save_jadwal():
             konflik = d.execute("""
                 SELECT 1
                 FROM kelas_jadwal
-                WHERE kelas_id = %s
-                AND hari = %s
-                AND (%s < jam_selesai AND %s > jam_mulai)
+                WHERE kelas_id = ?
+                AND hari = ?
+                AND (? < jam_selesai AND ? > jam_mulai)
             """, (kelas_id, hari, mulai, selesai)).fetchone()
 
             if konflik:
@@ -632,7 +632,7 @@ def save_jadwal():
                 INSERT INTO kelas_jadwal (
                     kelas_id, hari, jam_mulai, jam_selesai, mapel_id
                 )
-                VALUES (%s, %s, %s, %s, %s)
+                VALUES (?, ?, ?, ?, ?)
             """, (kelas_id, hari, mulai, selesai, mapel_id))
 
         d.commit()
@@ -646,7 +646,7 @@ def get_jadwal(kelas_id):
         rows = d.execute("""
             SELECT hari, jam_mulai, jam_selesai, mapel_id
             FROM kelas_jadwal
-            WHERE kelas_id = %s
+            WHERE kelas_id = ?
             ORDER BY
                 CASE hari
                     WHEN 'Senin' THEN 1
