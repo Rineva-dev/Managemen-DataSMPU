@@ -2,11 +2,13 @@ from flask import Flask, session, jsonify
 from utils.time_helper import now_wita
 from utils.db import db
 from utils.init_db import init_db
+from utils.seed_mapel import seed_mapel_wajib
 
 app = Flask(__name__)
 
 with app.app_context():
     init_db()
+    seed_mapel_wajib()
 
 app.secret_key = "SMPU_Absensi_2026_SuperSecretKey_!@#987654"
 app.config.update(

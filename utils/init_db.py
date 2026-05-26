@@ -56,6 +56,18 @@ def init_db():
         )
         """)
 
+        # ===== Tabel Mata Pelajaran =====
+        d.execute("""
+        CREATE TABLE IF NOT EXISTS mata_pelajaran (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nama TEXT NOT NULL,
+            jenis TEXT NOT NULL,
+            aktif INTEGER DEFAULT 1,
+            created_at TEXT,
+            updated_at TEXT
+        )
+        """)
+
         # ===== Tambah kolom updated_at jika belum ada =====
         columns = d.execute("PRAGMA table_info(absensi)").fetchall()
         column_names = [col["name"] for col in columns]
