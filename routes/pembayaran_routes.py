@@ -15,7 +15,7 @@ def pembayaran_siswa_page():
 
 # =====================================================
 # AUTOCOMPLETE SISWA
-# /api/siswa/search?q=
+# /api/siswa/search
 # =====================================================
 @pembayaran_bp.route("/api/siswa/search")
 @roles_required("admin", "bendahara")
@@ -32,7 +32,7 @@ def search_siswa():
         FROM siswa s
         LEFT JOIN kelas_siswa ks ON ks.siswa_id = s.id
         LEFT JOIN kelas k ON k.id = ks.kelas_id
-        WHERE s.nama LIKE ? OR s.nisn LIKE ?
+        WHERE s.nama LIKE %s OR s.nisn LIKE %s
         LIMIT 10
     """, (f"%{keyword}%", f"%{keyword}%"))
 
@@ -65,7 +65,7 @@ def list_siswa_pembayaran():
     params = []
 
     if search:
-        query += " WHERE s.nama LIKE ? OR s.nisn LIKE ?"
+        query += " WHERE s.nama LIKE %s OR s.nisn LIKE %s"
         params.extend([f"%{search}%", f"%{search}%"])
 
     query += " ORDER BY s.nama ASC"
@@ -104,7 +104,7 @@ def simpan_pembayaran():
         if jenis == "spp":
             cek = conn.execute("""
                 SELECT 1 FROM pembayaran
-                WHERE nisn = ? AND jenis = 'spp' AND bulan = ?
+                WHERE nisn = %s AND jenis = 'spp' AND bulan = %s
                 LIMIT 1
             """, (nisn, bulan)).fetchone()
 
@@ -115,7 +115,7 @@ def simpan_pembayaran():
         conn.execute("""
             INSERT INTO pembayaran
             (nisn, jenis, bulan, tanggal, nominal)
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s)
         """, (nisn, jenis, bulan, data["tanggal"], int(data["nominal"])))
 
         conn.commit()
@@ -138,7 +138,7 @@ def riwayat_pembayaran(nisn):
     rows = conn.execute("""
         SELECT id, jenis, bulan, tanggal, nominal
         FROM pembayaran
-        WHERE nisn = ?
+        WHERE nisn = %s
         ORDER BY tanggal DESC
     """, (nisn,)).fetchall()
 

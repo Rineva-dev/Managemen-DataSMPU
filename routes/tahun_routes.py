@@ -33,7 +33,7 @@ def tambah_tahun_pelajaran():
         # Cegah duplikat
         existing = d.execute("""
             SELECT id FROM tahun_pelajaran 
-            WHERE tahun_pelajaran=? AND semester=?
+            WHERE tahun_pelajaran=%s AND semester=%s
         """, (tahun_pelajaran, semester)).fetchone()
 
         if existing:
@@ -42,7 +42,7 @@ def tambah_tahun_pelajaran():
         d.execute("""
             INSERT INTO tahun_pelajaran
             (tahun_pelajaran, semester, semester_mulai, semester_akhir, updated_at, updated_by)
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """, (
             tahun_pelajaran,
             semester,
@@ -118,7 +118,7 @@ def delete_tahun_pelajaran(id):
             SELECT tahun_pelajaran, semester,
                     semester_mulai, semester_akhir
             FROM tahun_pelajaran
-            WHERE id=?
+            WHERE id=%s
         """, (id,)).fetchone()
 
         if not row:
@@ -137,7 +137,7 @@ def delete_tahun_pelajaran(id):
         semester = row["semester"]
 
         # 🔹 Hapus
-        d.execute("DELETE FROM tahun_pelajaran WHERE id=?", (id,))
+        d.execute("DELETE FROM tahun_pelajaran WHERE id=%s", (id,))
         d.commit()
 
     log_activity(
@@ -174,7 +174,7 @@ def update_tahun_pelajaran(id):
             old = d.execute("""
                 SELECT semester_mulai, semester_akhir
                 FROM tahun_pelajaran
-                WHERE id=?
+                WHERE id=%s
             """, (id,)).fetchone()
 
             if not old:
@@ -186,13 +186,13 @@ def update_tahun_pelajaran(id):
             # 🔥 Update data
             d.execute("""
                 UPDATE tahun_pelajaran
-                SET tahun_pelajaran=?,
-                    semester=?,
-                    semester_mulai=?,
-                    semester_akhir=?,
-                    updated_at=?,
-                    updated_by=?
-                WHERE id=?
+                SET tahun_pelajaran=%s,
+                    semester=%s,
+                    semester_mulai=%s,
+                    semester_akhir=%s,
+                    updated_at=%s,
+                    updated_by=%s
+                WHERE id=%s
             """, (
                 tahun_pelajaran,
                 semester,

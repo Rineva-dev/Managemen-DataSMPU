@@ -27,7 +27,7 @@ def api_profile_guru():
             SELECT g.*, a.username, a.password AS akun_password
             FROM guru g
             LEFT JOIN akun a ON a.guru_id = g.id
-            WHERE g.id=?
+            WHERE g.id=%s
         """, (guru_id,)).fetchone()
 
         if not guru:
@@ -87,7 +87,7 @@ def api_update_profile_guru():
         # ==========================
         if username:
             exists = d.execute(
-                "SELECT id FROM akun WHERE username=? AND guru_id!=?",
+                "SELECT id FROM akun WHERE username=%s AND guru_id!=%s",
                 (username, guru_id)
             ).fetchone()
 
@@ -98,14 +98,14 @@ def api_update_profile_guru():
                 })
 
             d.execute(
-                "UPDATE akun SET username=? WHERE guru_id=?",
+                "UPDATE akun SET username=%s WHERE guru_id=%s",
                 (username, guru_id)
             )
 
         if password:
             hashed_password = generate_password_hash(password)
             d.execute(
-                "UPDATE akun SET password=? WHERE guru_id=?",
+                "UPDATE akun SET password=%s WHERE guru_id=%s",
                 (hashed_password, guru_id)
             )
 
@@ -122,14 +122,14 @@ def api_update_profile_guru():
         if alamat is not None: fields['alamat'] = alamat
 
         if fields:
-            set_clause = ", ".join([f"{k}=?" for k in fields.keys()])
+            set_clause = ", ".join([f"{k}=%s" for k in fields.keys()])
             values = list(fields.values())
             values.append(guru_id)
 
             d.execute(f"""
                 UPDATE guru
                 SET {set_clause}
-                WHERE id=?
+                WHERE id=%s
             """, values)
 
         # ==========================
@@ -147,7 +147,7 @@ def api_update_profile_guru():
 
                 foto.save(filepath)
 
-                d.execute("UPDATE guru SET foto=? WHERE id=?", (filename, guru_id))
+                d.execute("UPDATE guru SET foto=%s WHERE id=%s", (filename, guru_id))
 
         d.commit()
 
@@ -196,7 +196,7 @@ def api_update_profile_admin():
         # ==========================
         if username:
             exists = d.execute(
-                "SELECT id FROM akun WHERE username=? AND guru_id!=?",
+                "SELECT id FROM akun WHERE username=%s AND guru_id!=%s",
                 (username, guru_id)
             ).fetchone()
 
@@ -207,14 +207,14 @@ def api_update_profile_admin():
                 })
 
             d.execute(
-                "UPDATE akun SET username=? WHERE guru_id=?",
+                "UPDATE akun SET username=%s WHERE guru_id=%s",
                 (username, guru_id)
             )
 
         if password:
             hashed_password = generate_password_hash(password)
             d.execute(
-                "UPDATE akun SET password=? WHERE guru_id=?",
+                "UPDATE akun SET password=%s WHERE guru_id=%s",
                 (hashed_password, guru_id)
             )
 
@@ -233,14 +233,14 @@ def api_update_profile_admin():
         if alamat is not None: fields['alamat'] = alamat
 
         if fields:
-            set_clause = ", ".join([f"{k}=?" for k in fields.keys()])
+            set_clause = ", ".join([f"{k}=" for k in fields.keys()])
             values = list(fields.values())
             values.append(guru_id)
 
             d.execute(f"""
                 UPDATE guru
                 SET {set_clause}
-                WHERE id=?
+                WHERE id=%s
             """, values)
 
         # ==========================
@@ -258,7 +258,7 @@ def api_update_profile_admin():
 
                 foto.save(filepath)
 
-                d.execute("UPDATE guru SET foto=? WHERE id=?", (filename, guru_id))
+                d.execute("UPDATE guru SET foto=%s WHERE id=%s", (filename, guru_id))
 
         d.commit()
 
@@ -291,7 +291,7 @@ def api_update_profile_photo_guru():
             }), 400
         foto.save(filepath)
 
-        d.execute("UPDATE guru SET foto=? WHERE id=?", (filename, guru_id))
+        d.execute("UPDATE guru SET foto=%s WHERE id=%s", (filename, guru_id))
         d.commit()
 
     return jsonify({
@@ -326,7 +326,7 @@ def api_update_profile_photo_admin():
     foto.save(filepath)
 
     with db() as d:
-        d.execute("UPDATE guru SET foto=? WHERE id=?", (filename, guru_id))
+        d.execute("UPDATE guru SET foto=%s WHERE id=%s", (filename, guru_id))
         d.commit()
 
     return jsonify({
@@ -348,7 +348,7 @@ def api_delete_profile_photo_admin():
     with db() as d:
         # Ambil nama file foto dulu
         data = d.execute(
-            "SELECT foto FROM guru WHERE id=?",
+            "SELECT foto FROM guru WHERE id=%s",
             (guru_id,)
         ).fetchone()
 
@@ -367,7 +367,7 @@ def api_delete_profile_photo_admin():
 
         # Kosongkan kolom foto di database
         d.execute(
-            "UPDATE guru SET foto=NULL WHERE id=?",
+            "UPDATE guru SET foto=NULL WHERE id=%s",
             (guru_id,)
         )
         d.commit()

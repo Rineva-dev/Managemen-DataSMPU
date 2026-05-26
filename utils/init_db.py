@@ -68,7 +68,7 @@ def init_db():
         if not exists:
             d.execute("""
             INSERT INTO guru (nama, jabatan, tempat, tahun, jk, status, hp, alamat, email, role, password)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, (
                 "admin", "Kepala Sekolah", "Jakarta", "1980", "L", "Aktif",
                 "08123456789", "Jl. Contoh No.1", "admin@email.com", "admin", generate_password_hash("admin")
@@ -99,7 +99,7 @@ def init_db():
         if not exists_admin:
             d.execute("""
                 INSERT INTO akun (guru_id, username, password, role, status)
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (%s, %s, %s, %s, %s)
             """, (
                 admin_guru["id"],
                 "admin",

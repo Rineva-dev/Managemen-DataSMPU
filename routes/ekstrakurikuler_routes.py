@@ -29,8 +29,8 @@ def index():
         if not tahun_id:
             aktif = d.execute("""
                 SELECT id FROM tahun_pelajaran
-                WHERE semester_mulai <= ?
-                AND semester_akhir >= ?
+                WHERE semester_mulai <= %s
+                AND semester_akhir >= %s
                 LIMIT 1
             """, (today, today)).fetchone()
             tahun_id = aktif["id"] if aktif else None
@@ -40,7 +40,7 @@ def index():
             row = d.execute("""
                 SELECT semester_mulai, semester_akhir
                 FROM tahun_pelajaran
-                WHERE id = ?
+                WHERE id = %s
             """, (tahun_id,)).fetchone()
 
             if row:
@@ -67,7 +67,7 @@ def index():
                     ) AS total_anggota
                 FROM ekstrakurikuler e
                 LEFT JOIN guru g ON g.id = e.pembina_id
-                WHERE e.tahun_pelajaran_id = ?
+                WHERE e.tahun_pelajaran_id = %s
                 ORDER BY e.nama ASC
             """, (tahun_id,)).fetchall()
 
@@ -97,7 +97,7 @@ def create_ekskul():
         cek = d.execute("""
             SELECT semester_mulai, semester_akhir
             FROM tahun_pelajaran
-            WHERE id = ?
+            WHERE id = %s
         """, (tahun_id,)).fetchone()
 
         mulai = datetime.strptime(cek["semester_mulai"], "%Y-%m-%d").date()
@@ -112,7 +112,7 @@ def create_ekskul():
         d.execute("""
             INSERT INTO ekstrakurikuler
             (nama, pembina_id, hari, tahun_pelajaran_id)
-            VALUES (?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s)
         """, (nama, pembina_id, hari, tahun_id))
 
         d.commit()
@@ -127,8 +127,8 @@ def update_ekskul(id):
     with db() as d:
         d.execute("""
             UPDATE ekstrakurikuler
-            SET nama=?, pembina_id=?, hari=?
-            WHERE id=?
+            SET nama=%s, pembina_id=%s, hari=%s
+            WHERE id=%s
         """, (
             data.get("nama"),
             data.get("pembina_id"),
@@ -146,7 +146,7 @@ def delete_ekskul(id):
 
         cek = d.execute("""
             SELECT 1 FROM ekskul_anggota
-            WHERE ekskul_id = ?
+            WHERE ekskul_id = %s
             LIMIT 1
         """, (id,)).fetchone()
 
@@ -156,7 +156,7 @@ def delete_ekskul(id):
                 "message": "Ekskul masih memiliki anggota"
             })
 
-        d.execute("DELETE FROM ekstrakurikuler WHERE id=?", (id,))
+        d.execute("DELETE FROM ekstrakurikuler WHERE id=%s", (id,))
         d.commit()
 
     return jsonify({"success": True})
@@ -168,7 +168,7 @@ def detail_ekskul(id):
         row = d.execute("""
             SELECT id, nama, pembina_id, hari
             FROM ekstrakurikuler
-            WHERE id = ?
+            WHERE id = %s
         """, (id,)).fetchone()
 
     if not row:
@@ -185,7 +185,7 @@ def anggota_ekskul(ekskul_id):
             SELECT s.id, s.nama, s.nis
             FROM siswa s
             JOIN ekskul_anggota ea ON ea.siswa_id = s.id
-            WHERE ea.ekskul_id = ?
+            WHERE ea.ekskul_id = %s
             ORDER BY s.nama ASC
         """, (ekskul_id,)).fetchall()
 
@@ -196,7 +196,7 @@ def anggota_ekskul(ekskul_id):
             AND id NOT IN (
                 SELECT siswa_id
                 FROM ekskul_anggota
-                WHERE ekskul_id = ?
+                WHERE ekskul_id = %s
             )
             ORDER BY nama ASC
         """, (ekskul_id,)).fetchall()
@@ -218,13 +218,13 @@ def update_anggota():
 
         d.execute("""
             DELETE FROM ekskul_anggota
-            WHERE ekskul_id = ?
+            WHERE ekskul_id = %s
         """, (ekskul_id,))
 
         for sid in siswa_ids:
             d.execute("""
                 INSERT INTO ekskul_anggota (ekskul_id, siswa_id)
-                VALUES (?, ?)
+                VALUES (%s, %s)
             """, (ekskul_id, sid))
 
         d.commit()
@@ -239,7 +239,7 @@ def panel_anggota(ekskul_id):
             SELECT s.id, s.nisn, s.nama, s.kelas_terakhir
             FROM ekskul_anggota ea
             JOIN siswa s ON s.id = ea.siswa_id
-            WHERE ea.ekskul_id = ?
+            WHERE ea.ekskul_id = %s
             ORDER BY s.nama ASC
         """, (ekskul_id,)).fetchall()
 

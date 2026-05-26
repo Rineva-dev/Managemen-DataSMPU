@@ -30,13 +30,13 @@ def seed_mapel_wajib():
     for nama in MAPEL_WAJIB:
         cur.execute("""
             SELECT id FROM mata_pelajaran
-            WHERE nama = ? AND jenis = 'wajib'
+            WHERE nama = %s AND jenis = 'wajib'
         """, (nama,))
 
         if not cur.fetchone():
             cur.execute("""
                 INSERT INTO mata_pelajaran (nama, jenis, is_locked)
-                VALUES (?, 'wajib', 1)
+                VALUES (%s, 'wajib', 1)
             """, (nama,))
 
     conn.commit()
@@ -55,19 +55,19 @@ def seed_mapel_kegiatan():
             for lama in nama_lama_list:
                 d.execute("""
                     DELETE FROM mata_pelajaran
-                    WHERE nama = ? AND jenis = 'kegiatan'
+                    WHERE nama = %s AND jenis = 'kegiatan'
                 """, (lama,))
 
             # insert versi resmi
             cek = d.execute("""
                 SELECT id FROM mata_pelajaran
-                WHERE nama = ? AND jenis = 'kegiatan'
+                WHERE nama = %s AND jenis = 'kegiatan'
             """, (nama_baru,)).fetchone()
 
             if not cek:
                 d.execute("""
                     INSERT INTO mata_pelajaran (nama, jenis, is_locked)
-                    VALUES (?, 'kegiatan', 1)
+                    VALUES (%s, 'kegiatan', 1)
                 """, (nama_baru,))
 
 @mapel_bp.route("/mapel")
@@ -166,14 +166,14 @@ def tambah_mapel():
     cur = conn.cursor()
 
     cur.execute(
-        "INSERT INTO mata_pelajaran (nama, jenis) VALUES (?, ?)",
+        "INSERT INTO mata_pelajaran (nama, jenis) VALUES (%s, %s)",
         (nama, jenis)
     )
     mapel_id = cur.lastrowid
 
     for gid in guru_ids:
         cur.execute(
-            "INSERT INTO mapel_guru (mapel_id, guru_id) VALUES (?, ?)",
+            "INSERT INTO mapel_guru (mapel_id, guru_id) VALUES (%s, %s)",
             (mapel_id, gid)
         )
 
@@ -188,14 +188,14 @@ def detail_mapel(mapel_id):
     conn = db()
     cur = conn.cursor()
 
-    cur.execute("SELECT id, nama, jenis FROM mata_pelajaran WHERE id=?", (mapel_id,))
+    cur.execute("SELECT id, nama, jenis FROM mata_pelajaran WHERE id=%s", (mapel_id,))
     mapel = cur.fetchone()
 
     if not mapel:
         return jsonify({"error": "Mapel tidak ditemukan"}), 404
 
     cur.execute(
-        "SELECT guru_id FROM mapel_guru WHERE mapel_id=?",
+        "SELECT guru_id FROM mapel_guru WHERE mapel_id=%s",
         (mapel_id,)
     )
     guru_ids = [row[0] for row in cur.fetchall()]
@@ -220,15 +220,15 @@ def update_mapel(mapel_id):
     cur = conn.cursor()
 
     cur.execute(
-        "UPDATE mata_pelajaran SET nama=?, jenis=? WHERE id=?",
+        "UPDATE mata_pelajaran SET nama=%s, jenis=%s WHERE id=%s",
         (nama, jenis, mapel_id)
     )
 
     # reset guru mapel
-    cur.execute("DELETE FROM mapel_guru WHERE mapel_id=?", (mapel_id,))
+    cur.execute("DELETE FROM mapel_guru WHERE mapel_id=%s", (mapel_id,))
     for gid in guru_ids:
         cur.execute(
-            "INSERT INTO mapel_guru (mapel_id, guru_id) VALUES (?, ?)",
+            "INSERT INTO mapel_guru (mapel_id, guru_id) VALUES (%s, %s)",
             (mapel_id, gid)
         )
 
@@ -243,8 +243,8 @@ def hapus_mapel(mapel_id):
     conn = db()
     cur = conn.cursor()
 
-    cur.execute("DELETE FROM mapel_guru WHERE mapel_id=?", (mapel_id,))
-    cur.execute("DELETE FROM mata_pelajaran WHERE id=?", (mapel_id,))
+    cur.execute("DELETE FROM mapel_guru WHERE mapel_id=%s", (mapel_id,))
+    cur.execute("DELETE FROM mata_pelajaran WHERE id=%s", (mapel_id,))
 
     conn.commit()
     conn.close()
@@ -272,14 +272,14 @@ def simpan_mapel():
             # ===== EDIT =====
             d.execute("""
                 UPDATE mata_pelajaran
-                SET nama = ?, jenis = ?
-                WHERE id = ?
+                SET nama = %s, jenis = %s
+                WHERE id = %s
             """, (nama, jenis, mapel_id))
         else:
             # ===== TAMBAH =====
             d.execute("""
                 INSERT INTO mata_pelajaran (nama, jenis)
-                VALUES (?, ?)
+                VALUES (%s, %s)
             """, (nama, jenis))
 
     return jsonify(success=True)
@@ -292,7 +292,7 @@ def hapus(id):
     cur = conn.cursor()
 
     cek = cur.execute("""
-        SELECT is_locked FROM mata_pelajaran WHERE id = ?
+        SELECT is_locked FROM mata_pelajaran WHERE id = %s
     """, (id,)).fetchone()
 
     if cek and cek["is_locked"] == 1:
@@ -302,7 +302,7 @@ def hapus(id):
         flash("Mata pelajaran wajib tidak bisa dihapus", "danger")
         return redirect(url_for("mapel.index"))
 
-    cur.execute("DELETE FROM mata_pelajaran WHERE id = ?", (id,))
+    cur.execute("DELETE FROM mata_pelajaran WHERE id = %s", (id,))
     conn.commit()
     conn.close()
 

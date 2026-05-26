@@ -25,7 +25,7 @@ def log_pembelajaran():
 
     with db() as d:
         guru_data = d.execute(
-            "SELECT * FROM guru WHERE id=?",
+            "SELECT * FROM guru WHERE id=%s",
             (session["user_id"],)
         ).fetchone()
         timestamp = int(now_wita().timestamp())
@@ -46,7 +46,7 @@ def api_get_absensi():
         rows = d.execute("""
             SELECT id, tanggal, status, jam_masuk, jam_keluar, alasan
             FROM absensi
-            WHERE guru_id = ?
+            WHERE guru_id = %s
             ORDER BY tanggal DESC, id DESC
         """, (guru_id,)).fetchall()
 
@@ -73,7 +73,7 @@ def api_absensi_guru():
             rows = d.execute("""
                 SELECT tanggal, jam_masuk, jam_keluar, status, alasan
                 FROM absensi
-                WHERE guru_id=? AND tanggal=?
+                WHERE guru_id=%s AND tanggal=%s
                 ORDER BY id DESC
             """, (guru_id, today)).fetchall()
 
@@ -121,7 +121,7 @@ def api_absensi_guru():
         menit = now.minute
 
         existing_absensi = d.execute("""
-            SELECT id FROM absensi WHERE guru_id=? AND tanggal=?
+            SELECT id FROM absensi WHERE guru_id=%s AND tanggal=%s
         """, (guru_id, tanggal)).fetchone()
 
         if status_request == "masuk":
@@ -146,14 +146,14 @@ def api_absensi_guru():
             if existing_absensi:
                 d.execute("""
                     UPDATE absensi
-                    SET status=?, jam_masuk=?, alasan=?, updated_at=?
-                    WHERE guru_id=? AND tanggal=?
+                    SET status=%s, jam_masuk=%s, alasan=%s, updated_at=%s
+                    WHERE guru_id=%s AND tanggal=%s
                 """, (final_status, jam_sekarang, alasan, now.isoformat(), guru_id, tanggal))
             else:
                 d.execute("""
                     INSERT INTO absensi
                     (guru_id, tanggal, status, jam_masuk, alasan, updated_at)
-                    VALUES (?, ?, ?, ?, ?, ?)
+                    VALUES (=%s, %s, %s, %s, %s, %s)
                 """, (guru_id, tanggal, final_status, jam_sekarang, alasan, now.isoformat()))
 
             d.commit()
@@ -174,8 +174,8 @@ def api_absensi_guru():
 
             d.execute("""
                 UPDATE absensi
-                SET jam_keluar=?, updated_at=?
-                WHERE guru_id=? AND tanggal=?
+                SET jam_keluar=%s, updated_at=%s
+                WHERE guru_id=%s AND tanggal=%s
             """, (jam_sekarang, now.isoformat(), guru_id, tanggal))
 
             d.commit()
@@ -199,14 +199,14 @@ def api_absensi_guru():
             if existing_absensi:
                 d.execute("""
                     UPDATE absensi
-                    SET status=?, alasan=?, updated_at=?
-                    WHERE guru_id=? AND tanggal=?
+                    SET status=%s, alasan=%s, updated_at=%s
+                    WHERE guru_id=%s AND tanggal=%s
                 """, ("izin_tidak_masuk", alasan, now.isoformat(), guru_id, tanggal))
             else:
                 d.execute("""
                     INSERT INTO absensi
                     (guru_id, tanggal, status, alasan, updated_at)
-                    VALUES (?, ?, ?, ?, ?)
+                    VALUES (%s, %s, %s, %s, %s)
                 """, (guru_id, tanggal, "izin_tidak_masuk", alasan, now.isoformat()))
 
             d.commit()
@@ -230,7 +230,7 @@ def absensi_status():
         rows = d.execute("""
             SELECT status, jam_keluar
             FROM absensi
-            WHERE guru_id=? AND tanggal=?
+            WHERE guru_id=%s AND tanggal=%s
             ORDER BY id DESC
         """, (guru_id, today)).fetchall()
 
@@ -309,7 +309,7 @@ def dev_reset_guru():
         try:
             d.execute("""
                 DELETE FROM absensi
-                WHERE guru_id = ?
+                WHERE guru_id = %s
             """, (guru_id,))
             d.commit()
             return jsonify({

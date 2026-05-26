@@ -120,7 +120,7 @@ def get_admin_data():
             SELECT g.*, a.username
             FROM guru g
             LEFT JOIN akun a ON a.guru_id = g.id
-            WHERE g.id=?
+            WHERE g.id=%s
         """, (session["user_id"],)).fetchone()
 
     return admin_data
