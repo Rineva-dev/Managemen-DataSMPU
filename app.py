@@ -69,16 +69,13 @@ def inject_global_data():
     data = {}
 
     if "user_id" in session:
-        try:
-            with db() as d:
-                guru_data = d.execute(
-                    "SELECT * FROM guru WHERE id=?",
-                    (session["user_id"],)
-                ).fetchone()
-        except Exception as e:
-            guru_data = None
+        data["guru"] = {
+            "id": session.get("user_id"),
+            "nama": session.get("nama"),
+            "foto": session.get("foto"),
+            "role": session.get("role"),
+        }
 
-        data["guru"] = guru_data
         data["current_time"] = int(now_wita().timestamp())
 
     role = session.get("role")
