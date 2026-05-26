@@ -1,0 +1,186 @@
+{% set active_page = 'kelas_ampu' %}
+
+{% block extra_css %}
+<link rel="stylesheet"
+    href="{{ url_for('static', filename='css/absensi-siswa.css') }}">
+{% endblock %}
+
+<div class="absensi-wrapper" data-absensi-id="{{ absensi.id }}" data-mode="{{ mode }}">
+
+    <div class="absensi-header">
+        <div class="absensi-header-left">
+            <h2>
+                Absensi Kelas {{ absensi.kelas }} • {{ absensi.mapel }}
+            </h2>
+            <p>
+                {{ absensi.tanggal }} • {{ absensi.jam_mulai }} - {{ absensi.jam_selesai }}
+            </p>
+        </div>
+
+        <a href="/kelas-ampu/{{ absensi.kelas_mapel_id }}/overview" class="btn-back">← Kembali</a>
+    </div>
+
+    <div class="detail-jurnal-box">
+
+        <!-- PERTEMUAN -->
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Pertemuan Ke
+            </div>
+
+            <div class="detail-value">
+                : {{ absensi.pertemuan_ke or '-' }}
+
+            </div>
+
+        </div>
+
+        <!-- MATERI -->
+        <div class="detail-row">
+
+            <div class="detail-label">
+                Materi
+            </div>
+
+            <div class="detail-value">
+                : {{ absensi.materi or '-' }}
+            </div>
+
+        </div>
+
+        <!-- INDIKATOR -->
+        <div class="detail-row align-top">
+            <div class="detail-label">
+                Indikator Capaian
+            </div>
+
+            <div class="detail-value multiline">
+                <div class="text-with-colon">
+                    <span class="colon">:</span>
+                    <pre class="multiline-text">{{ absensi.indikator or '-' }}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-row align-top">
+            <div class="detail-label">
+                Kegiatan Pembelajaran
+            </div>
+
+            <div class="detail-value multiline">
+                <div class="text-with-colon">
+                    <span class="colon">:</span>
+                    <pre class="multiline-text">{{ absensi.kegiatan or '-' }}</pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="absensi-stats">
+        <!-- TOTAL SISWA -->
+        <div class="stats-card total">
+            <span class="stats-title">Total Siswa</span>
+            <div class="stats-divider"></div>
+            <div class="stats-row">
+                <div class="stats-icon-wrap">
+                    <div class="stats-icon" data-lucide="users"></div>
+                </div>
+                <strong id="total-siswa">{{ absensi.total_siswa or 0 }}</strong>
+            </div>
+
+            <div class="stats-divider"></div>
+            <small>Semua siswa di kelas</small>
+        </div>
+
+        <!-- HADIR -->
+        <div class="stats-card hadir">
+            <span class="stats-title">Hadir</span>
+            <div class="stats-divider"></div>
+            <div class="stats-row">
+                <div class="stats-icon-wrap">
+                    <div class="stats-icon" data-lucide="check-circle"></div>
+                </div>
+                <strong id="total-hadir">{{ absensi.total_hadir or 0 }}</strong>
+            </div>
+
+            <div class="stats-divider"></div>
+            <small>Siswa masuk</small>
+        </div>
+
+        <!-- IZIN -->
+        <div class="stats-card izin">
+            <span class="stats-title">Izin</span>
+            <div class="stats-divider"></div>
+            <div class="stats-row">
+                <div class="stats-icon-wrap">
+                    <div class="stats-icon" data-lucide="clock"></div>
+                </div>
+                <strong id="total-izin">{{ absensi.total_izin or 0 }}</strong>
+            </div>
+
+            <div class="stats-divider"></div>
+            <small>Dengan keterangan</small>
+        </div>
+
+        <!-- SAKIT -->
+        <div class="stats-card sakit">
+            <span class="stats-title">Sakit</span>
+            <div class="stats-divider"></div>
+            <div class="stats-row">
+                <div class="stats-icon-wrap">
+                    <div class="stats-icon" data-lucide="thermometer"></div>
+                </div>
+                <strong id="total-sakit">{{ absensi.total_sakit or 0 }}</strong>
+            </div>
+
+            <div class="stats-divider"></div>
+            <small>Tidak hadir karena sakit</small>
+        </div>
+
+        <!-- ALPHA -->
+        <div class="stats-card alpha">
+            <span class="stats-title">Alpha</span>
+            <div class="stats-divider"></div>
+            <div class="stats-row">
+                <div class="stats-icon-wrap">
+                    <div class="stats-icon" data-lucide="x-circle"></div>
+                </div>
+
+                <strong id="total-alpha">{{ absensi.total_alpha or 0 }}</strong>
+            </div>
+
+            <div class="stats-divider"></div>
+            <small>Tidak hadir tanpa keterangan</small>
+        </div>
+
+    </div>
+
+    <div class="absensi-card">
+        <div class="absensi-table">
+
+            <div class="absensi-row header">
+                <div class="col-no">No</div>
+                <div class="col-nisn">NISN</div>
+                <div class="col-nama">Nama Siswa</div>
+                <div class="col-hisa">Kehadiran</div>
+                <div class="col-ket">Keterangan</div>
+            </div>
+
+            <div id="absensi-list"></div>
+
+        </div>
+
+        {% if mode != 'detail' %}
+        <div class="absensi-footer">
+            <button class="btn-simpan-semua" id="btn-simpan">
+                Simpan
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/guru/absensi-siswa.js') }}"></script>

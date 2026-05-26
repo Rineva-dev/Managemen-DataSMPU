@@ -1,0 +1,116 @@
+/* ===============================
+   ABSENSI FILTER – ISOLATED SAFE
+================================= */
+
+.absen-filter-bar {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin: 0 0 20px 0;
+}
+
+.absen-filter-group {
+    position: relative;
+    min-width: 200px;
+}
+
+/* Selected box */
+.absen-filter-selected {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 14px;
+    border-radius: 8px;
+
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(0,0,0,0.05);
+
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .4px;
+
+    cursor: pointer;
+    transition: all .25s ease;
+}
+
+.absen-filter-selected:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+.absen-filter-group.active .absen-filter-selected {
+    border-color: var(--orange-focus);
+    box-shadow: 0 0 0 3px rgba(246,156,59,0.15);
+}
+
+/* Arrow */
+.absen-filter-arrow {
+    transition: transform .3s ease;
+}
+
+.absen-filter-group.active .absen-filter-arrow {
+    transform: rotate(180deg);
+}
+
+/* Dropdown */
+.absen-filter-options {
+    position: absolute;
+    top: 115%;
+    left: 0;
+    width: 100%;
+
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(16px);
+
+    border-radius: 8px;
+    padding: 10px 0;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: all .25s ease;
+    z-index: 100;
+}
+
+.absen-filter-group.active .absen-filter-options {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Option item */
+.absen-filter-options div {
+    padding: 12px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.absen-filter-options div:hover {
+    background: #f3faf7;
+}
+
+.absen-filter-options div.active-option {
+    background: #e6f7ef;
+    font-weight: 600;
+}
+
+#absensi-filter {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#absensi-filter .custom-dropdown {
+    display: inline-flex;
+    flex-direction: column;
+    width: auto !important;
+    min-width: 150px;
+    flex: 0 0 auto;
+}

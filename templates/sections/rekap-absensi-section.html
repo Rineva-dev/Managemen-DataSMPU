@@ -1,0 +1,79 @@
+<div id="absensi-content"
+    style="display: {{ 'block' if active_page == 'rekap_absensi' else 'none' }}">
+    <h3>Absensi Guru</h3>
+
+    <!-- Filter Absensi -->
+    <div id="absensi-filter" class="absen-filter-bar">
+        <div class="custom-dropdown" id="filterNamaDropdown">
+            <div class="dropdown-selected" id="filterNamaSelected">
+                Semua Guru
+                <span class="arrow">▾</span>
+            </div>
+            <div class="dropdown-options" id="filterNamaOptions"></div>
+        </div>
+
+        <div class="custom-dropdown" id="filterBulanDropdown">
+            <div class="dropdown-selected" id="filterBulanSelected">
+                Bulan
+                <span class="arrow">▾</span>
+            </div>
+            <div class="dropdown-options" id="filterBulanOptions">
+                <div class="dropdown-option" data-value="">Semua Bulan</div>
+                <div class="dropdown-option" data-value="1">Januari</div>
+                <div class="dropdown-option" data-value="2">Februari</div>
+                <div class="dropdown-option" data-value="3">Maret</div>
+                <div class="dropdown-option" data-value="4">April</div>
+                <div class="dropdown-option" data-value="5">Mei</div>
+                <div class="dropdown-option" data-value="6">Juni</div>
+                <div class="dropdown-option" data-value="7">Juli</div>
+                <div class="dropdown-option" data-value="8">Agustus</div>
+                <div class="dropdown-option" data-value="9">September</div>
+                <div class="dropdown-option" data-value="10">Oktober</div>
+                <div class="dropdown-option" data-value="11">November</div>
+                <div class="dropdown-option" data-value="12">Desember</div>
+            </div>
+        </div>
+
+        <div class="custom-dropdown" id="filterTahunDropdown">
+            <div class="dropdown-selected" id="filterTahunSelected">
+                Tahun
+                <span class="arrow">▾</span>
+            </div>
+            <div class="dropdown-options" id="filterTahunOptions"></div>
+        </div>
+
+        <button id="filter-reset" class="btn filter-btn">Reset Filter</button>
+    </div>
+
+    <!-- Tabel Absensi -->
+    <div class="table-wrapper">
+        <table id="absensi-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Guru</th>
+                    <th>Tanggal</th>
+                    <th>Status</th>
+                    <th>Jam Masuk</th>
+                    <th>Jam Pulang</th>
+                    <th>Alasan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- JANGAN DIKOSONGKAN TOTAL -->
+                <tr class="empty-row">
+                    <td colspan="7" class="center">Tidak ada data</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="absensi-table-footer" class="table-footer">
+        <div class="table-info">
+            Tampilkan 
+            <input type="number" id="absensi-per-page" value="10" min="1">
+            data dari <span id="absensi-total-data">0</span> data
+        </div>
+
+        <div id="absensi-pagination" class="pagination"></div>
+    </div>
+</div>

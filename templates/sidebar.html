@@ -1,0 +1,120 @@
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <img src="{{ url_for('static', filename='icons/logo_sekolah.png') }}" class="logo">
+    </div>
+
+    <div class="sidebar-top">
+
+        {% set role = session.get('role') %}
+
+        <!-- Dashboard (Semua Role Login) -->
+        <a href="/dashboard"
+        class="{% if active_page == 'dashboard' %}active{% endif %}"
+        data-icon="dashboard">
+            Dashboard
+        </a>
+
+        <!-- Absensi Harian (Semua kecuali admin) -->
+        {% if role != 'admin' %}
+        <a href="/absensi-harian"
+        class="{% if active_page == 'absensi_harian' %}active{% endif %}"
+        data-icon="absensi">
+            Absensi Harian
+        </a>
+        {% endif %}
+
+        {% if role != 'admin' %}
+        <a href="/kelas-ampu"
+        class="{% if active_page == 'kelas_ampu' %}active{% endif %}"
+        data-icon="class">
+            Kelas Ampu
+        </a>
+
+        {% endif %}
+
+        <!-- Menu Admin & Kepala Sekolah -->
+        {% if role in ['admin', 'kepala_sekolah'] %}
+        <a href="/master-data"
+        class="{% if active_page == 'master_data' %}active{% endif %}"
+        data-icon="master">
+            Master Data
+        </a>
+
+        <a href="/akun-guru"
+        class="{% if active_page == 'akun_guru' %}active{% endif %}"
+        data-icon="guru">
+            Akun Guru
+        </a>
+
+        <a href="/rekap-absensi"
+        class="{% if active_page == 'rekap_absensi' %}active{% endif %}"
+        data-icon="rekap">
+            Rekap Absensi
+        </a>
+        {% endif %}
+
+        {% if role in ['admin','waka_kurikulum'] %}
+        <div class="menu-group">
+            <a href="javascript:void(0)" data-icon="school" class="menu-toggle">
+                Sekolah
+            </a>
+
+            <div id="sekolah-submenu" class="submenu">
+                <a href="/tahun-pelajaran"
+                    class="{% if active_page == 'tahun_pelajaran' %}active{% endif %}" data-icon="academic-year">
+                    Tahun Pelajaran
+                </a>
+
+                <a href="{{ url_for('kelas.index') }}"
+                    class="{% if active_page == 'kelas' %}active{% endif %}" data-icon="class">
+                    Kelas
+                </a>
+
+                <a href="/mapel"
+                    class="{% if active_page == 'mata_pelajaran' %}active{% endif %}" data-icon="mapel">
+                    Mata Pelajaran
+                </a>
+
+                <a href="{{ url_for('ekstrakurikuler.index') }}"
+                    class="{% if active_page == 'ekstrakurikuler' %}active{% endif %}" data-icon="ekstrakurikuler">
+                    Ekstrakurikuler
+                </a>
+
+                <a href="/peminatan"
+                    class="{% if active_page == 'peminatan' %}active{% endif %}" data-icon="peminatan">
+                    Peminatan
+                </a>
+
+                <a href="{{ url_for('kkm.index') }}"
+                    class="sidebar-link {% if active_page == 'kkm' %}active{% endif %}" data-icon="kkm">
+                    <span>KKM</span>
+                </a>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('siswa.index') }}"
+        class="{% if active_page in ['siswa','tambah_siswa','detail_siswa'] %}active{% endif %}"
+        data-icon="students">
+            Siswa
+        </a>
+        
+        {% endif %}
+
+        {% if role in ['admin', 'bendahara'] %}
+        <a href="/pembayaran-siswa"
+            class="{% if active_page == 'pembayaran_siswa' %}active{% endif %}"
+            data-icon="payment">
+            Pembayaran Siswa
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="sidebar-bottom">
+        <a href="/logout" class="logout-btn" data-icon="logout">
+            Logout
+        </a>
+    </div>
+</div>
+
+<div id="sidebar-overlay"></div>

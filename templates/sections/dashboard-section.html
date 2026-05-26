@@ -1,0 +1,241 @@
+<!--DASHBOARD-->
+<div id="dashboard-content"
+    style="display: {{ 'block' if active_page == 'dashboard' else 'none' }}">
+    {% if active_page == "dashboard" %}
+    <div class="welcome-card">
+        <div>
+            <h2>Selamat Datang, {{ guru.nama if guru else 'User' }} 👋</h2>
+            <p>
+                {% if role in ["admin", "kepala_sekolah"] %}
+                    Kelola data guru dan absensi dengan lebih mudah hari ini.
+                {% elif role == "wali_kelas" %}
+                    Pantau kehadiran siswa kelas
+                    <strong>
+                        {{ kelas.tingkat }} {{ kelas.sub_kelas }}
+                    </strong>
+                    hari ini.
+                {% else %}
+                    Pantau kehadiran dan aktivitas Anda hari ini.
+                {% endif %}
+            </p>
+        </div>
+        <div class="welcome-date" id="today-date"></div>
+    </div>
+    {% endif %}
+
+    {% if role in ["admin"] %}
+    <div class="dashboard-cards">
+        <div class="card blue">
+            <div class="card-icon"><i data-lucide="users"></i></div>
+            <div>
+                <h2 id="totalGuru">{{ total_guru }}</h2>
+                <p>Total Guru</p>
+            </div>
+        </div>
+
+        <div class="card green">
+            <div class="card-icon"><i data-lucide="briefcase"></i></div>
+            <div>
+                <h2 id="totalJabatan">{{ total_jabatan }}</h2>
+                <p>Total Jabatan</p>
+            </div>
+        </div>
+
+        <div class="card orange">
+            <div class="card-icon"><i data-lucide="calendar-days"></i></div>
+            <div>
+                <h2 id="totalAbsensi">{{ total_absensi }}</h2>
+                <p>Total Absensi</p>
+            </div>
+        </div>
+
+        <div class="card purple">
+            <div class="card-icon"><i data-lucide="user-check"></i></div>
+            <div>
+                <h2 id="absensi_hari_ini">{{ absensi_hari_ini }}</h2>
+                <p>Absensi Hari Ini</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if role == "wali_kelas" %}
+    <div class="dashboard-cards">
+
+        <div class="card blue">
+            <div class="card-icon"><i data-lucide="users"></i></div>
+            <div>
+                <h2>{{ total_siswa_kelas }}</h2>
+                <p>Siswa Kelas {{ kelas.tingkat }} {{ kelas.sub_kelas }}</p>
+            </div>
+        </div>
+
+        <div class="card green">
+            <div class="card-icon"><i data-lucide="user-check"></i></div>
+            <div>
+                <h2>{{ hadir_hari_ini }}</h2>
+                <p>Hadir Hari Ini</p>
+            </div>
+        </div>
+
+        <div class="card orange">
+            <div class="card-icon"><i data-lucide="user-x"></i></div>
+            <div>
+                <h2>{{ tidak_hadir }}</h2>
+                <p>Tidak Hadir</p>
+            </div>
+        </div>
+
+        <div class="card purple">
+            <div class="card-icon"><i data-lucide="alert-circle"></i></div>
+            <div>
+                <h2>{{ belum_absen }}</h2>
+                <p>Belum Absen</p>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+
+    {% if role == "bendahara" %}
+    <div class="dashboard-cards">
+
+        <!-- TOTAL SISWA PER TINGKAT -->
+        <div class="card blue">
+            <div class="card-icon"><i data-lucide="users"></i></div>
+            <div>
+                <h2>{{ total_siswa }}</h2>
+                <p>Total Siswa Aktif</p>
+            </div>
+        </div>
+
+        <div class="card green">
+            <div class="card-icon"><i data-lucide="wallet"></i></div>
+            <div>
+                <h2>{{ spp_sudah_bayar }}</h2>
+                <p>Sudah Bayar SPP Bulan Ini</p>
+            </div>
+        </div>
+
+        <div class="card orange">
+            <div class="card-icon"><i data-lucide="arrow-down-circle"></i></div>
+            <div>
+                <h2>Rp {{ total_penerimaan | default(0) }}</h2>
+                <p>Penerimaan Bulan Ini</p>
+            </div>
+        </div>
+
+        <!-- SPP BULAN INI -->
+        <div class="card red">
+            <div class="card-icon"><i data-lucide="arrow-up-circle"></i></div>
+            <div>
+                <h2>Rp {{ total_pengeluaran | default(0) }}</h2>
+                <p>Pengeluaran Bulan Ini</p>
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+
+    {% if role not in ["admin", "wali_kelas", "bendahara"] %}
+    <div class="dashboard-cards">
+
+        <div class="card blue">
+            <div class="card-icon"><i data-lucide="school"></i></div>
+            <div>
+                <h2 id="totalKelas">{{ total_kelas }}</h2>
+                <p>Total Kelas Diampu</p>
+            </div>
+        </div>
+
+        <div class="card green">
+            <div class="card-icon"><i data-lucide="clipboard-list"></i></div>
+            <div>
+                <h2 id="totalLog">{{ total_log }}</h2>
+                <p>Total Log Terisi</p>
+            </div>
+        </div>
+
+        <div class="card purple">
+            <div class="card-icon"><i data-lucide="users"></i></div>
+            <div>
+                <h2 id="totalSiswa">{{ total_siswa }}</h2>
+                <p>Total Siswa</p>
+            </div>
+        </div>
+
+        <div class="card orange">
+            <div class="card-icon"><i data-lucide="calendar-check"></i></div>
+            <div>
+                <h2 id="totalAbsensi">{{ total_absensi_pribadi }}</h2>
+                <p>Total Absensi Saya</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="dashboard-bottom">
+        <div class="dashboard-chart">
+            <div class="chart-header-modern">
+                <h3>
+                    {% if role in ["admin", "kepala_sekolah"] %}
+                        Statistik Absensi
+                    {% elif role == "wali_kelas" %}
+                        Statistik Absensi Saya
+                    {% elif role == "bendahara" %}
+                        Statistik Keuangan
+                    {% else %}
+                        Statistik Absensi Saya
+                    {% endif %}
+                </h3>
+                
+                <div class="chart-filters">
+                    <div class="month-filter-modern" id="monthDropdown">
+                        <div class="month-selected" id="monthSelected">
+                            <span id="monthText">Semua Bulan</span>
+                            <span class="arrow">▾</span>
+                        </div>
+                        <div class="dropdown-options" id="monthOptions">
+                            <div data-value="">Semua Bulan</div>
+                            <div data-value="1">Januari</div>
+                            <div data-value="2">Februari</div>
+                            <div data-value="3">Maret</div>
+                            <div data-value="4">April</div>
+                            <div data-value="5">Mei</div>
+                            <div data-value="6">Juni</div>
+                            <div data-value="7">Juli</div>
+                            <div data-value="8">Agustus</div>
+                            <div data-value="9">September</div>
+                            <div data-value="10">Oktober</div>
+                            <div data-value="11">November</div>
+                            <div data-value="12">Desember</div>
+                        </div>
+                    </div>
+                    <div class="year-filter-modern" id="yearDropdown">
+                        <div class="year-selected" id="yearSelected">
+                            <span id="yearText"></span>
+                            <span class="arrow">▾</span>
+                        </div>
+                        <div class="dropdown-options" id="yearOptions"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🔥 WRAPPER BARU -->
+            <div class="chart-wrapper">
+                <canvas id="absensiChart"></canvas>
+            </div>
+        </div>
+
+        <div class="dashboard-activity">
+            <h3>
+                {% if role in ["admin", "kepala_sekolah", "wali_kelas"] %}
+                    Aktivitas Terbaru
+                {% else %}
+                    Aktivitas Saya
+                {% endif %}
+            </h3>
+            <ul id="activity-list" class="activity-timeline"></ul>
+        </div>
+    </div>
+</div>

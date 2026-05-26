@@ -1,0 +1,422 @@
+<div id="kelas-content"
+    style="display: {{ 'block' if active_page == 'kelas' else 'none' }}">
+
+    <h3>Data Kelas</h3>
+
+    <!-- ================= CONTEXT TAHUN ================= -->
+    <div class="filter-container guru-filter-bar">
+
+        <!-- Tombol Tambah -->
+        {% if tahun_aktif %}
+            <button id="add-kelas-btn" class="btn btn-add">
+                Add Kelas
+            </button>
+        {% else %}
+            <button class="btn btn-add" disabled>
+                🔒 Tahun Tidak Aktif
+            </button>
+        {% endif %}
+
+        <div class="kelas-action-bar">
+            <button id="edit-kelas-btn" class="btn-aksi-container btn-add" disabled>
+                <i data-lucide="pencil" width="14" height="14"></i> Edit
+            </button>
+
+            <button id="siswa-kelas-btn" class="btn-aksi-container btn-warning" disabled>
+                <i data-lucide="users" width="14" height="14"></i> Siswa
+            </button>
+
+            <button id="mapel-kelas-btn" class="btn-aksi-container btn-success" disabled>
+                <i data-lucide="book-open" width="14" height="14"></i> Mapel
+            </button>
+
+            <button id="jadwal-kelas-btn" class="btn-aksi-container btn-check" disabled>
+                <i data-lucide="calendar-check" width="14" height="14"></i> Jadwal
+            </button>
+
+            <button id="delete-kelas-btn" class="btn-aksi-container btn-danger" disabled>
+                <i data-lucide="trash-2" width="14" height="14"></i> Hapus
+            </button>
+        </div>
+        
+        <!-- Dropdown Tahun -->
+        <div class="custom-dropdown" id="kelasTahunDropdown">
+        
+        <input type="hidden" id="kelas-tahun-dropdown" value="{{ tahun_terpilih }}">
+
+        <div class="dropdown-selected">
+            <span class="selected-text">
+                {% for tahun in tahun_list %}
+                    {% if tahun.id == tahun_terpilih %}
+                        {{ tahun.tahun_pelajaran }} - {{ tahun.semester }}
+                    {% endif %}
+                {% endfor %}
+            </span>
+            <span class="arrow">▾</span>
+        </div>
+
+        <div class="dropdown-options">
+            {% for tahun in tahun_list %}
+                <div class="dropdown-option"
+                    data-value="{{ tahun.id }}">
+                    {{ tahun.tahun_pelajaran }} - {{ tahun.semester }}
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    </div>
+
+    <!-- ================= MODAL TAMBAH / EDIT ================= -->
+    <div id="kelas-form-container" class="saas-modal-overlay">
+        <div class="saas-modal add-akun-modern">
+            <button class="close modern-close">&times;</button>
+            <h3 id="kelas-form-title">Tambah Kelas</h3>
+
+            <div class="akun-form">
+                <input type="hidden" id="kelas-id">
+                <input type="hidden" id="kelas-tahun-id" value="{{ tahun_terpilih }}">
+
+                <!-- Tingkat -->
+                <div class="form-group">
+                    <label>Kelas</label>
+                    <div class="custom-dropdown" id="kelasTingkatDropdown">
+                        <input type="hidden" id="kelas-tingkat">
+
+                        <div class="dropdown-selected">
+                            <span class="selected-text">Pilih Tingkat</span>
+                            <span class="arrow">▾</span>
+                        </div>
+
+                        <div class="dropdown-options">
+                            <div class="dropdown-option" data-value="7">7</div>
+                            <div class="dropdown-option" data-value="8">8</div>
+                            <div class="dropdown-option" data-value="9">9</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub -->
+                <div class="form-group">
+                    <label>Nama Kelas</label>
+                    <input type="text" id="kelas-sub" placeholder="Contoh: Al-Qiyam">
+                </div>
+
+                <!-- Wali -->
+                <div class="form-group">
+                    <label>Wali Kelas</label>
+                    <div class="custom-dropdown">
+                        <input type="hidden" id="kelas-wali">
+
+                        <div class="dropdown-selected">
+                            <span class="selected-text">Pilih Wali Kelas</span>
+                            <span class="arrow">▾</span>
+                        </div>
+
+                        <div class="dropdown-options">
+                            {% for guru in wali_list %}
+                                <div class="dropdown-option"
+                                    data-value="{{ guru.id }}">
+                                    {{ guru.nama }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="kelas-save" class="btn btn-add">
+                        Save
+                    </button>
+
+                    <button type="button" id="kelas-cancel" class="btn btn-cancel">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL ROMBEL SISWA ================= -->
+    <div id="siswa-rombel-modal" class="rombel-overlay">
+
+        <div class="rombel-container">
+
+            <!-- HEADER -->
+            <div class="rombel-header">
+                <h3>Manajemen Siswa Kelas <span id="rombel-kelas-info"></span></h3>
+                <button class="rombel-close">&times;</button>
+            </div>
+
+            <!-- BODY -->
+            <div class="rombel-body">
+
+                <!-- PANEL KIRI -->
+                <div class="rombel-panel">
+
+                    <div class="rombel-title">
+                        Siswa di Kelas
+                    </div>
+
+                    <div id="siswa-kelas-list" class="rombel-list">
+                    </div>
+
+                </div>
+
+                <!-- PANEL TENGAH -->
+                <div class="rombel-actions">
+
+                    <button id="add-to-kelas" class="rombel-btn add">
+                        ←
+                    </button>
+
+                    <button id="remove-from-kelas" class="rombel-btn remove">
+                        →
+                    </button>
+
+                </div>
+
+                <!-- PANEL KANAN -->
+                <div class="rombel-panel">
+
+                    <div class="rombel-title">
+                        Siswa Belum Kelas
+                    </div>
+
+                    <div id="siswa-available-list" class="rombel-list">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="rombel-footer">
+
+                <button id="save-rombel" class="btn btn-add">
+                    Simpan Perubahan
+                </button>
+
+                <button class="btn btn-cancel">
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="mapel-kelas-modal" class="mapel-modal-overlay">
+        <div class="saas-modal-mapel">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <div class="modal-title">
+                    <h3>Manajemen Mata Pelajaran Kelas</h3>
+                    <span id="mapel-kelas-info"></span>
+                </div>
+                <button class="close modern-close">&times;</button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+                <div class="table-wrapper">
+                    <table class="table-mapel-kelas">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Mata Pelajaran</th>
+                                <th>Guru</th>
+                                <th>JP</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mapel-kelas-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button id="cancel-mapel-kelas" class="btn btn-cancel">
+                    Cancel
+                </button>
+                <button id="save-mapel-kelas" class="btn btn-add">
+                    Simpan
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL JADWAL ================= -->
+    <div id="jadwal-kelas-modal" class="mapel-modal-overlay">
+        <div class="saas-modal-mapel">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+                <div class="modal-title">
+                    <h3>Manajemen Jadwal Kelas</h3>
+                    <span id="jadwal-kelas-info"></span>
+                </div>
+
+                <button class="close modern-close">&times;</button>
+            </div>
+
+            <!-- TOOLBAR -->
+            <div style="padding-left:30px; padding-bottom:10px; padding-top:10px; border-bottom:1px solid #ddd; align-items: center; display: flex; gap: 10px;">
+
+                <div class="custom-dropdown" id="hariDropdown" style=" border-radius:2px; padding:0; width:160px; display:inline-block;">
+                    <input type="hidden" id="hari-select">
+                    <div class="dropdown-selected">
+                        <span class="selected-text">Pilih Hari</span>
+                        <span class="arrow">▾</span>
+                    </div>
+                    <div class="dropdown-options">
+                        <div class="dropdown-option" data-value="Senin">Senin</div>
+                        <div class="dropdown-option" data-value="Selasa">Selasa</div>
+                        <div class="dropdown-option" data-value="Rabu">Rabu</div>
+                        <div class="dropdown-option" data-value="Kamis">Kamis</div>
+                        <div class="dropdown-option" data-value="Jumat">Jumat</div>
+                        <div class="dropdown-option" data-value="Sabtu">Sabtu</div>
+                    </div>
+                </div>
+
+                <button id="add-hari-btn"
+                    class="btn btn-add"
+                    style="margin-left:10px;">
+
+                    <i data-lucide="circle-plus" width="14" height="14"></i> Tambah Hari
+
+                </button>
+
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+
+                <div class="table-wrapper">
+
+                    <div id="jadwal-grid"
+                        class="jadwal-grid">
+
+                        <!-- Hari akan muncul di sini -->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+
+                <button id="cancel-jadwal"
+                    class="btn btn-cancel">
+
+                    Cancel
+
+                </button>
+
+                <button id="save-jadwal"
+                    class="btn btn-add">
+
+                    Simpan
+
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= LAYOUT 2 KOLOM ================= -->
+    <div class="kelas-layout">
+
+        <!-- ================= TABEL ================= -->
+        <div class="kelas-left">
+            <div class="table-wrapper">
+                <table id="kelas-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Kelas</th>
+                            <th>Nama Kelas</th>
+                            <th>Wali Kelas</th>
+                            <th>Total Siswa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for kelas in kelas_list %}
+                        <tr data-id="{{ kelas.id }}">
+                            <td>{{ loop.index }}</td>
+                            <td>{{ kelas.tingkat }}</td>
+                            <td>{{ kelas.sub_kelas }}</td>
+                            <td>
+                                {{ kelas.wali_nama if kelas.wali_nama else '-' }}
+                            </td>
+                            <td>{{ kelas.total_siswa or 0 }}  Siswa</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- ================= FOOTER ================= -->
+            <div id="kelas-table-footer" class="table-footer">
+                <div class="table-info">
+                    Tampilkan 
+                    <div class="perpage-wrapper">
+                        <input type="number" id="kelas-per-page" value="10" min="1">
+
+                        <div class="perpage-buttons">
+                            <button type="button" id="perpage-up">▲</button>
+                            <button type="button" id="perpage-down">▼</button>
+                        </div>
+                    </div>
+
+                    data dari <span id="kelas-total-data">
+                        {{ total_data }}
+                    </span> data
+                </div>
+
+                <div id="kelas-pagination" class="pagination"></div>
+            </div>
+        </div>
+
+        <!-- ================= DETAIL SISWA ================= -->
+        <div class="kelas-right" id="kelas-detail-panel">
+
+            <div class="kelas-detail-header">
+                <h4 id="detail-title">Pilih Kelas</h4>
+            </div>
+
+            <div class="kelas-detail-body">
+
+                <table class="detail-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>NISN</th>
+                            <th>Nama</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="detail-siswa-body">
+                        <tr>
+                            <td colspan="4" class="empty">
+                                Pilih kelas untuk melihat siswa
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/sekolah/kelas.js') }}"></script>
+{% endblock %}

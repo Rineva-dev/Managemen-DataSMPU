@@ -1,0 +1,425 @@
+.table-mapel-kelas,
+#mapel-table,
+#pembayaran-table,
+.siswa-table,
+#kelas-table,
+#ekskul-table,
+#tahun-table,
+#harian-table,
+#guru-table,
+#akun-table,
+#absensi-table {
+    width: max-content;
+    border-collapse: collapse;
+    table-layout: auto;
+    background: #ffffff;
+    border-radius: none;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+
+.table-mapel-kelas thead th {
+    background: linear-gradient(135deg, #f3f3f3, #e6e6e6);
+    color: #000000;
+    padding: 14px 10px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    border: none;
+    text-align: center !important;
+}
+
+.table-mapel-kelas tbody td {
+    padding: 4px 6px;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+#mapel-table thead th,
+#pembayaran-table thead th,
+.siswa-table thead th,
+#kelas-table thead th,
+#ekskul-table thead th,
+#tahun-table thead th,
+#harian-table thead th,
+#guru-table thead th,
+#akun-table thead th,
+#absensi-table thead th {
+    background: linear-gradient(135deg, #014737, #012919);
+    color: #ffffff;
+    padding: 14px 10px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    border: none;
+    text-align: center !important;
+}
+
+#mapel-table tbody td,
+#pembayaran-table tbody td,
+.siswa-table tbody td,
+#kelas-table tbody td,
+#ekskul-table tbody td,
+#tahun-table tbody td,
+#harian-table tbody td,
+#guru-table tbody td,
+#akun-table tbody td,
+#absensi-table tbody td {
+    padding: 8px 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+#mapel-table tbody tr:hover,
+.siswa-table tbody tr:hover,
+#kelas-table tbody tr:hover,
+#tahun-table tbody tr:hover,
+#harian-table tbody tr:hover,
+#guru-table tbody tr:hover,
+#akun-table tbody tr:hover,
+#absensi-table tbody tr:hover {
+    background-color: #faf9f6;
+}
+
+/* Kolom tetap stabil */
+.table-mapel-kelas th:nth-child(1),
+.table-mapel-kelas td:nth-child(1),
+#mapel-table th:nth-child(1),
+#mapel-table td:nth-child(1),
+#pembayaran-table th:nth-child(1),
+#pembayaran-table td:nth-child(1),
+.siswa-table th:nth-child(2),
+.siswa-table td:nth-child(2),
+#kelas-table th:nth-child(1),
+#kelas-table td:nth-child(1),
+#ekskul-table th:nth-child(1),
+#ekskul-table td:nth-child(1),
+#tahun-table th:nth-child(1),
+#tahun-table td:nth-child(1),
+#harian-table th:nth-child(1),
+#harian-table td:nth-child(1),
+#harian-table th:nth-child(1),
+#harian-table td:nth-child(1),
+#guru-table th:nth-child(1),
+#guru-table td:nth-child(1),
+#akun-table th:nth-child(1),
+#akun-table td:nth-child(1),
+#absensi-table th:nth-child(1),
+#absensi-table td:nth-child(1) {
+    width: 30px;
+    text-align: center;
+}
+
+#guru-table th:nth-child(2),
+#guru-table td:nth-child(2),
+#akun-table th:nth-child(2),
+#akun-table td:nth-child(2) {
+    width: 294px;
+    text-align: left;
+
+}
+
+#absensi-table th:nth-child(2),
+#absensi-table td:nth-child(2) {
+    width: 225px;
+    text-align: left;
+}
+
+#harian-table th:nth-child(2),
+#harian-table th:nth-child(2){
+    width: 200px;
+    text-align: center;
+}
+
+#guru-table th:nth-child(3),
+#guru-table td:nth-child(3),
+#akun-table th:nth-child(3),
+#akun-table td:nth-child(3) {
+    width: 220px
+}
+
+#absensi-table th:nth-child(3),
+#absensi-table td:nth-child(3) {
+    width: 140px;
+    text-align: center;
+}
+
+#guru-table th:nth-child(4),
+#guru-table td:nth-child(4) {
+    width: 150px;
+    text-align: center;
+}
+
+#akun-table th:nth-child(4),
+#akun-table th:nth-child(4) {
+    width: 250px;
+    text-align: left;
+}
+
+#harian-table th:nth-child(3),
+#harian-table th:nth-child(3) {
+    width: 200px;
+    text-align: left;
+}
+#absensi-table th:nth-child(4),
+#absensi-table td:nth-child(4) {
+    width: 150px;
+    text-align: left;
+}
+
+#guru-table th:nth-child(5),
+#guru-table td:nth-child(5) {
+    width: 280px;
+    text-align: left;
+}
+
+#akun-table th:nth-child(5),
+#akun-table th:nth-child(5) {
+    width: 180px;
+    text-align: left;
+}
+
+#harian-table th:nth-child(4),
+#harian-table td:nth-child(4),
+#harian-table th:nth-child(5),
+#harian-table td:nth-child(5),
+#guru-table th:nth-child(6),
+#guru-table td:nth-child(6),
+#akun-table th:nth-child(6),
+#akun-table td:nth-child(6) {
+    width: 130px;
+    text-align: center;
+}
+
+
+#absensi-table th:nth-child(5),
+#absensi-table th:nth-child(6),
+#absensi-table td:nth-child(5),
+#absensi-table td:nth-child(6) {
+    width: 100px;
+    text-align: center;
+}
+
+#harian-table th:nth-child(6),
+#harian-table td:nth-child(6){
+    min-width: 418px;
+    text-align: left;
+}
+
+#absensi-table th:nth-child(7),
+#absensi-table td:nth-child(7) {
+    min-width: 343px;
+    text-align: left;
+}
+
+/* TAHUN TABEL */
+#tahun-table th:nth-child(2),
+#tahun-table td:nth-child(2) {
+    width: 120px;
+    text-align: center;
+}
+
+#tahun-table th:nth-child(3),
+#tahun-table td:nth-child(3) {
+    width: 90px;
+    text-align: center;
+}
+
+#tahun-table th:nth-child(4),
+#tahun-table td:nth-child(4),
+#tahun-table th:nth-child(5),
+#tahun-table td:nth-child(5) {
+    width: 130px;
+    text-align: center;
+}
+
+#tahun-table th:nth-child(6),
+#tahun-table td:nth-child(6) {
+    width: 90px;
+    text-align: center;
+}
+
+#tahun-table th:nth-child(7),
+#tahun-table td:nth-child(7) {
+    width: 100px;
+    text-align: center;
+}
+
+/* KELAS TABEL */
+#kelas-table th:nth-child(2),
+#kelas-table td:nth-child(2) {
+    width: 60px;
+    text-align: center;
+}
+
+#kelas-table th:nth-child(3),
+#kelas-table td:nth-child(3) {
+    width: 140px;
+    text-align: left;
+}
+
+#kelas-table th:nth-child(4),
+#kelas-table td:nth-child(4) {
+    width: 200px;
+    text-align: left;
+}
+
+#kelas-table th:nth-child(5),
+#kelas-table td:nth-child(5) {
+    width: 100px;
+    text-align: center;
+}
+
+#kelas-table th:nth-child(6),
+#kelas-table td:nth-child(6) {
+    width: 120px;
+    text-align: left;
+}
+
+/* TABEL SISWA*/
+.siswa-table th:nth-child(1),
+.siswa-table td:nth-child(1) {
+    width: 20px;
+    text-align: center;
+}
+
+.siswa-table th:nth-child(3),
+.siswa-table td:nth-child(3),
+.siswa-table th:nth-child(5),
+.siswa-table td:nth-child(5) {
+    width: 95px;
+    text-align: center;
+}
+
+.siswa-table th:nth-child(8),
+.siswa-table td:nth-child(8),
+.siswa-table th:nth-child(4),
+.siswa-table td:nth-child(4) {
+    width: 190px;
+    text-align: left;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.siswa-table th:nth-child(5),
+.siswa-table td:nth-child(5) {
+    width: 132px;
+    text-align: left;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.siswa-table th:nth-child(6),
+.siswa-table td:nth-child(6) {
+    width: 40px;
+    text-align: center
+}
+
+.siswa-table th:nth-child(7),
+.siswa-table td:nth-child(7) {
+    width: 70px;
+    text-align: center
+}
+
+.siswa-table th:nth-child(9),
+.siswa-table td:nth-child(9) {
+    width: 85px;
+    text-align: center;
+}
+
+.siswa-table th:nth-child(10),
+.siswa-table td:nth-child(10) {
+    width: 90px;
+    text-align: center;
+}
+
+.siswa-table th:nth-child(11),
+.siswa-table td:nth-child(11) {
+    width: 75px;
+    text-align: center
+}
+
+/* TABEL PEMBAYARAN */
+#pembayaran-table th:nth-child(2),
+#pembayaran-table td:nth-child(2) {
+    width: 100px;
+    text-align: center;
+}
+
+#pembayaran-table th:nth-child(3),
+#pembayaran-table td:nth-child(3) {
+    width: 250px;
+    text-align: left;
+}
+
+#pembayaran-table th:nth-child(4),
+#pembayaran-table td:nth-child(4) {
+    width: 60px;
+    text-align: center;
+}
+
+#pembayaran-table th:nth-child(5),
+#pembayaran-table td:nth-child(5) { 
+    width: 100px;
+    text-align: center;
+}
+
+#pembayaran-table th:nth-child(6),
+#pembayaran-table td:nth-child(6) {
+    width: 100px;
+    text-align: center;
+}
+
+#pembayaran-table th:nth-child(7),
+#pembayaran-table td:nth-child(7) {
+    width: 130px;
+    text-align: center;
+}
+
+/* MAPEL TABLE */
+#mapel-table th:nth-child(2),
+#mapel-table td:nth-child(2) {
+    width: 450px;
+    text-align: left;
+}
+
+#mapel-table th:nth-child(3),
+#mapel-table td:nth-child(3) {
+    width: 100px;
+    text-align: center;
+}
+
+
+.table-mapel-kelas td:nth-child(2) {
+    text-align: left;
+}
+
+.table-mapel-kelas td:nth-child(3) {
+    text-align: left;
+}
+
+.table-mapel-kelas td:nth-child(4) {
+    text-align: left;
+}
+
+/* TABEL EKSKUL */
+#ekskul-table th:nth-child(2),
+#ekskul-table td:nth-child(2) {
+    width: 200px;
+    text-align: left;
+}
+
+#ekskul-table th:nth-child(3),
+#ekskul-table td:nth-child(3) {
+    width: 250px;
+    text-align: left;
+}
+
+#ekskul-table th:nth-child(4),
+#ekskul-table td:nth-child(4) {
+    width: 100px;
+    text-align: center;
+}

@@ -1,0 +1,324 @@
+<div id="ampu-content"
+    style="display: {{ 'block' if active_page == 'kelas_ampu' else 'none' }}">
+
+    <div class="kelas-ampu-page">
+
+        <!-- ================= HEADER ================= -->
+        <div class="kelas-ampu-header">
+
+            <div>
+                <h2>Kelas Ampu</h2>
+                <p>
+                    Daftar kelas dan mata pelajaran yang Anda ampu
+                </p>
+            </div>
+
+            <div class="kelas-search-box">
+                <input type="text"
+                    id="search-kelas-ampu"
+                    placeholder="Cari kelas atau mapel...">
+            </div>
+
+        </div>
+
+        <!-- ================= GRID ================= -->
+        <div class="kelas-ampu-grid" id="kelas-ampu-grid">
+
+            {% for item in kelas_ampu_list %}
+
+            <div class="kelas-ampu-card"
+                data-kelas="{{ item.kelas }}"
+                data-mapel="{{ item.mapel }}">
+
+                <!-- ================= TOP ================= -->
+                <div class="kelas-card-top">
+
+                    <div class="kelas-badge">
+                        {{ item.kelas }}
+                    </div>
+
+                    <div class="kelas-jp">
+                        {{ item.jp }} JP
+                    </div>
+
+                </div>
+
+                <!-- ================= BODY ================= -->
+                <div class="kelas-card-body">
+
+                    <h3 class="mapel-title">
+                        {{ item.mapel }}
+                    </h3>
+
+                    <!-- INFO -->
+                    <div class="kelas-info-grid">
+
+                        <div class="info-box">
+
+                            <span class="label">
+                                Total Siswa
+                            </span>
+
+                            <span class="value1">
+                                {{ item.total_siswa }}
+                            </span>
+
+                        </div>
+
+                        <div class="info-box">
+
+                            <span class="label">
+                                Tahun Ajaran
+                            </span>
+
+                            <span class="value">
+                                {{ item.tahun }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <!-- JADWAL DEFAULT -->
+                    <div class="jadwal-default-box">
+                        <div class="jadwal-title">
+                            <i data-lucide="calendar-days"></i>
+                            <span>Jadwal Default</span>
+                        </div>
+
+                        <div class="jadwal-content">
+
+                            {% for jadwal in item.jadwal %}
+                            <div class="jadwal-row">
+                                <span class="jadwal-hari">
+                                    {{ jadwal.hari or '-' }}
+                                </span>
+
+                                <span class="jadwal-jam">
+                                    {{ jadwal.jam_mulai or '--:--' }}
+                                    -
+                                    {{ jadwal.jam_selesai or '--:--' }}
+                                </span>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= ACTION ================= -->
+                <div class="kelas-card-action">
+
+                    <button class="btn-mulai-mengajar"
+                        data-kelas-mapel="{{ item.kelas_mapel_id }}"
+                        data-kelas="{{ item.kelas }}"
+                        data-mapel="{{ item.mapel }}"
+                        data-hari="{{ item.hari }}"
+                        data-jam-mulai="{{ item.jam_mulai }}"
+                        data-jam-selesai="{{ item.jam_selesai }}">
+
+                        <i data-lucide="clipboard-check"></i>
+
+                        <span>Mulai Mengajar</span>
+
+                    </button>
+
+                </div>
+
+                <!-- ================= MENU ================= -->
+                <div class="kelas-card-menu">
+
+                    <a href="{{ url_for('kelas_ampu.overview',
+                        kelas_mapel_id=item.kelas_mapel_id) }}"
+                    class="menu-btn">
+
+                        <i data-lucide="layout-dashboard"></i>
+                        <span>Overview</span>
+
+                    </a>
+
+                    <a href="{{ url_for('kelas_ampu.nilai_kelas', kelas_mapel_id=item.kelas_mapel_id) }}"
+                        class="menu-btn">
+
+                        <i data-lucide="book-open-check"></i>
+                        <span>Nilai</span>
+
+                    </a>
+
+                    <a href="/guru/kelas/{{ item.kelas_mapel_id }}/kasus"
+                    class="menu-btn">
+
+                        <i data-lucide="shield-alert"></i>
+                        <span>Kasus</span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- ================= ABSENSI VIEW ================= -->
+        <div id="absensi-view" style="display:none;">
+
+            <div class="absensi-header">
+                <button id="back-to-kelas" class="btn btn-cancel">
+                    ← Kembali
+                </button>
+                <h3 id="absensi-title">Absensi Siswa</h3>
+            </div>
+
+            <table class="absensi-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>NISN</th>
+                        <th>Nama</th>
+                        <th>Kehadiran</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody id="absensi-list">
+                    <!-- diisi JS -->
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= MODAL MULAI MENGAJAR ================= -->
+<div id="mulai-mengajar-modal"
+    class="saas-modal-overlay">
+
+    <div class="saas-modal mulai-mengajar-modal">
+
+        <!-- HEADER -->
+        <div class="modal-header">
+
+            <div>
+                <h3>Mulai Mengajar</h3>
+
+                <p id="mengajar-kelas-info">
+                    -
+                </p>
+            </div>
+
+            <button class="close modern-close">
+                &times;
+            </button>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="modal-body mengajar">
+
+            <div class="akun-form">
+
+                <input type="hidden"
+                    id="kelas-mapel-id">
+
+                <!-- TANGGAL -->
+                <div class="form-group">
+
+                    <label>Tanggal</label>
+
+                    <input type="date"
+                        id="mengajar-tanggal">
+
+                </div>
+
+                <!-- JAM -->
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label>Jam Mulai</label>
+
+                        <input type="time"
+                            id="mengajar-jam-mulai">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Jam Selesai</label>
+
+                        <input type="time"
+                            id="mengajar-jam-selesai">
+
+                    </div>
+
+                </div>
+
+                <!-- MATERI -->
+                <div class="form-group materi">
+
+                    <label>Materi Pembelajaran</label>
+
+                    <textarea id="mengajar-materi"
+                        rows="4"
+                        placeholder="Contoh: Persamaan Linear Dua Variabel"></textarea>
+
+                </div>
+
+                <!-- INDIKATOR CAPAIAN -->
+                <div class="form-group">
+
+                    <label>Indikator Capaian</label>
+
+                    <textarea id="mengajar-indikator"
+                        rows="3"
+                        placeholder="Contoh:
+                - Siswa mampu memahami konsep PLDV
+                - Siswa mampu menyelesaikan soal sederhana"></textarea>
+
+                </div>
+
+                <!-- KEGIATAN PEMBELAJARAN -->
+                <div class="form-group">
+
+                    <label>Kegiatan Pembelajaran</label>
+
+                    <textarea id="mengajar-kegiatan"
+                        rows="4"
+                        placeholder="Contoh:
+                1. Guru menjelaskan materi
+                2. Diskusi kelompok
+                3. Latihan soal"></textarea>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="modal-footer">
+
+            <button class="btn btn-cancel"
+                id="cancel-mulai-mengajar">
+
+                Cancel
+
+            </button>
+
+            <button class="btn btn-add"
+                id="start-absensi-btn">
+
+                <i data-lucide="clipboard-check"></i>
+
+                Mulai Absensi
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

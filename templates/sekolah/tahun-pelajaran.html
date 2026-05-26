@@ -1,0 +1,174 @@
+<div id="tahun-pelajaran-content"
+    style="display: {{ 'block' if active_page == 'tahun_pelajaran' else 'none' }}">
+    <h3>Data Tahun Pelajaran</h3>
+
+    <div class="tahun-layout">
+
+        <!-- ================= LEFT SIDE ================= -->
+        <div class="tahun-left">
+
+            <!-- Filter Bar -->
+            <div class="filter-container guru-filter-bar">
+                <button id="add-tahun-btn" class="btn btn-add">
+                    Add Tahun Pelajaran
+                </button>
+
+                <div class="filter-search-group">
+                    <input type="text" id="tahun-search-input" class="filter-input" placeholder="Cari tahun pelajaran...">
+                    <button id="tahun-search-btn" class="btn filter-btn">Search</button>
+                </div>
+            </div>
+
+            <!-- Modal Tambah/Edit Tahun -->
+            <div id="tahun-form-container" class="saas-modal-overlay">
+                <div class="saas-modal add-akun-modern">
+                    <button class="close modern-close">&times;</button>
+                    <h3 id="tahun-form-title">Tambah Tahun Pelajaran</h3>
+
+                    <div class="akun-form">
+
+                        <div class="form-group">
+                            <label>Tahun Pelajaran</label>
+
+                            <div class="custom-dropdown">
+                                <input type="hidden" id="tahun-pelajaran-value">
+
+                                <div class="dropdown-selected">
+                                    <span class="selected-text">Pilih Tahun Pelajaran</span>
+                                    <span class="arrow">▾</span>
+                                </div>
+
+                                <div class="dropdown-options" id="tahun-options">
+                                    <!-- Diisi via JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Semester</label>
+                            <div class="custom-dropdown">
+                                <input type="hidden" id="tahun-semester">
+
+                                <div class="dropdown-selected">
+                                    <span class="selected-text">Pilih Semester</span>
+                                    <span class="arrow">▾</span>
+                                </div>
+
+                                <div class="dropdown-options">
+                                    <div class="dropdown-option" data-value="Ganjil">Ganjil</div>
+                                    <div class="dropdown-option" data-value="Genap">Genap</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tanggal Mulai Semester</label>
+                            <input type="date" id="semester-mulai">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tanggal Berakhir Semester</label>
+                            <input type="date" id="semester-akhir">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="tahun-save" class="btn btn-add">Save</button>
+                            <button type="button" id="tahun-cancel" class="btn btn-cancel">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Tahun Pelajaran -->
+            <div class="table-wrapper">
+                <table id="tahun-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tahun Pelajaran</th>
+                            <th>Semester</th>
+                            <th>Mulai</th>
+                            <th>Berakhir</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data akan muncul di sini -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer Table -->
+            <div id="tahun-table-footer" class="table-footer">
+                <div class="table-info">
+                    Tampilkan 
+
+                    <div class="perpage-wrapper">
+                        <input type="number" id="tahun-per-page" value="10" min="1">
+
+                        <div class="perpage-buttons">
+                            <button type="button" id="perpage-up">▲</button>
+                            <button type="button" id="perpage-down">▼</button>
+                        </div>
+                    </div>
+
+                    data dari <span id="tahun-total-data">0</span> data
+                </div>
+                <div id="tahun-pagination" class="pagination"></div>
+            </div>
+        </div>
+    
+        <!-- ================= END RIGHT ================= -->
+        <div class="tahun-right">
+            <div id="summary-wrapper">
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <h4>Ringkasan Tahun Pelajaran</h4>
+                        <span class="summary-badge" id="summary-status"></span>
+                    </div>
+
+                    <div class="summary-body">
+                        <div class="summary-main">
+                            <div class="summary-year" id="info-aktif">
+                                -
+                            </div>
+                            <div class="summary-semester" id="info-semester">
+                                -
+                            </div>
+                        </div>
+
+                        <div class="summary-stats">
+                            <div class="stat-item">
+                                <span>Total Data</span>
+                                <strong id="info-total">0</strong>
+                            </div>
+
+                            <div class="stat-item">
+                                <span>Terakhir Update</span>
+                                <div class="update-wrapper">
+                                    <div class="info-update">-</div>
+                                    <div class="update-time"></div>
+                                </div>
+                            </div>
+
+                            <div class="stat-item">
+                                <span>Diubah Oleh</span>
+                                <strong id="info-user">-</strong>
+                            </div>
+
+                            <div class="stat-item">
+                                <span>Aktivitas Terakhir</span>
+                                <strong id="info-activity">-</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/sekolah/tahun-pelajaran.js') }}"></script>
+{% endblock %}

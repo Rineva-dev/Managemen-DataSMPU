@@ -1,0 +1,249 @@
+/* ============================= */
+/* OVERLAY */
+/* ============================= */
+#modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 9998;
+    display: none;
+}
+
+/* ============================= */
+/* MODAL BASE */
+/* ============================= */
+#modal-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 420px;
+    max-width: 90%;
+    background: #ffffff;
+    padding: 30px 35px;
+    border-radius: 22px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+    text-align: center;
+    z-index: 9999;
+    display: none;
+    transition: all 0.25s ease;
+}
+
+/* Saat aktif (opsional kalau mau pakai class active nanti) */
+#modal-form.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* ============================= */
+/* WARNING MODE (TERLAMBAT) */
+/* ============================= */
+#modal-form.warning {
+    background: linear-gradient(135deg, #fff5d8 0%, #ffe9a8 100%);
+    border: 2px solid #ffb700;
+}
+
+/* Title */
+#modal-form.warning h3 {
+    color: #b45309;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+/* Message */
+#modal-form.warning p {
+    color: #78350f;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+/* ============================= */
+/* INPUT */
+/* ============================= */
+#modal-input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 14px;
+    transition: 0.2s;
+    margin-bottom: 15px;
+}
+
+#modal-input:focus {
+    border-color: #ffb700;
+    box-shadow: 0 0 0 3px rgba(255,183,0,0.2);
+}
+
+/* ============================= */
+/* BUTTONS */
+/* ============================= */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+#modal-submit {
+    background: #ffb700;
+    color: #1a1a1a;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#modal-submit:hover {
+    background: #ffa600;
+    transform: scale(1.05);
+}
+
+#modal-cancel {
+    background: #f1f1f1;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#modal-cancel:hover {
+    background: #e2e2e2;
+}
+
+/* ============================= */
+/* ANGRY ANIMATION WRAPPER */
+/* ============================= */
+#angry-animation-wrapper {
+    margin-top: 15px;
+}
+
+/* ============================= */
+/* SHAKE EFFECT */
+/* ============================= */
+@keyframes angry-shake {
+    0% { transform: translate(-50%, -50%) translateX(0); }
+    25% { transform: translate(-50%, -50%) translateX(-5px); }
+    50% { transform: translate(-50%, -50%) translateX(5px); }
+    75% { transform: translate(-50%, -50%) translateX(-5px); }
+    100% { transform: translate(-50%, -50%) translateX(0); }
+}
+
+#modal-form.angry-shake {
+    animation: angry-shake 0.3s ease-in-out;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+@media (max-width: 480px) {
+    #modal-form {
+        width: 95%;
+        padding: 25px;
+    }
+}
+
+/* =========================
+    Modal Elegan
+========================= */
+.saas-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
+.saas-modal-overlay.show {
+    display: flex;
+}
+
+.saas-modal-overlay.show {
+    opacity: 1;
+}
+
+.saas-modal {
+    background: #ffffffb8;
+    width: 420px;
+    max-width: 90%;
+    padding: 10px;
+    border-radius: 24px;
+    box-shadow: 
+        0 20px 60px rgba(0,0,0,0.15),
+        0 8px 24px rgba(0,0,0,0.08);
+    text-align: center;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(.21,1.02,.73,1);
+}
+
+.saas-modal h3 {
+    margin-top: 30px;
+    margin-bottom: 25px;
+}
+
+.saas-modal .akun-form {
+    text-align: left;
+    padding:0;
+}
+
+.saas-modal .form-group label {
+    display: block;
+    text-align: left;
+    font-weight: 600;
+}
+
+.saas-modal .form-group input {
+    width: 100%;
+}
+
+.saas-modal .form-group {
+    margin-bottom: 12px;
+}
+
+.saas-modal .form-actions {
+    padding-top: 7px;
+    padding: 0;
+}
+
+.saas-modal-overlay.show .saas-modal {
+    transform: translateY(0) scale(1);
+}
+
+.saas-modal-icon {
+    font-size: 50px;
+    color: #ef4444;
+    margin-bottom: 5px;
+}
+
+.saas-modal-message {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e293b;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.saas-modal-btn {
+    background: linear-gradient(135deg, #ff7b0f, #ffd666);
+    color: #fff;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.saas-modal-btn:hover {
+    transform: translateY(-1px);
+}
+
+.input-error {
+    border: 1px solid #ff6565 !important;
+    background-color: #fff9f9 !important;
+}

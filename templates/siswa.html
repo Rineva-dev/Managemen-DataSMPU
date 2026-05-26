@@ -1,0 +1,393 @@
+<div id="kelas-content"
+    style="display: {{ 'block' if active_page in ['siswa','siswa_arsip'] else 'none' }}">
+
+    <h3>
+    {% if active_page == 'siswa_arsip' %}
+        Arsip Siswa
+    {% else %}
+        Data Siswa
+    {% endif %}
+    </h3>
+
+    <div id="siswa-page" data-page="{{ active_page }}"></div>
+
+    <!-- FILTER / TOOLBAR -->
+    <div class="filter-container siswa-filter-bar">
+
+        <div class="left-actions">
+
+            <!-- TAMBAH SISWA -->
+            <div class="dropdown">
+                <button class="btn dropdown-toggle">
+                    Add Student
+                </button>
+                <div class="dropdown-menu">
+                    <a href="{{ url_for('siswa.tambah_siswa') }}">Siswa Baru</a>
+                    <a href="{{ url_for('siswa.tambah_siswa_pindahan') }}">Siswa Pindahan</a>
+                </div>
+            </div>
+
+            <!-- NAIKKAN KELAS (NANTI AKTIF) -->
+            <button class="btn filter-btn-warning" id="btnNaikKelas">
+                Naikkan Kelas
+            </button>
+
+            {% if active_page == 'siswa' %}
+
+            <button class="btn filter-btn-secondary"
+                    onclick="window.location.href='/students/arsip'">
+                Arsip
+            </button>
+
+            {% else %}
+
+            <button class="btn filter-btn-secondary"
+                    onclick="window.location.href='/students'">
+                Siswa Aktif
+            </button>
+
+            {% endif %}
+
+            <div class="dropdown">
+                <button class="btn dropdown-toggle">
+                    Aksi
+                    <i data-lucide="menu" class="icon-aksi"></i>
+                    <i data-lucide="more-vertical" class="aksi-icon"></i>
+                </button>
+
+                <div class="dropdown-menu">
+                    <a href="#" id="btnOpenDownload">Download Data</a>
+                    <a href="#" id="btnOpenImport">Import Data</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="filter-search-group">
+            <input type="text"
+                name="search"
+                placeholder="Cari NISN / Nama..."
+                class="filter-input">
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrapper">
+        <table id="siswa-table" class="siswa-table modern-table">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="check-all"></th>
+                    <th>No</th>
+                    <th>NISN</th>
+                    <th>Nama</th>
+                    <th>TTL</th>
+                    <th>Kelas</th>
+                    <th>Rombel</th>
+                    <th>Orang Tua / Wali</th>
+                    <th>Status Masuk</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% if siswa_list %}
+                    {% for s in siswa_list %}
+                    <tr data-id="{{ s.id }}" data-detail="{{ url_for('siswa.detail_siswa', nisn=s.nisn) }}" data-nama="{{ s.nama }}">
+                        <td>
+                            <input type="checkbox" name="selected" value="{{ s.id }}">
+                        </td>
+
+                        <td>{{ loop.index }}</td>
+                        <td>{{ s.nisn or '-' }}</td>
+                        <td>{{ s.nama }}</td>
+
+                        <td>{{ s.ttl }}</td>
+
+                        <!-- KELAS (BELUM DISET = VALID) -->
+                        <td>
+                            {% if s.tingkat %}
+                                {{ s.tingkat }}
+                            {% else %}
+                                <span class="badge-secondary">Tidak ada kelas</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- ROMBEL (NANTI DIATUR DARI MENU KELAS) -->
+                        <td>{{ s.sub_kelas or '-' }}</td>
+
+                        <!-- ORANG TUA -->
+                        <td>
+                            {{ s.nama_ayah or s.nama_ibu or '-' }}
+                        </td>
+
+                        <td>
+                        {% if s.status_masuk == 'baru' %}
+                            <span class="badge-success">Baru</span>
+
+                        {% elif s.status_masuk == 'pindahan' %}
+                            <span class="badge-warning">Pindahan</span>
+
+                        {% else %}
+                            -
+                        {% endif %}
+                        </td>
+
+                        <!-- STATUS -->
+                        <td>
+                            {% if s.status == 'aktif' %}
+                                <span class="status-badge badge-success">Aktif</span>
+
+                            {% elif s.status == 'nonaktif' %}
+                                <span class="status-badge badge-danger">Nonaktif</span>
+
+                            {% elif s.status == 'pindah' %}
+                                <span class="status-badge badge-warning">Pindah</span>
+
+                            {% elif s.status == 'lulus' %}
+                                <span class="status-badge badge-primary">Lulus</span>
+
+                            {% else %}
+                                {{ s.status }}
+                            {% endif %}
+                        </td>
+
+                        <td class="aksi-cell">
+                            <div class="aksi-container">
+
+                                <!-- tombol menu aksi -->
+                                <div class="aksi-wrap">
+                                    <button type="button" class="action-btn aksi-btn">
+                                        <i data-lucide="settings"></i>
+                                    </button>
+
+                                    <div class="aksi-menu">
+                                        <a href="{{ url_for('siswa.detail_siswa', nisn=s.nisn) }}">Detail</a>
+
+                                        <div class="aksi-divider"></div>
+
+                                        {% if s.status != 'nonaktif' %}
+                                        <a class="aksi-danger btn-status"
+                                            data-id="{{ s.id }}"
+                                            data-status="nonaktif"
+                                            data-nama="{{ s.nama }}">
+                                            Nonaktifkan
+                                        </a>
+                                        {% endif %}
+
+                                        {% if s.status != 'aktif' %}
+                                            <a class="aksi-success btn-status"
+                                            data-id="{{ s.id }}"
+                                            data-status="aktif"
+                                            data-nama="{{ s.nama }}">
+                                        Aktifkan
+                                        </a>
+                                        {% endif %}
+
+                                        {% if s.status != 'pindah' %}
+                                            <a
+                                                class="aksi-warning btn-pindah"
+                                                data-id="{{ s.id }}"
+                                                data-nama="{{ s.nama }}"
+                                                data-nisn="{{ s.nisn }}">
+                                                Pindahkan
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- tombol delete -->
+                                <button class="action-btn delete-btn" data-id="{{ s.id }}">
+                                    <i data-lucide="trash-2"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="10" style="text-align:center;">
+                            Belum ada data siswa
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="siswa-table-footer" class="table-footer">
+        <div class="table-info">
+            Tampilkan 
+            <input type="number" id="siswa-per-page" value="10" min="1">
+            <div class="perpage-wrapper">
+                <div class="perpage-buttons">
+                    <button type="button" id="perpage-up">▲</button>
+                    <button type="button" id="perpage-down">▼</button>
+                </div>
+            </div>
+            data dari <span id="siswa-total-data">0</span> data
+        </div>
+
+        <div id="siswa-pagination" class="pagination"></div>
+    </div>
+    
+</div>
+
+<!-- MODAL PINDAH SISWA -->
+<div id="modalPindahSiswa" class="saas-modal-overlay">
+
+    <div class="saas-modal add-akun-modern">
+
+        <div class="modal-header">
+            <button class="close modern-close">&times;</button>
+            <h3>Pindahkan Siswa</h3>
+        </div>
+
+        <div class="modal-body">
+
+            <input type="hidden" id="pindah-id">
+
+            <div class="form-group">
+                <label>Nama</label>
+                <input type="text" id="pindah-nama" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>NISN</label>
+                <input type="text" id="pindah-nisn" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Sekolah Tujuan</label>
+                <input type="text" id="pindah-sekolah" placeholder="Masukkan sekolah tujuan">
+            </div>
+
+            <div class="form-group">
+                <label>Alasan Pindah</label>
+                <textarea id="pindah-alasan" rows="3" placeholder="Contoh: mengikuti orang tua"></textarea>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button id="btnSimpanPindah" class="btn btn-warning">Simpan</button>
+            <button id="btnBatalPindah" class="btn btn-cancel">Batal</button>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="modalDownloadData" class="saas-modal-overlay">
+
+    <div class="saas-modal">
+
+        <div class="modal-header">
+            <button class="close modern-close">&times;</button>
+            <h3>Download Data Siswa</h3>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label>Jenis Data</label>
+                <div class="custom-dropdown">
+                    <input type="hidden" id="downloadType">
+
+                    <div class="dropdown-selected">
+                        <span class="selected-text">Pilih Download</span>
+                        <span class="arrow">▾</span>
+                    </div>
+
+                    <div class="dropdown-options">
+                        <div class="dropdown-option" data-value="aktif">Siswa Aktif</div>
+                        <div class="dropdown-option" data-value="arsip">Arsip</div>
+                        <div class="dropdown-option" data-value="semua">Semua</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button id="btnDownloadData" class="btn btn-add">Download</button>
+            <button class="btn btn-cancel">Batal</button>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="modalImportData" class="saas-modal-overlay">
+
+    <div class="saas-modal">
+
+        <div class="modal-header">
+            <button class="close modern-close">&times;</button>
+            <h3>Import Data Siswa</h3>
+        </div>
+
+        <div class="modal-body">
+
+            <div class="form-group">
+                <label>Jenis Import</label>
+                <div class="custom-dropdown">
+                    <input type="hidden" id="importType">
+
+                    <div class="dropdown-selected">
+                        <span class="selected-text">Pilih Import</span>
+                        <span class="arrow">▾</span>
+                    </div>
+
+                    <div class="dropdown-options">
+                        <option class="dropdown-option" data-value="baru">Siswa Baru</option>
+                        <option class="dropdown-option" data-value="pindahan">Siswa Pindahan</option>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Pilih File</label>
+
+                <div class="file-upload-field">
+
+                    <button type="button" id="btnChooseFile" class="file-browse">
+                        Browse
+                    </button>
+
+                    <span id="fileName" class="file-text">
+                        Belum ada file dipilih
+                    </span>
+
+                    <input
+                        type="file"
+                        id="importFile"
+                        accept=".xlsx,.xls,.csv"
+                        hidden
+                    >
+
+                </div>
+
+                <div class="import-template">
+                    <span>Belum punya format?</span>
+                    <a href="#" id="downloadTemplateCSV">Download Template</a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-footer">
+            <button id="btnImportData" class="btn btn-add">Upload</button>
+            <button class="btn btn-cancel">Batal</button>
+        </div>
+
+    </div>
+
+</div>
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/siswa/siswa.js') }}"></script>
+{% endblock %}

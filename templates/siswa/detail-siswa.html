@@ -1,0 +1,369 @@
+<div class="siswa-page">
+
+{% if siswa %}
+
+<!-- HERO PROFILE -->
+<div class="siswa-hero">
+
+    <div class="hero-left">
+
+        <div class="hero-avatar">
+            {{ siswa.nama[0]|upper }}
+        </div>
+
+        <div class="hero-info">
+
+            <div class="hero-name-row">
+                <span class="hero-name-text">
+                    {{ siswa.nama }}
+                </span>
+
+                {% if siswa.status == 'aktif' %}
+                    <span class="hero-status aktif">Aktif</span>
+                {% elif siswa.status == 'nonaktif' %}
+                    <span class="hero-status nonaktif">Nonaktif</span>
+                {% elif siswa.status == 'pindah' %}
+                    <span class="hero-status pindah">Pindah</span>
+                {% elif siswa.status == 'lulus' %}
+                    <span class="hero-status lulus">Lulus</span>
+                {% endif %}
+            </div>
+
+            <div class="hero-meta">
+                <span>NISN {{ siswa.nisn or '-' }}</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="hero-right">
+        <!-- ACTION BUTTON -->
+        <div class="hero-actions">
+            {% if role in ['admin', 'kepala_sekolah'] and siswa.status != 'lulus' %}
+                <a href="{{ url_for('siswa.edit_siswa', nisn=siswa.nisn) }}"
+                class="hero-back">
+                Edit Data
+                </a>
+            {% endif %}
+
+            <a href="{{ url_for('siswa.index') }}" class="hero-back">
+                Kembali
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- GRID CONTENT -->
+<div class="siswa-grid">
+
+<!-- IDENTITAS -->
+<div class="info-card">
+
+<div class="card-title">
+<span>👤</span>
+Identitas
+</div>
+
+<div class="info-list">
+
+<div class="info-row">
+<span>NIS</span>
+<strong>{{ siswa.nis or '-' }}</strong>
+</div>
+
+<div class="info-row">
+<span>NIK</span>
+<strong>{{ siswa.nik or '-' }}</strong>
+</div>
+
+<div class="info-row">
+<span>TTL</span>
+<strong>
+
+{% if siswa.tempat_lahir or siswa.tanggal_lahir %}
+{{ siswa.tempat_lahir or '' }},
+
+{% if siswa.tanggal_lahir %}
+{{ siswa.tanggal_lahir[8:10]|int }}
+
+{% set bulan = [
+'', 'Januari','Februari','Maret','April','Mei','Juni',
+'Juli','Agustus','September','Oktober','November','Desember'
+] %}
+
+{{ bulan[siswa.tanggal_lahir[5:7]|int] }}
+
+{{ siswa.tanggal_lahir[0:4] }}
+{% endif %}
+
+{% else %}
+-
+{% endif %}
+
+</strong>
+</div>
+
+<div class="info-row">
+<span>Jenis Kelamin</span>
+<strong>
+{% if siswa.jk == "L" %}
+Laki-laki
+{% elif siswa.jk == "P" %}
+Perempuan
+{% else %}
+-
+{% endif %}
+</strong>
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= PENDIDIKAN ================= -->
+<div class="info-card">
+    <div class="card-title">
+        <span>🎓</span>
+        Pendidikan Saat Ini
+    </div>
+
+    <div class="info-list">
+
+        <!-- Tingkat / Kelas -->
+        <div class="info-row">
+            <span>Tingkat / Kelas</span>
+            <strong>
+                {{ siswa.tingkat_aktif or siswa.tingkat_awal or '-' }}
+            </strong>
+        </div>
+
+        <!-- Rombel -->
+        <div class="info-row">
+            <span>Rombel</span>
+            <strong>
+                {{ siswa.sub_kelas or '-' }}
+            </strong>
+        </div>
+
+        <!-- Status Keaktifan -->
+        <div class="info-row">
+            <span>Status Keaktifan</span>
+            <strong>
+                {% if siswa.status == 'aktif' %}
+                    Aktif
+                {% elif siswa.status == 'nonaktif' %}
+                    Nonaktif
+                {% elif siswa.status == 'pindah' %}
+                    Pindah
+                {% elif siswa.status == 'lulus' %}
+                    Lulus
+                {% else %}
+                    -
+                {% endif %}
+            </strong>
+        </div>
+
+        <!-- Status Masuk -->
+        <div class="info-row">
+            <span>Status Masuk</span>
+            <strong>
+                {% if siswa.status_masuk == 'baru' %}
+                    Baru
+                {% elif siswa.status_masuk == 'pindahan' %}
+                    Pindahan
+                {% else %}
+                    -
+                {% endif %}
+            </strong>
+        </div>
+
+    </div>
+</div>
+
+{% if siswa.status_masuk == 'pindahan' %}
+
+<!-- ================= RIWAYAT SD ================= -->
+<div class="info-card wide">
+    <div class="card-title">
+        🎒 Riwayat Sekolah Dasar
+    </div>
+
+    <div class="info-grid">
+        <div>
+            <span>Asal SD / MI</span>
+            <strong>{{ siswa.asal_sd or '-' }}</strong>
+        </div>
+        <div>
+            <span>Tahun Lulus SD</span>
+            <strong>{{ siswa.tahun_lulus_sd or '-' }}</strong>
+        </div>
+    </div>
+</div>
+
+<!-- ================= INFORMASI PINDAH ================= -->
+<div class="info-card wide">
+    <div class="card-title">
+        📄 Informasi Pindah
+    </div>
+
+    <div class="info-grid">
+        <div>
+            <span>Sekolah Sebelumnya</span>
+            <strong>{{ siswa.sekolah_sebelumnya or '-' }}</strong>
+        </div>
+
+        <div>
+            <span>Kelas Saat Pindah</span>
+            <strong>{{ siswa.kelas_pindah or '-' }}</strong>
+        </div>
+
+        <div>
+            <span>Semester Saat Pindah</span>
+            <strong>
+                {% if siswa.semester_pindah == 1 %}Ganjil
+                {% elif siswa.semester_pindah == 2 %}Genap
+                {% else %}-{% endif %}
+            </strong>
+        </div>
+
+        <div>
+            <span>Tanggal Pindah</span>
+            <strong>{{ siswa.tanggal_pindah or '-' }}</strong>
+        </div>
+
+        <div class="full">
+            <span>Alasan Pindah</span>
+            <strong>{{ siswa.alasan_pindah or '-' }}</strong>
+        </div>
+    </div>
+</div>
+
+<!-- ================= DITERIMA DI SEKOLAH ================= -->
+<div class="info-card wide">
+    <div class="card-title">
+        🏫 Diterima di Sekolah Ini
+    </div>
+
+    <div class="info-grid">
+        <div>
+            <span>Diterima di Kelas</span>
+            <strong>{{ siswa.kelas_diterima or '-' }}</strong>
+        </div>
+
+        <div>
+            <span>Semester Diterima</span>
+            <strong>
+                {% if siswa.semester_diterima == 1 %}Ganjil
+                {% elif siswa.semester_diterima == 2 %}Genap
+                {% else %}-{% endif %}
+            </strong>
+        </div>
+
+        <div>
+            <span>Tanggal Diterima</span>
+            <strong>{{ siswa.tanggal_diterima or '-' }}</strong>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+
+<!-- ALAMAT -->
+<div class="info-card wide">
+
+<div class="card-title">
+<span>📍</span>
+Alamat
+</div>
+
+<div class="info-grid">
+
+<div>
+<span>Alamat</span>
+<strong>{{ siswa.alamat or '-' }}</strong>
+</div>
+
+<div>
+<span>Desa</span>
+<strong>{{ siswa.desa or '-' }}</strong>
+</div>
+
+<div>
+<span>Kecamatan</span>
+<strong>{{ siswa.kecamatan or '-' }}</strong>
+</div>
+
+<div>
+<span>Kabupaten</span>
+<strong>{{ siswa.kabupaten or '-' }}</strong>
+</div>
+
+<div>
+<span>Provinsi</span>
+<strong>{{ siswa.provinsi or '-' }}</strong>
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- ORANG TUA -->
+<div class="info-card wide">
+
+<div class="card-title">
+<span>👨‍👩‍👧</span>
+Orang Tua / Wali
+</div>
+
+<div class="info-grid">
+
+<div>
+<span>Nama Ayah</span>
+<strong>{{ siswa.nama_ayah or '-' }}</strong>
+</div>
+
+<div>
+<span>Pekerjaan Ayah</span>
+<strong>{{ siswa.pekerjaan_ayah or '-' }}</strong>
+</div>
+
+<div>
+<span>Nama Ibu</span>
+<strong>{{ siswa.nama_ibu or '-' }}</strong>
+</div>
+
+<div>
+<span>Pekerjaan Ibu</span>
+<strong>{{ siswa.pekerjaan_ibu or '-' }}</strong>
+</div>
+
+<div>
+<span>No HP</span>
+<strong>{{ siswa.no_hp or '-' }}</strong>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% else %}
+
+<div class="empty-state">
+Data siswa tidak ditemukan
+</div>
+
+{% endif %}
+
+</div>

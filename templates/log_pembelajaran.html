@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Pembelajaran</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='guru.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+{% include "sidebar_guru.html" %}
+{% include "header_guru.html" %}
+
+<div class="main" style="margin-left:220px; padding:20px;">
+    <h3>Log Pembelajaran</h3>
+
+    <div class="filter-bar">
+        <select>
+            <option>7A - Matematika</option>
+        </select>
+
+        <button class="btn-primary">
+            <i class="fas fa-plus"></i> Tambah Log
+        </button>
+    </div>
+
+    <table class="table-style">
+        <thead>
+            <tr>
+                <th>Pertemuan</th>
+                <th>Tanggal</th>
+                <th>Materi</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>08-02-2026</td>
+                <td>Persamaan Linear</td>
+                <td>Edit | Hapus</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+document.addEventListener('click', function (e) {
+    console.log('GLOBAL CLICK:', e.target);
+});
+</script>
+<script src="{{ url_for('static', filename='js/guru-main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/guru-profile.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/guru-crop.js') }}"></script>
+<link rel="stylesheet" href="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.css">
+<script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // hapus semua active
+    document.querySelectorAll('.sidebar a')
+        .forEach(a => a.classList.remove('active'));
+
+    // aktifkan menu Log Pembelajaran
+    const logMenu = document.querySelector('.sidebar a[data-icon="log-pembelajaran"]');
+    if (logMenu) logMenu.classList.add('active');
+});
+</script>
+</body>
+</html>

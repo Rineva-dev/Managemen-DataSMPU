@@ -1,0 +1,285 @@
+/* ========================================
+    PAGE
+======================================== */
+.kkm-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ========================================
+    HEADER
+======================================== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.page-header p {
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* ========================================
+    TOOLBAR
+======================================== */
+.kkm-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid #034729;
+    padding: 18px 20px;
+}
+
+/* ========================================
+    ACTIONS
+======================================== */
+.kkm-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-cancel {
+    height: 35px;
+    background: linear-gradient(135deg, #ff7b0f, #ffd666);
+    color: #ffffff;
+    font-weight: 400;
+    border: none;
+}
+
+.btn-cancel:hover {
+    background: linear-gradient(135deg, #ff7b0f35, #ffd6664d);
+    color: #f78000;
+}
+
+/* ========================================
+    FILTER
+======================================== */
+.kkm-filter {
+    height: 35px;
+    padding: 0 14px;
+    border-radius: 8px !important;
+    border: 1px solid #d1d5db;
+    background: white;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* ========================================
+    TABLE
+======================================== */
+.table-wrapper {
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.kkm-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.kkm-table thead {
+    background: #f9fafb;
+}
+
+.kkm-table th {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 700;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.kkm-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+    color: #111827;
+    vertical-align: middle;
+    background: white;
+}
+
+.kkm-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* ========================================
+    KKM TEXT
+======================================== */
+.kkm-text {
+    font-weight: 600;
+    color: #2563eb;
+}
+
+/* ========================================
+    INPUT
+======================================== */
+.kkm-input {
+    width: 80px;
+    height: 38px;
+    padding: 0 10px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.kkm-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ========================================
+    RESPONSIVE
+======================================== */
+@media (max-width: 768px) {
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .kkm-actions {
+        width: 100%;
+    }
+
+    .kkm-filter {
+        width: 100%;
+    }
+
+}
+
+/* ========================================
+    FILTER DROPDOWN
+======================================== */
+.kkm-filter {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    min-width: 160px;
+    height: 35px;
+    padding: 0 44px 0 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background-color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+}
+
+/* ========================================
+    HOVER
+======================================== */
+.kkm-filter:hover {
+    border-color: #cbd5e1;
+    background-color: #f8fafc;
+}
+
+/* ========================================
+    FOCUS
+======================================== */
+.kkm-filter:focus {
+    border-color: #ffa600;
+    box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.08);
+    background-color: #fff;
+}
+
+/* ========================================
+    CUSTOM SELECT
+======================================== */
+.kkm-select {
+    position: relative;
+    width: 180px;
+}
+
+.kkm-select-trigger {
+    width: 100%;
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+.kkm-select-trigger:hover {
+    border-color: #cbd5e1;
+}
+
+.kkm-select-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    display: none;
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.08);
+
+    z-index: 100;
+
+}
+
+.kkm-select.open .kkm-select-menu {
+    display: block;
+}
+
+.kkm-option {
+    padding: 12px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.kkm-option:hover {
+    background: #f3f4f6;
+    border-radius: 0;
+}
+
+.kkm-option.active {
+    background: #fff7ed;
+    color: #f97316;
+    font-weight: 600;
+    border-radius: 0;
+}

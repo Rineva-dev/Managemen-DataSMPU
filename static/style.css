@@ -108,3 +108,118 @@ button {
 .dropdown-item:hover {
     background: #f2f2f2;
 }
+
+.login-error {
+    margin-top: 16px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    color: #7a1f1f;
+    background: rgba(229, 57, 53, 0.08);
+    border-radius: 999px;
+    text-align: center;
+    backdrop-filter: blur(6px);
+    animation: softFade 0.35s ease;
+}
+
+@keyframes softFade {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 42px; /* ruang icon */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    opacity: 0.6;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+.toggle-password svg {
+    width: 20px;
+    height: 20px;
+    fill: #666;
+}
+
+.remember-me {
+    margin-top: 8px;
+    text-align: left;
+    font-size: 13px;
+    color: #555;
+}
+
+/* Wrapper */
+.checkbox-wrap {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 6px;
+    user-select: none;
+}
+
+/* Hide checkbox asli */
+.checkbox-wrap input {
+    display: none;
+}
+
+/* Kotak checkbox */
+.checkmark {
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid #bbb;
+    border-radius: 3px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Saat dicentang */
+.checkbox-wrap input:checked + .checkmark {
+    background-color: #f5c400;   /* kuning */
+    border-color: #f5c400;
+}
+
+/* Tanda centang */
+.checkbox-wrap input:checked + .checkmark::after {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 0.5px;
+    width: 3px;
+    height: 6px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Teks */
+.remember-text {
+    font-size: 13px;
+}

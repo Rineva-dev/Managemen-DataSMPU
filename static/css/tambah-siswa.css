@@ -1,0 +1,311 @@
+/* ================= LAYOUT ================= */
+.page-tambah-siswa .card-tambah-siswa {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 
+        0 10px 30px rgba(0,0,0,.08),
+        0 2px 8px rgba(0,0,0,.05);
+    max-width: 650px;
+    width: 100%;
+    border: 1px solid #f1f5f9;
+    margin: 0 auto;
+}
+.page-tambah-siswa h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    margin-top: -5px;
+    color: #111827;
+}
+
+.page-tambah-siswa .subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 28px;
+}
+
+/* ================= PROGRESS BAR ================= */
+.page-tambah-siswa .progress {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.page-tambah-siswa .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #ffb22c;
+    border-radius: 999px;
+    transition: width .3s ease;
+}
+
+/* ================= FORM STEP ================= */
+.page-tambah-siswa form {
+    position: relative;
+}
+
+.page-tambah-siswa .form-step {
+    display: none;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 20px;
+    animation: fadeSlide .25s ease;
+}
+
+.page-tambah-siswa .form-step.active {
+    display: grid;
+}
+
+.page-tambah-siswa .form-step h3 {
+    grid-column: 1 / -1;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #374151;
+}
+
+/* ================= FORM FIELD ================= */
+.page-tambah-siswa .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-tambah-siswa .form-group.full {
+    grid-column: 1 / -1;
+}
+
+.page-tambah-siswa label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.page-tambah-siswa input,
+.page-tambah-siswa select {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    font-size: 14px;
+    transition: all .2s ease;
+}
+
+.page-tambah-siswa input:focus,
+.page-tambah-siswa select:focus {
+    background: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37,99,235,.15);
+}
+
+/* ================= ACTION BUTTON ================= */
+.page-tambah-siswa .actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.page-tambah-siswa .btn {
+    padding: 0 6px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: .2s;
+}
+
+.page-tambah-siswa .btn-primary {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    box-shadow: 0 6px 14px rgba(37,99,235,.35);
+}
+
+.page-tambah-siswa .btn-secondary {
+    background: #e5e7eb;
+    color: #111;
+}
+
+.page-tambah-siswa .actions.edit-mode {
+    justify-content: flex-end;
+}
+
+.page-tambah-siswa .btn-secondary:hover {
+    background: #d1d5db;
+}
+
+/* ================= STEPPER ================= */
+.page-tambah-siswa .stepper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.page-tambah-siswa .stepper::before {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e5e7eb;
+    z-index: 0;
+}
+
+.page-tambah-siswa .stepper::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: #2563eb;
+    transition: width .3s ease;
+    z-index: 0;
+}
+
+.page-tambah-siswa .step {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    flex: 1;
+}
+
+.page-tambah-siswa .step span {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.page-tambah-siswa .circle {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: .3s;
+}
+
+.page-tambah-siswa .step.active .circle {
+    background: #eba225;
+    color: #fff;
+}
+
+.page-tambah-siswa .step.done .circle {
+    background: #16a34a;
+    color: white;
+}
+
+.page-tambah-siswa .step.done .circle::before {
+    content: "✓";
+}
+
+/* ================= ERROR STATE ================= */
+.page-tambah-siswa .form-group.error input,
+.page-tambah-siswa .form-group.error select {
+    border-color: #dc2626;
+    background: #fef2f2;
+}
+
+.page-tambah-siswa .error-text {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #dc2626;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 640px) {
+    .page-tambah-siswa .form-step {
+        grid-template-columns: 1fr;
+    }
+
+    .page-tambah-siswa .actions {
+        flex-direction: column-reverse;
+    }
+
+    .page-tambah-siswa .step span {
+        display: none;
+    }
+
+    .page-tambah-siswa .btn-back-top {
+        top: 70px;
+    }
+}
+
+/* ===============================
+    ISOLASI HALAMAN TAMBAH SISWA
+================================= */
+.content.page-tambah-siswa {
+    padding: 40px 20px;
+}
+
+.alert {
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.alert.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.alert.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+
+/* ================= MODAL ================= */
+
+.modal-overlay{
+    position: fixed;
+    inset:0;
+    background: rgba(0,0,0,.35);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+}
+
+.modal-overlay.show{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    padding:24px;
+    border-radius:14px;
+    width:420px;
+    max-width:90%;
+}
+
+.modal-box h3{
+    margin-bottom:10px;
+}
+
+.modal-box ul{
+    margin:10px 0 20px;
+    padding-left:18px;
+    font-size:14px;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}

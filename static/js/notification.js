@@ -1,89 +1,104 @@
 // ======================================
 // notification.js
-// Global Notification Popup
+// Modern Toast Notification
 // ======================================
 
-document.addEventListener('DOMContentLoaded', () => {
+window.showNotification = function(message, type = "success", duration = 3500){
 
-    const notification = document.getElementById('notification');
-
-    if (!notification) {
-        console.warn('Elemen #notification tidak ditemukan di HTML');
+    const container = document.getElementById("toast-container");
+    if(!container){
+        console.warn("toast-container tidak ditemukan");
         return;
     }
 
-    // Inject style jika belum ada
-    injectNotificationStyle();
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
 
-    window.showNotification = function (message, type = 'success', duration = 2500) {
-        notification.textContent = message;
-        notification.className = 'notification show';
+    let icon = "check-circle";
 
-        if (type === 'success') {
-            notification.classList.add('success');
-        } else if (type === 'error') {
-            notification.classList.add('error');
-        } else if (type === 'warning') {
-            notification.classList.add('warning');
-        }
+    if(type === "error") icon = "x-circle";
+    if(type === "warning") icon = "alert-triangle";
 
-        clearTimeout(notification._timeout);
-        notification._timeout = setTimeout(() => {
-            notification.classList.remove('show');
-        }, duration);
-    };
+    toast.innerHTML = `
+        <i data-lucide="${icon}" class="toast-icon"></i>
+        <span>${message}</span>
+    `;
 
-    function injectNotificationStyle() {
-        if (document.getElementById('notification-style')) return;
+    container.appendChild(toast);
 
-        const style = document.createElement('style');
-        style.id = 'notification-style';
-        style.innerHTML = `
-            .notification {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 12px 18px;
-                border-radius: 6px;
-                color: #fff;
-                font-size: 14px;
-                opacity: 0;
-                transform: translateY(-10px);
-                transition: all 0.3s ease;
-                z-index: 9999;
-                pointer-events: none;
-                max-width: 300px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            }
-
-            .notification.show {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            .notification.success {
-                background-color: rgba(40, 167, 69, 0.95);
-            }
-
-            .notification.error {
-                background-color: rgba(200, 30, 30, 0.95);
-            }
-
-            .notification.warning {
-                background-color: rgba(255, 193, 7, 0.95);
-                color: #000;
-            }
-
-            @media (max-width: 480px) {
-                .notification {
-                    right: 10px;
-                    left: 10px;
-                    top: 10px;
-                    max-width: unset;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+    if(window.lucide){
+        lucide.createIcons();
     }
 
-});
+    setTimeout(()=>{
+
+        toast.classList.add("hide");
+
+        setTimeout(()=>{
+            toast.remove();
+        },300);
+
+    },duration);
+
+}
+
+// ======================================
+// SAVE NOTIFICATION
+// ======================================
+
+window.persistNotification = function(
+    message,
+    type = "success",
+    duration = 3500
+){
+
+    sessionStorage.setItem(
+        "pending_notification",
+        JSON.stringify({
+            message,
+            type,
+            duration
+        })
+    );
+
+};
+
+
+// ======================================
+// RESTORE NOTIFICATION AFTER RELOAD
+// ======================================
+
+window.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const pending =
+            sessionStorage.getItem(
+                "pending_notification"
+            );
+
+        if (!pending) return;
+
+        try {
+
+            const notif =
+                JSON.parse(pending);
+
+            showNotification(
+                notif.message,
+                notif.type,
+                notif.duration
+            );
+
+        } catch(err) {
+
+            console.error(err);
+
+        }
+
+        sessionStorage.removeItem(
+            "pending_notification"
+        );
+
+    }
+);

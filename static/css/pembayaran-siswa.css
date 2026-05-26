@@ -1,0 +1,115 @@
+.search-result {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    position: absolute;
+    top: calc(100% + 8px)
+}
+
+.search-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.search-item:hover {
+    background: #f1f5f9;
+}
+
+.search-empty {
+    padding: 10px;
+    color: #9ca3af;
+}
+
+/* BADGE STATUS */
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge.green {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge.red {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.badge.gray {
+    background-color: #e2e3e5;
+    color: #41464b;
+}
+
+#jenis-pembayaran {
+    padding-bottom: 0!important;
+}
+
+#detail-siswa {
+    margin-bottom: 20px!important;
+}
+
+#riwayat-siswa p,
+#detail-siswa p {
+    display: flex;
+}
+
+#riwayat-siswa .label,
+#detail-siswa .label {
+    width: 70px;
+    font-weight: bold;
+}
+
+#riwayat-siswa .val::before,
+#detail-siswa .val::before {
+    content: ": ";
+}
+
+.autocomplete-wrapper {
+    position: relative;
+}
+
+.search-result {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-top: 4px;
+
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* item */
+.search-item {
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.search-item:hover {
+    background: #f5f5f5;
+}
+
+/* kosong */
+.search-empty {
+    padding: 10px;
+    color: #999;
+}
+
+.pembayaran-modal {
+    width: 90%;
+    max-width: 900px;
+    min-width: 50px;
+}

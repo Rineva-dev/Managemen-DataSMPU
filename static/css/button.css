@@ -1,0 +1,827 @@
+/* =========================================================
+   MODERN AESTHETIC BUTTON SYSTEM (2026)
+   Reusable • Soft Motion • Premium Feel
+========================================================= */
+
+:root {
+    --btn-radius: 8px;
+    --btn-font: 13px;
+    --btn-height: 35px;
+    --btn-height-lg: 45px;
+    --btn-width: 80px;
+    --btn-width-lg: 150px;
+
+    --clr-primary: #4f7cff;
+    --clr-danger: #be1c1c;
+    --clr-success: #22c55e;
+    --clr-dark: #1f2937;
+
+    --clr-soft-bg: rgba(79, 124, 255, 0.12);
+    --clr-border: rgba(0,0,0,0.08);
+
+    --ease: cubic-bezier(.4,0,.2,1);
+}
+
+/* =========================================================
+    BASE BUTTON
+========================================================= */
+.btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: var(--btn-height);
+    min-width: var(--btn-width);
+    padding: 8px 18px;
+
+    font-size: var(--btn-font);
+    font-weight: 400;
+    letter-spacing: .2px;
+
+    border-radius: calc(var(--btn-radius) - 2px);
+    border: 0.2px solid #fffffffa;
+    background: transparent;
+    color: var(--clr-dark);
+
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+
+    transition:
+        transform .18s var(--ease),
+        box-shadow .18s var(--ease),
+        background .18s var(--ease),
+        border .18s var(--ease),
+        opacity .18s var(--ease);
+}
+
+.btn-aksi-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: var(--btn-height);
+    min-width: 100px;
+    padding: 0 18px;
+
+    font-size: var(--btn-font);
+    font-weight: 400;
+    letter-spacing: .2px;
+
+    border-radius: calc(var(--btn-radius) - 2px);
+    border: 1px solid #fffffffa;
+    background: transparent;
+    color: var(--clr-dark);
+
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+
+    transition:
+        transform .18s var(--ease),
+        box-shadow .18s var(--ease),
+        background .18s var(--ease),
+        border .18s var(--ease),
+        opacity .18s var(--ease);
+}
+
+/* =========================================================
+    HOVER & ACTIVE MICRO-INTERACTION
+========================================================= */
+.btn-aksi-container:hover,
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-aksi-container
+.btn:active {
+    transform: translateY(0) scale(.97);
+}
+
+.btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* =========================================================
+    PRIMARY
+========================================================= */
+.dropdown-toggle,
+.filter-btn,
+.btn-add {
+    background: linear-gradient(135deg, #014737, #012919);
+    color: #ffffff;
+}
+
+/* =========================================================
+    DANGER
+========================================================= */
+.btn-danger {
+    background: linear-gradient(135deg, #c01111, #f93a3a);
+    color: #fff;
+}
+
+/* =========================================================
+    SUCCESS
+========================================================= */
+.btn-success {
+    background: linear-gradient(135deg, #13b87c, #22c55e);
+    color: #fff;
+}
+
+/* =========================================================
+    CANCEL
+========================================================= */
+.btn-cancel {
+    background: rgba(255,255,255,.65);
+    border: 1px solid var(--clr-border);
+    backdrop-filter: blur(10px);
+}
+
+.btn-cancel:hover {
+    background: rgba(255,255,255,.85);
+}
+
+/* =========================================================
+    GHOST (MINIMAL)
+========================================================= */
+.btn-ghost {
+    background: linear-gradient(135deg, #bcd2ff68, #8ef9ff3e);
+    color: #1a212d;
+}
+
+/* =========================================================
+    SOFT BUTTON
+========================================================= */
+.btn-soft {
+    background: var(--clr-soft-bg);
+    color: var(--clr-primary);
+}
+
+.btn-soft:hover {
+    background: rgba(79,124,255,.18);
+}
+
+/* =========================================================
+    ICON BUTTON
+========================================================= */
+.btn-icon {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+}
+
+.btn-icon i {
+    font-size: 16px;
+}
+
+/* =========================================================
+    ICON BUTTON
+========================================================= */
+.btn-warning {
+    background: linear-gradient(135deg, #ff7b0f, #ffd666);
+    color: #fff;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #ff7b0f, #ffd666);
+}
+
+.btn-check {
+    background: linear-gradient(135deg, #0fbbff, #66d9ff);
+    color: #fff;
+}
+
+.btn-check:hover {
+    background: linear-gradient(135deg, #0fbbff, #66d9ff);
+}
+
+/* =========================================================
+    SIZE VARIANT
+========================================================= */
+.btn-sm {
+    min-height: 36px;
+    font-size: 13px;
+    padding: 0 14px;
+}
+
+.btn-lg {
+    min-height: 52px;
+    font-size: 15px;
+    padding: 0 24px;
+}
+
+/* =========================================================
+    LOADING STATE (OPTIONAL)
+========================================================= */
+.btn.loading {
+    pointer-events: none;
+    opacity: .8;
+}
+
+.btn.loading::after {
+    content: "";
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.5);
+    border-top-color: #fff;
+    animation: spin .7s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+    RIPPLE EFFECT (PURE CSS)
+========================================================= */
+.btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,.4), transparent 60%);
+    opacity: 0;
+    transition: opacity .3s var(--ease);
+}
+
+.btn:active::before {
+    opacity: 1;
+}
+
+#confirm-message {
+    white-space: pre-line;
+}
+
+.confirm-box {
+    background: #fff;
+    border-radius: 18px;
+    padding: 28px 26px 24px;
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+    animation: popConfirm 0.25s ease;
+}
+
+@keyframes popConfirm {
+    from {
+        opacity: 0;
+        transform: scale(0.94);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ICON */
+.confirm-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+}
+
+.confirm-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+/* VARIANT */
+.confirm-icon.danger {
+    background: rgba(220, 53, 69, 0.12);
+    color: #dc3545;
+}
+
+.confirm-icon.warning {
+    background: rgba(255, 193, 7, 0.18);
+    color: #ffc107;
+}
+
+.confirm-icon.info {
+    background: rgba(13, 110, 253, 0.15);
+    color: #0d6efd;
+}
+
+/* MESSAGE */
+#confirm-message {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #333;
+    margin-bottom: 22px;
+    white-space: pre-line;
+}
+
+/* ===================================
+    CONTAINER ABSENSI - SaaS Elegant
+=====================================*/
+
+.btn-absensi-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;   /* center horizontal */
+    margin: 40px 0;
+}
+
+/* Card Style */
+.btn-absensi-container .button-bar {
+    display: flex;
+    justify-content: center;   /* tombol center */
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 22px;
+
+    padding: 30px 40px;
+
+    border-radius: 22px;
+
+    background: linear-gradient(135deg, #ffffff, #ffffff);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.08),
+        0 5px 12px rgba(0, 0, 0, 0.05);
+
+    border: 1px solid rgba(255, 185, 56, 0.188);
+
+    width: fit-content;        /* supaya tidak full width */
+}
+
+/* ===================================
+    BUTTON ABSENSI
+=====================================*/
+.btn-absensi {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    min-height: var(--btn-height-lg);
+    min-width: var(--btn-width-lg);
+    padding: 0 22px;
+
+    font-size: var(--btn-font);
+    font-weight: 600;
+    letter-spacing: .3px;
+
+    border-radius: calc(var(--btn-radius) + 4px);
+    border: 1px solid rgb(255, 255, 255);
+
+    backdrop-filter: blur(6px);
+
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+
+    transition:
+        transform .25s cubic-bezier(.22,.61,.36,1),
+        box-shadow .25s cubic-bezier(.22,.61,.36,1),
+        filter .25s ease,
+        opacity .2s ease;
+
+    overflow: hidden;
+}
+
+.absensi-btn {
+    visibility: hidden;
+}
+
+.absensi-btn.ready {
+    visibility: visible;
+}
+
+/* Hover Lift + Depth */
+.btn-absensi:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+}
+
+/* Active Press Effect */
+.btn-absensi:active {
+    transform: translateY(1px) scale(.97);
+    filter: brightness(.95);
+}
+
+/* Disabled */
+.btn-absensi:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Shine Effect */
+.btn-absensi::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(255,255,255,0) 0%,
+        rgba(255,255,255,.25) 50%,
+        rgba(255,255,255,0) 100%
+    );
+    transform: skewX(-20deg);
+    transition: all .6s ease;
+}
+
+.btn-absensi:hover::after {
+    left: 130%;
+}
+
+.btn-izin {
+    background: linear-gradient(135deg, #990000, #ff5a5a);
+    color: #fff;
+}
+
+.btn-absen-masuk {
+    background: linear-gradient(135deg,#014737,#026c45);
+    color: white;
+}
+
+.btn-absen-keluar {
+    background: linear-gradient(135deg, #ff7b0f, #ffd666);
+    color: #fff;
+}
+
+.btn-reset-dev {
+    background: linear-gradient(135deg, #000000, #3e3e3e);
+    color: #ffffff;
+}
+
+/* LOGOUT */
+.sidebar-bottom {
+    border-top: 1px solid #e2e8f041; /* garis footer */
+    padding: 20px 0;
+    display: flex;
+    justify-content: center; /* center horizontal */
+}
+
+.logout-btn {
+    opacity: 1 !important;
+}
+
+
+/* BUTTON DROPDOWN MENU SISWA */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: white;
+    min-width: 180px;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    padding: 8px 0;
+    display: none;
+    z-index: 1000;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 14px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+    background: #f5f7fa;
+}
+
+.dropdown.active .dropdown-menu {
+    display: block;
+}
+
+#filterNamaSelected {
+    width: 220px;
+}
+
+#filterNamaOptions {
+    width: 250px;
+}
+
+#filterBulanSelected,
+#filterTahunSelected {
+    width: 150px;
+}
+
+#filterBulanOptions,
+#filterTahunOptions {
+    width: 180px;
+}
+
+.filter-btn-warning {
+    background: linear-gradient(135deg, #ff7b0f, #ffd666);
+    color: #fff;
+}
+
+.filter-btn-secondary {
+    background: linear-gradient(135deg, #000000, #363636);
+    color: #ffffff;
+}
+
+.user-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    cursor: pointer;
+    z-index: 10001;
+}
+
+.user-dropdown .dropbtn {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+
+    padding: 8px 16px;
+    border-radius: 30px;
+
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    backdrop-filter: blur(6px);
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease,
+        opacity 0.25s ease;
+    cursor: pointer;
+}
+
+.user-dropdown .dropbtn:hover {
+    background: rgba(255,255,255,0.28);
+}
+
+/* ===== CUSTOM DROPDOWN ===== */
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+
+.custom-dropdown.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.custom-dropdown.active .dropdown-selected {
+    border-color: var(--orange-focus);
+    box-shadow: 0 0 0 3px rgba(246,156,59,0.15);
+}
+
+.custom-dropdown.locked {
+    opacity: 0.6;
+    pointer-events: none;
+    background: #f3f3f3;
+}
+
+.custom-dropdown.locked .arrow {
+    display: none;
+}
+
+.dropdown-selected {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 0px 14px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.selected-text-inner{
+    display:block;
+    height:40px;
+    line-height:40px;
+    white-space: nowrap;
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: none;
+    z-index: 9999;
+    overflow-y: auto;
+    max-height: 150px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+.dropdown-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb {
+    background: rgba(255, 102, 0, 0.47);
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+.dropdown-options::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 96, 44, 0.4);
+}
+
+/*.dropdown-options.active {
+    display: block;
+}*/
+
+.custom-dropdown.active .dropdown-options {
+    display: block;
+}
+
+.dropdown-option {
+    padding: 10px 16px;
+    font-size: 13px;
+    transition: 0.2s;
+    text-align: left;
+}
+
+.dropdown-option:hover {
+    background: #f3f4f6;
+}
+
+.arrow{
+    transition: transform .2s ease;
+}
+
+.custom-dropdown.active .arrow{
+    transform: rotate(180deg);
+}
+
+/* ===============================
+    AKSI TABLE BUTTON (ISOLATED)
+================================ */
+
+/* cell aman */
+.aksi-cell {
+    position: relative;
+    overflow: visible;
+}
+
+/* wrapper */
+.aksi-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+/* button */
+.aksi-container{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+}
+
+/* menu aksi di tabel*/
+.aksi-menu {
+    min-width: 170px;
+    padding: 6px 0;
+
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.15);
+
+    display: none;
+}
+
+/* item */
+.aksi-menu a {
+    display: block;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #171c23;
+    text-decoration: none;
+}
+
+.aksi-menu a:hover {
+    background: #f1f5f9;
+}
+
+.aksi-divider {
+    height: 1px;
+    margin: 6px 0;
+    background: #e5e7eb;
+}
+
+.aksi-menu a.aksi-danger{
+    color:#dc2626;
+}
+
+.aksi-menu a.aksi-warning{
+    color:#d97706;
+}
+
+.aksi-menu a.aksi-success{
+    color:#16a34a;
+}
+
+/* mobile */
+@media (max-width: 768px) {
+    .aksi-menu {
+        right: auto;
+        left: 0;
+    }
+}
+
+/* ================= BACK BUTTON ================= */
+.btn-back-top {
+    position: fixed;
+    top: 80px;
+    left: 260px;
+    z-index: 999;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    background: #0d0d0d !important;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.icon-arrow {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+    display: inline-block;
+    transform: translateY(-1px);
+}
+
+.btn-back-top:hover {
+    transform: translateY(0) scale(.97);
+}
+
+/* ===============================
+   FIX JARAK ICON AKSI
+================================ */
+.dropdown-toggle {
+    gap: 0 !important;
+}
+
+.dropdown-toggle svg {
+    width: 15px;
+    height: 15px;
+}
+
+.dropdown-toggle .icon-aksi {
+    margin-left: 10px;
+}
+
+.dropdown-toggle .aksi-icon {
+    margin-left: -6px;
+}
+
+/* FIX YEAR DROPDOWN */
+#yearOptions {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+    border: 1px solid #e5e7eb;
+    z-index: 200;
+
+    display: none;
+}
+
+.year-filter-modern.active #yearOptions {
+    display: block;
+}

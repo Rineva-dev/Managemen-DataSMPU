@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% if active_page == "dashboard" %}
+    {% include "sections/dashboard-section.html" %}
+{% endif %}
+
+{% if active_page == "master_data" %}
+    {% include "sections/master-data-section.html" %}
+{% endif %}
+
+{% if active_page == "akun_guru" %}
+    {% include "sections/akun-guru-section.html" %}
+{% endif %}
+
+{% if active_page == "rekap_absensi" %}
+    {% include "sections/rekap-absensi-section.html" %}
+{% endif %}
+
+{% if active_page == "tahun_pelajaran" %}
+    {% include "sekolah/tahun-pelajaran.html" %}
+{% endif %}
+
+{% if active_page == "kelas" %}
+    {% include "sekolah/kelas.html" %}
+{% endif %}
+
+{% if active_page == "kelas_ampu" %}
+    {% if show_absensi_siswa %}
+        {% include "guru/absensi-siswa.html" %}
+    {% elif show_overview %}
+        {% include "guru/overview.html" %}
+    {% elif show_edit_jurnal %}
+        {% include "guru/edit-jurnal.html" %}
+    {% elif show_nilai %}
+        {% include "guru/nilai.html" %}
+    {% else %}
+        {% include "guru/kelas-ampu.html" %}
+    {% endif %}
+{% endif %}
+
+{% if active_page == "ekstrakurikuler" %}
+    {% include "sekolah/ekstrakurikuler.html" %}
+{% endif %}
+
+{% if active_page == "mata_pelajaran" %}
+    {% include "sekolah/mata-pelajaran.html" %}
+{% endif %}
+
+{% if active_page == "kkm" %}
+    {% include "sekolah/kkm.html" %}
+{% endif %}
+
+{% if active_page == "absensi_harian" %}
+    {% include "absensi-harian.html" %}
+{% endif %}
+
+{% if active_page in ["siswa", "siswa_arsip"] %}
+    {% include "siswa.html" %}
+{% endif %}
+
+{% if active_page == "tambah_siswa" %}
+    {% include "siswa/tambah_siswa.html" %}
+{% endif %}
+
+{% if active_page == "edit_siswa" %}
+    {% if siswa and siswa.status_masuk == "pindahan" %}
+        {% include "siswa/siswa_pindahan.html" %}
+    {% else %}
+        {% include "siswa/tambah_siswa.html" %}
+    {% endif %}
+{% endif %}
+
+{% if active_page == "tambah_siswa_pindahan" %}
+    {% include "siswa/siswa_pindahan.html" %}
+{% endif %}
+
+{% if active_page == "detail_siswa" %}
+    {% include "siswa/detail-siswa.html" %}
+{% endif %}
+
+{% if active_page == "pembayaran_siswa" %}
+    {% include "siswa/pembayaran-siswa.html" %}
+{% endif %}
+
+{% include "sections/profile-modal.html" %}
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>const USER_ROLE = "{{ role }}";</script>
+
+{% if active_page == "dashboard" %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endif %}
+
+{% if active_page == "akun_guru" %}
+<script src="{{ url_for('static', filename='js/akun.js') }}"></script>
+{% endif %}
+
+{% if active_page == "rekap_absensi" %}
+<script src="{{ url_for('static', filename='js/absensi.js') }}"></script>
+{% endif %}
+
+{% if active_page == "absensi_harian" %}
+<script src="{{ url_for('static', filename='js/absensi-harian.js') }}"></script>
+{% endif %}
+
+{% if active_page == "tambah_siswa_pindahan" %}
+<script src="{{ url_for('static', filename='js/siswa/siswa-pindahan.js') }}"></script>
+{% endif %}
+
+{% if active_page == "pembayaran_siswa" %}
+<script src="{{ url_for('static', filename='js/siswa/pembayaran-siswa.js') }}"></script>
+{% endif %}
+
+{% if active_page == "kelas_ampu" %}
+<script src="{{ url_for('static', filename='js/guru/kelas-ampu.js') }}"></script>
+{% endif %}
+
+
+
+{% endblock %}
+
+{% block extra_css %}
+    {{ super() }}
+    {% if active_page in ["siswa", "siswa_arsip", "detail_siswa", "tambah_siswa", "edit_siswa"] %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/siswa.css') }}">
+    {% endif %}
+
+    {% if active_page in ["tambah_siswa", "edit_siswa", "tambah_siswa_pindahan"] %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tambah-siswa.css') }}">
+    {% endif %}
+
+    {% if active_page == "kelas" %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/kelas.css') }}">
+    {% endif %}
+
+    {% if active_page == "pembayaran_siswa" %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pembayaran-siswa.css') }}">
+    {% endif %}
+
+    {% if active_page == "mata_pelajaran" %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mapel.css') }}">
+    {% endif %}
+
+    {% if active_page == "kelas_ampu" %}
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/kelas-ampu.css') }}">
+    {% endif %}
+
+{% endblock %}

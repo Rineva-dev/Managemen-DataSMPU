@@ -1,0 +1,288 @@
+{% set active_page = 'kelas_ampu' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/absensi-siswa.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/edit-jurnal.css') }}">
+{% endblock %}
+
+<div class="edit-jurnal-page">
+
+    <!-- HEADER -->
+    <div class="edit-header">
+
+        <h2>Edit Jurnal</h2>
+
+        <p>
+            {{ jurnal.mapel }}
+            •
+            {{ jurnal.kelas }}
+        </p>
+
+    </div>
+
+    <!-- FORM -->
+    <form
+        method="POST"
+        action="/kelas-ampu/jurnal/{{ jurnal.id }}/update"
+        class="edit-jurnal-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <!-- hidden -->
+        <input
+            type="hidden"
+            name="kelas_mapel_id"
+            value="{{ jurnal.kelas_mapel_id }}">
+
+        <div class="form-card">
+            <!-- MATERI -->
+            <div class="form-group materi">
+
+                <label>
+                    Materi
+                </label>
+
+                <textarea
+                    name="materi"
+                    rows="4"
+                    required>{{ jurnal.materi }}</textarea>
+
+            </div>
+        </div>
+
+        <!-- INDIKATOR -->
+        <div class="form-card">
+
+            <div class="form-group">
+
+                <label>
+                    Indikator Capaian
+                </label>
+
+                <textarea
+                    name="indikator"
+                    rows="4"
+                    required>{{ jurnal.indikator }}</textarea>
+
+            </div>
+
+        </div>
+
+        <!-- KEGIATAN -->
+        <div class="form-card">
+
+            <div class="form-group">
+
+                <label>
+                    Kegiatan Pembelajaran
+                </label>
+
+                <textarea
+                    name="kegiatan"
+                    rows="5"
+                    required>{{ jurnal.kegiatan }}</textarea>
+
+            </div>
+
+        </div>
+        
+        <!-- GRID -->
+        <div class="form-card waktu-card">
+
+            <div class="form-group full">
+                <label>Tanggal</label>
+                <input
+                    type="date"
+                    name="tanggal"
+                    value="{{ jurnal.tanggal[:10] }}"
+                    required>
+            </div>
+
+            <div class="time-range">
+                <div class="form-group">
+                    <label>Jam Mulai</label>
+                    <input
+                        type="time"
+                        name="jam_mulai"
+                        value="{{ jurnal.jam_mulai[:5] }}"
+                        required>
+                </div>
+
+                <div class="time-separator">–</div>
+
+                <div class="form-group">
+                    <label>Jam Selesai</label>
+                    <input
+                        type="time"
+                        name="jam_selesai"
+                        value="{{ jurnal.jam_selesai[:5] }}"
+                        required>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ABSENSI SISWA -->
+        <div class="absensi-card">
+
+            <div class="absensi-table">
+
+                <!-- HEADER -->
+                <div class="absensi-row header">
+
+                    <div class="col-no">
+                        No
+                    </div>
+
+                    <div class="col-nisn">
+                        NISN
+                    </div>
+
+                    <div class="col-nama">
+                        Nama Siswa
+                    </div>
+
+                    <div class="col-hisa">
+                        Kehadiran
+                    </div>
+
+                    <div class="col-ket">
+                        Keterangan
+                    </div>
+
+                </div>
+
+                <!-- LIST SISWA -->
+                {% for siswa in siswa_list %}
+                <div class="absensi-row">
+
+                    <!-- NO -->
+                    <div class="col-no">
+                        {{ loop.index }}
+                    </div>
+
+                    <!-- NISN -->
+                    <div class="col-nisn">
+                        {{ siswa.nisn }}
+                    </div>
+
+                    <!-- NAMA -->
+                    <div class="col-nama">
+                        {{ siswa.nama }}
+                    </div>
+
+                    <!-- STATUS -->
+                    <div class="col-hisa">
+
+                        <div
+                            class="hisa-group"
+                            data-siswa-id="{{ siswa.siswa_id }}">
+
+                            <!-- hidden input -->
+                            <input
+                                type="hidden"
+                                name="status_{{ siswa.siswa_id }}"
+                                class="status-input"
+                                value="{{ siswa.status or 'H' }}">
+
+                            <!-- H -->
+                            <button
+                                type="button"
+                                class="hisa-btn hadir
+                                {% if siswa.status == 'H' or not siswa.status %}
+                                active
+                                {% endif %}"
+                                data-value="H">
+
+                                H
+
+                            </button>
+
+                            <!-- I -->
+                            <button
+                                type="button"
+                                class="hisa-btn izin
+                                {% if siswa.status == 'I' %}
+                                active
+                                {% endif %}"
+                                data-value="I">
+
+                                I
+
+                            </button>
+
+                            <!-- S -->
+                            <button
+                                type="button"
+                                class="hisa-btn sakit
+                                {% if siswa.status == 'S' %}
+                                active
+                                {% endif %}"
+                                data-value="S">
+
+                                S
+
+                            </button>
+
+                            <!-- A -->
+                            <button
+                                type="button"
+                                class="hisa-btn alpha
+                                {% if siswa.status == 'A' %}
+                                active
+                                {% endif %}"
+                                data-value="A">
+
+                                A
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- KETERANGAN -->
+                    <div class="col-ket">
+
+                        <input
+                            type="text"
+                            name="keterangan_{{ siswa.siswa_id }}"
+                            value="{{ siswa.keterangan }}"
+                            placeholder="Keterangan..."
+                            class="keterangan-input">
+
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <!-- ACTION -->
+        <div class="form-actions">
+
+            <a
+                href="/kelas-ampu/{{ jurnal.kelas_mapel_id }}/overview"
+                class="btn-cancel">
+
+                Batal
+
+            </a>
+
+            <button
+                type="submit"
+                class="btn-save">
+
+                Simpan Perubahan
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/guru/edit-jurnal.js') }}"></script>

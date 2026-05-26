@@ -1,0 +1,170 @@
+<div id="pembayaran-siswa-content"
+    style="display: {{ 'block' if active_page == 'pembayaran_siswa' else 'none' }}">
+    <h3>Pembayaran Siswa</h3>
+
+    <div class="filter-container pembayaran-filter-bar">
+
+        <!-- Tombol Tambah Pembayaran -->
+        <button id="add-pembayaran-btn" class="btn btn-add">
+            Pembayaran Siswa
+        </button>
+
+        <!-- Search siswa -->
+        <div class="filter-search-group">
+            <input type="text"
+                id="pembayaran-search-input"
+                class="filter-input"
+                placeholder="Cari NISN / Nama siswa...">
+            <button id="pembayaran-search-btn" class="btn filter-btn">
+                Search
+            </button>
+        </div>
+
+    </div>
+
+    <div id="pembayaran-form-container" class="saas-modal-overlay">
+        <div class="saas-modal add-akun-modern">
+
+            <button class="close modern-close">&times;</button>
+
+            <h3 style="text-align:center;">
+                Pembayaran Siswa
+            </h3>
+
+            <div class="akun-form">
+                <!-- Cari siswa -->
+                <div class="form-group autocomplete-wrapper">
+                    <label>Cari Siswa (NISN / Nama)</label>
+                    <input type="text" id="input-cari-siswa" placeholder="Cari NISN / Nama">
+                    <div id="hasil-siswa" class="search-result"></div>
+                </div>
+
+                <!-- Detail siswa -->
+                <div id="detail-siswa" class="form-group">
+                    <p><span class="label">NISN</span><span class="val" id="detail-nisn"></span></p>
+                    <p><span class="label">Nama</span><span class="val" id="detail-nama"></span></p>
+                    <p><span class="label">Kelas</span><span class="val" id="detail-kelas"></span></p>
+                </div>
+
+                <!-- Jenis pembayaran -->
+                <div class="form-group">
+                    <label>Jenis Pembayaran</label>
+                    <div class="custom-dropdown">
+                        <div class="dropdown-selected">
+                            <span class="selected-text">Pilih Jenis Pembayaran</span>
+                            <span class="arrow">▾</span>
+                        </div>
+                        <div class="dropdown-options" id="jenis-pembayaran">
+                            <option class="dropdown-option" data-value="spp">SPP</option>
+                            <option class="dropdown-option" data-value="ekskul">Ekstrakurikuler</option>
+                            <option class="dropdown-option" data-value="pembangunan">Pembangunan</option>
+                            <option class="dropdown-option" data-value="seragam">Seragam Sekolah</option>
+                            <option class="dropdown-option" data-value="unggulan">Kelas Unggulan</option>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="add-guru-form">
+                <div class="form-group">
+                    <label>Bulan / Tahun</label>
+                    <input type="month" id="bulan-bayar">
+                </div>
+
+                <div class="form-group">
+                    <label>Tanggal Pembayaran</label>
+                    <input type="date" id="tanggal-bayar">
+                </div>
+            </div>
+
+            <div class="akun-form">
+                <div class="form-group">
+                    <label>Nominal Pembayaran</label>
+                    <input type="text" id="nominal-bayar" placeholder="Rp 0">
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button id="pembayaran-save" class="btn btn-add">
+                    Simpan Pembayaran
+                </button>
+                <button type="button" class="btn btn-cancel">
+                    Cancel
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL RIWAYAT PEMBAYARAN -->
+    <div id="riwayat-pembayaran-modal" class="saas-modal-overlay">
+        <div class="saas-modal add-akun-modern pembayaran-modal">
+
+            <button class="close modern-close">&times;</button>
+
+            <h3 style="text-align:center;">
+                Riwayat Pembayaran Siswa
+            </h3>
+
+            <div id="riwayat-siswa" class="form-group">
+                <p><span class="label">NISN</span><span class="val" id="riwayat-nisn"></span></p>
+                <p><span class="label">Nama</span><span class="val" id="riwayat-nama"></span></p>
+                <p><span class="label">Kelas</span><span class="val" id="riwayat-kelas"></span></p>
+            </div>
+
+            <div class="table-wrapper">
+                <table id="riwayat-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Jenis</th>
+                            <th>Bulan</th>
+                            <th>Tanggal</th>
+                            <th>Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+    <table id="pembayaran-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>NISN</th>
+                <th>Nama</th>
+                <th>Kelas</th>
+                <th>Rombel</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- render JS -->
+        </tbody>
+    </table>
+    </div>
+
+    <div id="pembayaran-table-footer" class="table-footer">
+        <div class="table-info">
+            Tampilkan
+            <div class="perpage-wrapper">
+                <input type="number" id="pembayaran-per-page" value="10" min="1">
+                <div class="perpage-buttons">
+                    <button type="button" id="perpage-up">▲</button>
+                    <button type="button" id="perpage-down">▼</button>
+                </div>
+            </div>
+            data dari <span id="pembayaran-total-data">0</span> data
+        </div>
+
+        <div id="pembayaran-pagination" class="pagination"></div>
+    </div>
+</div>

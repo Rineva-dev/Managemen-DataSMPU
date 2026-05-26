@@ -2,6 +2,9 @@
 // master_guru.js - FINAL STABIL + POLISH
 // ======================================
 
+const csrfToken =
+    document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // ================================
@@ -38,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let editIndex = null;
     let currentPage = 1;
-    let perPage = 5;
+    let perPage = 10;
 
     function loadGuruFromAPI() {
         fetch("/api/guru")
@@ -86,12 +89,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // ================================
     // OPEN / CLOSE FORM
     // ================================
-    addGuruBtn.addEventListener('click', () => openForm());
-    guruCancelBtn.addEventListener('click', closeForm);
+    if (addGuruBtn) {
+        addGuruBtn.addEventListener('click', () => openForm());
+    }
+
+    if (guruCancelBtn) {
+        guruCancelBtn.addEventListener('click', closeForm);
+    }
 
     function openForm(edit = false) {
         guruFormContainer.classList.add('show');
-        guruFormTitle.textContent = edit ? 'Edit Guru' : 'Tambah Guru';
+
+        if (edit) {
+            guruFormTitle.textContent = 'Edit Guru';
+            guruSaveBtn.textContent = 'Save Change';
+            guruSaveBtn.classList.remove('btn-add-modern');
+            guruSaveBtn.classList.add('btn-update-modern');
+        } else {
+            guruFormTitle.textContent = 'Tambah Guru';
+            guruSaveBtn.textContent = 'Add';
+            guruSaveBtn.classList.remove('btn-update-modern');
+            guruSaveBtn.classList.add('btn-add-modern');
+        }
+
         setTimeout(() => guruNama.focus(), 100);
     }
 
@@ -99,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         guruFormContainer.classList.remove('show');
         clearForm();
         clearErrors();
+        resetCustomDropdowns();
         editIndex = null;
     }
 
@@ -114,38 +135,143 @@ document.addEventListener('DOMContentLoaded', () => {
         guruEmail.value = '';
     }
 
+    function closeAllDropdowns(except = null) {
+        document.querySelectorAll(".custom-dropdown.active").forEach(dd => {
+            if (dd !== except) {
+                dd.classList.remove("active");
+                dd.querySelector(".dropdown-options")?.classList.remove("active");
+            }
+        });
+    }
+
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".custom-dropdown")) {
+            closeAllDropdowns();
+        }
+    });
+
+    document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
+
+        const selected =
+            dropdown.querySelector(".dropdown-selected") ||
+            dropdown.querySelector(".selected-text");
+
+        const options = dropdown.querySelector(".dropdown-options");
+
+        if (!selected || !options) return;
+
+        selected.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            const alreadyOpen = dropdown.classList.contains("active");
+
+            closeAllDropdowns();
+
+            if (!alreadyOpen) {
+                dropdown.classList.add("active");
+                options.classList.add("active");
+            }
+        });
+
+        const optionEls = options.querySelectorAll(".dropdown-option");
+        if (!optionEls.length) return;
+
+        optionEls.forEach(opt => {
+            opt.addEventListener("click", (e) => {
+                e.stopPropagation();
+
+                const value = opt.dataset.value || "";
+                const text = opt.textContent.trim();
+
+                const textEl = dropdown.querySelector(".selected-text");
+                if (textEl) textEl.textContent = text;
+
+                const hiddenInput =
+                    dropdown.parentElement?.querySelector("input[type='hidden']");
+                if (hiddenInput) hiddenInput.value = value;
+
+                dropdown.classList.remove("active");
+                options.classList.remove("active");
+            });
+        });
+
+    });
+
+    function resetCustomDropdowns() {
+        document.querySelectorAll(".custom-dropdown").forEach(dropdown => {
+
+            const selectedText = dropdown.querySelector(".selected-text");
+            const hiddenInput = dropdown.parentElement.querySelector("input[type='hidden']");
+
+            if (selectedText) {
+                if (dropdown.id === "genderOption") {
+                    selectedText.textContent = "Pilih Jenis Kelamin";
+                } else if (dropdown.id === "statusOption") {
+                    selectedText.textContent = "Pilih Status Perkawinan";
+                } else {
+                    selectedText.textContent = "Pilih Jabatan";
+                }
+            }
+
+            if (hiddenInput) {
+                hiddenInput.value = "";
+            }
+
+            dropdown.classList.remove("active");
+            dropdown.querySelector(".dropdown-options")?.classList.remove("active");
+        });
+    }
+
+    function setDropdownByHiddenInput(hiddenInputId, value) {
+        if (!value) return;
+
+        const hiddenInput = document.getElementById(hiddenInputId);
+        if (!hiddenInput) return;
+
+        const dropdown = hiddenInput.parentElement.querySelector(".custom-dropdown");
+        if (!dropdown) return;
+
+        const option = dropdown.querySelector(`.dropdown-option[data-value="${value}"]`);
+        const textEl = dropdown.querySelector(".selected-text");
+
+        if (option && textEl) {
+            textEl.textContent = option.textContent.trim();
+            hiddenInput.value = value;
+        }
+    }
     // ================================
     // INPUT RESTRICTIONS
     // ================================
+    if (guruHp) {
+        guruHp.addEventListener('input', () => {
+            let val = guruHp.value;
+            val = val.replace(/[^0-9+]/g, '');
 
-    // No HP: hanya angka dan + di awal, max 13 digit
-    guruHp.addEventListener('input', () => {
-        let val = guruHp.value;
-        val = val.replace(/[^0-9+]/g, '');
+            if (val.indexOf('+') > 0) {
+                val = val.replace(/\+/g, '');
+            }
 
-        if (val.indexOf('+') > 0) {
-            val = val.replace(/\+/g, '');
-        }
+            let numeric = val.replace('+', '');
+            if (numeric.length > 13) {
+                numeric = numeric.slice(0, 13);
+                val = val.startsWith('+') ? '+' + numeric : numeric;
+            }
 
-        let numeric = val.replace('+', '');
-        if (numeric.length > 13) {
-            numeric = numeric.slice(0, 13);
-            val = val.startsWith('+') ? '+' + numeric : numeric;
-        }
+            guruHp.value = val;
+        });
+    }
 
-        guruHp.value = val;
-    });
+    if (guruTanggal) {
+        guruTanggal.addEventListener('input', () => {
+            if (!guruTanggal.value) return;
 
-    // Tahun lahir: selalu 4 digit terakhir
-    guruTanggal.addEventListener('input', () => {
-        if (!guruTanggal.value) return;
-
-        const parts = guruTanggal.value.split('-'); // yyyy-mm-dd
-        if (parts[0].length > 4) {
-            parts[0] = parts[0].slice(-4); // ambil 4 digit terakhir
-            guruTanggal.value = parts.join('-');
-        }
-    });
+            const parts = guruTanggal.value.split('-');
+            if (parts[0].length > 4) {
+                parts[0] = parts[0].slice(-4);
+                guruTanggal.value = parts.join('-');
+            }
+        });
+    }
 
     // ================================
     // HILANGKAN ERROR SAAT DIKETIK
@@ -154,6 +280,9 @@ document.addEventListener('DOMContentLoaded', () => {
         guruNama, guruJabatan, guruTempat, guruTanggal,
         guruJk, guruStatus, guruHp, guruAlamat, guruEmail
     ].forEach(input => {
+
+        if (!input) return;
+
         input.addEventListener('input', () => {
             input.classList.remove('error');
             const msg = input.nextElementSibling;
@@ -163,25 +292,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ================================
-    // ENTER = SIMPAN
-    // ================================
-
-    /*
-    [
-       // guruNama, guruJabatan, guruTempat, guruTanggal,
-        guruJk, guruStatus, guruHp, guruAlamat, guruEmail
-    ].forEach(input => {
-        input.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                saveGuru();
-            }
-        });
-    });
-    */
-
-    guruSaveBtn.addEventListener('click', saveGuru);
+    if (guruSaveBtn) {
+        guruSaveBtn.addEventListener('click', saveGuru);
+    }
 
     // ================================
     // SAVE DATA
@@ -204,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let hasError = false;
 
         fields.forEach(f => {
-            if (!f.el.value.trim()) {
+            if (!f.el || !f.el.value || !f.el.value.trim()) {
                 showError(f.el, `${f.name} wajib diisi`);
                 hasError = true;
             }
@@ -260,7 +373,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fetch(url, {
             method: method,
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
             body: JSON.stringify(data)
         })
         .then(res => res.json())
@@ -280,10 +396,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    function formatJabatan(jabatan) {
+        if (!jabatan) return '';
+        return jabatan
+            .replace(/_/g, ' ')
+            .split(' ')
+            .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(' ');
+    }
+
+    // ================================
+    // MODAL CLOSE (Modern)
+    // ================================
+    document.querySelectorAll(".modern-close").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const modal = btn.closest(".modal");
+            if (modal) modal.classList.remove("show");
+        });
+    });
+
+
     // ================================
     // RENDER TABLE + PAGINATION
     // ================================
     function renderTable(data = guruData) {
+        if (!guruTableBody) return;
+
         guruTableBody.innerHTML = '';
 
         const totalPages = Math.ceil(data.length / perPage);
@@ -300,12 +438,17 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.innerHTML = `
                 <td>${realIndex + 1}</td>
                 <td>${guru.nama}</td>
-                <td>${guru.jabatan}</td>
+                <td>${formatJabatan(guru.jabatan)}</td>
                 <td>${guru.hp}</td>
                 <td>${guru.email}</td>
-                <td style="text-align:center;">
-                    <img src="/static/icons/edit.png" class="edit-btn" style="width:24px;cursor:pointer;margin-right:10px;">
-                    <img src="/static/icons/delete.png" class="delete-btn" style="width:24px;cursor:pointer;">
+                <td class="action-cell">
+                    <button class="action-btn edit-btn" title="Edit">
+                        <i data-lucide="pencil"></i>
+                    </button>
+
+                    <button class="action-btn delete-btn" title="Hapus">
+                        <i data-lucide="trash-2"></i>
+                    </button>
                 </td>
             `;
 
@@ -313,24 +456,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadToForm(guru, realIndex);
             });
 
-            tr.querySelector('.delete-btn').addEventListener('click', () => {
-                showDeleteConfirm(guru.nama, () => {
-                    fetch(`/api/guru/delete/${guru.id}`, { method: "DELETE" })
-                        .then(res => res.json())
-                        .then(res => {
-                            if(res.status === "success") {
-                                showNotification(res.message, "success");
-                                loadGuruFromAPI(); // reload table
-                            } else {
-                                showNotification(res.message, "error");
-                            }
-                        });
+            tr.querySelector('.delete-btn').addEventListener('click', async () => {
+
+                const confirmed = await showConfirm(
+                    `Anda yakin menghapus data <b>${guru.nama}</b>?`
+                );
+
+                if (!confirmed) return;
+
+                fetch(`/api/guru/delete/${guru.id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "X-CSRFToken": csrfToken
+                    }
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.status === 'success') {
+                        showNotification(res.message, 'success');
+                        loadGuruFromAPI();
+                    } else {
+                        showNotification(res.message, 'error');
+                    }
+                })
+                .catch(() => {
+                    showNotification('Terjadi error server', 'error');
                 });
             });
 
             guruTableBody.appendChild(tr);
         });
-
+        lucide.createIcons();
         guruTotalData.textContent = data.length;
         renderPagination(totalPages);
     }
@@ -379,14 +535,16 @@ document.addEventListener('DOMContentLoaded', () => {
         editIndex = index;
 
         guruNama.value = guru.nama;
-        guruJabatan.value = guru.jabatan;
         guruTempat.value = guru.tempat || '';
         guruTanggal.value = guru.tahun || '';
-        guruJk.value = guru.jk || '';
-        guruStatus.value = guru.status || '';
         guruHp.value = guru.hp || '';
         guruAlamat.value = guru.alamat || '';
         guruEmail.value = guru.email || '';
+
+        // SET DROPDOWN (pakai hidden input id)
+        setDropdownByHiddenInput("guru-jabatan", guru.jabatan);
+        setDropdownByHiddenInput("guru-jk", guru.jk);
+        setDropdownByHiddenInput("guru-status", guru.status);
 
         openForm(true);
     }
@@ -394,14 +552,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // ================================
     // SEARCH
     // ================================
-    guruSearchBtn.addEventListener('click', doSearch);
+    if (guruSearchBtn && guruSearchInput) {
+        guruSearchBtn.addEventListener('click', doSearch);
 
-    guruSearchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            doSearch();
-        }
-    });
+        guruSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                doSearch();
+            }
+        });
+    }
 
     function doSearch() {
         const keyword = guruSearchInput.value.toLowerCase().trim();
@@ -418,37 +578,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             renderTable(result);
         }
-    }
-
-    // ================================
-    // CUSTOM CONFIRM DELETE
-    // ================================
-    function showDeleteConfirm(nama, onYes) {
-        const overlay = document.createElement('div');
-        overlay.className = 'confirm-overlay';
-
-        const box = document.createElement('div');
-        box.className = 'confirm-box';
-
-        box.innerHTML = `
-            <p>Anda yakin menghapus data <b>${nama}</b>?</p>
-            <div class="confirm-actions">
-                <button class="confirm-yes">Ya</button>
-                <button class="confirm-no">Batal</button>
-            </div>
-        `;
-
-        overlay.appendChild(box);
-        document.body.appendChild(overlay);
-
-        box.querySelector('.confirm-yes').addEventListener('click', () => {
-            document.body.removeChild(overlay);
-            onYes();
-        });
-
-        box.querySelector('.confirm-no').addEventListener('click', () => {
-            document.body.removeChild(overlay);
-        });
     }
 
     // ================================

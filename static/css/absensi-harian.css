@@ -1,0 +1,250 @@
+/* ================================
+   ULTRA PREMIUM SaaS DateTime Card
+================================= */
+.saas-datetime-card {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* ⬅ penting */
+    gap: 0;               /* jarak antara main & rules */
+
+    padding: 32px 50px;
+    margin-bottom: 40px;
+    border-radius: 26px;
+
+    background:
+        linear-gradient(145deg, rgba(31,41,55,0.9), rgba(17,24,39,0.95));
+    color: #fff;
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    overflow: hidden;
+}
+
+/* Ambient Light Glow */
+.saas-datetime-card::before {
+    content: "";
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(
+        circle,
+        rgba(241,163,99,0.15),
+        transparent 70%
+    );
+    top: -150px;
+    left: -150px;
+    pointer-events: none;
+}
+
+/* Subtle Moving Shine */
+.saas-datetime-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255,255,255,0.06),
+        transparent 70%
+    );
+    transform: translateX(-100%);
+    animation: shineMove 8s infinite linear;
+    pointer-events: none;
+}
+
+@keyframes shineMove {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Layout utama dalam card */
+.datetime-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+/* Rules di bawah divider */
+.absen-rules {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    margin-top: 0; /* hapus jarak manual */
+    padding-top: 18px;
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ================= Clock ================= */
+
+.saas-clock {
+    font-size: 58px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    font-family: 'Inter', sans-serif;
+
+    background: linear-gradient(90deg, #ffffff, #f1a363);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%,100% {
+        text-shadow: 0 0 1px rgba(241,163,99,0.4);
+    }
+    50% {
+        text-shadow: 0 0 5px rgba(241,163,99,0.8);
+    }
+}
+
+/* Divider */
+
+.datetime-divider {
+    width: 1px;
+    height: 70px;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(255,255,255,0.3),
+        transparent
+    );
+}
+
+/* ================= Date ================= */
+
+.saas-date {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: .5px;
+    opacity: .95;
+}
+
+/* Hijri Accent */
+
+.saas-hijri {
+    font-size: 15px;
+    font-weight: 500;
+    opacity: .8;
+    letter-spacing: .4px;
+
+    color: #f1a363;
+}
+
+/* Label */
+
+.saas-label {
+    font-size: 12px;
+    opacity: .6;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* ================= Hover Depth ================= */
+
+.saas-datetime-card:hover {
+    transform: translateY(-1px);
+    transition: transform .4s cubic-bezier(.22,.61,.36,1);
+}
+
+/* ================= Responsive ================= */
+
+@media (max-width: 768px) {
+    .saas-datetime-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+        padding: 28px;
+    }
+
+    .datetime-divider {
+        display: none;
+    }
+
+    .saas-clock {
+        font-size: 44px;
+    }
+}
+
+/* ===============================
+   ABSEN RULES BAR
+================================= */
+
+.absen-rules {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+
+    margin-top: 30px;
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+    font-size: 13px;
+    letter-spacing: .4px;
+}
+
+.rule-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+    flex: 1;
+}
+
+.rule-label {
+    opacity: .6;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rule-time {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+/* ===============================
+   SCROLL DROPDOWN BULAN
+   =============================== */
+.absen-filter-options {
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* scrollbar halus (opsional, cakep) */
+.absen-filter-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.absen-filter-options::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.25);
+    border-radius: 4px;
+}
+
+.absen-filter-options::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+@media (max-width: 768px) {
+
+    .datetime-main {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+    }
+
+    .datetime-divider {
+        display: none;
+    }
+
+    .absen-rules {
+        flex-direction: column;
+        gap: 18px;
+    }
+}

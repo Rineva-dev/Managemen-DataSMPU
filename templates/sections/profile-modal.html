@@ -1,0 +1,155 @@
+<div id="profile-modal" class="modal">
+    <div class="modal-content profile-modern">
+        <button class="close modern-close">&times;</button>
+
+        <div class="profile-top">
+            <div class="profile-photo-wrapper">
+                {% if guru and guru.foto %}
+                    <img 
+                        id="modal-photo"
+                        class="modal-photo-modern"
+                        src="{{ url_for('profile.uploaded_file', filename=guru.foto) }}">
+                {% else %}
+                    <div id="modal-photo" class="modal-avatar-initial">
+                        {{ guru.nama[0]|upper if guru and guru.nama else 'U' }}
+                    </div>
+                {% endif %}
+
+                <div class="photo-overlay">
+                    <button id="edit-photo-btn" class="edit-photo-btn">
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+
+                    <button id="delete-photo-btn" class="delete-photo-btn">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+
+                
+            </div>
+
+            <div class="profile-name-block">
+                <div id="display-fullname" class="profile-display-name">
+                    -
+                </div>
+                <span class="profile-role-badge">{{ role_title }}</span>
+            </div>
+        </div>
+
+        <div class="profile-form-grid">
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="fullname">
+            </div>
+
+            <div class="form-group">
+                <label>Jenis Kelamin</label>
+
+                <div class="custom-dropdown" id="genderDropdown">
+                    <div class="dropdown-selected" id="genderSelected">
+                        <span class="selected-text">Pilih</span>
+                        <span class="arrow">▾</span>
+                    </div>
+
+                    <div class="dropdown-options" id="genderOptions">
+                        <div class="dropdown-option" data-value="Laki-laki">
+                            Laki-laki
+                        </div>
+                        <div class="dropdown-option" data-value="Perempuan">
+                            Perempuan
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" id="gender">
+            </div>
+            <div class="form-group">
+                <label>Tempat Lahir</label>
+                <input type="text" id="birthplace">
+            </div>
+
+            <div class="form-group">
+                <label>Tanggal Lahir</label>
+                <input type="date" id="birthdate">
+            </div>
+
+            <div class="form-group">
+                <label>No. HP</label>
+                <input type="text" id="phone" name="phone" autocomplete="tel">
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" name="email" autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" name="username" autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password"
+                        placeholder="Kosongkan jika tidak ingin mengganti password">
+                    <button type="button"
+                            class="password-toggle"
+                            aria-label="Toggle password"
+                            data-target="password">
+                        <span class="toggle-dots"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-footer">
+            <button type="button" id="edit-profile-btn" class="btn btn-add">
+                Edit Profile
+            </button>
+
+            <button type="button" id="save-profile" class="btn btn-add" style="display:none;">
+                Save Change
+            </button>
+
+            <button type="button" id="cancel-edit" class="btn btn-cancel" style="display:none;">
+                Cancel
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Crop Overlay -->
+<div id="crop-modal-overlay" style="display:none;"></div>
+
+<!-- Crop Modal -->
+<div id="crop-modal" style="display:none;">
+    <div class="crop-box">
+
+        <h3>Potong Foto</h3>
+
+        <div class="crop-image-wrapper">
+            <img id="cropper-image">
+        </div>
+
+        <div class="crop-footer">
+        <div class="crop-left">
+            <button id="zoom-out">-</button>
+            <button id="zoom-in">+</button>
+            <button id="change-photo">Ganti Foto</button>
+        </div>
+
+        <div class="crop-right">
+            <button id="crop-cancel">Batal</button>
+            <button id="crop-save">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<input
+    type="file"
+    id="upload-photo-input"
+    accept="image/*"
+    hidden>

@@ -1,0 +1,149 @@
+<div id="mata-pelajaran-content"
+     style="display: {{ 'block' if active_page == 'mata_pelajaran' else 'none' }}">
+
+    <h3>Mata Pelajaran</h3>
+
+    <!-- ================= TOOLBAR ================= -->
+    <div class="filter-container guru-filter-bar">
+        <button id="add-mapel-btn" class="btn btn-add">
+            Add Mata Pelajaran
+        </button>
+    </div>
+
+    <!-- ================= MODAL TAMBAH / EDIT MAPEL ================= -->
+    <div id="mapel-form-container" class="saas-modal-overlay">
+
+        <div class="saas-modal add-akun-modern">
+            <button class="close modern-close">&times;</button>
+
+            <h3 id="mapel-form-title">Tambah Mata Pelajaran</h3>
+
+            <div class="akun-form">
+
+                <input type="hidden" id="mapel-id">
+
+                <!-- Nama Mapel -->
+                <div class="form-group">
+                    <label>Nama Mata Pelajaran</label>
+                    <input type="text"
+                        id="mapel-nama"
+                        placeholder="Contoh: Matematika">
+                </div>
+
+                <!-- Jenis -->
+                <div class="form-group">
+                    <label>Jenis</label>
+
+                    <div class="custom-dropdown" id="mapelJenisDropdown">
+                        <input type="hidden" id="mapel-jenis">
+
+                        <div class="dropdown-selected">
+                            <span class="selected-text">Pilih Jenis</span>
+                            <span class="arrow">▾</span>
+                        </div>
+
+                        <div class="dropdown-options">
+                            <div class="dropdown-option" data-value="wajib">
+                                Wajib
+                            </div>
+                            <div class="dropdown-option" data-value="mulok">
+                                Muatan Lokal
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTION -->
+                <div class="form-actions">
+                    <button type="button"
+                            id="mapel-save"
+                            class="btn btn-add">
+                        Save
+                    </button>
+
+                    <button type="button"
+                            id="mapel-cancel"
+                            class="btn btn-cancel">
+                        Cancel
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TABEL DATA MAPEL ================= -->
+    <div class="table-wrapper">
+        <table id="mapel-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Mata Pelajaran</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <!-- ================= MAPEL WAJIB ================= -->
+                <tr class="group-header">
+                    <td class="group-label">A</td>
+                    <td class="group-title" colspan="4">
+                        Mata Pelajaran Wajib
+                    </td>
+                </tr>
+
+                {% for mapel in data_wajib %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ mapel.nama }}</td>
+                    <td class="aksi-cell">
+                        {% if mapel.is_locked == 0 %}
+                            <div class="aksi-wrapper">
+                                <button class="action-btn edit-btn" data-id="{{ mapel.id }}">
+                                    <i data-lucide="pencil"></i>
+                                </button>
+
+                                <button class="action-btn delete-btn" data-id="{{ mapel.id }}">
+                                    <i data-lucide="trash-2"></i>
+                                </button>
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+
+                <!-- ================= MUATAN LOKAL ================= -->
+                <tr class="group-header">
+                    <td class="group-label">B</td>
+                    <td class="group-title" colspan="4">
+                        Muatan Lokal
+                    </td>
+                </tr>
+
+                {% for mapel in data_mulok %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ mapel.nama }}</td>
+                    <td class="aksi-cell">
+                        <div class="aksi-wrapper">
+                            <button class="action-btn edit-btn" data-id="{{ mapel.id }}">
+                                <i data-lucide="pencil"></i>
+                            </button>
+
+                            <button class="action-btn delete-btn" data-id="{{ mapel.id }}">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="empty">Belum ada muatan lokal</td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+</div>

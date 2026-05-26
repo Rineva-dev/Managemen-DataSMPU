@@ -1,0 +1,115 @@
+<div id="akun-guru-content"
+    style="display: {{ 'block' if active_page == 'akun_guru' else 'none' }}">
+    <h3>Akun Guru</h3>
+
+    <div class="filter-container akun-filter-bar">
+        <button id="add-akun-btn" class="btn btn-add">
+            Add Account
+        </button>
+
+        <div class="filter-search-group">
+            <input type="text" id="akun-search-input" class="filter-input" placeholder="Cari guru...">
+            <button type="button" id="akun-search-btn" class="btn filter-btn">Search</button>
+        </div>
+    </div>
+
+    <!-- Modal Form Buat Akun -->
+    <div id="akun-form-container" class="saas-modal-overlay">
+        <div class="saas-modal add-akun-modern">
+            <button class="close modern-close">&times;</button>
+            <h3 id="akun-form-title">Buat Akun Guru</h3>
+            <div class="akun-form">
+                <div class="form-group">
+                    <label>Pilih Guru</label>
+                    <div class="custom-dropdown" id="akunGuruDropdown">
+                        <div class="dropdown-selected" id="akunGuruSelected">
+                            <span class="selected-text">Pilih Guru</span>
+                            <span class="arrow">▾</span>
+                        </div>
+
+                        <div class="dropdown-options" id="akunGuruOptions">
+                            <!-- option akan diisi JS -->
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="akun-guru">
+                </div>
+                
+                <div class="form-group">
+                    <label for="akun-username">Username</label>
+                    <input type="text" id="akun-username" autocomplete="username" placeholder="Masukkan username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="akun-password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="akun-password" autocomplete="new-password" placeholder="Masukkan password">
+                        <button type="button"
+                                class="password-toggle"
+                                aria-label="Toggle password"
+                                data-target="akun-password">
+                            <span class="toggle-dots"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Role</label>
+
+                    <div class="custom-dropdown">
+                        <div class="dropdown-selected">
+                            <span class="selected-text">Pilih Role</span>
+                            <span class="arrow">▾</span>
+                        </div>
+
+                        <div class="dropdown-options" id="roleOptions">
+                            <div class="dropdown-option" data-value="admin">Admin</div>
+                            <div class="dropdown-option" data-value="kepala_sekolah">Kepala Sekolah</div>
+                            <div class="dropdown-option" data-value="waka_kurikulum">Waka Kurikulum</div>
+                            <div class="dropdown-option" data-value="waka_kesiswaan">Waka Kesiswaan</div>
+                            <div class="dropdown-option" data-value="bendahara">Bendahara</div>
+                            <div class="dropdown-option" data-value="wali_kelas">Wali Kelas</div>
+                            <div class="dropdown-option" data-value="guru">Guru</div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="akun-role">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="akun-save" class="btn btn-add">Add Account</button>
+                    <button type="button" id="akun-cancel" class="btn btn-cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Akun Guru -->
+    <div class="table-wrapper">
+        <table id="akun-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Guru</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Password</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data akun guru akan di-render JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="akun-table-footer" class="table-footer">
+        <div class="table-info">
+            Tampilkan 
+            <input type="number" id="akun-per-page" value="10" min="1">
+            data dari <span id="akun-total-data">0</span> data
+        </div>
+
+        <div id="akun-pagination" class="pagination"></div>
+    </div>
+</div>

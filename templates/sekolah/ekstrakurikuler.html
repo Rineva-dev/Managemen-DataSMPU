@@ -1,0 +1,196 @@
+<div id="ekstrakurikuler-content"
+    style="display: {{ 'block' if active_page == 'ekstrakurikuler' else 'none' }}">
+
+    <h3>Data Ekstrakurikuler</h3>
+
+    <div class="filter-container guru-filter-bar">
+
+        {% if tahun_aktif %}
+            <button id="add-ekskul-btn" class="btn btn-add">
+                Add Ekstrakurikuler
+            </button>
+        {% else %}
+            <button class="btn btn-add" disabled>
+                🔒 Tahun Tidak Aktif
+            </button>
+        {% endif %}
+
+        <div class="kelas-action-bar">
+
+            <button id="edit-ekskul-btn" class="btn-aksi-container btn-add" disabled>
+                <i data-lucide="pencil" width="14"></i> Edit
+            </button>
+
+            <button id="anggota-ekskul-btn" class="btn-aksi-container btn-warning" disabled>
+                <i data-lucide="users" width="14"></i> Anggota
+            </button>
+
+            <button id="jadwal-ekskul-btn" class="btn-aksi-container btn-check" disabled>
+                <i data-lucide="calendar-check" width="14"></i> Jadwal
+            </button>
+
+            <button id="delete-ekskul-btn" class="btn-aksi-container btn-danger" disabled>
+                <i data-lucide="trash-2" width="14"></i> Hapus
+            </button>
+        </div>
+
+        <!-- Dropdown Tahun -->
+        <div class="custom-dropdown" id="ekskulTahunDropdown">
+            <input type="hidden" id="ekskul-tahun-dropdown" value="{{ tahun_terpilih }}">
+
+            <div class="dropdown-selected">
+                <span class="selected-text">
+                    {% for tahun in tahun_list %}
+                        {% if tahun.id == tahun_terpilih %}
+                            {{ tahun.tahun_pelajaran }} - {{ tahun.semester }}
+                        {% endif %}
+                    {% endfor %}
+                </span>
+                <span class="arrow">▾</span>
+            </div>
+
+            <div class="dropdown-options">
+                {% for tahun in tahun_list %}
+                <div class="dropdown-option" data-value="{{ tahun.id }}">
+                    {{ tahun.tahun_pelajaran }} - {{ tahun.semester }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div id="ekskul-form-container" class="saas-modal-overlay">
+        <div class="saas-modal add-akun-modern">
+
+            <button class="close modern-close">&times;</button>
+            <h3 id="ekskul-form-title">Tambah Ekstrakurikuler</h3>
+
+            <div class="akun-form">
+                <input type="hidden" id="ekskul-id">
+                <input type="hidden" id="ekskul-tahun-id" value="{{ tahun_terpilih }}">
+
+                <!-- Nama Ekskul -->
+                <div class="form-group">
+                    <label>Nama Ekstrakurikuler</label>
+                    <input type="text" id="ekskul-nama" placeholder="Contoh: Pramuka">
+                </div>
+
+                <!-- Pembina -->
+                <div class="form-group">
+                    <label>Pembina</label>
+                    <div class="custom-dropdown">
+                        <input type="hidden" id="ekskul-pembina">
+                        <div class="dropdown-selected">
+                            <span class="selected-text">Pilih Pembina</span>
+                            <span class="arrow">▾</span>
+                        </div>
+                        <div class="dropdown-options">
+                            {% for guru in guru_list %}
+                            <div class="dropdown-option" data-value="{{ guru.id }}">
+                                {{ guru.nama }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hari -->
+                <div class="form-group">
+                    <label>Hari Kegiatan</label>
+                    <input type="text" id="ekskul-hari" placeholder="Contoh: Jumat">
+                </div>
+
+                <div class="form-actions">
+                    <button id="ekskul-save" class="btn btn-add">Save</button>
+                    <button id="ekskul-cancel" class="btn btn-cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="anggota-ekskul-modal" class="rombel-overlay">
+        <div class="rombel-modal">
+
+            <h3>Anggota Ekstrakurikuler</h3>
+
+            <div class="rombel-container">
+                <div class="rombel-left">
+                    <h4>Anggota Ekskul</h4>
+                    <ul id="ekskul-anggota-list"></ul>
+                </div>
+
+                <div class="rombel-right">
+                    <h4>Daftar Siswa</h4>
+                    <ul id="ekskul-siswa-list"></ul>
+                </div>
+            </div>
+
+            <div class="rombel-actions">
+                <button id="save-ekskul-anggota" class="btn btn-add">Save</button>
+                <button class="btn btn-cancel close-rombel">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="kelas-main">
+
+    <!-- KIRI: TABEL EKSKUL -->
+        <div class="kelas-left">
+            <div class="table-wrapper">
+                <table id="ekskul-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Ekskul</th>
+                            <th>Pembina</th>
+                            <th>Total Anggota</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ekskul in ekskul_list %}
+                        <tr data-id="{{ ekskul.id }}">
+                            <td>{{ loop.index }}</td>
+                            <td>{{ ekskul.nama }}</td>
+                            <td>{{ ekskul.pembina_nama or '-' }}</td>
+                            <td>{{ ekskul.total_anggota or 0 }} Siswa</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="kelas-right" id="ekskul-detail-panel">
+
+            <div class="kelas-detail-header">
+                <h4 id="ekskul-detail-title">Pilih Ekstrakurikuler</h4>
+            </div>
+
+            <div class="kelas-detail-body">
+                <table class="detail-table">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>NISN</th>
+                    <th>Nama</th>
+                    <th>Kelas</th>
+                </tr>
+                </thead>
+
+                <tbody id="detail-anggota-body">
+                    <tr>
+                        <td colspan="4" class="empty">
+                            Pilih ekstrakurikuler untuk melihat anggota
+                        </td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/sekolah/ekstrakurikuler.js') }}"></script>
+{% endblock %}

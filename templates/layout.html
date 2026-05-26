@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id" class="preload">
+<head>
+<meta charset="UTF-8">
+<meta name="language" content="id">
+<meta http-equiv="Content-Language" content="id-ID">
+<style>
+html.preload {
+    visibility: hidden;
+}
+
+html.preload body {
+    opacity: 0;
+}
+
+html.preload * {
+    transition: none !important;
+    animation: none !important;
+}
+</style>
+<script>
+document.documentElement.classList.add("no-transition");
+</script>
+<script>
+(function () {
+    const html = document.documentElement;
+
+    function unlock() {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                html.classList.remove("preload");
+            });
+        });
+    }
+
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(unlock);
+    } else {
+        window.addEventListener("load", unlock);
+    }
+
+    // fallback absolut
+    setTimeout(unlock, 1500);
+})();
+</script>
+    <title>{{ role_title }} | SMP UH</title>
+    <script>
+    (function () {
+        const html = document.documentElement;
+        if (localStorage.getItem("sekolahMenuOpen") === "true") {
+            html.classList.add("sekolah-open");
+        }
+    })();
+    </script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/absensi-harian.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/filter.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body data-role="{{ session.get('role') }}">
+{% include "sidebar.html" %}
+
+<div class="main">
+
+    {% include "header.html" %}
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+</div>
+
+<!-- Global Scripts -->
+<script src="{{ url_for('static', filename='js/core.js') }}"></script>
+<script src="{{ url_for('static', filename='js/layout.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>window.uploadPhotoUrl = "/api/update-profile-photo-admin";</script>
+<script src="{{ url_for('static', filename='js/guru-crop.js') }}"></script>
+<script src="{{ url_for('static', filename='js/confirm.js') }}"></script>
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sekolah/mapel.js') }}"></script>
+{% if session.get('role') in ['admin', 'kepala_sekolah'] %}
+<script src="{{ url_for('static', filename='js/guru.js') }}"></script>
+{% endif %}
+<script src="{{ url_for('static', filename='js/notification.js') }}"></script>
+
+{% block extra_js %}{% endblock %}
+
+<div id="toast-container"></div>
+
+<div id="confirm-modal" class="confirm-modal">
+    <div class="confirm-box">
+
+        <!-- ICON -->
+        <div class="confirm-icon danger">
+            <i data-lucide="trash-2"></i>
+        </div>
+
+        <!-- MESSAGE -->
+        <p id="confirm-message"></p>
+
+        <!-- ACTION -->
+        <div class="confirm-actions">
+            <button id="confirm-no" class="btn btn-cancel">Batal</button>
+            <button id="confirm-yes" class="btn btn-danger">Hapus</button>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const toggle = document.querySelector(".menu-toggle");
+    if (!toggle) return;
+
+    toggle.addEventListener("click", function() {
+        const html = document.documentElement;
+        const isOpen = html.classList.contains("sekolah-open");
+
+        if (isOpen) {
+            html.classList.remove("sekolah-open");
+            localStorage.setItem("sekolahMenuOpen", "false");
+        } else {
+            html.classList.add("sekolah-open");
+            localStorage.setItem("sekolahMenuOpen", "true");
+        }
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    lucide.createIcons();
+    document.body.classList.add("icons-ready");
+});
+</script>
+</script>
+</body>
+</html>

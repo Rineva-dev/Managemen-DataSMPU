@@ -1,0 +1,321 @@
+{% set active_page = 'kelas_ampu' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/nilai.css') }}">
+{% endblock %}
+
+<div class="nilai-page">
+
+    <!-- ================= HEADER ================= -->
+    <div class="nilai-header">
+        <div>
+            <h2>Nilai Siswa</h2>
+            <p>
+                Kelas {{ kelas }} • {{ mapel }}
+            </p>
+        </div>
+
+        <a href="{{ url_for('kelas_ampu.index') }}"
+            class="btn-back">
+            ← Kembali
+        </a>
+    </div>
+
+    <!-- ================= ACTION BAR (EDIT MODE) ================= -->
+    <div id="nilai-action-bar" class="nilai-action-bar" style="display:none;">
+        <span>Edit Nilai</span>
+
+        <div>
+            <button id="btn-batal" class="btn btn-cancel">
+                Batal
+            </button>
+
+            <button id="btn-simpan" class="btn btn-add">
+                Simpan
+            </button>
+        </div>
+    </div>
+
+    <!-- =========================================
+        TOP GRID
+    ========================================= -->
+    <div class="nilai-top-grid">
+
+        <!-- ================= KKM INFO ================= -->
+        <div class="kkm-info-card">
+
+            <div class="kkm-info-header">
+
+                <div>
+                    <h3>Informasi Penilaian</h3>
+
+                    <p>
+                        Nilai KKM :
+                        <strong>{{ kkm }}</strong>
+                    </p>
+                </div>
+
+            </div>
+
+            <table class="kkm-grade-table">
+
+                <thead>
+                    <tr>
+                        <th>Rentang Nilai</th>
+                        <th>Grade</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in grade_ranges %}
+                    <tr>
+
+                        <td>
+                            {% if item.grade == 'A' %}
+                                {{ item.min }} – 100
+
+                            {% elif item.grade == 'B' %}
+                                {{ item.min }} – {{ grade_ranges[0].min - 1 }}
+
+                            {% elif item.grade == 'C' %}
+                                {{ item.min }} – {{ grade_ranges[1].min - 1 }}
+
+                            {% else %}
+                                0 – {{ grade_ranges[2].min - 1 }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+
+                            {% if item.grade == 'A' %}
+                            <span class="grade-badge grade-a">A</span>
+
+                            {% elif item.grade == 'B' %}
+                            <span class="grade-badge grade-b">B</span>
+
+                            {% elif item.grade == 'C' %}
+                            <span class="grade-badge grade-c">C</span>
+
+                            {% else %}
+                            <span class="grade-badge grade-d">D</span>
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if item.grade == 'A' %}
+                                Sangat Baik
+
+                            {% elif item.grade == 'B' %}
+                                Baik
+
+                            {% elif item.grade == 'C' %}
+                                Tungtas
+
+                            {% else %}
+                                Belum Tuntas
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- ================= SUMMARY ================= -->
+        <div class="nilai-summary-grid">
+
+            <div class="summary-cards blue">
+
+                <span>Total Siswa</span>
+
+                <div class="summary-value">
+
+                    <div class="summary-icon blue">
+                        <i data-lucide="users"></i>
+                    </div>
+
+                    <strong>{{ siswa_list|length }}</strong>
+
+                </div>
+
+            </div>
+
+            <div class="summary-cards green">
+                    <span>Rata-rata Kelas</span>
+
+                <div class="summary-value">
+                    <div class="summary-icon green">
+                        <i data-lucide="bar-chart-3"></i>
+                    </div>
+
+                    <strong id="rata-kelas">{{ "%.2f"|format(rata_kelas) }}</strong>
+                </div>
+            </div>
+
+            <div class="summary-cards orange">
+                <span>Tuntas</span>
+
+                <div class="summary-value">
+                    <div class="summary-icon orange">
+                        <i data-lucide="badge-check"></i>
+                    </div>
+
+                    <strong id="total-tuntas">{{ total_tuntas }}</strong>
+                </div>
+            </div>
+
+            <div class="summary-cards red">
+                <span>Belum Tuntas</span>
+
+                <div class="summary-value">
+                    <div class="summary-icon red">
+                        <i data-lucide="x-circle"></i>
+                    </div>
+
+                    <strong id="total-belum-tuntas">{{ total_belum_tuntas }}</strong>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= SEARCH ================= -->
+    <div class="nilai-toolbar">
+        <button id="btn-export-excel" class="btn btn-add">
+            Export Excel
+        </button>
+        
+        <div class="search-box">
+            <i data-lucide="search"></i>
+
+            <input
+                type="text"
+                id="search-siswa"
+                placeholder="Cari nama atau NISN siswa...">
+        </div>
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="nilai-table-wrapper">
+        <table class="nilai-table" id="nilai-table" data-kelas-mapel-id="{{ kelas_mapel_id }}" data-kkm="{{ kkm }}">
+
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>NISN</th>
+                    <th>Nama</th>
+                    <th>Kehadiran</th>
+
+                    <th class="editable-header" data-type="keaktifan">
+                        <div class="header-flex">
+                            <span>Keaktifan</span>
+
+                            <button class="edit-header-btn"
+                                data-type="keaktifan"
+                                title="Edit Keaktifan">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                        </div>
+                    </th>
+
+                    <th class="editable-header">
+                        <div class="header-flex">
+                            <span>Harian</span>
+                            <button class="edit-header-btn"
+                                data-type="harian"
+                                title="Edit Nilai Harian">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                        </div>
+                    </th>
+
+                    <th class="editable-header">
+                        <div class="header-flex">
+                            <span>UAS</span>
+                            <button class="edit-header-btn"
+                                data-type="uas"
+                                title="Edit Nilai UAS">
+                                <i data-lucide="pencil"></i>
+                            </button>
+                        </div>
+                    </th>
+
+                    <th>
+                        Nilai Akhir
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody id="nilai-list">
+                {% for s in siswa_list %}
+                <tr data-siswa-id="{{ s.id }}">
+
+                    <td>{{ loop.index }}</td>
+                    <td>{{ s.nisn }}</td>
+                    <td class="nama-siswa">{{ s.nama }}</td>
+
+                    <!-- KEHADIRAN (READ ONLY) -->
+                    <td class="nilai-cell hadir"
+                        data-type="kehadiran"
+                        data-value="{{ s.nilai_kehadiran }}"
+                        data-kkm="{{ kkm }}">
+                        {{ s.nilai_kehadiran }}
+                    </td>
+
+                    <!-- KEAKTIFAN -->
+                    <td class="nilai-cell"
+                        data-type="keaktifan"
+                        data-value="{{ s.nilai_keaktifan or '' }}"
+                        data-kkm="{{ kkm }}">
+                        {{ s.nilai_keaktifan or '-' }}
+                    </td>
+
+                    <!-- HARIAN -->
+                    <td class="nilai-cell"
+                        data-type="harian"
+                        data-value="{{ s.nilai_harian or '' }}"
+                        data-kkm="{{ kkm }}">
+                        {{ s.nilai_harian or '-' }}
+                    </td>
+
+                    <!-- UAS -->
+                    <td class="nilai-cell"
+                        data-type="uas"
+                        data-value="{{ s.nilai_uas or '' }}"
+                        data-kkm="{{ kkm }}">
+                        {{ s.nilai_uas or '-' }}
+                    </td>
+
+                    <td class="nilai-akhir">
+
+                        <div class="nilai-akhir-wrapper">
+
+                            <span class="nilai-badge badge-{{ s.grade_color }}">
+                                {{ s.nilai_akhir }}
+                            </span>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/guru/nilai.js') }}"></script>

@@ -1,0 +1,141 @@
+<div id="master-data-content"
+    style="display: {{ 'block' if active_page == 'master_data' else 'none' }}">
+    <h3>Master Data Guru</h3>
+    
+    <div class="filter-container guru-filter-bar">
+        <!-- Tombol Tambah Guru -->
+        <button id="add-guru-btn" class="btn btn-add">
+            Add Teacher
+        </button>
+
+        <div class="filter-search-group">
+            <input type="text" id="guru-search-input" aria-label="Cari nama guru" class="filter-input" placeholder="Cari nama guru...">
+            <button id="guru-search-btn" class="btn filter-btn">Search</button>
+        </div>
+    </div>
+
+    <!-- Form tambah/edit guru -->
+    <div id="guru-form-container" class="modal">
+        <div class="modal-content add-guru-modern">
+            <button class="close modern-close">&times;</button>
+            <h3 style="text-align:center;" id="guru-form-title">Tambah Guru</h3>
+            <div class="add-guru-form">
+                <div class="form-group">
+                    <label for="guru-nama">Nama Guru & Gelar</label>
+                    <input type="text" id="guru-nama" placeholder="Contoh: Budi Santoso, S.Pd">
+                </div>
+                <div class="form-group">
+                    <label id="label-jabatan">Jabatan</label>
+                    <div class="custom-dropdown">
+                        <div class="dropdown-selected">
+                            <span class="selected-text">Pilih Jabatan</span>
+                            <span class="arrow">▾</span>
+                        </div>
+
+                        <div class="dropdown-options" id="jabatanOptions">
+                            <div class="dropdown-option" data-value="kepala_sekolah">Kepala Sekolah</div>
+                            <div class="dropdown-option" data-value="waka_kurikulum">Waka Kurikulum</div>
+                            <div class="dropdown-option" data-value="waka_kesiswaan">Waka Kesiswaan</div>
+                            <div class="dropdown-option" data-value="waka_sarpras">Waka Sarpras</div>
+                            <div class="dropdown-option" data-value="waka_humas">Waka Humas</div>
+                            <div class="dropdown-option" data-value="bendahara">Bendahara</div>
+                            <div class="dropdown-option" data-value="guru_bk">Guru BK</div>
+                            <div class="dropdown-option" data-value="wali_kelas">Wali Kelas</div>
+                            <div class="dropdown-option" data-value="guru">Guru</div>
+                            <div class="dropdown-option" data-value="staff_tu">Staff TU</div>
+                        </div>
+                        
+                    </div>
+                    <input type="hidden" id="guru-jabatan" aria-hidden="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="guru-tempat">Tempat Lahir</label>
+                    <input type="text" id="guru-tempat">
+                </div>
+                <div class="form-group">
+                    <label for="guru-tanggal">Tanggal Lahir</label>
+                    <input type="date" id="guru-tanggal" max="">
+                </div>
+                <div class="form-group">
+                    <label id="label-jk">Jenis Kelamin</label>
+                    <div class="custom-dropdown" id="genderOption" aria-labelledby="label-jk">
+                        <div class="dropdown-selected" id="genderSelect">
+                            <span class="selected-text">Pilih Jenis Kelamin</span>
+                            <span class="arrow">▾</span>
+                        </div>
+
+                        <div class="dropdown-options" id="genderOptions">
+                            <div class="dropdown-option" data-value="Laki-laki">Laki-laki</div>
+                            <div class="dropdown-option" data-value="Perempuan">Perempuan</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="guru-jk" aria-hidden="true">
+                </div>
+
+            <div class="form-group">
+                    <label id="label-kawin">Status Perkawinan</label>
+                    <div class="custom-dropdown" id="statusOption" aria-labelledby="label-kawin">
+                        <div class="dropdown-selected" id="statusSelect">
+                            <span class="selected-text">Pilih Status Perkawinan</span>
+                            <span class="arrow">▾</span>
+                        </div>
+
+
+                        <div class="dropdown-options" id="statusOptions">
+                            <div class="dropdown-option" data-value="Menikah">Menikah</div>
+                            <div class="dropdown-option" data-value="Belum Menikah">Belum Menikah</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="guru-status" aria-hidden="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="guru-hp">No. HP</label>
+                    <input type="text" id="guru-hp" placeholder="Contoh: 081234567891">
+                </div>
+                <div class="form-group alamat">
+                    <label for="guru-alamat">Alamat Lengkap</label>
+                    <textarea id="guru-alamat" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="guru-email">Email</label>
+                    <input type="email" id="guru-email" placeholder="Contoh: guru@gmail.com">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="guru-save" class="btn btn-add">Add</button>
+                <button type="button" id="guru-cancel" class="btn btn-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Data Guru -->
+    <div class="table-wrapper">
+    <table id="guru-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama Guru</th>
+                <th>Jabatan</th>
+                <th>No. HP</th>
+                <th>Email</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data guru akan muncul di sini -->
+        </tbody>
+    </table>
+    </div>
+
+    <div id="guru-table-footer" class="table-footer">
+        <div class="table-info">
+            Tampilkan 
+            <input type="number" id="guru-per-page" aria-label="Jumlah data per halaman" value="10" min="1">
+            data dari <span id="guru-total-data">0</span> data
+        </div>
+
+        <div id="guru-pagination" class="pagination"></div>
+    </div>
+</div>

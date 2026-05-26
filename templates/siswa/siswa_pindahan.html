@@ -1,0 +1,319 @@
+<div class="page-tambah-siswa">
+    <div class="tambah-container">
+
+        <!-- TOMBOL KEMBALI -->
+        <a href="{{ url_for('siswa.detail_siswa', nisn=siswa.nisn) if siswa else url_for('siswa.index') }}" class="btn btn-back-top">
+            <span class="icon-arrow">←</span>
+            <span>Back</span>
+        </a>
+
+        <div class="container">
+            <div class="card-tambah-siswa">
+                <h1>{{ 'Edit Siswa Pindahan' if siswa else 'Tambah Siswa Pindahan' }}</h1>
+                <p class="subtitle">
+                    {{ 'Perbarui biodata siswa' if siswa else 'Isi biodata siswa secara bertahap' }}
+                </p>
+
+                {# STEPPER hanya untuk TAMBAH #}
+                {% if not siswa %}
+                <div class="stepper">
+                    <div class="step active"><div class="circle">1</div><span>Identitas</span></div>
+                    <div class="step"><div class="circle">2</div><span>Pendidikan</span></div>
+                    <div class="step"><div class="circle">3</div><span>Alamat</span></div>
+                    <div class="step"><div class="circle">4</div><span>Orang Tua</span></div>
+                </div>
+
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                {% endif %}
+
+                <form id="formTambahSiswa" method="POST" action="{{ url_for('siswa.edit_siswa', nisn=siswa.nisn) if siswa else url_for('siswa.tambah_siswa_pindahan') }}" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="status_masuk" value="Pindahan">
+
+                    <!-- ================= STEP 1: IDENTITAS ================= -->
+                    <div class="form-step {% if not siswa %}active{% else %}active{% endif %}">
+                        <h3 class="step-title">Identitas Siswa</h3>
+
+                        <div class="form-group">
+                            <label>NIS</label>
+                            <input type="text" name="nis" required value="{{ siswa.nis if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>NISN</label>
+                            <input type="text" name="nisn" maxlength="10" required
+                            value="{{ siswa.nisn if siswa else '' }}" {% if siswa %}readonly{% endif %}>
+                        </div>
+
+                        <div class="form-group full">
+                            <label>NIK</label>
+                            <input type="text" name="nik" maxlength="16" required
+                            value="{{ siswa.nik if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group full">
+                            <label>Nama Lengkap</label>
+                            <input type="text" name="nama" required
+                            value="{{ siswa.nama if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tempat Lahir</label>
+                            <input type="text" name="tempat_lahir" required
+                            value="{{ siswa.tempat_lahir if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tanggal Lahir</label>
+                            <input type="date" name="tanggal_lahir" id="tanggal_lahir" required
+                            value="{{ siswa.tanggal_lahir if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Jenis Kelamin</label>
+                            <div class="custom-dropdown">
+                                <input type="hidden" name="jenis_kelamin" required
+                                value="{{ siswa.jk if siswa else '' }}">
+                                <div class="dropdown-selected">
+                                    <span class="selected-text">Jenis Kelamin</span>
+                                    <span class="arrow">▾</span>
+                                </div>
+                                <div class="dropdown-options">
+                                    <div class="dropdown-option" data-value="L">Laki-laki</div>
+                                    <div class="dropdown-option" data-value="P">Perempuan</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if not siswa %}
+                        <div class="actions">
+                            <button type="button" class="btn btn-primary btn-next">Next</button>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- ================= STEP 2: PENDIDIKAN ================= -->
+                    <div class="form-step {% if siswa %}active{% endif %}">
+
+                        <h3 class="step-title">Pendidikan</h3>
+
+                        <!-- ================= RIWAYAT SD ================= -->
+                        <div class="section-header">
+                            <span class="section-icon">🎓</span>
+                            <h4>Riwayat Sekolah Dasar (SD / MI)</h4>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nama Sekolah SD/MI</label>
+                            <input type="text" name="asal_sd" placeholder="Contoh: SDN 1 Praya"
+                            value="{{ siswa.asal_sd if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tahun Lulus</label>
+                            <input type="text" name="tahun_lulus_sd" placeholder="2025"
+                            value="{{ siswa.tahun_lulus_sd if siswa else '' }}">
+                        </div>
+
+                        <!-- ================= INFORMASI PINDAH ================= -->
+                        <div class="section-header">
+                            <span class="section-icon">📄</span>
+                            <h4>Informasi Pindah</h4>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Sekolah Sebelumnya</label>
+                            <input type="text" name="sekolah_sebelumnya" placeholder="Contoh: SMPN 2 Mataram"
+                            value="{{ siswa.sekolah_sebelumnya if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Kelas Saat Pindah</label>
+                            <div class="custom-dropdown">
+                                <input type="hidden" name="kelas_pindah"
+                                value="{{ siswa.kelas_pindah if siswa else '' }}">
+                                <div class="dropdown-selected">
+                                    <span class="selected-text">Pilih Kelas</span>
+                                    <span class="arrow">▾</span>
+                                </div>
+                                <div class="dropdown-options">
+                                    <div class="dropdown-option" data-value="7">7</div>
+                                    <div class="dropdown-option" data-value="8">8</div>
+                                    <div class="dropdown-option" data-value="9">9</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Semester Saat Pindah</label>
+                            <div class="custom-dropdown">
+                                <input type="hidden" name="semester_pindah"
+                                value="{{ siswa.semester_pindah if siswa else '' }}">
+                                <div class="dropdown-selected">
+                                    <span class="selected-text">Pilih Semester</span>
+                                    <span class="arrow">▾</span>
+                                </div>
+
+                                <div class="dropdown-options">
+                                    <div class="dropdown-option" data-value="1">Ganjil</div>
+                                    <div class="dropdown-option" data-value="2">Genap</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tanggal Pindah</label>
+                            <input type="date" name="tanggal_pindah">
+                        </div>
+
+                        <div class="form-group full">
+                            <label>Alasan Pindah</label>
+                            <textarea name="alasan_pindah" placeholder="Tuliskan alasan siswa pindah">{{ siswa.alasan_pindah if siswa else '' }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Diterima di Kelas</label>
+                            <div class="custom-dropdown">
+                                <input type="hidden" name="kelas_diterima"
+                                value="{{ siswa.kelas_diterima if siswa else '' }}">
+
+                                <div class="dropdown-selected">
+                                    <span class="selected-text">Pilih Kelas</span>
+                                    <span class="arrow">▾</span>
+                                </div>
+
+                                <div class="dropdown-options">
+                                    <div class="dropdown-option" data-value="7">7</div>
+                                    <div class="dropdown-option" data-value="8">8</div>
+                                    <div class="dropdown-option" data-value="9">9</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pada Semester</label>
+                            <div class="custom-dropdown">
+                                <input type="hidden" name="semester_diterima"
+                                value="{{ siswa.semester_diterima if siswa else '' }}">
+
+                                <div class="dropdown-selected">
+                                    <span class="selected-text">Pilih Semester</span>
+                                    <span class="arrow">▾</span>
+                                </div>
+
+                                <div class="dropdown-options">
+                                    <div class="dropdown-option" data-value="1">Ganjil</div>
+                                    <div class="dropdown-option" data-value="2">Genap</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tanggal Diterima</label>
+                            <input type="date" name="tanggal_diterima">
+                        </div>
+
+                        {% if not siswa %}
+                        <div class="actions">
+                            <button type="button" class="btn btn-secondary btn-prev">Kembali</button>
+                            <button type="button" class="btn btn-primary btn-next">Next</button>
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- ================= STEP 3: ALAMAT ================= -->
+                    <div class="form-step {% if siswa %}active{% endif %}">
+                        <h3 class="step-title">Alamat</h3>
+
+                        <div class="form-group full">
+                            <label>Alamat Lengkap</label>
+                            <input type="text" name="alamat" placeholder="Jl. Ibadah No. 1, Surga" required
+                            value="{{ siswa.alamat if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Desa / Kelurahan</label>
+                            <input type="text" name="desa" required
+                            value="{{ siswa.desa if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Kecamatan</label>
+                            <input type="text" name="kecamatan" required
+                            value="{{ siswa.kecamatan if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Kabupaten</label>
+                            <input type="text" name="kabupaten" required
+                            value="{{ siswa.kabupaten if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Provinsi</label>
+                            <input type="text" name="provinsi" required
+                            value="{{ siswa.provinsi if siswa else '' }}">
+                        </div>
+
+                        {% if not siswa %}
+                        <div class="actions">
+                            <button type="button" class="btn btn-secondary btn-prev">Kembali</button>
+                            <button type="button" class="btn btn-primary btn-next">Next</button>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- ================= STEP 4: ORANG TUA ================= -->
+                    <div class="form-step {% if siswa %}active{% endif %}">
+                        <h3 class="step-title">Orang Tua / Wali</h3>
+                        <div class="form-group">
+                            <label>Nama Ayah</label>
+                            <input type="text" name="nama_ayah"
+                            value="{{ siswa.nama_ayah if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pekerjaan Ayah</label>
+                            <input type="text" name="pekerjaan_ayah"
+                            value="{{ siswa.pekerjaan_ayah if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nama Ibu</label>
+                            <input type="text" name="nama_ibu" required
+                            value="{{ siswa.nama_ibu if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Pekerjaan Ibu</label>
+                            <input type="text" name="pekerjaan_ibu"
+                            value="{{ siswa.pekerjaan_ibu if siswa else '' }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>No. Hp</label>
+                            <input type="text" name="no_hp"
+                            value="{{ siswa.no_hp if siswa else '' }}">
+                        </div>
+
+                        <div class="actions {% if siswa %}edit-mode{% endif %}">
+                            {% if not siswa %}
+                            <button type="button" class="btn btn-secondary btn-prev">Kembali</button>
+                            {% endif %}
+                            <button type="submit" class="btn btn-primary">{{ 'Simpan' if siswa else 'Tambah Siswa' }}</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+window.flashMessages = {{ get_flashed_messages(with_categories=true) | tojson }};
+</script>

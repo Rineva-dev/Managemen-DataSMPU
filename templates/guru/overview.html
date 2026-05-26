@@ -1,0 +1,315 @@
+{% set active_page = 'kelas_ampu' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/overview.css') }}">
+{% endblock %}
+
+<div class="overview-page">
+
+    <!-- HEADER -->
+    <div class="overview-header">
+        <div>
+            <h2>{{ kelas.mapel }}</h2>
+            <p>
+                {{ kelas.kelas }} • {{ kelas.tahun }}
+            </p>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="overview-stats">
+
+        <div class="stats-card">
+            <span class="stats-title">Total Pertemuan</span>
+
+            <div class="stats-bottom">
+                <div class="stats-icon total">
+                    <i data-lucide="layers"></i>
+                </div>
+
+                <h3>{{ jurnal_list|length }}</h3>
+            </div>
+        </div>
+
+        <div class="stats-card">
+            <span class="stats-title">Total Catatan Khusus</span>
+
+            <div class="stats-bottom">
+                <div class="stats-icon note">
+                    <i data-lucide="file-text"></i>
+                </div>
+
+                <h3>
+                    {{ jurnal_list | selectattr('catatan') | list | length }}
+                </h3>
+            </div>
+
+        </div>
+
+        <div class="stats-card">
+            <span class="stats-title">Absensi Terakhir</span>
+
+            <div class="stats-bottom">
+                <div class="stats-icon attendance">
+                    <i data-lucide="user-check"></i>
+                </div>
+
+                <h3>
+                    {% if jurnal_list %}
+                        {{ jurnal_list[0].total_hadir }}/{{ jurnal_list[0].total_siswa }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- FILTER -->
+    <div class="overview-filter">
+
+        <!-- KIRI -->
+        <div class="filter-left">
+
+            <button class="btn-add-jurnal">
+                <i data-lucide="plus"></i>
+                Tambah Jurnal
+            </button>
+
+        </div>
+
+        <!-- KANAN -->
+        <div class="filter-right">
+
+            <input type="date" id="filter-tanggal">
+
+            <input type="text"
+                id="search-jurnal"
+                placeholder="Cari materi...">
+
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="overview-table-wrapper">
+        <table class="overview-table">
+            <thead>
+                <tr>
+                    <th>Sesi</th>
+                    <th>Tanggal</th>
+                    <th>Jam</th>
+                    <th>Materi</th>
+                    <th>Kehadiran</th>
+                    <th>Catatan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for jurnal in jurnal_list %}
+                <tr>
+                    <td>
+                        <span class="badge-pertemuan">
+                            {{ jurnal.pertemuan_ke }}
+                        </span>
+                    </td>
+
+                    <td data-raw-date="{{ jurnal.raw_tanggal }}">
+                        {{ jurnal.tanggal }}
+                    </td>
+
+                    <td>
+                        {{ jurnal.jam_mulai }}
+                        -
+                        {{ jurnal.jam_selesai }}
+                    </td>
+
+                    <td class="materi-col">
+                        {{ jurnal.materi }}
+                    </td>
+
+                    <td>
+                        <span class="badge-hadir">
+                            {{ jurnal.total_hadir }}/{{ jurnal.total_siswa }}
+                        </span>
+                    </td>
+
+                    <td class="catatan-col">
+                        {% if jurnal.catatan %}
+                            <div class="catatan-box">
+                                <span class="catatan-text">
+                                    {{ jurnal.catatan }}
+                                </span>
+
+                                <button
+                                    class="btn-catatan-view"
+                                    data-id="{{ jurnal.id }}"
+                                    data-catatan="{{ jurnal.catatan }}">
+                                    Lihat
+                                </button>
+                            </div>
+
+                        {% else %}
+                            <button
+                                class="btn-add-catatan"
+                                data-id="{{ jurnal.id }}">
+                                + Tambah Catatan
+                            </button>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <div class="table-actions">
+                            <button
+                                class="btn-table-edit"
+                                data-id="{{ jurnal.id }}">
+                                <i data-lucide="pencil"></i>
+                            </button>
+
+                            <a href="/kelas-ampu/absensi/{{ jurnal.id }}?mode=detail"
+                            class="btn-table-detail">
+                                <i data-lucide="eye"></i>
+                            </a>
+                            
+                            <button
+                                class="btn-table-delete"
+                                data-id="{{ jurnal.id }}">
+                                <i data-lucide="trash-2"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="overview-pagination">
+
+        <!-- KIRI -->
+        <div class="pagination-info">
+
+            <label for="pagination-limit">
+                Tampilkan
+            </label>
+
+            <select id="pagination-limit">
+
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+
+            </select>
+
+            dari
+
+            <span id="pagination-total">
+                {{ jurnal_list|length }}
+            </span>
+
+            data
+
+        </div>
+
+        <!-- KANAN -->
+        <div class="pagination-controls">
+
+            <button id="pagination-prev">
+                Prev
+            </button>
+
+            <div id="pagination-pages"></div>
+
+            <button id="pagination-next">
+                Next
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- =========================================
+    MODAL CATATAN
+========================================= -->
+<div id="catatan-modal" class="catatan-modal">
+
+    <div class="catatan-modal-card">
+
+        <!-- HEADER -->
+        <div class="catatan-modal-header">
+
+            <div>
+                <h3 id="catatan-modal-title">
+                    Tambah Catatan
+                </h3>
+
+                <p>
+                    Tambahkan catatan khusus untuk jurnal pembelajaran
+                </p>
+            </div>
+
+            <button
+                type="button"
+                id="btn-close-catatan"
+                class="catatan-close-btn">
+
+                <i data-lucide="x"></i>
+
+            </button>
+
+        </div>
+
+        <!-- BODY -->
+        <div class="catatan-modal-body">
+
+            <textarea
+                id="catatan-input"
+                placeholder="Tulis catatan di sini..."
+                maxlength="1000"></textarea>
+
+            <div class="catatan-counter">
+                <span id="catatan-counter">0</span>/1000
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="catatan-modal-footer">
+
+            <button
+                type="button"
+                id="btn-cancel-catatan"
+                class="btn-catatan-cancel">
+
+                Batal
+
+            </button>
+
+            <button
+                type="button"
+                id="btn-save-catatan"
+                class="btn-catatan-save">
+                Simpan Catatan
+
+            </button>
+
+            <button
+                type="button"
+                id="btn-edit-catatan"
+                class="btn-catatan-edit-mode"
+                style="display:none;">
+                Edit Catatan
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/guru/overview.js') }}"></script>

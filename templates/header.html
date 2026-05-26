@@ -1,0 +1,59 @@
+<div class="header modern-header">
+    <div class="header-left">
+        <button id="sidebarToggle" class="hamburger">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <img 
+            src="{{ url_for('static', filename='icons/logo_sekolah_header.png') }}" 
+            alt="SMPU Logo" 
+            class="header-logo">
+
+        <div class="header-title-group">
+            <div class="header-title">{{ role_title }}</div>
+            <div class="header-breadcrumb">
+                • SMP Unggulan Hamzanwadi
+            </div>
+        </div>
+    </div>
+
+    <div class="header-user">
+        <div class="user-dropdown">
+
+            {% if guru and guru.foto %}
+                <img 
+                    id="user-photo"
+                    class="user-icon"
+                    alt="Foto User"
+                    src="{{ url_for('profile.uploaded_file', filename=guru.foto) }}">
+            {% else %}
+                <div id="user-photo" class="user-avatar-initial">
+                    {{ guru.nama[0]|upper if guru and guru.nama else 'U' }}
+                </div>
+            {% endif %}
+
+            <button class="dropbtn" type="button">
+                <span class="user-greeting">Hai,</span>
+                <span class="user-name">
+                    {% if guru and guru.nama %}
+                        {% set parts = guru.nama.split(' ') %}
+                        {{ parts[0] + ' ' + parts[1] if parts[0]|length < 5 and parts|length > 1 else parts[0] }}
+                    {% else %}
+                        User
+                    {% endif %}
+                </span>
+                <span class="arrow">▾</span>
+            </button>
+
+            <div class="dropdown-content">
+                <div class="dropdown-item" id="edit-profile">
+                    <i data-lucide="user"></i> Edit Profil
+                </div>
+                <a href="/logout" class="dropdown-item logout">
+                    <i data-lucide="log-out"></i> Logout
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

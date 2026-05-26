@@ -1,0 +1,151 @@
+{% set active_page = 'kkm' %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/kkm.css') }}">
+{% endblock %}
+
+<div class="kkm-page">
+
+    <!-- ================= HEADER ================= -->
+    <div class="page-header">
+
+        <div>
+            <h2>Manajemen KKM</h2>
+            <p>Pengaturan KKM seluruh mata pelajaran</p>
+        </div>
+
+    </div>
+
+    <!-- ================= ACTION BAR ================= -->
+    <div class="kkm-toolbar">
+
+        <!-- FILTER -->
+        <div class="kkm-select" id="kkmSelect">
+
+            <button
+                type="button"
+                class="kkm-select-trigger"
+                id="kkmSelectTrigger">
+
+                <span id="selectedKelas">
+                    Kelas 7
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+            </button>
+
+            <div class="kkm-select-menu" id="kkmSelectMenu">
+
+                <div
+                    class="kkm-option active"
+                    data-value="7">
+
+                    Kelas 7
+
+                </div>
+
+                <div
+                    class="kkm-option"
+                    data-value="8">
+
+                    Kelas 8
+
+                </div>
+
+                <div
+                    class="kkm-option"
+                    data-value="9">
+
+                    Kelas 9
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ACTION -->
+        <div class="kkm-actions">
+
+            <button id="btn-edit-kkm" class="btn btn-add">
+                Edit KKM
+            </button>
+
+            <button
+                id="btn-simpan-kkm"
+                class="btn btn-add"
+                style="display:none;">
+                Simpan
+            </button>
+
+            <button
+                id="btn-batal-kkm"
+                class="btn btn-cancel"
+                style="display:none;">
+                Batal
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="table-wrapper">
+
+        <table class="kkm-table">
+
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Kelas</th>
+                    <th>Mata Pelajaran</th>
+                    <th>KKM</th>
+                </tr>
+            </thead>
+
+            <tbody id="kkm-body">
+
+                {% for item in kkm_list %}
+                <tr
+                    class="kkm-row"
+                    data-tingkat="{{ item.tingkat }}">
+
+                    <td class="row-number"></td>
+
+                    <td>
+                        Kelas {{ item.tingkat }}
+                    </td>
+
+                    <td>{{ item.mapel }}</td>
+
+                    <td>
+
+                        <span class="kkm-text">
+                            {{ item.kkm }}
+                        </span>
+
+                        <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            class="kkm-input"
+                            value="{{ item.kkm }}"
+                            data-tingkat="{{ item.tingkat }}"
+                            data-mapel-id="{{ item.mapel_id }}"
+                            style="display:none;">
+
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/sekolah/kkm.js') }}"></script>
