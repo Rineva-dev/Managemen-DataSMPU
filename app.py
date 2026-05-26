@@ -1,15 +1,18 @@
 from flask import Flask, session, jsonify
 from utils.time_helper import now_wita
 from utils.db import db
-import os
 from utils.init_db import init_db
 
 app = Flask(__name__)
+
+with app.app_context():
+    init_db()
+
 app.secret_key = "SMPU_Absensi_2026_SuperSecretKey_!@#987654"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
-    SESSION_COOKIE_SECURE=False,
+    SESSION_COOKIE_SECURE=True,
 )
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 
@@ -65,11 +68,14 @@ def inject_global_data():
     data = {}
 
     if "user_id" in session:
-        with db() as d:
-            guru_data = d.execute(
-                "SELECT * FROM guru WHERE id=?",
-                (session["user_id"],)
-            ).fetchone()
+        try:
+            with db() as d:
+                guru_data = d.execute(
+                    "SELECT * FROM guru WHERE id=?",
+                    (session["user_id"],)
+                ).fetchone()
+        except Exception as e:
+            guru_data = None
 
         data["guru"] = guru_data
         data["current_time"] = int(now_wita().timestamp())
@@ -91,7 +97,6 @@ def inject_global_data():
     }
 
     data["role_title"] = mapping.get(role, "")
-
     return data
 
 @app.route("/api/server-time")
