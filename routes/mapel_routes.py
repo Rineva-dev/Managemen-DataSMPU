@@ -24,7 +24,8 @@ def seed_mapel_wajib():
     ]
 
     with db() as d:
-        d.execute("DELETE FROM mata_pelajaran WHERE jenis='wajib'")
+        # 🔥 HARD RESET TOTAL (INI KUNCI)
+        d.execute("DELETE FROM mata_pelajaran")
 
         for nama in MAPEL_WAJIB:
             d.execute("""

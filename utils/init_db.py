@@ -206,7 +206,3 @@ def init_db():
             status TEXT NOT NULL DEFAULT 'aktif'
         )
         """)
-
-    # ===== SEED MAPEL WAJIB =====
-    from utils.seed_mapel import seed_mapel_wajib
-    seed_mapel_wajib()
