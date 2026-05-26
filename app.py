@@ -3,12 +3,18 @@ from utils.time_helper import now_wita
 from utils.db import db
 import os
 from utils.init_db import init_db
+from flask import send_from_directory
 
 app = Flask(
     __name__,
     static_folder="static",
     static_url_path="/static"
 )
+
+@app.route("/static/<path:filename>")
+def custom_static(filename):
+    return send_from_directory("static", filename)
+
 app.secret_key = "SMPU_Absensi_2026_SuperSecretKey_!@#987654"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
