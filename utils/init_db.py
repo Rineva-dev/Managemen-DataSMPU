@@ -207,6 +207,5 @@ def init_db():
         )
         """)
 
-    # ===== SEED MAPEL WAJIB =====
-    from utils.seed_mapel import seed_mapel_wajib
+    from routes.mapel_routes import seed_mapel_wajib
     seed_mapel_wajib()
