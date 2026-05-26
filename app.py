@@ -11,6 +11,10 @@ app = Flask(
     static_url_path="/static"
 )
 
+@app.route("/assets/<path:filename>")
+def assets(filename):
+    return send_from_directory("static", filename)
+
 @app.route("/static/<path:filename>")
 def custom_static(filename):
     return send_from_directory("static", filename)
