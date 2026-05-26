@@ -81,7 +81,7 @@ def inject_global_data():
     if "user_id" in session:
         with db() as d:
             guru_data = d.execute(
-                "SELECT * FROM guru WHERE id=?",
+                "SELECT * FROM guru WHERE id=%s",
                 (session["user_id"],)
             ).fetchone()
 
