@@ -68,18 +68,6 @@ def init_db():
         )
         """)
 
-        # ===== MIGRASI TABEL MATA_PELAJARAN =====
-        d.execute("""
-        CREATE TABLE IF NOT EXISTS mata_pelajaran (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nama TEXT NOT NULL,
-            jenis TEXT NOT NULL,
-            aktif INTEGER DEFAULT 1,
-            created_at TEXT,
-            updated_at TEXT
-        )
-        """)
-
         # cek kolom
         columns = d.execute(
             "PRAGMA table_info(mata_pelajaran)"

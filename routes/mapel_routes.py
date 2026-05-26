@@ -21,26 +21,18 @@ def seed_mapel_wajib():
         "Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)",
         "Informatika",
         "Pendidikan Agama Islam (PAI)",
-
     ]
 
-    conn = db()
-    cur = conn.cursor()
+    with db() as d:
+        d.execute("DELETE FROM mata_pelajaran WHERE jenis='wajib'")
 
-    for nama in MAPEL_WAJIB:
-        cur.execute("""
-            SELECT id FROM mata_pelajaran
-            WHERE nama = ? AND jenis = 'wajib'
-        """, (nama,))
-
-        if not cur.fetchone():
-            cur.execute("""
+        for nama in MAPEL_WAJIB:
+            d.execute("""
                 INSERT INTO mata_pelajaran (nama, jenis, is_locked)
                 VALUES (?, 'wajib', 1)
             """, (nama,))
 
-    conn.commit()
-    conn.close()
+        d.commit()
 
 def seed_mapel_kegiatan():
     KEGIATAN = {
