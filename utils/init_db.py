@@ -68,6 +68,29 @@ def init_db():
         )
         """)
 
+        # ===== MIGRASI TABEL MATA_PELAJARAN =====
+        d.execute("""
+        CREATE TABLE IF NOT EXISTS mata_pelajaran (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nama TEXT NOT NULL,
+            jenis TEXT NOT NULL,
+            aktif INTEGER DEFAULT 1,
+            created_at TEXT,
+            updated_at TEXT
+        )
+        """)
+
+        # cek kolom
+        columns = d.execute(
+            "PRAGMA table_info(mata_pelajaran)"
+        ).fetchall()
+        column_names = [c["name"] for c in columns]
+
+        if "is_locked" not in column_names:
+            d.execute(
+                "ALTER TABLE mata_pelajaran ADD COLUMN is_locked INTEGER DEFAULT 0"
+            )
+
         # ===== Tambah kolom updated_at jika belum ada =====
         columns = d.execute("PRAGMA table_info(absensi)").fetchall()
         column_names = [col["name"] for col in columns]
