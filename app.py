@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 with app.app_context():
     init_db()
-    seed_mapel_wajib()
 
 app.secret_key = "SMPU_Absensi_2026_SuperSecretKey_!@#987654"
 app.config.update(
