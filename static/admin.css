@@ -78,7 +78,7 @@ html, body {
     position: sticky;
     overflow: visible;
     top: 0;
-    z-index: 1005; /* penting supaya selalu di atas */
+    z-index: 1000;
 
     background: linear-gradient(
         135deg,
@@ -510,7 +510,7 @@ select:disabled {
     align-items: center;
     justify-content: center;
 
-    z-index: 10009;
+    z-index: 1010;
 }
 
 .modal > .modal-content {
