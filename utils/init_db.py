@@ -292,6 +292,47 @@ def init_db():
         )
         """)
 
+        # ======================================
+        # TABEL ABSENSI MENGAJAR (FINAL & LENGKAP)
+        # ======================================
+        d.execute("""
+        CREATE TABLE IF NOT EXISTS absensi_mengajar (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+            kelas_mapel_id INTEGER NOT NULL,
+            pertemuan_ke INTEGER NOT NULL,
+
+            tanggal DATE NOT NULL,
+            jam_mulai TIME NOT NULL,
+            jam_selesai TIME,
+
+            materi TEXT,
+            indikator TEXT,
+            kegiatan TEXT,
+            catatan TEXT,
+
+            status_final INTEGER DEFAULT 0,
+            finalized_at DATETIME,
+
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+            FOREIGN KEY (kelas_mapel_id) REFERENCES kelas_mapel(id)
+        )
+        """)
+
+        d.execute("""
+        CREATE TABLE IF NOT EXISTS absensi_detail (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            absensi_id INTEGER NOT NULL,
+            siswa_id INTEGER NOT NULL,
+            status TEXT DEFAULT 'H',
+            keterangan TEXT,
+
+            FOREIGN KEY (absensi_id) REFERENCES absensi_mengajar(id),
+            FOREIGN KEY (siswa_id) REFERENCES siswa(id)
+        )
+        """)
+
     from routes.mapel_routes import seed_mapel_wajib
     seed_mapel_wajib()
 
