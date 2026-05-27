@@ -301,3 +301,9 @@ def init_db():
                     INSERT INTO kkm (tingkat, mapel_id, kkm)
                     VALUES (?, ?, 75)
                 """, (t, m["id"]))
+
+    # ===== Cegah mapel duplikat =====
+    d.execute("""
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_mapel
+    ON mata_pelajaran (nama, jenis)
+    """)

@@ -26,8 +26,9 @@ def seed_mapel_wajib():
     with db() as d:
         for nama in MAPEL_WAJIB:
             exists = d.execute("""
-                SELECT id FROM mata_pelajaran
-                WHERE nama = ? AND jenis = 'wajib'
+                SELECT 1 FROM mata_pelajaran
+                WHERE TRIM(LOWER(nama)) = TRIM(LOWER(?))
+                AND jenis = 'wajib'
             """, (nama,)).fetchone()
 
             if not exists:
@@ -147,8 +148,8 @@ def list_guru():
 def tambah_mapel():
     data = request.get_json()
 
-    nama = data.get("nama")
-    jenis = data.get("jenis")
+    nama = data.get("nama", "").strip()
+    jenis = data.get("jenis", "").strip()
     guru_ids = data.get("guru_ids", [])
 
     if not nama or not jenis:
@@ -157,12 +158,27 @@ def tambah_mapel():
     conn = db()
     cur = conn.cursor()
 
+    # ===== CEK DUPLIKAT (INI KUNCI) =====
+    cek = cur.execute("""
+        SELECT 1 FROM mata_pelajaran
+        WHERE TRIM(LOWER(nama)) = TRIM(LOWER(?))
+        AND jenis = ?
+    """, (nama, jenis)).fetchone()
+
+    if cek:
+        conn.close()
+        return jsonify({
+            "error": f"Mata pelajaran '{nama}' sudah ada"
+        }), 400
+
+    # ===== INSERT MAPEL =====
     cur.execute(
         "INSERT INTO mata_pelajaran (nama, jenis) VALUES (?, ?)",
         (nama, jenis)
     )
     mapel_id = cur.lastrowid
 
+    # ===== RELASI GURU (JIKA ADA) =====
     for gid in guru_ids:
         cur.execute(
             "INSERT INTO mapel_guru (mapel_id, guru_id) VALUES (?, ?)",
