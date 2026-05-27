@@ -523,6 +523,13 @@ function getMapelNamaById(id) {
     return row ? row.children[1].innerText : "";
 }
 
+function getGuruIdByMapel(mapelId) {
+    const item = mapelKelasCache.find(
+        m => String(m.mapel_id) === String(mapelId)
+    );
+    return item ? item.guru_id : null;
+}
+
 async function loadMapelKelas(kelasId) {
     
     try {
@@ -1322,11 +1329,22 @@ document.getElementById("save-jadwal").addEventListener("click", async () => {
 
             if (!mulai || !selesai || !mapelId) return;
 
+            const guruId = getGuruIdByMapel(mapelId);
+
+            if (!guruId) {
+                showNotification(
+                    "Guru untuk mapel belum ditentukan",
+                    "warning"
+                );
+                return;
+            }
+
             payload.push({
                 hari,
                 jam_mulai: mulai,
                 jam_selesai: selesai,
-                mapel_id: mapelId
+                mapel_id: mapelId,
+                guru_id: guruId
             });
         });
     });

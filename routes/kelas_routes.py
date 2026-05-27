@@ -588,32 +588,32 @@ def save_mapel_kelas():
 @kelas_bp.route("/api/jadwal/save", methods=["POST"])
 def save_jadwal():
 
-    data = request.json
+    data = request.get_json(silent=True)
     kelas_id = data.get("kelas_id")
     jadwal = data.get("jadwal", [])
 
     if not kelas_id or not jadwal:
-        return jsonify({
-            "success": False,
-            "message": "Data tidak lengkap"
-        })
+        return jsonify(success=False, message="Data tidak lengkap"), 400
 
     with db() as d:
 
-        # hapus jadwal lama
-        d.execute("""
-            DELETE FROM kelas_jadwal
-            WHERE kelas_id = ?
-        """, (kelas_id,))
+        d.execute("DELETE FROM kelas_jadwal WHERE kelas_id = ?", (kelas_id,))
 
         for item in jadwal:
+            hari       = item.get("hari")
+            mulai      = item.get("jam_mulai")
+            selesai    = item.get("jam_selesai")
+            mapel_id   = item.get("mapel_id")
+            guru_id    = item.get("guru_id")   # 🔥 WAJIB
 
-            hari = item["hari"]
-            mulai = item["jam_mulai"]
-            selesai = item["jam_selesai"]
-            mapel_id = item["mapel_id"]
+            # ===== VALIDASI =====
+            if not all([hari, mulai, selesai, mapel_id, guru_id]):
+                return jsonify(
+                    success=False,
+                    message="Hari, jam, mapel, dan guru wajib diisi"
+                ), 400
 
-            # 🔥 validasi bentrok per kelas
+            # ===== CEK BENTROK KELAS =====
             konflik = d.execute("""
                 SELECT 1
                 FROM kelas_jadwal
@@ -623,21 +623,34 @@ def save_jadwal():
             """, (kelas_id, hari, mulai, selesai)).fetchone()
 
             if konflik:
-                return jsonify({
-                    "success": False,
-                    "message": f"Jadwal bentrok di hari {hari}"
-                })
+                return jsonify(
+                    success=False,
+                    message=f"Jadwal bentrok di hari {hari}"
+                ), 400
 
+            # ===== INSERT LENGKAP =====
             d.execute("""
                 INSERT INTO kelas_jadwal (
-                    kelas_id, hari, jam_mulai, jam_selesai, mapel_id
+                    kelas_id,
+                    hari,
+                    jam_mulai,
+                    jam_selesai,
+                    mapel_id,
+                    guru_id
                 )
-                VALUES (?, ?, ?, ?, ?)
-            """, (kelas_id, hari, mulai, selesai, mapel_id))
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (
+                kelas_id,
+                hari,
+                mulai,
+                selesai,
+                mapel_id,
+                guru_id
+            ))
 
         d.commit()
 
-    return jsonify({"success": True})
+    return jsonify(success=True)
 
 @kelas_bp.route("/api/<int:kelas_id>/jadwal")
 def get_jadwal(kelas_id):
