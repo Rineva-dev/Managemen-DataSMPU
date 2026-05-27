@@ -24,16 +24,17 @@ def seed_mapel_wajib():
     ]
 
     with db() as d:
-        # 🔥 HARD RESET TOTAL (INI KUNCI)
-        d.execute("DELETE FROM mata_pelajaran")
-
         for nama in MAPEL_WAJIB:
-            d.execute("""
-                INSERT INTO mata_pelajaran (nama, jenis, is_locked)
-                VALUES (?, 'wajib', 1)
-            """, (nama,))
+            exists = d.execute("""
+                SELECT id FROM mata_pelajaran
+                WHERE nama = ? AND jenis = 'wajib'
+            """, (nama,)).fetchone()
 
-        d.commit()
+            if not exists:
+                d.execute("""
+                    INSERT INTO mata_pelajaran (nama, jenis, is_locked)
+                    VALUES (?, 'wajib', 1)
+                """, (nama,))
 
 def seed_mapel_kegiatan():
     KEGIATAN = {

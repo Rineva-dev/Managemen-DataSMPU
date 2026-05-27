@@ -68,6 +68,18 @@ def init_db():
         )
         """)
 
+        # ===== TABEL KKM =====
+        d.execute("""
+        CREATE TABLE IF NOT EXISTS kkm (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            tingkat INTEGER NOT NULL,
+            mapel_id INTEGER NOT NULL,
+            kkm INTEGER NOT NULL DEFAULT 75,
+            UNIQUE (tingkat, mapel_id),
+            FOREIGN KEY (mapel_id) REFERENCES mata_pelajaran(id) ON DELETE CASCADE
+        )
+        """)
+
         # cek kolom
         columns = d.execute(
             "PRAGMA table_info(mata_pelajaran)"
@@ -260,3 +272,23 @@ def init_db():
 
     from routes.mapel_routes import seed_mapel_wajib
     seed_mapel_wajib()
+
+    # ===== SEED DEFAULT KKM =====
+    mapels = d.execute("""
+        SELECT id FROM mata_pelajaran WHERE aktif = 1
+    """).fetchall()
+
+    tingkats = [7, 8, 9]  # atau sesuai sekolahmu
+
+    for m in mapels:
+        for t in tingkats:
+            exists = d.execute("""
+                SELECT 1 FROM kkm
+                WHERE mapel_id = ? AND tingkat = ?
+            """, (m["id"], t)).fetchone()
+
+            if not exists:
+                d.execute("""
+                    INSERT INTO kkm (tingkat, mapel_id, kkm)
+                    VALUES (?, ?, 75)
+                """, (t, m["id"]))
