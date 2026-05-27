@@ -195,6 +195,28 @@ def init_db():
         )
         """)
 
+        # ===== Tabel Kelas Mapel =====
+        d.execute("""
+        CREATE TABLE IF NOT EXISTS kelas_mapel (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            kelas_id INTEGER NOT NULL,
+            mapel_id INTEGER NOT NULL,
+            guru_id INTEGER,
+            jp INTEGER DEFAULT 0,
+            hari TEXT,
+            jam_mulai TEXT,
+            jam_selesai TEXT,
+            created_at TEXT,
+            updated_at TEXT,
+
+            FOREIGN KEY (kelas_id) REFERENCES kelas(id) ON DELETE CASCADE,
+            FOREIGN KEY (mapel_id) REFERENCES mata_pelajaran(id) ON DELETE CASCADE,
+            FOREIGN KEY (guru_id) REFERENCES guru(id) ON DELETE SET NULL,
+
+            UNIQUE (kelas_id, mapel_id)
+        )
+        """)
+
         # ===== Tabel Kelas Siswa =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS kelas_siswa (
@@ -256,19 +278,6 @@ def init_db():
             status TEXT
         )
         """)
-
-        # ===== MIGRASI KOLOM SISWA (KHUSUS DB LAMA) =====
-        cols = d.execute("PRAGMA table_info(siswa)").fetchall()
-        names = [c["name"] for c in cols]
-
-        def add(col, sql):
-            if col not in names:
-                d.execute(sql)
-
-        add("nisn", "ALTER TABLE siswa ADD COLUMN nisn TEXT")
-        add("nik", "ALTER TABLE siswa ADD COLUMN nik TEXT")
-        add("tingkat_default", "ALTER TABLE siswa ADD COLUMN tingkat_default INTEGER")
-        add("status_masuk", "ALTER TABLE siswa ADD COLUMN status_masuk TEXT")
 
     from routes.mapel_routes import seed_mapel_wajib
     seed_mapel_wajib()
