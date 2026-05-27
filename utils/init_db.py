@@ -279,6 +279,19 @@ def init_db():
         )
         """)
 
+        # ===== TABEL JADWAL KELAS =====
+        d.execute("""
+        CREATE TABLE IF NOT EXISTS kelas_jadwal (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            kelas_id INTEGER NOT NULL,
+            mapel_id INTEGER NOT NULL,
+            guru_id INTEGER NOT NULL,
+            hari TEXT NOT NULL,
+            jam_mulai TEXT NOT NULL,
+            jam_selesai TEXT NOT NULL
+        )
+        """)
+
     from routes.mapel_routes import seed_mapel_wajib
     seed_mapel_wajib()
 
