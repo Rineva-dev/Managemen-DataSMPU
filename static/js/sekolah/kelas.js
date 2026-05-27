@@ -877,6 +877,25 @@ document.addEventListener("input", function(e){
     });
 });
 
+document.addEventListener("change", function (e) {
+
+    if (!e.target.classList.contains("guru-select")) return;
+
+    const row = e.target.closest("tr");
+    if (!row) return;
+
+    const mapelId = parseInt(row.dataset.id);
+    const guruId  = e.target.value || null;
+
+    const item = mapelKelasCache.find(
+        m => m.mapel_id === mapelId
+    );
+
+    if (item) {
+        item.guru_id = guruId;
+    }
+});
+
 addToKelasBtn.addEventListener("click", function(){
     const selected = siswaAvailableList.querySelectorAll("input:checked");
     selected.forEach(cb=>{
