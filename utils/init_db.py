@@ -193,19 +193,70 @@ def init_db():
         )
         """)
 
-        # ===== Tabel Siswa =====
+        # ===== Tabel SISWA =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS siswa (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nis TEXT NOT NULL UNIQUE,
+
+            nis TEXT UNIQUE,
+            nisn TEXT UNIQUE,
+            nik TEXT,
+
             nama TEXT NOT NULL,
             jk TEXT,
+
             tempat_lahir TEXT,
             tanggal_lahir TEXT,
+
+            tingkat_default INTEGER,
+
+            tahun_masuk TEXT,
+            sekolah_asal TEXT,
+
+            asal_sd TEXT,
+            tahun_lulus_sd TEXT,
+            sekolah_sebelumnya TEXT,
+
+            kelas_pindah TEXT,
+            semester_pindah TEXT,
+            tanggal_pindah TEXT,
+
+            kelas_diterima TEXT,
+            semester_diterima TEXT,
+            tanggal_diterima TEXT,
+
             alamat TEXT,
-            status TEXT NOT NULL DEFAULT 'aktif'
+            desa TEXT,
+            kecamatan TEXT,
+            kabupaten TEXT,
+            provinsi TEXT,
+
+            nama_ayah TEXT,
+            pekerjaan_ayah TEXT,
+            nama_ibu TEXT,
+            pekerjaan_ibu TEXT,
+            no_hp TEXT,
+
+            sekolah_tujuan TEXT,
+            alasan_pindah TEXT,
+
+            status_masuk TEXT,
+            status TEXT
         )
         """)
+
+        # ===== MIGRASI KOLOM SISWA (KHUSUS DB LAMA) =====
+        cols = d.execute("PRAGMA table_info(siswa)").fetchall()
+        names = [c["name"] for c in cols]
+
+        def add(col, sql):
+            if col not in names:
+                d.execute(sql)
+
+        add("nisn", "ALTER TABLE siswa ADD COLUMN nisn TEXT")
+        add("nik", "ALTER TABLE siswa ADD COLUMN nik TEXT")
+        add("tingkat_default", "ALTER TABLE siswa ADD COLUMN tingkat_default INTEGER")
+        add("status_masuk", "ALTER TABLE siswa ADD COLUMN status_masuk TEXT")
 
     from routes.mapel_routes import seed_mapel_wajib
     seed_mapel_wajib()
