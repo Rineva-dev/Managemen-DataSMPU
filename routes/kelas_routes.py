@@ -579,6 +579,20 @@ def save_mapel_kelas():
                 jam_selesai
             ))
 
+        # ==========================
+        # AUTO INSERT KKM
+        # ==========================
+        d.execute("""
+            INSERT OR IGNORE INTO kkm (mapel_id, tingkat, kkm)
+            SELECT
+                km.mapel_id,
+                k.tingkat,
+                75
+            FROM kelas_mapel km
+            JOIN kelas k ON k.id = km.kelas_id
+            WHERE km.kelas_id = ?
+        """, (kelas_id,))
+
         d.commit()
 
     return jsonify({
