@@ -250,4 +250,20 @@
 
 .add-akun-modern{
     padding: 0 30px 20px 30px !important;
+    margin:10px;
+}
+
+@media (max-width: 768px) {
+    #modal-form {
+        width: 95%;
+        padding: 25px;
+    }
+
+    .saas-modal {
+        border-radius: 8px;
+    }
+
+    .add-akun-modern{
+        padding: 0 20px 20px 20px !important;
+    }
 }
