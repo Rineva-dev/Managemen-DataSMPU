@@ -13,7 +13,7 @@ app.secret_key = "SMPU_Absensi_2026_SuperSecretKey_!@#987654"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
-    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SECURE=False,
 )
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 
