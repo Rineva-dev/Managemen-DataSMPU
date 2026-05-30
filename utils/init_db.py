@@ -68,6 +68,14 @@ def init_db():
         )
         """)
 
+        cols = d.execute(
+            "PRAGMA table_info(mata_pelajaran)"
+        ).fetchall()
+
+        print("KOLOM MATA_PELAJARAN:")
+        for c in cols:
+            print(dict(c))
+
         # ===== TABEL KKM =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS kkm (
