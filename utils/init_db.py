@@ -392,6 +392,9 @@ def init_db():
     print("SEBELUM SEED MAPEL")
 
     from routes.mapel_routes import seed_mapel_wajib
+
+    print("SESUDAH IMPORT")
+
     seed_mapel_wajib()
 
     # ===== SEED DEFAULT KKM =====
