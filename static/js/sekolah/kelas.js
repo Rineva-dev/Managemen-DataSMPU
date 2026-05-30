@@ -275,8 +275,8 @@ if (saveBtn) {
         const sub_kelas = subInput.value.trim();
         const wali_kelas_id = waliInput.value;
 
-        if (!tingkat || !sub_kelas || !wali_kelas_id) {
-            showNotification("Semua field wajib diisi!", "warning");
+        if (!tingkat || !sub_kelas) {
+            showNotification("Tingkat dan Sub Kelas wajib diisi!", "warning");
             return;
         }
 
@@ -293,7 +293,7 @@ if (saveBtn) {
                     tahun_id,
                     tingkat,
                     sub_kelas,
-                    wali_kelas_id
+                    wali_kelas_id: wali_kelas_id || null
                 }),
             });
 

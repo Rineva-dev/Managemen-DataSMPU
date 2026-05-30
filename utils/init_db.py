@@ -188,7 +188,7 @@ def init_db():
             tingkat INTEGER NOT NULL,
             sub_kelas TEXT NOT NULL,
             tahun_pelajaran_id INTEGER NOT NULL,
-            wali_kelas_id INTEGER,
+            wali_kelas_id INTEGER NULL,
             FOREIGN KEY (tahun_pelajaran_id) REFERENCES tahun_pelajaran(id) ON DELETE CASCADE,
             FOREIGN KEY (wali_kelas_id) REFERENCES guru(id) ON DELETE SET NULL,
             UNIQUE (tingkat, sub_kelas, tahun_pelajaran_id)
