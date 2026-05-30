@@ -366,10 +366,18 @@ def init_db():
         # ===============================
         # RESET MAPEL WAJIB & KEGIATAN
         # ===============================
+        d.execute("PRAGMA foreign_keys = OFF")
+
+        d.execute("DELETE FROM nilai_siswa")
+        d.execute("DELETE FROM absensi_mengajar")
+        d.execute("DELETE FROM kelas_jadwal")
+        d.execute("DELETE FROM kelas_mapel")
+        d.execute("DELETE FROM kkm")
         d.execute("""
             DELETE FROM mata_pelajaran
             WHERE jenis IN ('wajib', 'kegiatan')
         """)
+        d.execute("PRAGMA foreign_keys = ON")
         
         from routes.mapel_routes import seed_mapel_wajib
 
