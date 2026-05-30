@@ -398,6 +398,7 @@ def init_db():
     seed_mapel_wajib()
 
     print("SESUDAH SEED")
+    print("XXXXXXXXXX TEST 123456 XXXXXXXX")
 
     # ===== SEED DEFAULT KKM =====
     mapels = d.execute("""
