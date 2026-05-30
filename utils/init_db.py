@@ -388,6 +388,8 @@ def init_db():
                 ON DELETE CASCADE
         )
         """)
+    
+    print("SEBELUM SEED MAPEL")
 
     from routes.mapel_routes import seed_mapel_wajib
     seed_mapel_wajib()
@@ -417,3 +419,5 @@ def init_db():
     CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_mapel
     ON mata_pelajaran (nama, jenis)
     """)
+
+    print("SESUDAH SEED MAPEL")
