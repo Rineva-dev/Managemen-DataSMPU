@@ -363,48 +363,31 @@ def init_db():
         )
         """)
 
-        # ===============================
-        # RESET MAPEL WAJIB & KEGIATAN
-        # ===============================
-        d.execute("PRAGMA foreign_keys = OFF")
+    from routes.mapel_routes import seed_mapel_wajib
+    seed_mapel_wajib()
 
-        d.execute("DELETE FROM nilai_siswa")
-        d.execute("DELETE FROM absensi_mengajar")
-        d.execute("DELETE FROM kelas_jadwal")
-        d.execute("DELETE FROM kelas_mapel")
-        d.execute("DELETE FROM kkm")
-        d.execute("""
-            DELETE FROM mata_pelajaran
-            WHERE jenis IN ('wajib', 'kegiatan')
-        """)
-        d.execute("PRAGMA foreign_keys = ON")
-        
-        from routes.mapel_routes import seed_mapel_wajib
+    # ===== SEED DEFAULT KKM =====
+    mapels = d.execute("""
+        SELECT id FROM mata_pelajaran WHERE aktif = 1
+    """).fetchall()
 
-        seed_mapel_wajib()
+    tingkats = [7, 8, 9]  # atau sesuai sekolahmu
 
-        # ===== SEED DEFAULT KKM =====
-        mapels = d.execute("""
-            SELECT id FROM mata_pelajaran WHERE aktif = 1
-        """).fetchall()
+    for m in mapels:
+        for t in tingkats:
+            exists = d.execute("""
+                SELECT 1 FROM kkm
+                WHERE mapel_id = ? AND tingkat = ?
+            """, (m["id"], t)).fetchone()
 
-        tingkats = [7, 8, 9]  # atau sesuai sekolahmu
+            if not exists:
+                d.execute("""
+                    INSERT INTO kkm (tingkat, mapel_id, kkm)
+                    VALUES (?, ?, 75)
+                """, (t, m["id"]))
 
-        for m in mapels:
-            for t in tingkats:
-                exists = d.execute("""
-                    SELECT 1 FROM kkm
-                    WHERE mapel_id = ? AND tingkat = ?
-                """, (m["id"], t)).fetchone()
-
-                if not exists:
-                    d.execute("""
-                        INSERT INTO kkm (tingkat, mapel_id, kkm)
-                        VALUES (?, ?, 75)
-                    """, (t, m["id"]))
-
-        # ===== Cegah mapel duplikat =====
-        d.execute("""
-        CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_mapel
-        ON mata_pelajaran (nama, jenis)
-        """)
+    # ===== Cegah mapel duplikat =====
+    d.execute("""
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_mapel
+    ON mata_pelajaran (nama, jenis)
+    """)

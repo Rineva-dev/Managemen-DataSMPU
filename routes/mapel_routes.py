@@ -9,7 +9,7 @@ iso_today = today.isoformat()
 
 mapel_bp = Blueprint("mapel", __name__)
 
-def seed_mapel_wajib(d):
+def seed_mapel_wajib():
     MAPEL_WAJIB = [
         "Matematika",
         "Ilmu Pengetahuan Alam (IPA)",
@@ -23,18 +23,19 @@ def seed_mapel_wajib(d):
         "Pendidikan Agama Islam (PAI)",
     ]
 
-    for nama in MAPEL_WAJIB:
-        exists = d.execute("""
-            SELECT 1 FROM mata_pelajaran
-            WHERE TRIM(LOWER(nama)) = TRIM(LOWER(?))
-            AND jenis = 'wajib'
-        """, (nama,)).fetchone()
+    with db() as d:
+        for nama in MAPEL_WAJIB:
+            exists = d.execute("""
+                SELECT 1 FROM mata_pelajaran
+                WHERE TRIM(LOWER(nama)) = TRIM(LOWER(?))
+                AND jenis = 'wajib'
+            """, (nama,)).fetchone()
 
-        if not exists:
-            d.execute("""
-                INSERT INTO mata_pelajaran (nama, jenis, is_locked)
-                VALUES (?, 'wajib', 1)
-            """, (nama,))
+            if not exists:
+                d.execute("""
+                    INSERT INTO mata_pelajaran (nama, jenis, is_locked)
+                    VALUES (?, 'wajib', 1)
+                """, (nama,))
 
 def seed_mapel_kegiatan():
     KEGIATAN = {
