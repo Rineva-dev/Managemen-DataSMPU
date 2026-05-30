@@ -333,7 +333,7 @@ def init_db():
         )
         """)
 
-        # ===== TABEL NILAI SISWA =====
+        # ===== TABEL NILAI SISWA (FINAL & KONSISTEN) =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS nilai_siswa (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -341,9 +341,10 @@ def init_db():
             siswa_id INTEGER NOT NULL,
             kelas_mapel_id INTEGER NOT NULL,
 
-            nilai_tugas REAL,
-            nilai_uts REAL,
-            nilai_uas REAL,
+            keaktifan REAL DEFAULT 0,
+            harian    REAL DEFAULT 0,
+            uas       REAL DEFAULT 0,
+
             nilai_akhir REAL,
             grade TEXT,
 
@@ -352,20 +353,15 @@ def init_db():
 
             UNIQUE (siswa_id, kelas_mapel_id),
 
-            FOREIGN KEY (siswa_id) REFERENCES siswa(id) ON DELETE CASCADE,
-            FOREIGN KEY (kelas_mapel_id) REFERENCES kelas_mapel(id) ON DELETE CASCADE
+            FOREIGN KEY (siswa_id)
+                REFERENCES siswa(id)
+                ON DELETE CASCADE,
+
+            FOREIGN KEY (kelas_mapel_id)
+                REFERENCES kelas_mapel(id)
+                ON DELETE CASCADE
         )
         """)
-
-        # ===== Tambah kolom keaktifan jika belum ada =====
-        columns = d.execute("PRAGMA table_info(nilai_siswa)").fetchall()
-        column_names = [c["name"] for c in columns]
-
-        if "keaktifan" not in column_names:
-            d.execute("""
-                ALTER TABLE nilai_siswa
-                ADD COLUMN keaktifan REAL DEFAULT 0
-            """)
 
     from routes.mapel_routes import seed_mapel_wajib
     seed_mapel_wajib()
