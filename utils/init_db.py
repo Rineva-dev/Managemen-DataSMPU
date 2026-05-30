@@ -397,6 +397,8 @@ def init_db():
 
     seed_mapel_wajib()
 
+    print("SESUDAH SEED")
+
     # ===== SEED DEFAULT KKM =====
     mapels = d.execute("""
         SELECT id FROM mata_pelajaran
@@ -423,4 +425,4 @@ def init_db():
     ON mata_pelajaran (nama, jenis)
     """)
 
-    print("SESUDAH SEED MAPEL")
+    print("SELESAI TEST")
