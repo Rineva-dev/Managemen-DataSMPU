@@ -6,7 +6,7 @@ def init_db():
         # ===== Tabel guru =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS guru (
-            id INTEGER PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             nama TEXT NOT NULL,
             jabatan TEXT NOT NULL,
             tempat TEXT,
@@ -30,7 +30,7 @@ def init_db():
         # ===== Tabel akun =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS akun (
-            id INTEGER PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             guru_id INTEGER NOT NULL,
             username TEXT NOT NULL UNIQUE,
             password TEXT NOT NULL,
@@ -43,7 +43,7 @@ def init_db():
         # ===== Tabel absensi =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS absensi (
-            id INTEGER PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             guru_id INTEGER NOT NULL,
             tanggal TEXT NOT NULL,
             status TEXT NOT NULL,
