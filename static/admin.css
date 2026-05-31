@@ -234,7 +234,7 @@ html, body {
 
 /* KONTEN */
 .content {
-    padding: 20px 26px;
+    padding: 30px 26px 20px;
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
@@ -2411,6 +2411,7 @@ html {
     transition: 0.3s ease;
 }
 
+#ekstrakurikuler-content > h3,
 #mata-pelajaran-content > h3,
 #pembayaran-siswa-content > h3,
 #absensi-harian-content > h3,
@@ -2420,6 +2421,7 @@ html {
 #akun-guru-content > h3,
 #absensi-content > h3 {
     margin-top: 0;
+    font-size: 25px !important;
 }
 
 /* ============================= */

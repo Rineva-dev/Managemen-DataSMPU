@@ -68,14 +68,6 @@ def init_db():
         )
         """)
 
-        cols = d.execute(
-            "PRAGMA table_info(mata_pelajaran)"
-        ).fetchall()
-
-        print("KOLOM MATA_PELAJARAN:")
-        for c in cols:
-            print(dict(c))
-
         # ===== TABEL KKM =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS kkm (
@@ -388,8 +380,6 @@ def init_db():
                 ON DELETE CASCADE
         )
         """)
-    
-    print("SEBELUM SEED MAPEL")
 
     from routes.mapel_routes import seed_mapel_wajib
     seed_mapel_wajib()
@@ -419,5 +409,3 @@ def init_db():
     CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_mapel
     ON mata_pelajaran (nama, jenis)
     """)
-
-    print("SELESAI TEST")

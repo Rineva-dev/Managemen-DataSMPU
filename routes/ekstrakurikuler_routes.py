@@ -71,13 +71,20 @@ def index():
                 ORDER BY e.nama ASC
             """, (tahun_id,)).fetchall()
 
+        guru_list = d.execute("""
+            SELECT id, nama
+            FROM guru
+            ORDER BY nama ASC
+        """).fetchall()
+
     return render_template(
         "dashboard.html",
         active_page="ekstrakurikuler",
         tahun_list=tahun_list,
         tahun_terpilih=int(tahun_id) if tahun_id else None,
         tahun_aktif=tahun_aktif,
-        ekskul_list=[dict(x) for x in ekskul_list]
+        ekskul_list=[dict(x) for x in ekskul_list],
+        guru_list=[dict(g) for g in guru_list]
     )
 
 @ekskul_bp.route("/create", methods=["POST"])

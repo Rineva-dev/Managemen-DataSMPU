@@ -1,9 +1,167 @@
-.guru-filter-bar {
+/* =========================
+   LAYOUT UTAMA EKSKUL
+========================= */
+
+#ekstrakurikuler-content .kelas-main {
     display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
+    gap: 20px;
+    margin-top: 20px;
+    align-items: stretch;
 }
 
-#ekskulTahunDropdown {
-    margin-left: auto;
+#ekstrakurikuler-content .kelas-left {
+    flex: 1.2;
+    min-width: 0;
+}
+
+/* PANEL CONTAINER */
+.kelas-right {
+    background: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    padding: 16px;
+
+    position: sticky;
+    top: 20px;
+
+    flex: 1;
+    min-width: 556px;
+
+    display: flex;          
+    flex-direction: column; 
+    max-height: 400px;          
+}
+
+/* =========================
+   PANEL DETAIL KANAN
+========================= */
+
+#ekskul-detail-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.kelas-detail-header {
+    padding: 0 10px 10px 0;
+    border-bottom: 1px solid #eee;
+    background: #ffffff;
+}
+
+.kelas-detail-header h4 {
+    margin: 0;
+    font-size: 14px;
+}
+
+.kelas-detail-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: auto;
+    min-height: 0;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: separate;
+    font-size: 13px;
+    border-spacing: 0 6px;
+}
+
+/* HEADER */
+.detail-table thead th {
+    text-align: left;
+    padding: 10px 8px;
+    background: linear-gradient(135deg, #f8f9fa, #f0f0f0);
+    font-weight: 600;
+    text-align: center;
+}
+
+/* BODY */
+.detail-table tbody tr {
+    background: #fff;
+}
+
+.detail-table tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #ececec;
+}
+
+
+/* ROW HOVER */
+.detail-table tbody tr:hover {
+    background: #f5f7fb;
+}
+
+.detail-table th:nth-child(1),
+.detail-table td:nth-child(1) {
+    width: 10px;
+    text-align: center;
+}
+
+/* EMPTY STATE */
+.detail-table .empty {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+}
+
+#kelas-table tbody tr.active-row {
+    background: #e8f5e9 !important;
+}
+
+.kelas-detail-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.kelas-detail-body::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+/* =========================
+   MODAL ANGGOTA
+========================= */
+
+#anggota-ekskul-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,.45);
+    z-index: 9999;
+}
+
+#anggota-ekskul-modal.active {
+    display: flex;
+}
+
+#anggota-ekskul-modal .rombel-modal {
+    width: 90%;
+    max-width: 1100px;
+    max-height: 85vh;
+    overflow: auto;
+
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+/* =========================
+   DUAL LIST SISWA
+========================= */
+
+.rombel-container {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.rombel-left,
+.rombel-right {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    min-height: 400px;
+    overflow-y: auto;
 }
