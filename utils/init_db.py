@@ -63,6 +63,7 @@ def init_db():
             nama TEXT NOT NULL,
             jenis TEXT NOT NULL,
             aktif INTEGER DEFAULT 1,
+            is_locked INTEGER DEFAULT 0,
             created_at TEXT,
             updated_at TEXT
         )
