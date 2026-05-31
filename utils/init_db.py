@@ -17,7 +17,8 @@ def init_db():
             alamat TEXT,
             email TEXT,
             role TEXT NOT NULL,
-            password TEXT
+            password TEXT,
+            foto TEXT
         )
         """)
 
