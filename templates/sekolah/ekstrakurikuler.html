@@ -191,6 +191,23 @@
     </div>
 </div>
 
+<style>
+#ekstrakurikuler-content .guru-filter-bar {
+    flex-wrap: nowrap;
+}
+
+#ekstrakurikuler-content #ekskulTahunDropdown {
+    margin-left: auto;
+    width: 200px;
+}
+
+#ekstrakurikuler-content .kelas-action-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+}
+</style>
+
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/sekolah/ekstrakurikuler.js') }}"></script>
 {% endblock %}

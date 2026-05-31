@@ -1,0 +1,9 @@
+.guru-filter-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+#ekskulTahunDropdown {
+    margin-left: auto;
+}
