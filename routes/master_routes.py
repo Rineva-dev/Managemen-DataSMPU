@@ -65,8 +65,8 @@ def menu_kelas():
             aktif = d.execute("""
                 SELECT id
                 FROM tahun_pelajaran
-                WHERE semester_mulai <= ?
-                AND semester_akhir >= ?
+                WHERE semester_mulai::date <= %s
+                AND semester_akhir::date >= %s
                 LIMIT 1
             """, (today, today)).fetchone()
 
@@ -82,8 +82,14 @@ def menu_kelas():
             """, (tahun_id,)).fetchone()
 
             if row:
-                mulai = datetime.strptime(row["semester_mulai"], "%Y-%m-%d").date()
-                akhir = datetime.strptime(row["semester_akhir"], "%Y-%m-%d").date()
+                mulai = row["semester_mulai"]
+                akhir = row["semester_akhir"]
+
+                if isinstance(mulai, str):
+                    mulai = datetime.strptime(mulai, "%Y-%m-%d").date()
+
+                if isinstance(akhir, str):
+                    akhir = datetime.strptime(akhir, "%Y-%m-%d").date()
 
                 if mulai <= today <= akhir:
                     tahun_aktif = True
