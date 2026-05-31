@@ -382,31 +382,31 @@ def init_db():
         )
         """)
 
-    from routes.mapel_routes import seed_mapel_wajib
-    seed_mapel_wajib()
+        from routes.mapel_routes import seed_mapel_wajib
+        seed_mapel_wajib()
 
-    # ===== SEED DEFAULT KKM =====
-    mapels = d.execute("""
-        SELECT id FROM mata_pelajaran
-    """).fetchall()
+        # ===== SEED DEFAULT KKM =====
+        mapels = d.execute("""
+            SELECT id FROM mata_pelajaran
+        """).fetchall()
 
-    tingkats = [7, 8, 9]  # atau sesuai sekolahmu
+        tingkats = [7, 8, 9]  # atau sesuai sekolahmu
 
-    for m in mapels:
-        for t in tingkats:
-            exists = d.execute("""
-                SELECT 1 FROM kkm
-                WHERE mapel_id = ? AND tingkat = ?
-            """, (m["id"], t)).fetchone()
+        for m in mapels:
+            for t in tingkats:
+                exists = d.execute("""
+                    SELECT 1 FROM kkm
+                    WHERE mapel_id = ? AND tingkat = ?
+                """, (m["id"], t)).fetchone()
 
-            if not exists:
-                d.execute("""
-                    INSERT INTO kkm (tingkat, mapel_id, kkm)
-                    VALUES (?, ?, 75)
-                """, (t, m["id"]))
+                if not exists:
+                    d.execute("""
+                        INSERT INTO kkm (tingkat, mapel_id, kkm)
+                        VALUES (?, ?, 75)
+                    """, (t, m["id"]))
 
-    # ===== Cegah mapel duplikat =====
-    d.execute("""
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_mapel
-    ON mata_pelajaran (nama, jenis)
-    """)
+        # ===== Cegah mapel duplikat =====
+        d.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_mapel
+        ON mata_pelajaran (nama, jenis)
+        """)
