@@ -34,8 +34,8 @@ def index():
             aktif = d.execute("""
                 SELECT id
                 FROM tahun_pelajaran
-                WHERE semester_mulai <= ?
-                AND semester_akhir >= ?
+                WHERE CAST(semester_mulai AS DATE) <= %s
+                AND CAST(semester_akhir AS DATE) >= %s
                 LIMIT 1
             """, (today, today)).fetchone()
 
@@ -52,15 +52,15 @@ def index():
             """, (tahun_id,)).fetchone()
 
             if row:
-                mulai = datetime.strptime(row["semester_mulai"], "%Y-%m-%d").date()
-                akhir = datetime.strptime(row["semester_akhir"], "%Y-%m-%d").date()
+                if isinstance(mulai, str):
+                    mulai = datetime.strptime(mulai, "%Y-%m-%d").date()
+
+                if isinstance(akhir, str):
+                    akhir = datetime.strptime(akhir, "%Y-%m-%d").date()
 
                 if mulai <= today <= akhir:
                     tahun_aktif = True
-                    
-                print("TAHUN_ID:", tahun_id)
-                print("TAHUN_AKTIF:", tahun_aktif)
-
+                
         # ==============================
         # DATA KELAS
         # ==============================
