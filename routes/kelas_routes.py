@@ -489,11 +489,24 @@ def save_mapel_kelas():
             jam_mulai = item.get("jam_mulai") or None
             jam_selesai = item.get("jam_selesai") or None
 
-            # 🔥 VALIDASI BARU
-            if jp > 0 and not guru_id:
+            # 🔥 ambil jenis mapel
+            mapel = d.execute("""
+                SELECT jenis
+                FROM mata_pelajaran
+                WHERE id = ?
+            """, (mapel_id,)).fetchone()
+
+            jenis_mapel = mapel["jenis"] if mapel else None
+
+            # 🔥 guru wajib kecuali kegiatan
+            if (
+                jp > 0
+                and jenis_mapel != "kegiatan"
+                and not guru_id
+            ):
                 return jsonify({
                     "success": False,
-                    "message": "Jika JP diisi, guru wajib dipilih."
+                    "message": "Guru untuk mapel belum ditentukan."
                 })
 
             # ==========================
@@ -616,13 +629,30 @@ def save_jadwal():
             mulai      = item.get("jam_mulai")
             selesai    = item.get("jam_selesai")
             mapel_id   = item.get("mapel_id")
-            guru_id    = item.get("guru_id")   # 🔥 WAJIB
+            guru_id    = item.get("guru_id")
 
             # ===== VALIDASI =====
-            if not all([hari, mulai, selesai, mapel_id, guru_id]):
+            # ambil jenis mapel
+            mapel = d.execute("""
+                SELECT jenis
+                FROM mata_pelajaran
+                WHERE id = ?
+            """, (mapel_id,)).fetchone()
+
+            jenis_mapel = mapel["jenis"] if mapel else None
+
+            # validasi dasar
+            if not all([hari, mulai, selesai, mapel_id]):
                 return jsonify(
                     success=False,
-                    message="Hari, jam, mapel, dan guru wajib diisi"
+                    message="Hari, jam, dan mapel wajib diisi"
+                ), 400
+
+            # guru wajib selain kegiatan
+            if jenis_mapel != "kegiatan" and not guru_id:
+                return jsonify(
+                    success=False,
+                    message="Guru untuk mapel belum ditentukan"
                 ), 400
 
             # ===== CEK BENTROK KELAS =====
@@ -639,6 +669,30 @@ def save_jadwal():
                     success=False,
                     message=f"Jadwal bentrok di hari {hari}"
                 ), 400
+            
+            # ===== CEK BENTROK GURU =====
+            if guru_id:
+
+                konflik_guru = d.execute("""
+                    SELECT 1
+                    FROM kelas_jadwal
+                    WHERE guru_id = %s
+                    AND hari = %s
+                    AND kelas_id != %s
+                    AND (%s < jam_selesai AND %s > jam_mulai)
+                """, (
+                    guru_id,
+                    hari,
+                    kelas_id,
+                    mulai,
+                    selesai
+                )).fetchone()
+
+                if konflik_guru:
+                    return jsonify(
+                        success=False,
+                        message=f"Guru bentrok di hari {hari}"
+                    ), 400
 
             # ===== INSERT LENGKAP =====
             d.execute("""
@@ -669,7 +723,12 @@ def get_jadwal(kelas_id):
 
     with db() as d:
         rows = d.execute("""
-            SELECT hari, jam_mulai, jam_selesai, mapel_id
+            SELECT 
+                hari,
+                jam_mulai,
+                jam_selesai,
+                mapel_id,
+                guru_id
             FROM kelas_jadwal
             WHERE kelas_id = ?
             ORDER BY
