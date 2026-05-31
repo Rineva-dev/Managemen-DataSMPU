@@ -37,6 +37,8 @@ def index():
             tahun_id = aktif["id"] if aktif else None
 
         tahun_aktif = False
+        mulai = None
+        akhir = None
         if tahun_id:
             row = d.execute("""
                 SELECT semester_mulai, semester_akhir
@@ -45,11 +47,15 @@ def index():
             """, (tahun_id,)).fetchone()
 
             if row:
+                mulai = row["semester_mulai"]
+                akhir = row["semester_akhir"]
+
                 if isinstance(mulai, str):
                     mulai = datetime.strptime(mulai, "%Y-%m-%d").date()
 
                 if isinstance(akhir, str):
                     akhir = datetime.strptime(akhir, "%Y-%m-%d").date()
+
                 tahun_aktif = mulai <= today <= akhir
 
         # ======================
