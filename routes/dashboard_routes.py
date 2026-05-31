@@ -29,28 +29,28 @@ def dashboard():
         if role in ["admin", "kepala_sekolah"]:
 
             total_guru = d.execute("""
-                SELECT COUNT(*) FROM guru
+                SELECT COUNT(*) AS total FROM guru
                 WHERE role = 'guru'
-            """).fetchone()[0]
+            """).fetchone()["total"]
 
             total_jabatan = d.execute("""
-                SELECT COUNT(DISTINCT jabatan)
+                SELECT COUNT(DISTINCT jabatan) AS total
                 FROM guru
                 WHERE jabatan IS NOT NULL
                 AND jabatan != ''
-            """).fetchone()[0]
+            """).fetchone()["total"]
 
             total_absensi = d.execute("""
-                SELECT COUNT(*) FROM absensi
-            """).fetchone()[0]
+                SELECT COUNT(*) AS total FROM absensi
+            """).fetchone()["total"]
 
             today = now_wita().date().isoformat()
             absensi_hari_ini = d.execute("""
-                SELECT COUNT(DISTINCT guru_id)
+                SELECT COUNT(DISTINCT guru_id) AS total
                 FROM absensi
                 WHERE tanggal = ?
                 AND status IN ('masuk', 'terlambat')
-            """, (today,)).fetchone()[0]
+            """, (today,)).fetchone()["total"]
 
             return render_template(
                 "dashboard.html",
@@ -65,9 +65,9 @@ def dashboard():
         elif role == "guru":
 
             total_absensi_pribadi = d.execute("""
-                SELECT COUNT(*) FROM absensi
+                SELECT COUNT(*) AS total FROM absensi
                 WHERE guru_id=?
-            """, (guru_id,)).fetchone()[0]
+            """, (guru_id,)).fetchone()["total"]
 
             return render_template(
                 "dashboard.html",
@@ -79,9 +79,9 @@ def dashboard():
         elif role == "bendahara":
 
             total_siswa = d.execute("""
-                SELECT COUNT(*) FROM siswa
+                SELECT COUNT(*) AS total FROM siswa
                 WHERE status = 'aktif'
-            """).fetchone()[0]
+            """).fetchone()["total"]
 
             sudah_bayar = 0  # nanti aktifkan kalau tabel SPP ada
             total_penerimaan = 0
@@ -112,10 +112,10 @@ def dashboard():
 
                 # ✅ TOTAL SISWA DI ROMBEL
                 total_siswa_kelas = d.execute("""
-                    SELECT COUNT(*)
+                    SELECT COUNT(*) AS total
                     FROM kelas_siswa
                     WHERE kelas_id = ?
-                """, (kelas["id"],)).fetchone()[0]
+                """, (kelas["id"],)).fetchone()["total"]
 
             else:
                 total_siswa_kelas = 0
@@ -171,22 +171,22 @@ def api_admin_dashboard():
                 tgl = f"{tahun_sekarang}-{str(bulan_pilih).zfill(2)}-{str(hari).zfill(2)}"
 
                 jml_masuk = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE tanggal = ?
                     AND status = 'masuk'
-                """, (tgl,)).fetchone()[0]
+                """, (tgl,)).fetchone()["total"]
 
                 jml_terlambat = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE tanggal = ?
                     AND status = 'terlambat'
-                """, (tgl,)).fetchone()[0]
+                """, (tgl,)).fetchone()["total"]
 
                 jml_tidak = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE tanggal = ?
                     AND status = 'izin_tidak_masuk'
-                """, (tgl,)).fetchone()[0]
+                """, (tgl,)).fetchone()["total"]
 
                 labels.append(str(hari))
                 masuk.append(jml_masuk)
@@ -201,25 +201,25 @@ def api_admin_dashboard():
                 m = str(bulan).zfill(2)
 
                 jml_masuk = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE strftime('%Y', tanggal) = ?
                     AND strftime('%m', tanggal) = ?
                     AND status = 'masuk'
-                """, (str(tahun_sekarang), m)).fetchone()[0]
+                """, (str(tahun_sekarang), m)).fetchone()["total"]
 
                 jml_terlambat = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE strftime('%Y', tanggal) = ?
                     AND strftime('%m', tanggal) = ?
                     AND status = 'terlambat'
-                """, (str(tahun_sekarang), m)).fetchone()[0]
+                """, (str(tahun_sekarang), m)).fetchone()["total"]
 
                 jml_tidak = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE strftime('%Y', tanggal) = ?
                     AND strftime('%m', tanggal) = ?
                     AND status = 'izin_tidak_masuk'
-                """, (str(tahun_sekarang), m)).fetchone()[0]
+                """, (str(tahun_sekarang), m)).fetchone()["total"]
 
                 labels.append(str(bulan))
                 masuk.append(jml_masuk)
@@ -251,11 +251,11 @@ def api_admin_dashboard():
         today = now_wita().date().isoformat()
 
         absen_hari_ini = d.execute("""
-            SELECT COUNT(DISTINCT guru_id)
+            SELECT COUNT(DISTINCT guru_id) AS total
             FROM absensi
             WHERE tanggal = ?
             AND status IN ('masuk', 'terlambat')
-        """, (today,)).fetchone()[0]
+        """, (today,)).fetchone()["total"]
 
         activity = []
 
@@ -341,26 +341,26 @@ def api_admin_dashboard():
         # 4️⃣ TOTAL GURU
         # =========================
         total_guru = d.execute("""
-            SELECT COUNT(*) FROM guru
+            SELECT COUNT(*) AS total FROM guru
             WHERE role = 'guru'
-        """).fetchone()[0]
+        """).fetchone()["total"]
 
         # =========================
         # 5️⃣ TOTAL JABATAN (UNIK)
         # =========================
         total_jabatan = d.execute("""
-            SELECT COUNT(DISTINCT jabatan)
+            SELECT COUNT(DISTINCT jabatan) AS total
             FROM guru
             WHERE jabatan IS NOT NULL
             AND jabatan != ''
-        """).fetchone()[0]
+        """).fetchone()["total"]
 
         # =========================
         # 6️⃣ TOTAL ABSENSI (SEMUA DATA)
         # =========================
         total_absensi = d.execute("""
-            SELECT COUNT(*) FROM absensi
-        """).fetchone()[0]
+            SELECT COUNT(*) AS total FROM absensi
+        """).fetchone()["total"]
 
         return jsonify({
             "chart": {
@@ -407,13 +407,13 @@ def api_bendahara_dashboard():
                     SELECT COALESCE(SUM(jumlah), 0)
                     FROM penerimaan
                     WHERE tanggal = ?
-                """, (tgl,)).fetchone()[0] if table_exists(d, "penerimaan") else 0
+                """, (tgl,)).fetchone()["total"] if table_exists(d, "penerimaan") else 0
 
                 keluar = d.execute("""
                     SELECT COALESCE(SUM(jumlah), 0)
                     FROM pengeluaran
                     WHERE tanggal = ?
-                """, (tgl,)).fetchone()[0] if table_exists(d, "pengeluaran") else 0
+                """, (tgl,)).fetchone()["total"] if table_exists(d, "pengeluaran") else 0
 
                 labels.append(str(hari))
                 pemasukan.append(masuk)
@@ -431,14 +431,14 @@ def api_bendahara_dashboard():
                     FROM penerimaan
                     WHERE strftime('%Y', tanggal) = ?
                     AND strftime('%m', tanggal) = ?
-                """, (year, m)).fetchone()[0] if table_exists(d, "penerimaan") else 0
+                """, (year, m)).fetchone()["total"] if table_exists(d, "penerimaan") else 0
 
                 keluar = d.execute("""
                     SELECT COALESCE(SUM(jumlah), 0)
                     FROM pengeluaran
                     WHERE strftime('%Y', tanggal) = ?
                     AND strftime('%m', tanggal) = ?
-                """, (year, m)).fetchone()[0] if table_exists(d, "pengeluaran") else 0
+                """, (year, m)).fetchone()["total"] if table_exists(d, "pengeluaran") else 0
 
                 labels.append(str(bulan))
                 pemasukan.append(masuk)
@@ -468,7 +468,7 @@ def api_guru_dashboard():
         # TOTAL ABSENSI PRIBADI
         # ======================
         query_total = """
-            SELECT COUNT(*) FROM absensi
+            SELECT COUNT(*) AS total FROM absensi
             WHERE guru_id = ?
             AND strftime('%Y', tanggal) = ?
         """
@@ -479,7 +479,7 @@ def api_guru_dashboard():
             query_total += " AND strftime('%m', tanggal) = ?"
             params.append(str(month).zfill(2))
 
-        total_absensi = d.execute(query_total, tuple(params)).fetchone()[0]
+        total_absensi = d.execute(query_total, tuple(params)).fetchone()["total"]
 
 
         # ======================
@@ -503,19 +503,19 @@ def api_guru_dashboard():
                 tgl = f"{year}-{str(month).zfill(2)}-{str(hari).zfill(2)}"
 
                 jml_masuk = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE guru_id=? AND tanggal=? AND status='masuk'
-                """, (guru_id, tgl)).fetchone()[0]
+                """, (guru_id, tgl)).fetchone()["total"]
 
                 jml_terlambat = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE guru_id=? AND tanggal=? AND status='terlambat'
-                """, (guru_id, tgl)).fetchone()[0]
+                """, (guru_id, tgl)).fetchone()["total"]
 
                 jml_tidak = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE guru_id=? AND tanggal=? AND status='izin_tidak_masuk'
-                """, (guru_id, tgl)).fetchone()[0]
+                """, (guru_id, tgl)).fetchone()["total"]
 
                 labels.append(str(hari))
                 masuk.append(jml_masuk)
@@ -531,28 +531,28 @@ def api_guru_dashboard():
                 m = str(bulan).zfill(2)
 
                 jml_masuk = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE guru_id=?
                     AND strftime('%Y', tanggal)=?
                     AND strftime('%m', tanggal)=?
                     AND status='masuk'
-                """, (guru_id, year, m)).fetchone()[0]
+                """, (guru_id, year, m)).fetchone()["total"]
 
                 jml_terlambat = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE guru_id=?
                     AND strftime('%Y', tanggal)=?
                     AND strftime('%m', tanggal)=?
                     AND status='terlambat'
-                """, (guru_id, year, m)).fetchone()[0]
+                """, (guru_id, year, m)).fetchone()["total"]
 
                 jml_tidak = d.execute("""
-                    SELECT COUNT(*) FROM absensi
+                    SELECT COUNT(*) AS total FROM absensi
                     WHERE guru_id=?
                     AND strftime('%Y', tanggal)=?
                     AND strftime('%m', tanggal)=?
                     AND status='izin_tidak_masuk'
-                """, (guru_id, year, m)).fetchone()[0]
+                """, (guru_id, year, m)).fetchone()["total"]
 
                 labels.append(str(bulan))
                 masuk.append(jml_masuk)
