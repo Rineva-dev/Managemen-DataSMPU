@@ -1,6 +1,20 @@
 /* =========================
    LAYOUT UTAMA EKSKUL
 ========================= */
+#ekstrakurikuler-content .guru-filter-bar {
+    flex-wrap: nowrap;
+}
+
+#ekstrakurikuler-content #ekskulTahunDropdown {
+    margin-left: auto;
+    width: 200px;
+}
+
+#ekstrakurikuler-content .kelas-action-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+}
 
 #ekstrakurikuler-content .kelas-main {
     display: flex;
@@ -31,6 +45,8 @@
     flex-direction: column; 
     max-height: 400px;          
 }
+
+
 
 /* =========================
    PANEL DETAIL KANAN
