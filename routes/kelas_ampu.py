@@ -357,9 +357,8 @@ def start_absensi():
         # =====================================
         # INSERT ABSENSI
         # =====================================
-        cur = d.execute("""
-            INSERT INTO absensi_mengajar
-            (
+        row = d.execute("""
+            INSERT INTO absensi_mengajar (
                 kelas_mapel_id,
                 pertemuan_ke,
                 tanggal,
@@ -370,6 +369,7 @@ def start_absensi():
                 kegiatan
             )
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            RETURNING id
         """, (
             kelas_mapel_id,
             pertemuan_ke,
@@ -379,9 +379,9 @@ def start_absensi():
             materi,
             indikator,
             kegiatan
-        ))
+        )).fetchone()
 
-        absensi_id = cur.lastrowid
+        absensi_id = row["id"]
 
     return jsonify({
         "success": True,

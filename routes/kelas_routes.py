@@ -262,13 +262,7 @@ def update_kelas(id):
 def delete_kelas(id):
 
     with db() as d:
-        row = d.execute("PRAGMA database_list").fetchall()
-        print("DB PATH:", row)
 
-        cols = d.execute("PRAGMA table_info(kelas_siswa)").fetchall()
-        print("STRUKTUR:", [dict(c) for c in cols])
-
-        # 🔥 Cek apakah masih ada siswa
         siswa = d.execute("""
             SELECT 1 FROM kelas_siswa
             WHERE kelas_id = ?

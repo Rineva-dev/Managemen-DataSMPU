@@ -22,10 +22,10 @@ def init_db():
         """)
 
         # ===== Tambahkan kolom foto jika belum ada =====
-        columns = d.execute("PRAGMA table_info(guru)").fetchall()
-        column_names = [col["name"] for col in columns]
-        if "foto" not in column_names:
-            d.execute("ALTER TABLE guru ADD COLUMN foto TEXT")
+#        columns = d.execute("PRAGMA table_info(guru)").fetchall()
+#        column_names = [col["name"] for col in columns]
+#        if "foto" not in column_names:
+#            d.execute("ALTER TABLE guru ADD COLUMN foto TEXT")
 
         # ===== Tabel akun =====
         d.execute("""
@@ -59,7 +59,7 @@ def init_db():
         # ===== Tabel Mata Pelajaran =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS mata_pelajaran (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             nama TEXT NOT NULL,
             jenis TEXT NOT NULL,
             aktif INTEGER DEFAULT 1,
@@ -71,7 +71,7 @@ def init_db():
         # ===== TABEL KKM =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS kkm (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             tingkat INTEGER NOT NULL,
             mapel_id INTEGER NOT NULL,
             kkm INTEGER NOT NULL DEFAULT 75,
@@ -81,40 +81,40 @@ def init_db():
         """)
 
         # cek kolom
-        columns = d.execute(
-            "PRAGMA table_info(mata_pelajaran)"
-        ).fetchall()
-        column_names = [c["name"] for c in columns]
+#        columns = d.execute(
+#            "PRAGMA table_info(mata_pelajaran)"
+#        ).fetchall()
+#        column_names = [c["name"] for c in columns]
 
-        if "aktif" not in column_names:
-            d.execute("""
-                ALTER TABLE mata_pelajaran
-                ADD COLUMN aktif INTEGER DEFAULT 1
-            """)
+#        if "aktif" not in column_names:
+#            d.execute("""
+#                ALTER TABLE mata_pelajaran
+#                ADD COLUMN aktif INTEGER DEFAULT 1
+#            """)
 
-        if "created_at" not in column_names:
-            d.execute("""
-                ALTER TABLE mata_pelajaran
-                ADD COLUMN created_at TEXT
-            """)
+#        if "created_at" not in column_names:
+#            d.execute("""
+#                ALTER TABLE mata_pelajaran
+#                ADD COLUMN created_at TEXT
+#            """)
 
-        if "updated_at" not in column_names:
-            d.execute("""
-                ALTER TABLE mata_pelajaran
-                ADD COLUMN updated_at TEXT
-            """)
+#        if "updated_at" not in column_names:
+#            d.execute("""
+#                ALTER TABLE mata_pelajaran
+#                ADD COLUMN updated_at TEXT
+#            """)
 
-        if "is_locked" not in column_names:
-            d.execute(
-                "ALTER TABLE mata_pelajaran ADD COLUMN is_locked INTEGER DEFAULT 0"
-            )
+#        if "is_locked" not in column_names:
+#            d.execute(
+#                "ALTER TABLE mata_pelajaran ADD COLUMN is_locked INTEGER DEFAULT 0"
+#            )
 
         # ===== Tambah kolom updated_at jika belum ada =====
-        columns = d.execute("PRAGMA table_info(absensi)").fetchall()
-        column_names = [col["name"] for col in columns]
+#        columns = d.execute("PRAGMA table_info(absensi)").fetchall()
+#        column_names = [col["name"] for col in columns]
 
-        if "updated_at" not in column_names:
-            d.execute("ALTER TABLE absensi ADD COLUMN updated_at TEXT")
+#        if "updated_at" not in column_names:
+#            d.execute("ALTER TABLE absensi ADD COLUMN updated_at TEXT")
         
         # ===== Tambahkan admin default =====
         exists = d.execute("SELECT * FROM guru WHERE nama='admin'").fetchone()
@@ -131,18 +131,18 @@ def init_db():
         ).fetchone()
 
         # ===== Tambah kolom role jika belum ada =====
-        columns = d.execute("PRAGMA table_info(akun)").fetchall()
-        column_names = [col["name"] for col in columns]
+#        columns = d.execute("PRAGMA table_info(akun)").fetchall()
+#        column_names = [col["name"] for col in columns]
 
-        if "role" not in column_names:
-            d.execute("ALTER TABLE akun ADD COLUMN role TEXT DEFAULT 'guru'")
+#        if "role" not in column_names:
+#            d.execute("ALTER TABLE akun ADD COLUMN role TEXT DEFAULT 'guru'")
 
         # ===== Tambah kolom status jika belum ada =====
-        columns = d.execute("PRAGMA table_info(akun)").fetchall()
-        column_names = [col["name"] for col in columns]
+#        columns = d.execute("PRAGMA table_info(akun)").fetchall()
+#        column_names = [col["name"] for col in columns]
 
-        if "status" not in column_names:
-            d.execute("ALTER TABLE akun ADD COLUMN status TEXT DEFAULT 'aktif'")
+#        if "status" not in column_names:
+#            d.execute("ALTER TABLE akun ADD COLUMN status TEXT DEFAULT 'aktif'")
 
         # cek apakah akun admin sudah ada
         exists_admin = d.execute(
@@ -165,7 +165,7 @@ def init_db():
         # ===== Tabel Tahun Pelajaran (Tanpa Status) =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS tahun_pelajaran (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             tahun_pelajaran TEXT NOT NULL,
             semester TEXT NOT NULL,
             semester_mulai TEXT NOT NULL,
@@ -176,19 +176,19 @@ def init_db():
         )
         """)
 
-        columns = d.execute("PRAGMA table_info(tahun_pelajaran)").fetchall()
-        column_names = [col["name"] for col in columns]
+#        columns = d.execute("PRAGMA table_info(tahun_pelajaran)").fetchall()
+#        column_names = [col["name"] for col in columns]
 
-        if "updated_at" not in column_names:
-            d.execute("ALTER TABLE tahun_pelajaran ADD COLUMN updated_at TEXT")
+#        if "updated_at" not in column_names:
+#            d.execute("ALTER TABLE tahun_pelajaran ADD COLUMN updated_at TEXT")
 
-        if "updated_by" not in column_names:
-            d.execute("ALTER TABLE tahun_pelajaran ADD COLUMN updated_by TEXT")
+#        if "updated_by" not in column_names:
+#            d.execute("ALTER TABLE tahun_pelajaran ADD COLUMN updated_by TEXT")
 
         # ===== Tabel Activity Log =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS activity_log (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             user_id INTEGER NOT NULL,
             action TEXT NOT NULL,
             field_changed TEXT,
@@ -202,7 +202,7 @@ def init_db():
         # ===== Tabel Kelas =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS kelas (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             tingkat INTEGER NOT NULL,
             sub_kelas TEXT NOT NULL,
             tahun_pelajaran_id INTEGER NOT NULL,
@@ -216,7 +216,7 @@ def init_db():
         # ===== Tabel Kelas Mapel =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS kelas_mapel (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             kelas_id INTEGER NOT NULL,
             mapel_id INTEGER NOT NULL,
             guru_id INTEGER,
@@ -238,7 +238,7 @@ def init_db():
         # ===== Tabel Kelas Siswa =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS kelas_siswa (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             kelas_id INTEGER NOT NULL,
             siswa_id INTEGER NOT NULL,
             FOREIGN KEY (kelas_id) REFERENCES kelas(id) ON DELETE CASCADE
@@ -248,7 +248,7 @@ def init_db():
         # ===== Tabel SISWA =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS siswa (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
 
             nis TEXT UNIQUE,
             nisn TEXT UNIQUE,
@@ -300,7 +300,7 @@ def init_db():
         # ===== TABEL JADWAL KELAS =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS kelas_jadwal (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             kelas_id INTEGER NOT NULL,
             mapel_id INTEGER NOT NULL,
             guru_id INTEGER NOT NULL,
@@ -315,7 +315,7 @@ def init_db():
         # ======================================
         d.execute("""
         CREATE TABLE IF NOT EXISTS absensi_mengajar (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
 
             kelas_mapel_id INTEGER NOT NULL,
             pertemuan_ke INTEGER NOT NULL,
@@ -330,9 +330,9 @@ def init_db():
             catatan TEXT,
 
             status_final INTEGER DEFAULT 0,
-            finalized_at DATETIME,
+            finalized_at TIMESTAMP,
 
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
             FOREIGN KEY (kelas_mapel_id) REFERENCES kelas_mapel(id)
         )
@@ -340,7 +340,7 @@ def init_db():
 
         d.execute("""
         CREATE TABLE IF NOT EXISTS absensi_detail (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             absensi_id INTEGER NOT NULL,
             siswa_id INTEGER NOT NULL,
             status TEXT DEFAULT 'H',
@@ -354,7 +354,7 @@ def init_db():
         # ===== TABEL NILAI SISWA (FINAL & KONSISTEN) =====
         d.execute("""
         CREATE TABLE IF NOT EXISTS nilai_siswa (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
 
             siswa_id INTEGER NOT NULL,
             kelas_mapel_id INTEGER NOT NULL,

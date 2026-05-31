@@ -172,11 +172,13 @@ def tambah_mapel():
         }), 400
 
     # ===== INSERT MAPEL =====
-    cur.execute(
-        "INSERT INTO mata_pelajaran (nama, jenis) VALUES (?, ?)",
-        (nama, jenis)
-    )
-    mapel_id = cur.lastrowid
+    row = d.execute("""
+        INSERT INTO mata_pelajaran (nama, jenis)
+        VALUES (?, ?)
+        RETURNING id
+    """, (nama, jenis)).fetchone()
+
+    mapel_id = row["id"]
 
     # ===== RELASI GURU (JIKA ADA) =====
     for gid in guru_ids:

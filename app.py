@@ -1,15 +1,18 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Flask, session, jsonify
+from flask_wtf.csrf import CSRFProtect
 from utils.time_helper import now_wita
 from utils.db import db
 from utils.init_db import init_db
-from utils.seed_mapel import seed_mapel_wajib
+from routes import ALL_BLUEPRINTS
+
 
 app = Flask(__name__)
 
-with app.app_context():
-    init_db()
+app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key")
 
-app.secret_key = "SMPU_Absensi_2026_SuperSecretKey_!@#987654"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
@@ -17,52 +20,13 @@ app.config.update(
 )
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
 
-from flask_wtf.csrf import CSRFProtect
-
 csrf = CSRFProtect(app)
 
 # =========================
 # REGISTER BLUEPRINT
 # =========================
-from routes.auth_routes import auth_bp
-app.register_blueprint(auth_bp)
-
-from routes.profile_routes import profile_bp
-app.register_blueprint(profile_bp)
-
-from routes.absensi_routes import absensi_bp
-app.register_blueprint(absensi_bp)
-
-from routes.dashboard_routes import dashboard_bp
-app.register_blueprint(dashboard_bp)
-
-from routes.master_routes import master_bp
-app.register_blueprint(master_bp)
-
-from routes.tahun_routes import tahun_bp
-app.register_blueprint(tahun_bp)
-
-from routes.kelas_routes import kelas_bp
-app.register_blueprint(kelas_bp)
-
-from routes.ekstrakurikuler_routes import ekskul_bp
-app.register_blueprint(ekskul_bp)
-
-from routes.siswa_routes import siswa_bp
-app.register_blueprint(siswa_bp)
-
-from routes.pembayaran_routes import pembayaran_bp
-app.register_blueprint(pembayaran_bp)
-
-from routes.mapel_routes import mapel_bp
-app.register_blueprint(mapel_bp)
-
-from routes.kelas_ampu import kelas_ampu_bp
-app.register_blueprint(kelas_ampu_bp)
-
-from routes.kkm_routes import kkm_bp
-
-app.register_blueprint(kkm_bp)
+for bp in ALL_BLUEPRINTS:
+    app.register_blueprint(bp)
 
 @app.context_processor
 def inject_global_data():
@@ -113,6 +77,26 @@ def get_admin_data():
         """, (session["user_id"],)).fetchone()
 
     return admin_data
+
+
+@app.route("/init-postgres")
+def init_postgres():
+
+    try:
+
+        init_db()
+
+        return {
+            "success": True
+        }
+
+    except Exception as e:
+
+        return {
+            "success": False,
+            "error": str(e)
+        }, 500
+
 
 # =========================
 # RUN APP
