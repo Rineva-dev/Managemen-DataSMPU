@@ -51,18 +51,29 @@ def index():
                 WHERE id = ?
             """, (tahun_id,)).fetchone()
 
-            if row:
-                mulai = row["semester_mulai"]
-                akhir = row["semester_akhir"]
-                
-                if isinstance(mulai, str):
-                    mulai = datetime.strptime(mulai, "%Y-%m-%d").date()
+            if not row:
+                return render_template(
+                    "sekolah/kelas.html",
+                    active_page="kelas",
+                    tahun_list=tahun_list,
+                    tahun_terpilih=None,
+                    tahun_aktif=False,
+                    kelas_list=[],
+                    wali_list=[],
+                    total_data=0
+                )
 
-                if isinstance(akhir, str):
-                    akhir = datetime.strptime(akhir, "%Y-%m-%d").date()
+            mulai = row["semester_mulai"]
+            akhir = row["semester_akhir"]
 
-                if mulai <= today <= akhir:
-                    tahun_aktif = True
+            if isinstance(mulai, str):
+                mulai = datetime.strptime(mulai, "%Y-%m-%d").date()
+
+            if isinstance(akhir, str):
+                akhir = datetime.strptime(akhir, "%Y-%m-%d").date()
+
+            if mulai <= today <= akhir:
+                tahun_aktif = True
                 
         # ==============================
         # DATA KELAS
