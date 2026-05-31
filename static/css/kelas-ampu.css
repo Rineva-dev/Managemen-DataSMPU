@@ -302,13 +302,13 @@
     margin:0;
     font-size:22px;
     color:#0f172a;
-    margin-left: -35px !important;
 }
 
 .modal-header p{
     margin-top:6px;
     color:#64748b;
     font-size:14px;
+    margin-left: -25px !important;
 }
 
 .modal-body.mengajar {
