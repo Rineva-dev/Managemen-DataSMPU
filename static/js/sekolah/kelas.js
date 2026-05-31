@@ -542,6 +542,7 @@ async function loadMapelKelas(kelasId) {
 
         const wajib = data.mapel.filter(m => m.jenis === "wajib");
         const mulok = data.mapel.filter(m => m.jenis === "mulok");
+        const kegiatan = data.mapel.filter(m => m.jenis === "kegiatan");
 
         mapelKelasCache = data.mapel.map(m => {
 
@@ -637,6 +638,34 @@ async function loadMapelKelas(kelasId) {
             mapelBody.insertAdjacentHTML(
                 "beforeend",
                 renderRows(mulok, 1)
+            );
+        }
+
+        if (kegiatan.length) {
+
+            mapelBody.insertAdjacentHTML("beforeend", `
+                <tr class="group-header"
+                    style="background-color:#fff8dc;
+                    height:40px;
+                    font-weight:bold;">
+
+                    <td class="group-label"
+                        style="padding:10px 5px;">
+                        C
+                    </td>
+
+                    <td class="group-title"
+                        colspan="5"
+                        style="padding:10px 5px;
+                        font-weight:bold;">
+                        Kegiatan
+                    </td>
+                </tr>
+            `);
+
+            mapelBody.insertAdjacentHTML(
+                "beforeend",
+                renderRows(kegiatan, 1)
             );
         }
 
@@ -1336,23 +1365,35 @@ document.getElementById("save-jadwal").addEventListener("click", async () => {
 
     const payload = [];
 
-    Object.values(hariMap).forEach(card => {
+    for (const card of Object.values(hariMap)) {
 
         const hari = card.dataset.hari;
 
-        card.querySelectorAll(".jam-row").forEach(row => {
+        const rows = card.querySelectorAll(".jam-row");
+
+        for (const row of rows) {
 
             const mulai   = row.querySelector(".jam-mulai").value;
             const selesai = row.querySelector(".jam-selesai").value;
             const mapelId = row.querySelector(".mapel-select").value;
 
-            if (!mulai || !selesai || !mapelId) return;
+            if (!mulai || !selesai || !mapelId) continue;
+
+            // 🔥 ambil data mapel
+            const mapelData = mapelKelasCache.find(
+                m => String(m.mapel_id) === String(mapelId)
+            );
 
             const guruId = getGuruIdByMapel(mapelId);
 
-            if (!guruId) {
+            // 🔥 validasi guru HANYA selain kegiatan
+            if (
+                mapelData &&
+                mapelData.jenis !== "kegiatan" &&
+                !guruId
+            ) {
                 showNotification(
-                    "Guru untuk mapel belum ditentukan",
+                    `Guru untuk ${mapelData.nama} belum ditentukan`,
                     "warning"
                 );
                 return;
@@ -1363,10 +1404,10 @@ document.getElementById("save-jadwal").addEventListener("click", async () => {
                 jam_mulai: mulai,
                 jam_selesai: selesai,
                 mapel_id: mapelId,
-                guru_id: guruId
+                guru_id: guruId || null
             });
-        });
-    });
+        }
+    }
 
     if (!payload.length) {
         showNotification("Jadwal masih kosong", "warning");
@@ -1374,6 +1415,7 @@ document.getElementById("save-jadwal").addEventListener("click", async () => {
     }
 
     try {
+
         const res = await fetch("/sekolah/kelas/api/jadwal/save", {
             method: "POST",
             headers: {
@@ -1389,14 +1431,27 @@ document.getElementById("save-jadwal").addEventListener("click", async () => {
         const result = await res.json();
 
         if (result.success) {
-            showNotification("Jadwal berhasil disimpan", "success");
+
+            showNotification(
+                "Jadwal berhasil disimpan",
+                "success"
+            );
+
             jadwalModal.classList.remove("show");
+
         } else {
+
             showNotification(result.message, "error");
+
         }
 
     } catch (err) {
+
         console.error(err);
-        showNotification("Gagal menyimpan jadwal", "error");
+
+        showNotification(
+            "Gagal menyimpan jadwal",
+            "error"
+        );
     }
 });
