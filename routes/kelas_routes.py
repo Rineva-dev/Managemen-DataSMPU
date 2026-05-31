@@ -52,6 +52,9 @@ def index():
             """, (tahun_id,)).fetchone()
 
             if row:
+                mulai = row["semester_mulai"]
+                akhir = row["semester_akhir"]
+                
                 if isinstance(mulai, str):
                     mulai = datetime.strptime(mulai, "%Y-%m-%d").date()
 
@@ -577,14 +580,15 @@ def save_mapel_kelas():
         # AUTO INSERT KKM
         # ==========================
         d.execute("""
-            INSERT OR IGNORE INTO kkm (mapel_id, tingkat, kkm)
+            INSERT INTO kkm (mapel_id, tingkat, kkm)
             SELECT
                 km.mapel_id,
                 k.tingkat,
                 75
             FROM kelas_mapel km
             JOIN kelas k ON k.id = km.kelas_id
-            WHERE km.kelas_id = ?
+            WHERE km.kelas_id = %s
+            ON CONFLICT (mapel_id, tingkat) DO NOTHING
         """, (kelas_id,))
 
         d.commit()
