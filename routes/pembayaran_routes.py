@@ -130,10 +130,12 @@ def simpan_pembayaran():
 # RIWAYAT PEMBAYARAN PER SISWA
 # /api/pembayaran/riwayat/<nisn>
 # =====================================================
-@app.route("/api/pembayaran/riwayat/<nisn>")
+@pembayaran_bp.route("/api/pembayaran/riwayat/<nisn>")
+@roles_required("admin", "bendahara")
 def riwayat_pembayaran(nisn):
     try:
-        cur = db.cursor()
+        conn = db()
+        cur = conn.cursor()
 
         cur.execute("""
             SELECT
@@ -147,7 +149,6 @@ def riwayat_pembayaran(nisn):
         """, (nisn,))
 
         rows = cur.fetchall()
-        cur.close()
 
         data = []
         for r in rows:
@@ -158,10 +159,11 @@ def riwayat_pembayaran(nisn):
                 "nominal": r[3]
             })
 
+        cur.close()
+        conn.close()
+
         return jsonify(data)
 
     except Exception as e:
-        print("ERROR RIWAYAT PEMBAYARAN:", e)  # ← INI PENTING
-        return jsonify({
-            "error": "Gagal mengambil riwayat pembayaran"
-        }), 500
+        print("ERROR RIWAYAT PEMBAYARAN:", e)
+        return jsonify({"error": "Gagal mengambil riwayat pembayaran"}), 500
