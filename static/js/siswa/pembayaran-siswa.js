@@ -488,10 +488,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function bukaRiwayatPembayaran(nisn, nama, kelas) {
 
-        localStorage.setItem("menuAktif", "riwayat_pembayaran");
-        localStorage.setItem("riwayat_nisn", nisn);
-        localStorage.setItem("riwayat_nama", nama);
-        localStorage.setItem("riwayat_kelas", kelas);
+        sessionStorage.setItem("menuAktif", "riwayat_pembayaran");
+        sessionStorage.setItem("riwayat_nisn", nisn);
+        sessionStorage.setItem("riwayat_nama", nama);
+        sessionStorage.setItem("riwayat_kelas", kelas);
 
         showMenu("riwayat");
 
@@ -506,21 +506,21 @@ document.addEventListener("DOMContentLoaded", function () {
     ?.addEventListener("click", () => {
 
         // reset state
-        localStorage.removeItem("menuAktif");
-        localStorage.removeItem("riwayat_nisn");
-        localStorage.removeItem("riwayat_nama");
-        localStorage.removeItem("riwayat_kelas");
+        sessionStorage.removeItem("menuAktif");
+        sessionStorage.removeItem("riwayat_nisn");
+        sessionStorage.removeItem("riwayat_nama");
+        sessionStorage.removeItem("riwayat_kelas");
 
         showMenu("pembayaran");
     });
 
-    const menuAktif = localStorage.getItem("menuAktif");
+    const menuAktif = sessionStorage.getItem("menuAktif");
 
     if (menuAktif === "riwayat_pembayaran") {
 
-        const nisn  = localStorage.getItem("riwayat_nisn");
-        const nama  = localStorage.getItem("riwayat_nama");
-        const kelas = localStorage.getItem("riwayat_kelas");
+        const nisn  = sessionStorage.getItem("riwayat_nisn");
+        const nama  = sessionStorage.getItem("riwayat_nama");
+        const kelas = sessionStorage.getItem("riwayat_kelas");
 
         if (nisn) {
             bukaRiwayatPembayaran(nisn, nama, kelas);
@@ -533,7 +533,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("menu-pembayaran")
     ?.addEventListener("click", () => {
 
-        localStorage.removeItem("menuAktif");
+        // 🔥 RESET SEMUA STATE RIWAYAT
+        sessionStorage.removeItem("menuAktif");
+        sessionStorage.removeItem("riwayat_nisn");
+        sessionStorage.removeItem("riwayat_nama");
+        sessionStorage.removeItem("riwayat_kelas");
 
         showMenu("pembayaran");
     });
