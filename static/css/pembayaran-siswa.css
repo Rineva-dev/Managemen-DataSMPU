@@ -113,3 +113,11 @@
     max-width: 900px;
     min-width: 50px;
 }
+
+.add-tanggal-bayar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 28px;
+    padding: 0;
+    box-sizing: border-box;
+}
