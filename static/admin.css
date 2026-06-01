@@ -238,7 +238,7 @@ html, body {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    background: #f8fffb;
+    background: #ffffff;
     scrollbar-width: unset;
     scrollbar-color: #ff7a00 transparent;
 }
