@@ -149,7 +149,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         fetch("/api/pembayaran/simpan", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
             body: JSON.stringify(payload)
         })
             .then(res => {
@@ -373,19 +376,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.addEventListener("click", function (e) {
         const btn = e.target.closest(".aksi-btn");
-        if (btn) {
+        if (!btn) return;
 
-            const nisn = btn.dataset.nisn;
-            const nama = btn.dataset.nama;
-            const kelas = btn.dataset.kelas;
+        const nisn = btn.dataset.nisn;
+        const nama = btn.dataset.nama;
+        const kelas = btn.dataset.kelas;
 
-            document.getElementById("riwayat-nisn").textContent = nisn;
-            document.getElementById("riwayat-nama").textContent = nama;
-            document.getElementById("riwayat-kelas").textContent = kelas;
+        // sembunyikan menu pembayaran
+        document.getElementById("pembayaran-siswa-content").style.display = "none";
 
-            loadRiwayatPembayaran(nisn);
-            document.getElementById("riwayat-pembayaran-modal").classList.add("show");
-        }
+        // tampilkan menu riwayat
+        document.getElementById("riwayat-pembayaran-content").style.display = "block";
+
+        // isi info siswa
+        document.getElementById("menu-riwayat-nisn").textContent = nisn;
+        document.getElementById("menu-riwayat-nama").textContent = nama;
+        document.getElementById("menu-riwayat-kelas").textContent = kelas;
+
+        // load tabel riwayat
+        loadRiwayatMenu(nisn);
     });
 
     function loadRiwayatPembayaran(nisn) {
@@ -422,6 +431,44 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("Gagal load riwayat", err);
             });
     }
+
+    function loadRiwayatMenu(nisn) {
+        fetch(`/api/pembayaran/riwayat/${nisn}`)
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.querySelector("#menu-riwayat-table tbody");
+                tbody.innerHTML = "";
+
+                if (!data.length) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align:center;">
+                                Belum ada pembayaran
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                data.forEach((item, index) => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${item.tanggal}</td>
+                            <td>${item.jenis.toUpperCase()} Bulan ${item.bulan}</td>
+                            <td>Rp ${Number(item.nominal).toLocaleString("id-ID")}</td>
+                        </tr>
+                    `;
+                });
+            });
+    }
+
+    document.getElementById("btn-kembali-pembayaran")
+        ?.addEventListener("click", function () {
+
+            document.getElementById("riwayat-pembayaran-content").style.display = "none";
+            document.getElementById("pembayaran-siswa-content").style.display = "block";
+    });
 
     document.querySelectorAll(".modern-close").forEach(btn => {
         btn.addEventListener("click", () => {
