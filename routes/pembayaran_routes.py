@@ -137,10 +137,15 @@ def riwayat_pembayaran(nisn):
         conn = db()
 
         rows = conn.execute("""
-            SELECT id, jenis, bulan, tanggal, nominal
+            SELECT 
+                id,
+                jenis,
+                COALESCE(bulan, '-') as bulan,
+                COALESCE(tanggal, '-') as tanggal,
+                COALESCE(nominal, 0) as nominal
             FROM pembayaran
             WHERE nisn = ?
-            ORDER BY tanggal DESC
+            ORDER BY id DESC
         """, (nisn,)).fetchall()
 
         conn.close()
