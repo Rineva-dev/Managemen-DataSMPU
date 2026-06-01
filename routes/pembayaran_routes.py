@@ -138,11 +138,7 @@ def riwayat_pembayaran(nisn):
         cur = conn.cursor()
 
         cur.execute("""
-            SELECT
-                jenis,
-                bulan,
-                tanggal,
-                nominal
+            SELECT jenis, bulan, tanggal, nominal
             FROM pembayaran
             WHERE nisn = %s
             ORDER BY tanggal DESC
@@ -153,10 +149,10 @@ def riwayat_pembayaran(nisn):
         data = []
         for r in rows:
             data.append({
-                "jenis": r[0],
-                "bulan": r[1],
-                "tanggal": r[2].strftime("%Y-%m-%d") if r[2] else None,
-                "nominal": r[3]
+                "jenis": r[0] or "",
+                "bulan": r[1] or "",
+                "tanggal": str(r[2]) if r[2] else None,
+                "nominal": r[3] or 0
             })
 
         cur.close()
@@ -165,5 +161,6 @@ def riwayat_pembayaran(nisn):
         return jsonify(data)
 
     except Exception as e:
-        print("ERROR RIWAYAT PEMBAYARAN:", e)
-        return jsonify({"error": "Gagal mengambil riwayat pembayaran"}), 500
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
