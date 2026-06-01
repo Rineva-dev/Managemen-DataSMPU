@@ -496,23 +496,26 @@ document.addEventListener("DOMContentLoaded", function () {
         loadRiwayatPembayaran(nisn);
     }
 
-    const menuAktif = localStorage.getItem("menuAktif");
+    document.addEventListener("DOMContentLoaded", () => {
 
-    if (menuAktif === "riwayat_pembayaran") {
+        const menuAktif = localStorage.getItem("menuAktif");
 
-        const nisn  = localStorage.getItem("riwayat_nisn");
-        const nama  = localStorage.getItem("riwayat_nama");
-        const kelas = localStorage.getItem("riwayat_kelas");
+        if (menuAktif === "riwayat_pembayaran") {
 
-        if (nisn) {
-            bukaRiwayatPembayaran(nisn, nama, kelas);
+            const nisn  = localStorage.getItem("riwayat_nisn");
+            const nama  = localStorage.getItem("riwayat_nama");
+            const kelas = localStorage.getItem("riwayat_kelas");
+
+            if (nisn) {
+                bukaRiwayatPembayaran(nisn, nama, kelas);
+            }
+
+        } else {
+            // default
+            document.getElementById("pembayaran-content").style.display = "block";
+            document.getElementById("riwayat-pembayaran-content").style.display = "none";
         }
-
-    } else {
-        // default
-        document.getElementById("pembayaran-content").style.display = "block";
-        document.getElementById("riwayat-pembayaran-content").style.display = "none";
-    }
+    });
 
     document.getElementById("btn-kembali-pembayaran")
     .addEventListener("click", () => {
