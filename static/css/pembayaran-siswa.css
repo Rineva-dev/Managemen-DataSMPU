@@ -121,3 +121,24 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.menu-riwayat-table {
+    width: max-content;
+    border-collapse: collapse;
+    table-layout: auto;
+    background: #ffffff;
+    border-radius: none;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+.menu-riwayat-table thead th {
+    background: #ffffff;
+    color: #000000;
+    padding: 14px 10px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    border: none;
+    text-align: center !important;
+}
