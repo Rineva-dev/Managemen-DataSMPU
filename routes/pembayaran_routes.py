@@ -133,15 +133,22 @@ def simpan_pembayaran():
 @pembayaran_bp.route("/api/pembayaran/riwayat/<nisn>")
 @roles_required("admin", "bendahara")
 def riwayat_pembayaran(nisn):
-    conn = db()
+    try:
+        conn = db()
 
-    rows = conn.execute("""
-        SELECT id, jenis, bulan, tanggal, nominal
-        FROM pembayaran
-        WHERE nisn = ?
-        ORDER BY tanggal DESC
-    """, (nisn,)).fetchall()
+        rows = conn.execute("""
+            SELECT id, jenis, bulan, tanggal, nominal
+            FROM pembayaran
+            WHERE nisn = ?
+            ORDER BY tanggal DESC
+        """, (nisn,)).fetchall()
 
-    conn.close()
+        conn.close()
 
-    return jsonify([dict(r) for r in rows])
+        return jsonify([dict(r) for r in rows])
+
+    except Exception as e:
+        print("ERROR RIWAYAT PEMBAYARAN:", e)
+        return jsonify({
+            "error": "Gagal mengambil riwayat pembayaran"
+        }), 500
