@@ -135,22 +135,29 @@ def simpan_pembayaran():
 def riwayat_pembayaran(nisn):
     try:
         conn = db()
+        cur = conn.cursor()
 
-        rows = conn.execute("""
-            SELECT 
-                id,
-                jenis,
-                COALESCE(bulan, '-') as bulan,
-                COALESCE(tanggal, '-') as tanggal,
-                COALESCE(nominal, 0) as nominal
+        cur.execute("""
+            SELECT id, jenis, bulan, tanggal, nominal
             FROM pembayaran
-            WHERE nisn = ?
+            WHERE nisn = %s
             ORDER BY id DESC
-        """, (nisn,)).fetchall()
+        """, (nisn,))
 
+        rows = cur.fetchall()
         conn.close()
 
-        return jsonify([dict(r) for r in rows])
+        data = []
+        for r in rows:
+            data.append({
+                "id": r[0],
+                "jenis": r[1],
+                "bulan": r[2],
+                "tanggal": r[3].isoformat() if r[3] else None,
+                "nominal": r[4]
+            })
+
+        return jsonify(data)
 
     except Exception as e:
         print("ERROR RIWAYAT PEMBAYARAN:", e)
