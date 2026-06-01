@@ -122,23 +122,106 @@
     box-sizing: border-box;
 }
 
-.menu-riwayat-table {
-    width: max-content;
-    border-collapse: collapse;
-    table-layout: auto;
-    background: #ffffff;
-    border-radius: none;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+/* ================================
+   RIWAYAT PEMBAYARAN
+================================ */
+
+#riwayat-pembayaran-content {
+    animation: fadeIn 0.25s ease-in-out;
 }
 
-.menu-riwayat-table thead th {
-    background: #ffffff;
-    color: #000000;
-    padding: 14px 10px;
+/* Judul + breadcrumb */
+#riwayat-pembayaran-content h3 {
+    font-size: 18px;
     font-weight: 600;
-    font-size: 13px;
-    letter-spacing: 0.3px;
-    border: none;
-    text-align: center !important;
+    margin-bottom: 14px;
+    color: #111827;
+}
+
+#btn-kembali-pembayaran {
+    color: #4f46e5;
+    cursor: pointer;
+}
+
+#btn-kembali-pembayaran:hover {
+    text-decoration: underline;
+}
+
+/* ================================
+   INFO SISWA
+================================ */
+
+.card.info-siswa {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.card.info-siswa p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #374151;
+}
+
+.card.info-siswa b {
+    color: #111827;
+}
+
+/* ================================
+   TABEL RIWAYAT
+================================ */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+#menu-riwayat-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+#menu-riwayat-table thead {
+    background: #f3f4f6;
+}
+
+#menu-riwayat-table th,
+#menu-riwayat-table td {
+    padding: 12px 14px;
+    font-size: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+#menu-riwayat-table th {
+    font-weight: 600;
+    color: #111827;
+}
+
+#menu-riwayat-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+#menu-riwayat-table td:last-child {
+    font-weight: 600;
+    color: #16a34a; /* hijau nominal */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#menu-riwayat-table td:last-child {
+    text-align: right;
 }
