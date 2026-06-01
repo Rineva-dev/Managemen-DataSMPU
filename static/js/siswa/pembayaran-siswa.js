@@ -378,23 +378,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const btn = e.target.closest(".aksi-btn");
         if (!btn) return;
 
-        const nisn = btn.dataset.nisn;
-        const nama = btn.dataset.nama;
-        const kelas = btn.dataset.kelas;
-
-        // sembunyikan menu pembayaran
-        document.getElementById("pembayaran-siswa-content").style.display = "none";
-
-        // tampilkan menu riwayat
-        document.getElementById("riwayat-pembayaran-content").style.display = "block";
-
-        // isi info siswa
-        document.getElementById("menu-riwayat-nisn").textContent = nisn;
-        document.getElementById("menu-riwayat-nama").textContent = nama;
-        document.getElementById("menu-riwayat-kelas").textContent = kelas;
-
-        // load tabel riwayat
-        loadRiwayatMenu(nisn);
+        bukaRiwayatPembayaran(
+            btn.dataset.nisn,
+            btn.dataset.nama,
+            btn.dataset.kelas
+        );
     });
 
     function loadRiwayatPembayaran(nisn) {
@@ -484,38 +472,17 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem("riwayat_nama", nama);
         localStorage.setItem("riwayat_kelas", kelas);
 
-        // tampilkan riwayat
-        document.getElementById("pembayaran-content").style.display = "none";
+        // tampilkan menu
+        document.getElementById("pembayaran-siswa-content").style.display = "none";
         document.getElementById("riwayat-pembayaran-content").style.display = "block";
 
-        // isi info siswa
+        // isi info
         document.getElementById("menu-riwayat-nisn").textContent = nisn;
         document.getElementById("menu-riwayat-nama").textContent = nama;
         document.getElementById("menu-riwayat-kelas").textContent = kelas;
 
-        loadRiwayatPembayaran(nisn);
+        loadRiwayatMenu(nisn);
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-
-        const menuAktif = localStorage.getItem("menuAktif");
-
-        if (menuAktif === "riwayat_pembayaran") {
-
-            const nisn  = localStorage.getItem("riwayat_nisn");
-            const nama  = localStorage.getItem("riwayat_nama");
-            const kelas = localStorage.getItem("riwayat_kelas");
-
-            if (nisn) {
-                bukaRiwayatPembayaran(nisn, nama, kelas);
-            }
-
-        } else {
-            // default
-            document.getElementById("pembayaran-content").style.display = "block";
-            document.getElementById("riwayat-pembayaran-content").style.display = "none";
-        }
-    });
 
     document.getElementById("btn-kembali-pembayaran")
     .addEventListener("click", () => {
@@ -528,6 +495,20 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("riwayat-pembayaran-content").style.display = "none";
         document.getElementById("pembayaran-content").style.display = "block";
     });
+
+    const menuAktif = localStorage.getItem("menuAktif");
+
+        if (menuAktif === "riwayat_pembayaran") {
+
+            const nisn  = localStorage.getItem("riwayat_nisn");
+            const nama  = localStorage.getItem("riwayat_nama");
+            const kelas = localStorage.getItem("riwayat_kelas");
+
+            if (nisn) {
+                bukaRiwayatPembayaran(nisn, nama, kelas);
+            }
+
+        }
 
     // =========================
     // INIT
