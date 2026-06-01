@@ -476,6 +476,56 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    function bukaRiwayatPembayaran(nisn, nama, kelas) {
+
+        // simpan state
+        localStorage.setItem("menuAktif", "riwayat_pembayaran");
+        localStorage.setItem("riwayat_nisn", nisn);
+        localStorage.setItem("riwayat_nama", nama);
+        localStorage.setItem("riwayat_kelas", kelas);
+
+        // tampilkan riwayat
+        document.getElementById("pembayaran-content").style.display = "none";
+        document.getElementById("riwayat-pembayaran-content").style.display = "block";
+
+        // isi info siswa
+        document.getElementById("menu-riwayat-nisn").textContent = nisn;
+        document.getElementById("menu-riwayat-nama").textContent = nama;
+        document.getElementById("menu-riwayat-kelas").textContent = kelas;
+
+        loadRiwayatPembayaran(nisn);
+    }
+
+    const menuAktif = localStorage.getItem("menuAktif");
+
+    if (menuAktif === "riwayat_pembayaran") {
+
+        const nisn  = localStorage.getItem("riwayat_nisn");
+        const nama  = localStorage.getItem("riwayat_nama");
+        const kelas = localStorage.getItem("riwayat_kelas");
+
+        if (nisn) {
+            bukaRiwayatPembayaran(nisn, nama, kelas);
+        }
+
+    } else {
+        // default
+        document.getElementById("pembayaran-content").style.display = "block";
+        document.getElementById("riwayat-pembayaran-content").style.display = "none";
+    }
+
+    document.getElementById("btn-kembali-pembayaran")
+    .addEventListener("click", () => {
+
+        localStorage.removeItem("menuAktif");
+        localStorage.removeItem("riwayat_nisn");
+        localStorage.removeItem("riwayat_nama");
+        localStorage.removeItem("riwayat_kelas");
+
+        document.getElementById("riwayat-pembayaran-content").style.display = "none";
+        document.getElementById("pembayaran-content").style.display = "block";
+    });
+
     // =========================
     // INIT
     // =========================
