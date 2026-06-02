@@ -25,25 +25,33 @@
     <div class="card siswa-info-card">
 
         <div class="siswa-header">
-            <div class="siswa-main">
-                <span class="siswa-label">Nama Siswa</span>
-                <h3 class="siswa-nama">{{ siswa.nama if siswa else '-' }}</h3>
+
+            <div>
+                <h3 class="siswa-nama">
+                    {{ siswa.nama if siswa else '-' }}
+                </h3>
+
+                <div class="siswa-detail">
+                    <div>
+                        <span class="label">NISN</span>
+                        <span class="value">{{ siswa.nisn }}</span>
+                    </div>
+
+                    <div>
+                        <span class="label">Kelas</span>
+                        <span class="value">
+                            {{ siswa.tingkat }} {{ siswa.sub_kelas }}
+                        </span>
+                    </div>
+                </div>
             </div>
 
-            <span class="badge badge-green">{{ siswa.status if siswa else 'Aktif' }}</span>
+            <span class="badge badge-green">
+                {{ siswa.status }}
+            </span>
+
         </div>
 
-        <div class="siswa-meta">
-            <div class="meta-item">
-                <span class="label">NISN</span>
-                <span class="value">{{ siswa.nisn if siswa else '-' }}</span>
-            </div>
-
-            <div class="meta-item">
-                <span class="label">Kelas</span>
-                <span class="value">{{ siswa.tingkat }} {{ siswa.sub_kelas if siswa else '-' }}</span>
-            </div>
-        </div>
     </div>
 
     <!-- ================= RINGKASAN KEUANGAN ================= -->
