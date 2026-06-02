@@ -139,9 +139,12 @@ def halaman_riwayat_pembayaran(nisn):
         SELECT 
             s.nisn,
             s.nama,
-            k.tingkat,
+
+            COALESCE(k.tingkat, s.tingkat_default) AS tingkat,
+
             k.sub_kelas,
             s.status
+
         FROM siswa s
         LEFT JOIN kelas_siswa ks ON ks.siswa_id = s.id
         LEFT JOIN kelas k ON k.id = ks.kelas_id
