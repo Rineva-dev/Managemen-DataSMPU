@@ -156,6 +156,7 @@ def create_ekskul():
                 INSERT INTO ekstrakurikuler
                 (nama, pembina_id, hari, tahun_pelajaran_id)
                 VALUES (?, ?, ?, ?)
+                RETURNING id
             """, (
                 nama,
                 pembina_id,
@@ -163,11 +164,13 @@ def create_ekskul():
                 tahun_id
             ))
 
+            new_id = cur.fetchone()["id"]
+
             d.commit()
 
             return jsonify({
                 "success": True,
-                "id": cur.lastrowid
+                "id": new_id
             })
 
     except Exception as e:
