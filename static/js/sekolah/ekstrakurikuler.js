@@ -259,7 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-    let siswaAvailable = [];
     let allSiswaAvailable = [];
 
     function renderSiswa(data){
@@ -326,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const filtered =
-            siswaAvailable.filter(siswa => {
+            allSiswaAvailable.filter(siswa => {
 
                 return (
                     (siswa.nama || "")
