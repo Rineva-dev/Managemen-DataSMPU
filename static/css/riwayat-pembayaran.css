@@ -117,36 +117,6 @@
     color: #111827;
 }
 
-.info-grid {
-    display: grid;
-    grid-template-columns: 2fr 2fr 1.5fr 1fr;
-    gap: 18px;
-}
-
-.info-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.info-item .label {
-    font-size: 11px;
-    color: #6b7280;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-}
-
-.info-item .value {
-    font-size: 15px;
-    font-weight: 600;
-    color: #111827;
-}
-
-.info-item.highlight .value {
-    font-size: 17px;
-    font-weight: 700;
-}
-
 /* ===============================
    BADGE
 ================================ */
