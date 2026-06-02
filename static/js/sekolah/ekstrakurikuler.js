@@ -228,13 +228,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!selectedEkskulId) return;
 
         const res = await fetch(
-            `/sekolah/ekstrakurikuler/${selectedEkskulId}/anggota`
+            `/sekolah/ekstrakurikuler/anggota/${selectedEkskulId}`
         );
 
         const data = await res.json();
 
         renderAnggota(data.anggota);
-        renderSiswa(data.siswa_tersedia);
+        renderSiswa(data.available);
 
         anggotaModal.classList.add("show");
 
