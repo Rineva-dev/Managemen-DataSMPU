@@ -410,10 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (data.success) {
 
-            ShowNotification(
-                "Anggota berhasil diperbarui",
-                "success"
-            );
+            showNotification("Anggota berhasil diperbarui", "success");
 
             anggotaModal.classList.remove("show");
 
@@ -421,10 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         } else {
 
-            ShowNotification(
-                "Gagal menyimpan",
-                "error"
-            );
+            showNotification("Gagal menyimpan", "error");
 
         }
 
