@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!selectedEkskulId) return;
 
-        if (!confirm("Hapus ekstrakurikuler ini?")) {
+        if (showConfirm("Hapus ekstrakurikuler ini?")) {
             return;
         }
 
