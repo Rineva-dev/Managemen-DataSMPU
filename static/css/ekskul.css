@@ -224,6 +224,6 @@
     display:none;
 }
 
-.rombel-overlay.show{
+#anggota-ekskul-modal.show{
     display:flex;
 }
