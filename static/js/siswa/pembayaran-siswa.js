@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         data-nisn="${row.nisn}"
                         data-nama="${row.nama}"
                         data-kelas="${(row.tingkat || '-') + ' - ' + (row.rombel || '-')}"
-                        onclick="window.location.href='/pembayaran/riwayat/${row.nisn}'">
+                        onclick="window.location.href='/pembayaran/riwayat/${row.nisn}'"
                     >
                         <i data-lucide="history"></i>
                     </button>
