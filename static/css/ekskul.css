@@ -178,11 +178,12 @@
     margin:0;
 }
 
-.close-rombel{
+.close-rombel-btn{
     border:none;
     background:none;
     font-size:28px;
     cursor:pointer;
+    line-height:1;
 }
 
 /* =========================

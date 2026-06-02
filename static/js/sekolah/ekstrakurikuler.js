@@ -234,10 +234,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     anggotaModal
-    ?.querySelector(".close-rombel")
+    ?.querySelector(".modal-close-btn")
     ?.addEventListener("click", () => {
 
         anggotaModal.classList.remove("show");
+
+    });
+
+    document
+    .querySelectorAll(".close-rombel")
+    .forEach(btn => {
+
+        btn.addEventListener("click", () => {
+            anggotaModal.classList.remove("show");
+        });
 
     });
 
