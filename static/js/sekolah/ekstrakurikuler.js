@@ -234,6 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         renderAnggota(data.anggota);
+        allSiswaAvailable = data.available;
         renderSiswa(data.available);
 
         anggotaModal.classList.add("show");
@@ -259,10 +260,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     let siswaAvailable = [];
+    let allSiswaAvailable = [];
 
     function renderSiswa(data){
-
-        siswaAvailable = data;
 
         const container =
             document.getElementById("siswa-available-list");
@@ -318,22 +318,26 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("search-siswa-ekskul")
     ?.addEventListener("input", function(){
 
-        const keyword =
-            this.value.toLowerCase();
+        const keyword = this.value.toLowerCase();
+
+        if (!keyword) {
+            renderSiswa(allSiswaAvailable);
+            return;
+        }
 
         const filtered =
             siswaAvailable.filter(siswa => {
 
                 return (
                     (siswa.nama || "")
-                    .toLowerCase()
-                    .includes(keyword)
+                        .toLowerCase()
+                        .includes(keyword)
 
                     ||
 
                     (siswa.nisn || "")
-                    .toLowerCase()
-                    .includes(keyword)
+                        .toLowerCase()
+                        .includes(keyword)
                 );
 
             });
