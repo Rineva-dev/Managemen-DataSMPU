@@ -63,6 +63,8 @@
    INFO SISWA (IMPROVED)
 ================================ */
 .siswa-info-card {
+    grid-column: 1 / -1;
+    padding: 20px 22px;
     border-left: 4px solid #2563eb;
 }
 
@@ -90,9 +92,12 @@
     font-size: 20px;
     font-weight: 700;
     color: #111827;
+    letter-spacing: -0.3px;
 }
 
 .siswa-meta {
+    display: flex;
+    gap: 30px;
     margin-top: 14px;
     padding-top: 14px;
     border-top: 1px dashed #e5e7eb;
@@ -102,6 +107,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-width: 160px;
 }
 
 .meta-item .label {
@@ -135,6 +141,7 @@
 .badge-green {
     background: #e6f6ec;
     color: #1a7f43;
+    font-weight: 600;
 }
 
 /* ===============================
