@@ -1,3 +1,4 @@
+let selectedEkskulId = null;
 document.addEventListener("DOMContentLoaded", () => {
 
     const addBtn = document.getElementById("add-ekskul-btn");
@@ -79,11 +80,139 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (data.success) {
-            alert("Ekstrakurikuler berhasil disimpan");
+            ShowNotification("Ekstrakurikuler berhasil disimpan", "success");
             location.reload();
         } else {
-            alert(data.message || "Gagal menyimpan");
+            ShowNotification(data.message || "Gagal menyimpan", "error");
         }
+    });
+
+    async function loadEkskulDetail(ekskulId) {
+
+        const tbody =
+            document.getElementById("detail-anggota-body");
+
+        const title =
+            document.getElementById("ekskul-detail-title");
+
+        const res = await fetch(
+            `/sekolah/ekstrakurikuler/${ekskulId}/siswa`
+        );
+
+        const data = await res.json();
+
+        tbody.innerHTML = "";
+
+        if (!data.length) {
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="empty">
+                        Belum ada anggota
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+        data.forEach((siswa, index) => {
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${siswa.nisn || '-'}</td>
+                    <td>${siswa.nama}</td>
+                    <td>${siswa.kelas_terakhir || '-'}</td>
+                </tr>
+            `;
+
+        });
+
+        const selectedRow =
+            document.querySelector(
+                `#ekskul-table tr[data-id="${ekskulId}"] td:nth-child(2)`
+            );
+
+        if (selectedRow) {
+            title.textContent =
+                selectedRow.textContent.trim();
+        }
+    }
+
+    document.querySelectorAll("#ekskul-table tbody tr").forEach(row => {
+        row.addEventListener("click", () => {
+            document.querySelectorAll("#ekskul-table tbody tr").forEach(r => r.classList.remove("selected"));
+
+            row.classList.add("selected");
+
+            selectedEkskulId = row.dataset.id;
+
+            document.getElementById("edit-ekskul-btn").disabled = false;
+            document.getElementById("anggota-ekskul-btn").disabled = false;
+            document.getElementById("jadwal-ekskul-btn").disabled = false;
+            document.getElementById("delete-ekskul-btn").disabled = false;
+
+            loadEkskulDetail(selectedEkskulId);
+
+        });
+
+    });
+
+    document
+    .getElementById("edit-ekskul-btn")
+    ?.addEventListener("click", async () => {
+
+        if (!selectedEkskulId) return;
+
+        const res = await fetch(
+            `/sekolah/ekstrakurikuler/detail/${selectedEkskulId}`
+        );
+
+        const data = await res.json();
+
+        if (!data.success) return;
+
+        document.getElementById("ekskul-id").value =
+            data.ekskul.id;
+
+        document.getElementById("ekskul-nama").value =
+            data.ekskul.nama;
+
+        document.getElementById("ekskul-hari").value =
+            data.ekskul.hari;
+
+        document.getElementById("ekskul-pembina").value =
+            data.ekskul.pembina_id;
+
+        modal.classList.add("show");
+    });
+
+    document
+    .getElementById("delete-ekskul-btn")
+    ?.addEventListener("click", async () => {
+
+        if (!selectedEkskulId) return;
+
+        if (!confirm("Hapus ekstrakurikuler ini?")) {
+            return;
+        }
+
+        const res = await fetch(
+            `/sekolah/ekstrakurikuler/delete/${selectedEkskulId}`,
+            {
+                method: "POST"
+            }
+        );
+
+        const data = await res.json();
+
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+
     });
 
 });
