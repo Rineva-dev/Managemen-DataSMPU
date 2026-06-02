@@ -123,7 +123,37 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>0</td>
                 `;
 
-                tbody.appendChild(newRow);
+                const rows =
+                    [...tbody.querySelectorAll("tr")];
+
+                let inserted = false;
+
+                for (const row of rows) {
+
+                    const namaCell =
+                        row.children[1];
+
+                    if (!namaCell) continue;
+
+                    const currentNama =
+                        namaCell.textContent
+                            .trim()
+                            .toLowerCase();
+
+                    if (nama.toLowerCase() < currentNama) {
+
+                        tbody.insertBefore(newRow, row);
+
+                        inserted = true;
+
+                        break;
+                    }
+
+                }
+
+                if (!inserted) {
+                    tbody.appendChild(newRow);
+                }
                 refreshNomorRows();
                 attachRowClick(newRow);
 
@@ -283,7 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!selectedEkskulId) return;
 
-        if (showConfirm("Hapus ekstrakurikuler ini?")) {
+        if (!showConfirm("Hapus ekstrakurikuler ini?")) {
             return;
         }
 
