@@ -37,10 +37,17 @@
                         <span class="value">{{ siswa.nisn }}</span>
                     </div>
 
-                    <div>
+                    <div class="meta-item">
                         <span class="label">Kelas</span>
+
                         <span class="value">
-                            {{ siswa.tingkat }} {{ siswa.sub_kelas }}
+                            {% if siswa.tingkat_aktif %}
+                                {{ siswa.tingkat_aktif }} {{ siswa.sub_kelas or '' }}
+                            {% elif siswa.tingkat_awal %}
+                                {{ siswa.tingkat_awal }}
+                            {% else %}
+                                -
+                            {% endif %}
                         </span>
                     </div>
                 </div>
