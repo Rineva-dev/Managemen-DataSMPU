@@ -15,6 +15,12 @@
     margin-bottom: 20px;
 }
 
+.page-title {
+    font-size: 22px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 /* Breadcrumb kecil */
 .breadcrumb {
     display: flex;
@@ -41,14 +47,6 @@
 
 .breadcrumb-current {
     color: #6b7280;
-}
-
-/* Judul besar */
-.page-title {
-    font-size: 22px;
-    font-weight: 600;
-    color: #111827;
-    margin: 0;
 }
 
 /* ===============================
