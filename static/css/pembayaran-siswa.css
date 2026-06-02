@@ -240,3 +240,25 @@
 #menu-riwayat-table td:last-child {
     text-align: right;
 }
+
+.payment-checkbox-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:8px;
+}
+
+.payment-check{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    padding:10px 12px;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.payment-check input{
+    width:16px;
+    height:16px;
+}

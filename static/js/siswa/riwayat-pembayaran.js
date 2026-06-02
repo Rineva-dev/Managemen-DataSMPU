@@ -66,11 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch(`/api/pembayaran/riwayat/${nisn}/summary`)
             .then(res => res.json())
             .then(data => {
+
                 document.getElementById("sum-total-transaksi").textContent =
-                    data.total_transaksi;
+                    data.total_transaksi || 0;
 
                 document.getElementById("sum-total-nominal").textContent =
-                    "Rp " + Number(data.total_nominal).toLocaleString("id-ID");
+                    "Rp " +
+                    Number(data.total_nominal || 0)
+                    .toLocaleString("id-ID");
 
                 document.getElementById("sum-terakhir-bayar").textContent =
                     data.terakhir_bayar || "-";
