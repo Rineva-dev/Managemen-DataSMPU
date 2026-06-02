@@ -80,10 +80,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (data.success) {
-            ShowNotification("Ekstrakurikuler berhasil disimpan", "success");
+            showNotification("Ekstrakurikuler berhasil disimpan", "success");
             location.reload();
         } else {
-            ShowNotification(data.message || "Gagal menyimpan", "error");
+            showNotification(data.message || "Gagal menyimpan", "error");
         }
     });
 
