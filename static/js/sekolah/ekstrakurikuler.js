@@ -233,8 +233,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const data = await res.json();
 
+        anggotaEkskul = [...data.anggota];
+        allSiswaAvailable = [...data.available];
+
         renderAnggota(data.anggota);
-        allSiswaAvailable = data.available;
         renderSiswa(data.available);
 
         anggotaModal.classList.add("show");
@@ -259,6 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    let anggotaEkskul = [];
     let allSiswaAvailable = [];
 
     function renderSiswa(data){
@@ -312,6 +315,120 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("anggota-count")
             .textContent = `${data.length} siswa`;
     }
+
+    document
+    .getElementById("btn-tambah-anggota")
+    ?.addEventListener("click", () => {
+
+        const checked = document.querySelectorAll(
+            "#siswa-available-list input:checked"
+        );
+
+        if (!checked.length) return;
+
+        checked.forEach(cb => {
+
+            const id = Number(cb.value);
+
+            const siswa = allSiswaAvailable.find(
+                s => Number(s.id) === id
+            );
+
+            if (!siswa) return;
+
+            anggotaEkskul.push(siswa);
+
+            allSiswaAvailable =
+                allSiswaAvailable.filter(
+                    s => Number(s.id) !== id
+                );
+
+        });
+
+        renderAnggota(anggotaEkskul);
+        renderSiswa(allSiswaAvailable);
+
+    });
+
+    document
+    .getElementById("btn-hapus-anggota")
+    ?.addEventListener("click", () => {
+
+        const checked = document.querySelectorAll(
+            "#anggota-ekskul-list input:checked"
+        );
+
+        if (!checked.length) return;
+
+        checked.forEach(cb => {
+
+            const id = Number(cb.value);
+
+            const siswa = anggotaEkskul.find(
+                s => Number(s.id) === id
+            );
+
+            if (!siswa) return;
+
+            allSiswaAvailable.push(siswa);
+
+            anggotaEkskul =
+                anggotaEkskul.filter(
+                    s => Number(s.id) !== id
+                );
+
+        });
+
+        renderAnggota(anggotaEkskul);
+        renderSiswa(allSiswaAvailable);
+
+    });
+
+    document
+    .getElementById("save-ekskul-anggota")
+    ?.addEventListener("click", async () => {
+
+        const siswaIds =
+            anggotaEkskul.map(s => s.id);
+
+        const res = await fetch(
+            "/sekolah/ekstrakurikuler/update-anggota",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({
+                    ekskul_id: selectedEkskulId,
+                    siswa_ids: siswaIds
+                })
+            }
+        );
+
+        const data = await res.json();
+
+        if (data.success) {
+
+            ShowNotification(
+                "Anggota berhasil diperbarui",
+                "success"
+            );
+
+            anggotaModal.classList.remove("show");
+
+            loadEkskulDetail(selectedEkskulId);
+
+        } else {
+
+            ShowNotification(
+                "Gagal menyimpan",
+                "error"
+            );
+
+        }
+
+    });
 
     document
     .getElementById("search-siswa-ekskul")
