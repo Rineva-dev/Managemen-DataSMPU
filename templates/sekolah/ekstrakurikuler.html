@@ -191,6 +191,60 @@
     </div>
 </div>
 
+<div id="anggota-ekskul-modal" class="rombel-overlay">
+    <div class="rombel-modal">
+
+        <h3>Anggota Ekstrakurikuler</h3>
+
+        <div class="anggota-grid">
+
+            <!-- SISWA TERSEDIA -->
+            <div class="anggota-box">
+                <h4>Daftar Siswa</h4>
+
+                <div id="siswa-available-list">
+                    <!-- render JS -->
+                </div>
+
+                <button
+                    type="button"
+                    id="btn-tambah-anggota"
+                    class="btn btn-add">
+                    Tambahkan →
+                </button>
+            </div>
+
+            <!-- ANGGOTA EKSKUL -->
+            <div class="anggota-box">
+                <h4>Anggota Ekskul</h4>
+
+                <div id="anggota-ekskul-list">
+                    <!-- render JS -->
+                </div>
+
+                <button
+                    type="button"
+                    id="btn-hapus-anggota"
+                    class="btn btn-danger">
+                    ← Keluarkan
+                </button>
+            </div>
+
+        </div>
+
+        <div class="rombel-actions">
+            <button id="save-ekskul-anggota" class="btn btn-add">
+                Simpan
+            </button>
+
+            <button class="btn btn-cancel close-rombel">
+                Cancel
+            </button>
+        </div>
+
+    </div>
+</div>
+
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/sekolah/ekstrakurikuler.js') }}"></script>
 {% endblock %}
