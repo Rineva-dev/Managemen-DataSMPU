@@ -561,6 +561,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // =========================
     // INIT
     // =========================
+    showMenu("pembayaran");
     loadTable();
 
 });
