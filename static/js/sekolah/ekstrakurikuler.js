@@ -10,12 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const deleteBtn =
         document.getElementById("delete-ekskul-btn");
 
-    const confirmDeleteBtn =
-        document.getElementById("confirm-delete-ekskul");
-
-    const deleteModal =
-        document.getElementById("delete-modal");
-
     addBtn?.addEventListener("click", () => {
         resetEkskulForm();
         modal.classList.add("show");
@@ -62,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const saveBtn = document.getElementById("ekskul-save");
 
     saveBtn?.addEventListener("click", async () => {
-
+        const ekskulId = document.getElementById("ekskul-id").value;
         const nama = document.getElementById("ekskul-nama").value.trim();
         const pembina_id = document.getElementById("ekskul-pembina").value;
         const hari = document.getElementById("ekskul-hari").value.trim();
@@ -75,8 +69,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
 
+            const url = ekskulId
+                ? `/sekolah/ekstrakurikuler/update/${ekskulId}`
+                : "/sekolah/ekstrakurikuler/create";
+
             const res = await fetch(
-                "/sekolah/ekstrakurikuler/create",
+                url,
                 {
                     method: "POST",
                     headers: {
@@ -113,62 +111,73 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 modal.classList.remove("show");
 
-                const tbody =
-                    document.querySelector("#ekskul-table tbody");
-
-                const nomor =
-                    tbody.querySelectorAll("tr").length + 1;
-
                 const pembinaNama =
                     document.querySelector(
                         "#ekskul-form-container .selected-text"
                     )?.textContent?.trim() || "-";
 
-                const newRow =
-                    document.createElement("tr");
+                if (ekskulId) {
 
-                newRow.dataset.id = data.id;
+                    // ======================
+                    // UPDATE
+                    // ======================
 
-                newRow.innerHTML = `
-                    <td>${nomor}</td>
-                    <td>${nama}</td>
-                    <td>${pembinaNama}</td>
-                    <td>0</td>
-                `;
+                    const row = document.querySelector(
+                        `#ekskul-table tr[data-id="${ekskulId}"]`
+                    );
 
-                const rows =
-                    [...tbody.querySelectorAll("tr")];
+                    if (row) {
 
-                let inserted = false;
+                        row.children[1].textContent = nama;
 
-                for (const row of rows) {
+                        row.children[2].textContent = pembinaNama;
 
-                    const namaCell =
-                        row.children[1];
-
-                    if (!namaCell) continue;
-
-                    const currentNama =
-                        namaCell.textContent
-                            .trim()
-                            .toLowerCase();
-
-                    if (nama.toLowerCase() < currentNama) {
-
-                        tbody.insertBefore(newRow, row);
-
-                        inserted = true;
-
-                        break;
                     }
 
+                    showNotification(
+                        "Ekstrakurikuler berhasil diperbarui",
+                        "success"
+                    );
+
+                } else {
+
+                    // ======================
+                    // CREATE
+                    // ======================
+
+                    const tbody =
+                        document.querySelector("#ekskul-table tbody");
+
+                    const nomor =
+                        tbody.querySelectorAll("tr").length + 1;
+
+                    const newRow =
+                        document.createElement("tr");
+
+                    newRow.dataset.id = data.id;
+
+                    newRow.innerHTML = `
+                        <td>${nomor}</td>
+                        <td>${nama}</td>
+                        <td>${pembinaNama}</td>
+                        <td>0</td>
+                    `;
+
+                    tbody.appendChild(newRow);
+
+                    refreshNomorRows();
+
+                    attachRowClick(newRow);
+
+                    showNotification(
+                        "Ekstrakurikuler berhasil disimpan",
+                        "success"
+                    );
+
                 }
 
-                if (!inserted) {
-                    tbody.appendChild(newRow);
-                }
-                refreshNomorRows();
-                attachRowClick(newRow);
+                modal.classList.remove("show");
+
                 resetEkskulForm();
 
             } else {
@@ -318,20 +327,42 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("ekskul-pembina").value =
             data.ekskul.pembina_id;
 
+        const selectedText = document.querySelector(
+            "#ekskul-form-container .selected-text"
+        );
+
+        const selectedOption = document.querySelector(
+            `#ekskul-form-container .dropdown-option[data-value="${data.ekskul.pembina_id}"]`
+        );
+
+        if (selectedText && selectedOption) {
+
+            selectedText.textContent =
+                selectedOption.textContent.trim();
+
+        }
+
         modal.classList.add("show");
     });
 
-    deleteBtn?.addEventListener("click", () => {
+    deleteBtn?.addEventListener("click", async () => {
 
         if (!selectedEkskulId) return;
 
-        deleteModal.classList.add("show");
+        const selectedRow = document.querySelector(
+            `#ekskul-table tr[data-id="${selectedEkskulId}"] td:nth-child(2)`
+        );
 
-    });
+        const nama =
+            selectedRow?.textContent?.trim() || "ini";
 
-    confirmDeleteBtn?.addEventListener("click", async () => {
+        const confirm = await showConfirm(
+            `Yakin ingin menghapus ekstrakurikuler <br><strong>${nama}</strong>?`,
+            "Hapus",
+            "btn-danger"
+        );
 
-        if (!selectedEkskulId) return;
+        if (!confirm) return;
 
         const res = await fetch(
             `/sekolah/ekstrakurikuler/delete/${selectedEkskulId}`,
@@ -352,10 +383,19 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             if (row) {
-                row.remove();
-            }
 
-            refreshNomorRows();
+                row.style.transition = "all .25s ease";
+                row.style.opacity = "0";
+                row.style.transform = "scale(.98)";
+
+                setTimeout(() => {
+
+                    row.remove();
+
+                    refreshNomorRows();
+
+                }, 250);
+            }
 
             selectedEkskulId = null;
 
@@ -364,10 +404,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("jadwal-ekskul-btn").disabled = true;
             document.getElementById("delete-ekskul-btn").disabled = true;
 
-            deleteModal.classList.remove("show");
-
             showNotification(
-                "Ekstrakurikuler dihapus",
+                "Ekstrakurikuler berhasil dihapus",
                 "success"
             );
 
