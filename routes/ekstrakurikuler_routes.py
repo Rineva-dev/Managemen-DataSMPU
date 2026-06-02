@@ -100,61 +100,84 @@ def index():
 @ekskul_bp.route("/create", methods=["POST"])
 def create_ekskul():
 
-    data = request.get_json() or {}
+    try:
 
-    nama = data.get("nama")
-    pembina_id = data.get("pembina_id")
-    hari = data.get("hari")
-    tahun_id = data.get("tahun_id")
+        data = request.get_json() or {}
 
-    if not all([nama, tahun_id]):
+        nama = data.get("nama")
+        pembina_id = data.get("pembina_id")
+        hari = data.get("hari")
+        tahun_id = data.get("tahun_id")
+
+        if not all([nama, tahun_id]):
+            return jsonify({
+                "success": False,
+                "message": "Data tidak lengkap"
+            }), 400
+
+        with db() as d:
+
+            cek = d.execute("""
+                SELECT semester_mulai, semester_akhir
+                FROM tahun_pelajaran
+                WHERE id = ?
+            """, (tahun_id,)).fetchone()
+
+            if not cek:
+                return jsonify({
+                    "success": False,
+                    "message": "Tahun pelajaran tidak ditemukan"
+                }), 400
+
+            mulai = cek["semester_mulai"]
+            akhir = cek["semester_akhir"]
+
+            if isinstance(mulai, str):
+                mulai = datetime.strptime(
+                    mulai,
+                    "%Y-%m-%d"
+                ).date()
+
+            if isinstance(akhir, str):
+                akhir = datetime.strptime(
+                    akhir,
+                    "%Y-%m-%d"
+                ).date()
+
+            today = datetime.now().date()
+
+            if not (mulai <= today <= akhir):
+                return jsonify({
+                    "success": False,
+                    "message": "Tahun pelajaran tidak aktif"
+                }), 400
+
+            cur = d.execute("""
+                INSERT INTO ekstrakurikuler
+                (nama, pembina_id, hari, tahun_pelajaran_id)
+                VALUES (?, ?, ?, ?)
+            """, (
+                nama,
+                pembina_id,
+                hari,
+                tahun_id
+            ))
+
+            d.commit()
+
+            return jsonify({
+                "success": True,
+                "id": cur.lastrowid
+            })
+
+    except Exception as e:
+
+        print("ERROR CREATE EKSKUL:", str(e))
+
         return jsonify({
             "success": False,
-            "message": "Data tidak lengkap"
-        }), 400
-
-    with db() as d:
-
-        cek = d.execute("""
-            SELECT semester_mulai, semester_akhir
-            FROM tahun_pelajaran
-            WHERE id = ?
-        """, (tahun_id,)).fetchone()
-
-        if not cek:
-            return jsonify({
-                "success": False,
-                "message": "Tahun pelajaran tidak ditemukan"
-            }), 400
-
-        mulai = cek["semester_mulai"]
-        akhir = cek["semester_akhir"]
-
-        if isinstance(mulai, str):
-            mulai = datetime.strptime(mulai, "%Y-%m-%d").date()
-        if isinstance(akhir, str):
-            akhir = datetime.strptime(akhir, "%Y-%m-%d").date()
-
-        today = datetime.now().date()
-
-        if not (mulai <= today <= akhir):
-            return jsonify({
-                "success": False,
-                "message": "Tahun pelajaran tidak aktif"
-            }), 400
-
-        cur = d.execute("""
-            INSERT INTO ekstrakurikuler
-            (nama, pembina_id, hari, tahun_pelajaran_id)
-            VALUES (?, ?, ?, ?)
-        """, (nama, pembina_id, hari, tahun_id))
-
-        d.commit()
-
-        return jsonify({
-            "success": True,
-            "id": cur.lastrowid
-        })
+            "message": str(e)
+        }), 500
 
 @ekskul_bp.route("/update/<int:id>", methods=["POST"])
 def update_ekskul(id):

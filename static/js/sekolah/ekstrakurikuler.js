@@ -60,48 +60,64 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const res = await fetch(
-            "/sekolah/ekstrakurikuler/create",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrfToken
-                },
-                body: JSON.stringify({
-                    nama,
-                    pembina_id,
-                    hari,
-                    tahun_id
-                })
+        try {
+
+            const res = await fetch(
+                "/sekolah/ekstrakurikuler/create",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken
+                    },
+                    body: JSON.stringify({
+                        nama,
+                        pembina_id,
+                        hari,
+                        tahun_id
+                    })
+                }
+            );
+
+            const text = await res.text();
+
+            let data;
+
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                console.error("Response bukan JSON:", text);
+                showNotification("Server error", "error");
+                return;
             }
-        );
 
-        const data = await res.json();
+            if (data.success) {
 
-        if (data.success) {
+                showNotification(
+                    "Ekstrakurikuler berhasil disimpan",
+                    "success"
+                );
 
-            showNotification("Ekstrakurikuler berhasil disimpan", "success");
+                modal.classList.remove("show");
 
-            modal.classList.remove("show");
+            } else {
 
-            const tbody = document.querySelector("#ekskul-table tbody");
+                showNotification(
+                    data.message || "Gagal menyimpan",
+                    "error"
+                );
 
-            const newRow = document.createElement("tr");
-            newRow.dataset.id = data.id;
+            }
 
-            newRow.innerHTML = `
-                <td>Baru</td>
-                <td>${nama}</td>
-                <td>${hari}</td>
-                <td>0</td>
-            `;
+        } catch (err) {
 
-            tbody.appendChild(newRow);
+            console.error(err);
 
-            attachRowClick(newRow);
-        } else {
-            showNotification(data.message || "Gagal menyimpan", "error");
+            showNotification(
+                "Terjadi kesalahan server",
+                "error"
+            );
+
         }
     });
 
