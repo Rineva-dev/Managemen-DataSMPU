@@ -106,13 +106,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const nomor =
                     tbody.querySelectorAll("tr").length + 1;
 
-                const pembinaSelect =
-                    document.getElementById("ekskul-pembina");
-
                 const pembinaNama =
-                    pembinaSelect.options[
-                        pembinaSelect.selectedIndex
-                    ]?.text || "-";
+                    document.querySelector(
+                        "#ekskul-form-container .selected-text"
+                    )?.textContent?.trim() || "-";
 
                 const newRow =
                     document.createElement("tr");
@@ -127,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
 
                 tbody.appendChild(newRow);
-
+                refreshNomorRows();
                 attachRowClick(newRow);
 
             } else {
