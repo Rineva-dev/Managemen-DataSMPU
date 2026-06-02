@@ -60,69 +60,86 @@
 }
 
 /* ===============================
-   INFO SISWA (IMPROVED)
+   INFO SISWA
 ================================ */
+
 .siswa-info-card {
     grid-column: 1 / -1;
-    padding: 20px 22px;
-    border-left: 4px solid #2563eb;
-}
 
-.siswa-main {
-    display: flex;
-    flex-direction: column;
+    padding: 22px 24px;
+
+    border: 1px solid #e5e7eb;
+    border-left: 5px solid #2563eb;
+
+    border-radius: 12px;
+    background: #fff;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
 }
 
 .siswa-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.siswa-main {
+    flex: 1;
 }
 
 .siswa-label {
+    display: block;
+
     font-size: 11px;
+    font-weight: 600;
+
     color: #6b7280;
+
     text-transform: uppercase;
-    letter-spacing: 0.4px;
+    letter-spacing: .08em;
+
+    margin-bottom: 4px;
 }
 
 .siswa-nama {
-    margin: 2px 0 0;
-    font-size: 20px;
+    margin: 0;
+
+    font-size: 24px;
     font-weight: 700;
+
     color: #111827;
-    letter-spacing: -0.3px;
+    line-height: 1.2;
 }
 
 .siswa-meta {
-    display: flex;
-    gap: 30px;
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px dashed #e5e7eb;
+    margin-top: 20px;
+    padding-top: 18px;
+
+    border-top: 1px solid #f1f5f9;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
 }
 
 .meta-item {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    min-width: 160px;
+    gap: 4px;
 }
 
 .meta-item .label {
     font-size: 11px;
+    font-weight: 600;
+
     color: #6b7280;
+
+    text-transform: uppercase;
+    letter-spacing: .05em;
 }
 
 .meta-item .value {
-    font-size: 14px;
-    font-weight: 600;
-    color: #111827;
-}
-
-.siswa-info-card h3 {
-    margin-bottom: 16px;
     font-size: 15px;
     font-weight: 600;
     color: #111827;
@@ -132,16 +149,20 @@
    BADGE
 ================================ */
 .badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
     font-size: 12px;
+    font-weight: 600;
 }
 
 .badge-green {
-    background: #e6f6ec;
-    color: #1a7f43;
-    font-weight: 600;
+    background: #dcfce7;
+    color: #15803d;
 }
 
 /* ===============================
@@ -277,114 +298,15 @@
     .siswa-header {
         flex-direction: column;
         align-items: flex-start;
-        gap: 8px;
+    }
+
+    .siswa-nama {
+        font-size: 20px;
     }
 
     .siswa-meta {
-        flex-direction: column;
-        gap: 10px;
-    }
-}
-
-/* ==========================
-   PROFILE SISWA
-========================== */
-
-.siswa-profile-card {
-    padding: 22px;
-    margin-bottom: 20px;
-}
-
-.profile-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-}
-
-.profile-nama {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 700;
-    color: #111827;
-}
-
-.profile-detail {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.profile-detail span {
-    font-size: 14px;
-    color: #6b7280;
-}
-
-.profile-detail strong {
-    color: #374151;
-    margin-right: 6px;
-}
-
-.status-badge {
-    padding: 7px 14px;
-    border-radius: 999px;
-    font-size: 13px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.status-badge.aktif {
-    background: #dcfce7;
-    color: #15803d;
-}
-
-/* ==========================
-   RINGKASAN
-========================== */
-
-.profile-summary {
-    margin-top: 22px;
-
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-}
-
-.summary-box {
-    padding: 16px;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-}
-
-.summary-label {
-    display: block;
-    font-size: 12px;
-    color: #6b7280;
-    margin-bottom: 8px;
-}
-
-.summary-number {
-    display: block;
-    font-size: 20px;
-    font-weight: 700;
-    color: #111827;
-}
-
-/* Mobile */
-
-@media (max-width: 768px) {
-
-    .profile-top {
-        flex-direction: column;
-    }
-
-    .profile-summary {
         grid-template-columns: 1fr;
     }
 
-    .profile-nama {
-        font-size: 20px;
-    }
 }
+
