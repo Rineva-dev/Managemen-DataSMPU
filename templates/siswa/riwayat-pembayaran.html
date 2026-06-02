@@ -27,23 +27,21 @@
         <div class="siswa-header">
             <div class="siswa-main">
                 <span class="siswa-label">Nama Siswa</span>
-                <h3 class="siswa-nama" id="siswa-nama">-</h3>
+                <h3 class="siswa-nama">{{ siswa.nama if siswa else '-' }}</h3>
             </div>
 
-            <span class="badge badge-green" id="siswa-status">
-                Aktif
-            </span>
+            <span class="badge badge-green">{{ siswa.status if siswa else 'Aktif' }}</span>
         </div>
 
         <div class="siswa-meta">
             <div class="meta-item">
                 <span class="label">NISN</span>
-                <span class="value" id="siswa-nisn">-</span>
+                <span class="value">{{ siswa.nisn if siswa else '-' }}</span>
             </div>
 
             <div class="meta-item">
                 <span class="label">Kelas</span>
-                <span class="value" id="siswa-kelas">-</span>
+                <span class="value">{{ siswa.tingkat }} {{ siswa.sub_kelas if siswa else '-' }}</span>
             </div>
         </div>
     </div>

@@ -133,11 +133,27 @@ def simpan_pembayaran():
 # =====================================================
 @pembayaran_bp.route("/pembayaran/riwayat/<nisn>")
 def halaman_riwayat_pembayaran(nisn):
+
+    conn = db()
+    siswa = conn.execute("""
+        SELECT 
+            s.nisn,
+            s.nama,
+            k.tingkat,
+            k.sub_kelas,
+            s.status
+        FROM siswa s
+        LEFT JOIN kelas_siswa ks ON ks.siswa_id = s.id
+        LEFT JOIN kelas k ON k.id = ks.kelas_id
+        WHERE s.nisn = ?
+    """, (nisn,)).fetchone()
+    conn.close()
+
     return render_template(
         "dashboard.html",
         active_page="pembayaran_siswa",
         show_riwayat=True,
-        riwayat_nisn=nisn
+        siswa=dict(siswa) if siswa else None
     )
 
 @pembayaran_bp.route("/api/pembayaran/riwayat/<nisn>")
