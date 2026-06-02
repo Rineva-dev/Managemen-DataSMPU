@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${siswa.nisn || "-"}</td>
                     <td>${siswa.nama}</td>
                     <td>
-                        ${siswa.tingkat || ""}
+                        ${siswa.kelas || ""}
                         ${siswa.sub_kelas || ""}
                     </td>
                 </tr>
