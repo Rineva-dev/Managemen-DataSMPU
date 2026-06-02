@@ -81,6 +81,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 32px;
 }
 
 .siswa-detail{
@@ -178,18 +179,30 @@
 .badge {
     display: inline-flex;
     align-items: center;
-
     padding: 6px 12px;
-
     border-radius: 999px;
-
     font-size: 12px;
     font-weight: 600;
 }
 
-.badge-green {
+.badge-aktif {
     background: #dcfce7;
     color: #15803d;
+}
+
+.badge-tidak-aktif {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.badge-lulus {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.badge-pindah {
+    background: #fef3c7;
+    color: #b45309;
 }
 
 /* ===============================

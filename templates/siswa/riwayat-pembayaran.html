@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-            <span class="badge badge-green">
+            <span class="badge badge-{{ (siswa.status or 'aktif')|lower }}">
                 {{ siswa.status }}
             </span>
 
