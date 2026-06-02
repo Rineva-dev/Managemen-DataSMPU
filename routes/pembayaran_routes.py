@@ -133,34 +133,80 @@ def simpan_pembayaran():
 @pembayaran_bp.route("/api/pembayaran/riwayat/<nisn>")
 @roles_required("admin", "bendahara")
 def riwayat_pembayaran(nisn):
-    try:
-        conn = db()
-        cur = conn.cursor()
+    jenis = request.args.get("jenis")
+    bulan = request.args.get("bulan")
+    page  = int(request.args.get("page", 1))
+    limit = int(request.args.get("limit", 10))
+    offset = (page - 1) * limit
 
-        cur.execute("""
-            SELECT jenis, bulan, tanggal, nominal
-            FROM pembayaran
-            WHERE nisn = %s
-            ORDER BY tanggal DESC
-        """, (nisn,))
+    query = """
+        SELECT id, jenis, bulan, tanggal, nominal
+        FROM pembayaran
+        WHERE nisn = %s
+    """
+    params = [nisn]
 
-        rows = cur.fetchall()
+    if jenis:
+        query += " AND jenis = %s"
+        params.append(jenis)
 
-        data = []
-        for r in rows:
-            data.append({
-                "jenis": r[0] or "",
-                "bulan": r[1] or "",
-                "tanggal": str(r[2]) if r[2] else None,
-                "nominal": r[3] or 0
-            })
+    if bulan:
+        query += " AND bulan = %s"
+        params.append(bulan)
 
-        cur.close()
-        conn.close()
+    query += " ORDER BY tanggal DESC LIMIT %s OFFSET %s"
+    params.extend([limit, offset])
 
-        return jsonify(data)
+    conn = db()
+    cur = conn.cursor()
+    cur.execute(query, params)
+    rows = cur.fetchall()
 
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return jsonify({"error": str(e)}), 500
+    cur.execute(
+        "SELECT COUNT(*) FROM pembayaran WHERE nisn = %s",
+        (nisn,)
+    )
+    total = cur.fetchone()[0]
+
+    conn.close()
+
+    return jsonify({
+        "data": [
+            {
+                "id": r[0],
+                "jenis": r[1],
+                "bulan": r[2],
+                "tanggal": str(r[3]),
+                "nominal": r[4]
+            } for r in rows
+        ],
+        "pagination": {
+            "page": page,
+            "limit": limit,
+            "total": total
+        }
+    })
+    
+@pembayaran_bp.route("/api/pembayaran/riwayat/<nisn>/summary")
+@roles_required("admin", "bendahara")
+def summary_pembayaran(nisn):
+    conn = db()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT
+            COUNT(*) AS total_transaksi,
+            COALESCE(SUM(nominal), 0),
+            MAX(tanggal)
+        FROM pembayaran
+        WHERE nisn = %s
+    """, (nisn,))
+
+    row = cur.fetchone()
+    conn.close()
+
+    return jsonify({
+        "total_transaksi": row[0],
+        "total_nominal": row[1],
+        "terakhir_bayar": str(row[2]) if row[2] else None
+    })

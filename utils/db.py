@@ -1,8 +1,9 @@
 import os
 import sqlite3
 import psycopg2
-
 from psycopg2.extras import RealDictCursor
+from dotenv import load_dotenv
+load_dotenv(".env.local", override=True)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 

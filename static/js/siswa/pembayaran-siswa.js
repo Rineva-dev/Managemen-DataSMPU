@@ -163,12 +163,17 @@ document.addEventListener("DOMContentLoaded", function () {
             nominal: nominalBayar.value.replace(/[^0-9]/g, "")
         };
 
+        const headers = {
+            "Content-Type": "application/json"
+        };
+
+        if (typeof csrfToken !== "undefined") {
+            headers["X-CSRFToken"] = csrfToken;
+        }
+
         fetch("/api/pembayaran/simpan", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken
-            },
+            headers,
             body: JSON.stringify(payload)
         })
             .then(res => {
@@ -180,7 +185,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 loadTable();
 
                 if (selectedSiswa) {
-                    loadRiwayatMenu(selectedSiswa.nisn);
+                    bukaRiwayatPembayaran(
+                        selectedSiswa.nisn,
+                        selectedSiswa.nama,
+                        `${selectedSiswa.tingkat} - ${selectedSiswa.rombel}`
+                    );
                 }
             })
             .catch(err => alert(err.message));
@@ -247,6 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         data-nisn="${row.nisn}"
                         data-nama="${row.nama}"
                         data-kelas="${(row.tingkat || '-') + ' - ' + (row.rombel || '-')}"
+                        onclick="window.location.href='/pembayaran/riwayat/${row.nisn}'">
                     >
                         <i data-lucide="history"></i>
                     </button>
@@ -401,57 +411,17 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     });
 
-    function loadRiwayatPembayaran(nisn) {
-        fetch(`/api/pembayaran/riwayat/${nisn}`)
-            .then(res => res.json())
-            .then(data => {
-                const tbody = document.querySelector("#riwayat-table tbody");
-                tbody.innerHTML = "";
-
-                if (data.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="5" style="text-align:center;">
-                                Belum ada pembayaran
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-
-                data.forEach((item, index) => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${item.jenis.toUpperCase()}</td>
-                            <td>${item.bulan}</td>
-                            <td>${item.tanggal}</td>
-                            <td>Rp ${Number(item.nominal).toLocaleString("id-ID")}</td>
-                        </tr>
-                    `;
-                });
-            })
-            .catch(err => {
-                console.error("Gagal load riwayat", err);
-            });
-    }
-
-    function loadRiwayatMenu(nisn) {
-        fetch(`/api/pembayaran/riwayat/${nisn}`, {
+    function loadRiwayatPembayaran(nisn, page = 1, limit = 10) {
+        fetch(`/api/pembayaran/riwayat/${nisn}?page=${page}&limit=${limit}`, {
             credentials: "include"
         })
-        .then(async res => {
-            if (!res.ok) {
-                const text = await res.text();
-                throw new Error(text);
-            }
-            return res.json();
-        })
-        .then(data => {
+        .then(res => res.json())
+        .then(res => {
+            const data = res.data || [];
             const tbody = document.querySelector("#menu-riwayat-table tbody");
             tbody.innerHTML = "";
 
-            if (!Array.isArray(data) || data.length === 0) {
+            if (!data.length) {
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="4" style="text-align:center;">
@@ -465,18 +435,59 @@ document.addEventListener("DOMContentLoaded", function () {
             data.forEach((item, index) => {
                 tbody.innerHTML += `
                     <tr>
-                        <td>${index + 1}</td>
+                        <td>${(page - 1) * limit + index + 1}</td>
                         <td>${item.tanggal || '-'}</td>
-                        <td>${item.jenis.toUpperCase()} Bulan ${item.bulan}</td>
+                        <td>${item.jenis.toUpperCase()} ${item.bulan || ''}</td>
                         <td>Rp ${Number(item.nominal).toLocaleString("id-ID")}</td>
                     </tr>
                 `;
             });
+
+            renderRiwayatPagination(
+                res.pagination.page,
+                res.pagination.limit,
+                res.pagination.total,
+                nisn
+            );
         })
         .catch(err => {
-            console.error("Gagal load riwayat menu:", err);
+            console.error("Gagal load riwayat:", err);
             alert("Gagal memuat riwayat pembayaran");
         });
+    }
+
+    function renderRiwayatPagination(page, limit, total, nisn) {
+        const container = document.getElementById("riwayat-pagination");
+        if (!container) return;
+
+        container.innerHTML = "";
+        const totalPages = Math.ceil(total / limit);
+        if (totalPages <= 1) return;
+
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.className = "page-btn";
+            if (i === page) btn.classList.add("active");
+
+            btn.onclick = () => loadRiwayatPembayaran(nisn, i, limit);
+            container.appendChild(btn);
+        }
+    }
+
+    function loadSummaryPembayaran(nisn) {
+        fetch(`/api/pembayaran/riwayat/${nisn}/summary`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("sum-total-transaksi").textContent =
+                    data.total_transaksi;
+
+                document.getElementById("sum-total-nominal").textContent =
+                    "Rp " + Number(data.total_nominal).toLocaleString("id-ID");
+
+                document.getElementById("sum-terakhir-bayar").textContent =
+                    data.terakhir_bayar || "-";
+            });
     }
 
 
@@ -488,18 +499,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function bukaRiwayatPembayaran(nisn, nama, kelas) {
 
+        // simpan state
         sessionStorage.setItem("menuAktif", "riwayat_pembayaran");
         sessionStorage.setItem("riwayat_nisn", nisn);
         sessionStorage.setItem("riwayat_nama", nama);
         sessionStorage.setItem("riwayat_kelas", kelas);
 
+        // tampilkan menu
         showMenu("riwayat");
 
+        // isi header
         document.getElementById("menu-riwayat-nisn").textContent = nisn;
         document.getElementById("menu-riwayat-nama").textContent = nama;
         document.getElementById("menu-riwayat-kelas").textContent = kelas;
 
-        loadRiwayatMenu(nisn);
+        // 🔥 INI INTINYA
+        loadRiwayatPembayaran(nisn, 1, 10);
+        loadSummaryPembayaran(nisn);
     }
 
     document.getElementById("btn-kembali-pembayaran")

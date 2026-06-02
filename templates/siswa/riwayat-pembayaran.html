@@ -1,0 +1,126 @@
+<div id="riwayat-pembayaran-page" class="page-container">
+
+    <!-- ================= HEADER ================= -->
+    <div class="page-header">
+        <div class="header-left">
+            <button class="btn btn-back">
+                ← Kembali
+            </button>
+            <h2>Riwayat Pembayaran Siswa</h2>
+        </div>
+    </div>
+
+    <!-- ================= DATA SISWA ================= -->
+    <div class="card siswa-info-card">
+        <h3>Informasi Siswa</h3>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="label">NISN</span>
+                <span class="value" id="siswa-nisn">-</span>
+            </div>
+
+            <div class="info-item">
+                <span class="label">Nama Siswa</span>
+                <span class="value" id="siswa-nama">-</span>
+            </div>
+
+            <div class="info-item">
+                <span class="label">Kelas</span>
+                <span class="value" id="siswa-kelas">-</span>
+            </div>
+
+            <div class="info-item">
+                <span class="label">Status</span>
+                <span class="value badge badge-green" id="siswa-status">
+                    Aktif
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= RINGKASAN KEUANGAN ================= -->
+    <div class="summary-grid">
+
+        <div class="summary-card">
+            <span class="summary-title">Total Pembayaran</span>
+            <span class="summary-value" id="total-pembayaran">
+                Rp 0
+            </span>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-title">Jumlah Transaksi</span>
+            <span class="summary-value" id="jumlah-transaksi">
+                0
+            </span>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-title">Terakhir Bayar</span>
+            <span class="summary-value" id="terakhir-bayar">
+                -
+            </span>
+        </div>
+
+    </div>
+
+    <!-- ================= FILTER & ACTION ================= -->
+    <div class="card filter-card">
+
+        <div class="filter-left">
+            <select id="filter-jenis">
+                <option value="">Semua Jenis</option>
+                <option value="spp">SPP</option>
+                <option value="ekskul">Ekstrakurikuler</option>
+                <option value="seragam">Seragam</option>
+                <option value="pembangunan">Pembangunan</option>
+            </select>
+
+            <input type="month" id="filter-bulan">
+
+            <input
+                type="text"
+                id="filter-search"
+                placeholder="Cari pembayaran..."
+            >
+        </div>
+
+        <div class="filter-right">
+            <button class="btn btn-secondary">
+                Export Excel
+            </button>
+            <button class="btn btn-secondary">
+                Cetak
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ================= TABLE ================= -->
+    <div class="card table-card">
+
+        <table class="data-table" id="riwayat-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Tanggal</th>
+                    <th>Jenis Pembayaran</th>
+                    <th>Bulan</th>
+                    <th>Nominal</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data diisi JS -->
+                <tr>
+                    <td colspan="6" class="empty-table">
+                        Belum ada data pembayaran
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>

@@ -411,3 +411,62 @@ def init_db():
         CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_mapel
         ON mata_pelajaran (nama, jenis)
         """)
+
+        # ============================
+        # DATABASE INDEXES (POSTGRESQL)
+        # ============================
+
+        d.execute("""
+        CREATE INDEX IF NOT EXISTS idx_guru_role
+        ON guru(role)
+        """)
+
+        d.execute("""
+        CREATE INDEX IF NOT EXISTS idx_guru_nama
+        ON guru(nama)
+        """)
+
+        d.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_akun_username
+        ON akun(username)
+        """)
+
+        d.execute("""
+        CREATE INDEX IF NOT EXISTS idx_akun_guru_id
+        ON akun(guru_id)
+        """)
+
+        d.execute("""
+        CREATE INDEX IF NOT EXISTS idx_kelas_tahun
+        ON kelas(tahun_pelajaran_id)
+        """)
+
+        d.execute("""
+        CREATE INDEX IF NOT EXISTS idx_kelas_wali
+        ON kelas(wali_kelas_id)
+        """)
+
+        d.execute("""
+        CREATE INDEX IF NOT EXISTS idx_kelas_mapel_kelas
+        ON kelas_mapel(kelas_id)
+        """)
+
+        d.execute("""
+        CREATE INDEX IF NOT EXISTS idx_kelas_mapel_guru
+        ON kelas_mapel(guru_id)
+        """)
+
+        d.execute("""
+        CREATE INDEX IF NOT EXISTS idx_siswa_nama
+        ON siswa(nama)
+        """)
+
+        d.execute("""
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_siswa_nis
+        ON siswa(nis)
+        """)
+
+        d.execute("""
+        CREATE INDEX IF NOT EXISTS idx_nilai_siswa_mapel
+        ON nilai_siswa(kelas_mapel_id)
+        """)
