@@ -10,9 +10,9 @@
 /* ============================= */
 /* PAGE HEADER */
 /* ============================= */
-
 .page-header {
     margin-bottom: 20px;
+    grid-column: 1 / -1;
 }
 
 .page-title {
