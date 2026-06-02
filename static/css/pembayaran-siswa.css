@@ -254,6 +254,7 @@
     align-items:center;
     gap:8px;
     cursor:pointer;
+    line-height:1;
 }
 
 .payment-check input[type="checkbox"]{
@@ -261,8 +262,10 @@
     height:16px;
     margin:0;
     flex-shrink:0;
+    vertical-align:middle;
 }
 
 .payment-check span{
-    line-height:1;
+    display:flex;
+    align-items:center;
 }
