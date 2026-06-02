@@ -63,8 +63,12 @@
    INFO SISWA (IMPROVED)
 ================================ */
 .siswa-info-card {
-    grid-column: 1 / -1;
-    padding: 20px 22px;
+    border-left: 4px solid #2563eb;
+}
+
+.siswa-main {
+    display: flex;
+    flex-direction: column;
 }
 
 .siswa-header {
@@ -89,8 +93,9 @@
 }
 
 .siswa-meta {
-    display: flex;
-    gap: 30px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed #e5e7eb;
 }
 
 .meta-item {
