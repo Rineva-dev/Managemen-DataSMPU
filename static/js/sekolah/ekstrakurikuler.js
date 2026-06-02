@@ -7,21 +7,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeBtn = modal?.querySelector(".modern-close");
     const cancelBtn = document.getElementById("ekskul-cancel");
 
+    const deleteBtn =
+        document.getElementById("delete-ekskul-btn");
+
+    const confirmDeleteBtn =
+        document.getElementById("confirm-delete-ekskul");
+
+    const deleteModal =
+        document.getElementById("delete-modal");
+
     addBtn?.addEventListener("click", () => {
+        resetEkskulForm();
         modal.classList.add("show");
     });
 
     closeBtn?.addEventListener("click", () => {
         modal.classList.remove("show");
+        resetEkskulForm();
     });
 
     cancelBtn?.addEventListener("click", () => {
         modal.classList.remove("show");
+        resetEkskulForm();
     });
 
     modal?.addEventListener("click", (e) => {
         if (e.target === modal) {
             modal.classList.remove("show");
+            resetEkskulForm();
         }
     });
 
@@ -156,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 refreshNomorRows();
                 attachRowClick(newRow);
+                resetEkskulForm();
 
             } else {
 
@@ -307,15 +321,17 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.classList.add("show");
     });
 
-    document
-    .getElementById("delete-ekskul-btn")
-    ?.addEventListener("click", async () => {
+    deleteBtn?.addEventListener("click", () => {
 
         if (!selectedEkskulId) return;
 
-        if (!showConfirm("Hapus ekstrakurikuler ini?")) {
-            return;
-        }
+        deleteModal.classList.add("show");
+
+    });
+
+    confirmDeleteBtn?.addEventListener("click", async () => {
+
+        if (!selectedEkskulId) return;
 
         const res = await fetch(
             `/sekolah/ekstrakurikuler/delete/${selectedEkskulId}`,
@@ -335,7 +351,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 `#ekskul-table tr[data-id="${selectedEkskulId}"]`
             );
 
-            if (row) row.remove();
+            if (row) {
+                row.remove();
+            }
 
             refreshNomorRows();
 
@@ -346,12 +364,41 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("jadwal-ekskul-btn").disabled = true;
             document.getElementById("delete-ekskul-btn").disabled = true;
 
-            showNotification("Ekstrakurikuler dihapus", "success");
+            deleteModal.classList.remove("show");
+
+            showNotification(
+                "Ekstrakurikuler dihapus",
+                "success"
+            );
+
         } else {
-            alert(data.message);
+
+            showNotification(
+                data.message || "Gagal menghapus",
+                "error"
+            );
+
         }
 
     });
+
+    function resetEkskulForm() {
+
+        document.getElementById("ekskul-id").value = "";
+        document.getElementById("ekskul-nama").value = "";
+        document.getElementById("ekskul-hari").value = "";
+        document.getElementById("ekskul-pembina").value = "";
+
+        const selectedText =
+            document.querySelector(
+                "#ekskul-form-container .selected-text"
+            );
+
+        if (selectedText) {
+            selectedText.textContent = "Pilih Pembina";
+        }
+
+    }
 
     const anggotaModal = document.getElementById("anggota-ekskul-modal");
 
