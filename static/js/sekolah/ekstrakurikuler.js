@@ -100,6 +100,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 modal.classList.remove("show");
 
+                const tbody =
+                    document.querySelector("#ekskul-table tbody");
+
+                const newRow =
+                    document.createElement("tr");
+
+                newRow.dataset.id = data.id;
+
+                newRow.innerHTML = `
+                    <td>Baru</td>
+                    <td>${nama}</td>
+                    <td>${hari}</td>
+                    <td>0</td>
+                `;
+
+                tbody.appendChild(newRow);
+
+                attachRowClick(newRow);
+
             } else {
 
                 showNotification(
