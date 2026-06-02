@@ -56,6 +56,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const pembayaran = document.getElementById("pembayaran-siswa-content");
         const riwayat = document.getElementById("riwayat-pembayaran-content");
 
+        // ⛔ JIKA SALAH SATU TIDAK ADA → STOP
+        if (!pembayaran || !riwayat) {
+            console.warn("showMenu(): elemen tidak ditemukan", {
+                pembayaran,
+                riwayat
+            });
+            return;
+        }
+
         if (menu === "pembayaran") {
             pembayaran.style.display = "block";
             riwayat.style.display = "none";
