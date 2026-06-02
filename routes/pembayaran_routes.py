@@ -132,7 +132,7 @@ def simpan_pembayaran():
 # /pembayaran/riwayat/<nisn>
 # =====================================================
 @pembayaran_bp.route("/pembayaran/riwayat/<nisn>")
-def riwayat_pembayaran(nisn):
+def halaman_riwayat_pembayaran(nisn):
     return render_template(
         "dashboard.html",
         active_page="pembayaran_siswa",
@@ -142,7 +142,7 @@ def riwayat_pembayaran(nisn):
 
 @pembayaran_bp.route("/api/pembayaran/riwayat/<nisn>")
 @roles_required("admin", "bendahara")
-def riwayat_pembayaran(nisn):
+def api_riwayat_pembayaran(nisn):
     jenis = request.args.get("jenis")
     bulan = request.args.get("bulan")
     page  = int(request.args.get("page", 1))
