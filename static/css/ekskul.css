@@ -186,6 +186,21 @@
     line-height:1;
 }
 
+.anggota-search{
+    padding:12px 16px;
+    border-bottom:1px solid #eee;
+}
+
+.anggota-search input{
+    width:100%;
+    padding:10px 12px;
+
+    border:1px solid #d1d5db;
+    border-radius:8px;
+
+    font-size:13px;
+}
+
 /* =========================
    DUAL LIST SISWA
 ========================= */

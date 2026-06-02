@@ -225,9 +225,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("anggota-ekskul-btn")?.addEventListener("click", async () => {
 
-        if (!selectedEkskulId) {
-            return;
-        }
+        if (!selectedEkskulId) return;
+
+        const res = await fetch(
+            `/sekolah/ekstrakurikuler/${selectedEkskulId}/anggota`
+        );
+
+        const data = await res.json();
+
+        renderAnggota(data.anggota);
+        renderSiswa(data.siswa_tersedia);
 
         anggotaModal.classList.add("show");
 
@@ -248,6 +255,64 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             anggotaModal.classList.remove("show");
         });
+
+    });
+
+    let siswaAvailable = [];
+
+    function renderSiswa(data){
+
+        siswaAvailable = data;
+
+        const container =
+            document.getElementById("siswa-available-list");
+
+        container.innerHTML = "";
+
+        data.forEach(siswa => {
+
+            container.innerHTML += `
+                <div class="anggota-item">
+                    <input
+                        type="checkbox"
+                        value="${siswa.id}">
+
+                    <label>
+                        ${siswa.nisn || "-"} - ${siswa.nama}
+                    </label>
+                </div>
+            `;
+        });
+
+        document.getElementById("available-count")
+            .textContent = `${data.length} siswa`;
+    }
+
+    document
+    .getElementById("search-siswa-ekskul")
+    ?.addEventListener("input", function(){
+
+        const keyword =
+            this.value.toLowerCase();
+
+        const filtered =
+            siswaAvailable.filter(siswa => {
+
+                return (
+                    (siswa.nama || "")
+                    .toLowerCase()
+                    .includes(keyword)
+
+                    ||
+
+                    (siswa.nisn || "")
+                    .toLowerCase()
+                    .includes(keyword)
+                );
+
+            });
+
+        renderSiswa(filtered);
 
     });
 
