@@ -219,3 +219,11 @@
     width:16px;
     height:16px;
 }
+
+.rombel-overlay{
+    display:none;
+}
+
+.rombel-overlay.show{
+    display:flex;
+}

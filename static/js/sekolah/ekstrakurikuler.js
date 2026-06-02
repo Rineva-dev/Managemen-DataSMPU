@@ -221,4 +221,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    const anggotaModal = document.getElementById("anggota-ekskul-modal");
+
+    document.getElementById("anggota-ekskul-btn")?.addEventListener("click", async () => {
+
+        if (!selectedEkskulId) {
+            return;
+        }
+
+        anggotaModal.classList.add("show");
+
+    });
+
+    anggotaModal
+    ?.querySelector(".close-rombel")
+    ?.addEventListener("click", () => {
+
+        anggotaModal.classList.remove("show");
+
+    });
+
 });
