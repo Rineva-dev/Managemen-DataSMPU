@@ -195,9 +195,16 @@ def detail_ekskul(id):
 
     with db() as d:
         row = d.execute("""
-            SELECT id, nama, pembina_id, hari
-            FROM ekstrakurikuler
-            WHERE id = ?
+            SELECT
+                e.id,
+                e.nama,
+                e.pembina_id,
+                e.hari,
+                g.nama AS pembina_nama
+            FROM ekstrakurikuler e
+            LEFT JOIN guru g
+                ON g.id = e.pembina_id
+            WHERE e.id = ?
         """, (id,)).fetchone()
 
     if not row:
@@ -264,12 +271,31 @@ def update_anggota():
 def panel_anggota(ekskul_id):
 
     with db() as d:
+
         rows = d.execute("""
-            SELECT s.id, s.nisn, s.nama, s.kelas_terakhir
+            SELECT
+                s.id,
+                s.nisn,
+                s.nama,
+                k.tingkat,
+                k.sub_kelas
             FROM ekskul_anggota ea
-            JOIN siswa s ON s.id = ea.siswa_id
+            JOIN siswa s
+                ON s.id = ea.siswa_id
+            LEFT JOIN kelas_siswa ks
+                ON ks.siswa_id = s.id
+            LEFT JOIN kelas k
+                ON k.id = ks.kelas_id
             WHERE ea.ekskul_id = ?
-            ORDER BY s.nama ASC
+            ORDER BY s.nama
         """, (ekskul_id,)).fetchall()
 
-    return jsonify([dict(r) for r in rows])
+    return jsonify([
+        {
+            "id": r["id"],
+            "nisn": r["nisn"],
+            "nama": r["nama"],
+            "kelas": f"{r['tingkat'] or ''} {r['sub_kelas'] or ''}".strip()
+        }
+        for r in rows
+    ])

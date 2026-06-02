@@ -185,7 +185,3 @@
 #ekskul-table tbody tr.selected{
     background:#eef2ff;
 }
-
-#ekskul-table tbody tr{
-    cursor:pointer;
-}

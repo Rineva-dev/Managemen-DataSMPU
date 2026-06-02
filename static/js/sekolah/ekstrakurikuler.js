@@ -123,7 +123,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     <td>${index + 1}</td>
                     <td>${siswa.nisn || '-'}</td>
                     <td>${siswa.nama}</td>
-                    <td>${siswa.kelas_terakhir || '-'}</td>
+                    <td>
+                        ${siswa.tingkat || ""}
+                        ${siswa.sub_kelas || ""}
+                    </td>
                 </tr>
             `;
 
@@ -201,7 +204,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const res = await fetch(
             `/sekolah/ekstrakurikuler/delete/${selectedEkskulId}`,
             {
-                method: "POST"
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
             }
         );
 
