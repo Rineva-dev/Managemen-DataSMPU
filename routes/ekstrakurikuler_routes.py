@@ -218,7 +218,7 @@ def anggota_ekskul(ekskul_id):
     with db() as d:
 
         anggota = d.execute("""
-            SELECT s.id, s.nama, s.nis
+            SELECT s.id, s.nama, s.nisn
             FROM siswa s
             JOIN ekskul_anggota ea ON ea.siswa_id = s.id
             WHERE ea.ekskul_id = ?
@@ -226,7 +226,7 @@ def anggota_ekskul(ekskul_id):
         """, (ekskul_id,)).fetchall()
 
         siswa_available = d.execute("""
-            SELECT id, nama, nis
+            SELECT id, nama, nisn
             FROM siswa
             WHERE status = 'aktif'
             AND id NOT IN (
