@@ -4,14 +4,13 @@
 #riwayat-pembayaran-page {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: 20px;
+    gap: 15px;
 }
 
 /* ============================= */
 /* PAGE HEADER */
 /* ============================= */
 .page-header {
-    margin-bottom: 20px;
     grid-column: 1 / -1;
 }
 
