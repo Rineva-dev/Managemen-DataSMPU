@@ -51,29 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
     closeBtn?.addEventListener("click", closeModal);
     cancelBtn?.addEventListener("click", closeModal);
 
-    function showMenu(menu) {
-
-        const pembayaran = document.getElementById("pembayaran-siswa-content");
-        const riwayat = document.getElementById("riwayat-pembayaran-content");
-
-        if (!pembayaran || !riwayat) {
-            console.warn("showMenu(): elemen tidak ditemukan", {
-                pembayaran,
-                riwayat
-            });
-            return;
-        }
-
-        if (menu === "pembayaran") {
-            pembayaran.style.display = "block";
-            riwayat.style.display = "none";
-        }
-
-        if (menu === "riwayat") {
-            pembayaran.style.display = "none";
-            riwayat.style.display = "block";
-        }
-    }
 
     function closeModal() {
         modal.classList.remove("show");
@@ -408,17 +385,6 @@ document.addEventListener("DOMContentLoaded", function () {
         loadTable(searchInput.value.trim());
     });
 
-    document.addEventListener("click", function (e) {
-        const btn = e.target.closest(".aksi-btn");
-        if (!btn) return;
-
-        bukaRiwayatPembayaran(
-            btn.dataset.nisn,
-            btn.dataset.nama,
-            btn.dataset.kelas
-        );
-    });
-
     function loadRiwayatPembayaran(nisn, page = 1, limit = 10) {
         fetch(`/api/pembayaran/riwayat/${nisn}?page=${page}&limit=${limit}`, {
             credentials: "include"
@@ -505,80 +471,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    function bukaRiwayatPembayaran(nisn, nama, kelas) {
-
-        const elNisn  = document.getElementById("menu-riwayat-nisn");
-        const elNama  = document.getElementById("menu-riwayat-nama");
-        const elKelas = document.getElementById("menu-riwayat-kelas");
-
-        // ⛔ JIKA HALAMAN INI TIDAK PUNYA MENU RIWAYAT
-        if (!elNisn || !elNama || !elKelas) {
-            console.warn("Riwayat pembayaran tidak tersedia di halaman ini");
-            return;
-        }
-
-        // simpan state
-        sessionStorage.setItem("menuAktif", "riwayat_pembayaran");
-        sessionStorage.setItem("riwayat_nisn", nisn);
-        sessionStorage.setItem("riwayat_nama", nama);
-        sessionStorage.setItem("riwayat_kelas", kelas);
-
-        // tampilkan menu
-        showMenu("riwayat");
-
-        // isi header
-        elNisn.textContent  = nisn;
-        elNama.textContent  = nama;
-        elKelas.textContent = kelas;
-
-        loadRiwayatPembayaran(nisn, 1, 10);
-        loadSummaryPembayaran(nisn);
-    }
-
-    document.getElementById("btn-kembali-pembayaran")
-    ?.addEventListener("click", () => {
-
-        // reset state
-        sessionStorage.removeItem("menuAktif");
-        sessionStorage.removeItem("riwayat_nisn");
-        sessionStorage.removeItem("riwayat_nama");
-        sessionStorage.removeItem("riwayat_kelas");
-
-        showMenu("pembayaran");
-    });
-
-    const menuAktif = sessionStorage.getItem("menuAktif");
-
-    if (menuAktif === "riwayat_pembayaran") {
-
-        const nisn  = sessionStorage.getItem("riwayat_nisn");
-        const nama  = sessionStorage.getItem("riwayat_nama");
-        const kelas = sessionStorage.getItem("riwayat_kelas");
-
-        if (nisn) {
-            bukaRiwayatPembayaran(nisn, nama, kelas);
-        }
-
-    } else {
-        showMenu("pembayaran");
-    }
-
-    document.getElementById("menu-pembayaran")
-    ?.addEventListener("click", () => {
-
-        // 🔥 RESET SEMUA STATE RIWAYAT
-        sessionStorage.removeItem("menuAktif");
-        sessionStorage.removeItem("riwayat_nisn");
-        sessionStorage.removeItem("riwayat_nama");
-        sessionStorage.removeItem("riwayat_kelas");
-
-        showMenu("pembayaran");
-    });
-
     // =========================
     // INIT
     // =========================
-    showMenu("pembayaran");
     loadTable();
 
 });

@@ -3,7 +3,8 @@
     <!-- ================= HEADER ================= -->
     <div class="page-header">
         <div class="header-left">
-            <button class="btn btn-back">
+            <button class="btn btn-back"
+                onclick="window.location.href='/pembayaran'">
                 ← Kembali
             </button>
             <h2>Riwayat Pembayaran Siswa</h2>
@@ -40,29 +41,25 @@
     </div>
 
     <!-- ================= RINGKASAN KEUANGAN ================= -->
-    <div class="summary-grid">
+    <div class="summary-card">
+        <span class="summary-title">Total Pembayaran</span>
+        <span class="summary-value" id="sum-total-nominal">
+            Rp 0
+        </span>
+    </div>
 
-        <div class="summary-card">
-            <span class="summary-title">Total Pembayaran</span>
-            <span class="summary-value" id="total-pembayaran">
-                Rp 0
-            </span>
-        </div>
+    <div class="summary-card">
+        <span class="summary-title">Jumlah Transaksi</span>
+        <span class="summary-value" id="sum-total-transaksi">
+            0
+        </span>
+    </div>
 
-        <div class="summary-card">
-            <span class="summary-title">Jumlah Transaksi</span>
-            <span class="summary-value" id="jumlah-transaksi">
-                0
-            </span>
-        </div>
-
-        <div class="summary-card">
-            <span class="summary-title">Terakhir Bayar</span>
-            <span class="summary-value" id="terakhir-bayar">
-                -
-            </span>
-        </div>
-
+    <div class="summary-card">
+        <span class="summary-title">Terakhir Bayar</span>
+        <span class="summary-value" id="sum-terakhir-bayar">
+            -
+        </span>
     </div>
 
     <!-- ================= FILTER & ACTION ================= -->
@@ -124,3 +121,5 @@
     </div>
 
 </div>
+
+<script src="/static/js/riwayat-pembayaran.js"></script>

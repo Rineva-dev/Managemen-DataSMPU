@@ -10,7 +10,8 @@ pembayaran_bp = Blueprint("pembayaran", __name__)
 def pembayaran_siswa_page():
     return render_template(
         "dashboard.html",
-        active_page="pembayaran_siswa"
+        active_page="pembayaran_siswa",
+        show_riwayat=False
     )
 
 # =====================================================
@@ -127,9 +128,18 @@ def simpan_pembayaran():
         return jsonify({"error": str(e)}), 500
 
 # =====================================================
-# RIWAYAT PEMBAYARAN PER SISWA
-# /api/pembayaran/riwayat/<nisn>
+# HALAMAN RIWAYAT PEMBAYARAN
+# /pembayaran/riwayat/<nisn>
 # =====================================================
+@pembayaran_bp.route("/pembayaran/riwayat/<nisn>")
+def riwayat_pembayaran(nisn):
+    return render_template(
+        "dashboard.html",
+        active_page="pembayaran_siswa",
+        show_riwayat=True,
+        riwayat_nisn=nisn
+    )
+
 @pembayaran_bp.route("/api/pembayaran/riwayat/<nisn>")
 @roles_required("admin", "bendahara")
 def riwayat_pembayaran(nisn):

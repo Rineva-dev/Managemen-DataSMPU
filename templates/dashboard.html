@@ -81,7 +81,13 @@
 {% endif %}
 
 {% if active_page == "pembayaran_siswa" %}
-    {% include "siswa/pembayaran-siswa.html" %}
+
+    {% if show_riwayat %}
+        {% include "siswa/riwayat-pembayaran.html" %}
+    {% else %}
+        {% include "siswa/pembayaran-siswa.html" %}
+    {% endif %}
+
 {% endif %}
 
 {% include "sections/profile-modal.html" %}
