@@ -104,13 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (data.success) {
 
-                showNotification(
-                    "Ekstrakurikuler berhasil disimpan",
-                    "success"
-                );
-
-                modal.classList.remove("show");
-
                 const pembinaNama =
                     document.querySelector(
                         "#ekskul-form-container .selected-text"
@@ -132,6 +125,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         row.children[2].textContent = pembinaNama;
 
+                        // pindahkan row sesuai alfabet
+                        const tbody =
+                            document.querySelector("#ekskul-table tbody");
+
+                        tbody.removeChild(row);
+
+                        const rows =
+                            [...tbody.querySelectorAll("tr")];
+
+                        let inserted = false;
+
+                        for (const currentRow of rows) {
+
+                            const namaCell =
+                                currentRow.children[1];
+
+                            if (!namaCell) continue;
+
+                            const currentNama =
+                                namaCell.textContent
+                                    .trim()
+                                    .toLowerCase();
+
+                            if (nama.toLowerCase() < currentNama) {
+
+                                tbody.insertBefore(row, currentRow);
+
+                                inserted = true;
+
+                                break;
+                            }
+                        }
+
+                        if (!inserted) {
+                            tbody.appendChild(row);
+                        }
+
+                        refreshNomorRows();
                     }
 
                     showNotification(
@@ -163,7 +194,35 @@ document.addEventListener("DOMContentLoaded", () => {
                         <td>0</td>
                     `;
 
-                    tbody.appendChild(newRow);
+                    const rows =
+                        [...tbody.querySelectorAll("tr")];
+
+                    let inserted = false;
+
+                    for (const row of rows) {
+
+                        const namaCell = row.children[1];
+
+                        if (!namaCell) continue;
+
+                        const currentNama =
+                            namaCell.textContent
+                                .trim()
+                                .toLowerCase();
+
+                        if (nama.toLowerCase() < currentNama) {
+
+                            tbody.insertBefore(newRow, row);
+
+                            inserted = true;
+
+                            break;
+                        }
+                    }
+
+                    if (!inserted) {
+                        tbody.appendChild(newRow);
+                    }
 
                     refreshNomorRows();
 
