@@ -250,7 +250,7 @@
 }
 
 .payment-check{
-    display:flex;
+    display:flex !important;
     align-items:center;
     gap:8px;
     cursor:pointer;
