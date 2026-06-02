@@ -148,6 +148,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pembayaran-siswa.css') }}">
     {% endif %}
 
+    {% if active_page == "pembayaran_siswa" and show_riwayat %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/riwayat-pembayaran.css') }}">
+    {% endif %}
+
     {% if active_page == "mata_pelajaran" %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mapel.css') }}">
     {% endif %}
