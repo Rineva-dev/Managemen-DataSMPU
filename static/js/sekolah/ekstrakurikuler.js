@@ -80,12 +80,50 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (data.success) {
+
             showNotification("Ekstrakurikuler berhasil disimpan", "success");
-            location.reload();
+
+            modal.classList.remove("show");
+
+            const tbody = document.querySelector("#ekskul-table tbody");
+
+            const newRow = document.createElement("tr");
+            newRow.dataset.id = data.id;
+
+            newRow.innerHTML = `
+                <td>Baru</td>
+                <td>${nama}</td>
+                <td>${hari}</td>
+                <td>0</td>
+            `;
+
+            tbody.appendChild(newRow);
+
+            attachRowClick(newRow);
         } else {
             showNotification(data.message || "Gagal menyimpan", "error");
         }
     });
+
+    function attachRowClick(row) {
+
+        row.addEventListener("click", () => {
+
+            document.querySelectorAll("#ekskul-table tbody tr")
+                .forEach(r => r.classList.remove("selected"));
+
+            row.classList.add("selected");
+
+            selectedEkskulId = row.dataset.id;
+
+            document.getElementById("edit-ekskul-btn").disabled = false;
+            document.getElementById("anggota-ekskul-btn").disabled = false;
+            document.getElementById("jadwal-ekskul-btn").disabled = false;
+            document.getElementById("delete-ekskul-btn").disabled = false;
+
+            loadEkskulDetail(selectedEkskulId);
+        });
+    }
 
     async function loadEkskulDetail(ekskulId) {
 
@@ -116,12 +154,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        let html = "";
+
         data.forEach((siswa, index) => {
 
-            tbody.innerHTML += `
+            html += `
                 <tr>
                     <td>${index + 1}</td>
-                    <td>${siswa.nisn || '-'}</td>
+                    <td>${siswa.nisn || "-"}</td>
                     <td>${siswa.nama}</td>
                     <td>
                         ${siswa.tingkat || ""}
@@ -131,6 +171,8 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
 
         });
+
+        tbody.innerHTML = html;
 
         const selectedRow =
             document.querySelector(
@@ -143,24 +185,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    document.querySelectorAll("#ekskul-table tbody tr").forEach(row => {
-        row.addEventListener("click", () => {
-            document.querySelectorAll("#ekskul-table tbody tr").forEach(r => r.classList.remove("selected"));
-
-            row.classList.add("selected");
-
-            selectedEkskulId = row.dataset.id;
-
-            document.getElementById("edit-ekskul-btn").disabled = false;
-            document.getElementById("anggota-ekskul-btn").disabled = false;
-            document.getElementById("jadwal-ekskul-btn").disabled = false;
-            document.getElementById("delete-ekskul-btn").disabled = false;
-
-            loadEkskulDetail(selectedEkskulId);
-
-        });
-
-    });
+    document.querySelectorAll("#ekskul-table tbody tr")
+        .forEach(attachRowClick);
 
     document
     .getElementById("edit-ekskul-btn")
@@ -214,7 +240,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (data.success) {
-            location.reload();
+
+            const row = document.querySelector(
+                `#ekskul-table tr[data-id="${selectedEkskulId}"]`
+            );
+
+            if (row) row.remove();
+
+            selectedEkskulId = null;
+
+            document.getElementById("edit-ekskul-btn").disabled = true;
+            document.getElementById("anggota-ekskul-btn").disabled = true;
+            document.getElementById("jadwal-ekskul-btn").disabled = true;
+            document.getElementById("delete-ekskul-btn").disabled = true;
+
+            showNotification("Ekstrakurikuler dihapus", "success");
         } else {
             alert(data.message);
         }
@@ -269,11 +309,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const container =
             document.getElementById("siswa-available-list");
 
-        container.innerHTML = "";
+        let html = "";
 
         data.forEach(siswa => {
 
-            container.innerHTML += `
+            html += `
                 <div class="anggota-item">
                     <input
                         type="checkbox"
@@ -285,6 +325,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
         });
+
+        container.innerHTML = html;
 
         document.getElementById("available-count")
             .textContent = `${data.length} siswa`;
@@ -295,11 +337,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const container =
             document.getElementById("anggota-ekskul-list");
 
-        container.innerHTML = "";
+        let html = "";
 
         data.forEach(siswa => {
 
-            container.innerHTML += `
+            html += `
                 <div class="anggota-item">
                     <input
                         type="checkbox"
@@ -311,6 +353,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
         });
+
+        container.innerHTML = html;
 
         document.getElementById("anggota-count")
             .textContent = `${data.length} siswa`;
@@ -424,35 +468,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    let searchTimer;
+
     document
     .getElementById("search-siswa-ekskul")
     ?.addEventListener("input", function(){
 
-        const keyword = this.value.toLowerCase();
+        clearTimeout(searchTimer);
 
-        if (!keyword) {
-            renderSiswa(allSiswaAvailable);
-            return;
-        }
+        searchTimer = setTimeout(() => {
 
-        const filtered =
-            allSiswaAvailable.filter(siswa => {
+            const keyword =
+                this.value.toLowerCase();
 
-                return (
-                    (siswa.nama || "")
-                        .toLowerCase()
-                        .includes(keyword)
+            if (!keyword) {
+                renderSiswa(allSiswaAvailable);
+                return;
+            }
 
-                    ||
+            const filtered =
+                allSiswaAvailable.filter(siswa => {
 
-                    (siswa.nisn || "")
-                        .toLowerCase()
-                        .includes(keyword)
-                );
+                    return (
+                        (siswa.nama || "")
+                            .toLowerCase()
+                            .includes(keyword)
 
-            });
+                        ||
 
-        renderSiswa(filtered);
+                        (siswa.nisn || "")
+                            .toLowerCase()
+                            .includes(keyword)
+                    );
+
+                });
+
+            renderSiswa(filtered);
+
+        }, 200);
 
     });
 

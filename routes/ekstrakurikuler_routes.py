@@ -146,7 +146,18 @@ def create_ekskul():
 
         d.commit()
 
-    return jsonify({"success": True})
+    cur = d.execute("""
+        INSERT INTO ekstrakurikuler
+        (nama, pembina_id, hari, tahun_pelajaran_id)
+        VALUES (?, ?, ?, ?)
+    """, (nama, pembina_id, hari, tahun_id))
+
+    d.commit()
+
+    return jsonify({
+        "success": True,
+        "id": cur.lastrowid
+    })
 
 @ekskul_bp.route("/update/<int:id>", methods=["POST"])
 def update_ekskul(id):
