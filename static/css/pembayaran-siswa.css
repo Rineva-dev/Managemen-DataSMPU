@@ -254,10 +254,15 @@
     align-items:center;
     gap:8px;
     cursor:pointer;
-    border-radius:8px;
 }
 
-.payment-check input{
+.payment-check input[type="checkbox"]{
     width:16px !important;
     height:16px;
+    margin:0;
+    flex-shrink:0;
+}
+
+.payment-check span{
+    line-height:1;
 }
