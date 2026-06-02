@@ -288,6 +288,32 @@ document.addEventListener("DOMContentLoaded", () => {
             .textContent = `${data.length} siswa`;
     }
 
+    function renderAnggota(data){
+
+        const container =
+            document.getElementById("anggota-ekskul-list");
+
+        container.innerHTML = "";
+
+        data.forEach(siswa => {
+
+            container.innerHTML += `
+                <div class="anggota-item">
+                    <input
+                        type="checkbox"
+                        value="${siswa.id}">
+
+                    <label>
+                        ${siswa.nisn || "-"} - ${siswa.nama}
+                    </label>
+                </div>
+            `;
+        });
+
+        document.getElementById("anggota-count")
+            .textContent = `${data.length} siswa`;
+    }
+
     document
     .getElementById("search-siswa-ekskul")
     ?.addEventListener("input", function(){
