@@ -45,4 +45,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+    const saveBtn = document.getElementById("ekskul-save");
+
+    saveBtn?.addEventListener("click", async () => {
+
+        const nama = document.getElementById("ekskul-nama").value.trim();
+        const pembina_id = document.getElementById("ekskul-pembina").value;
+        const hari = document.getElementById("ekskul-hari").value.trim();
+        const tahun_id = document.getElementById("ekskul-tahun-id").value;
+
+        if (!nama) {
+            alert("Nama ekstrakurikuler wajib diisi");
+            return;
+        }
+
+        const res = await fetch(
+            "/sekolah/ekstrakurikuler/create",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    nama,
+                    pembina_id,
+                    hari,
+                    tahun_id
+                })
+            }
+        );
+
+        const data = await res.json();
+
+        if (data.success) {
+            alert("Ekstrakurikuler berhasil disimpan");
+            location.reload();
+        } else {
+            alert(data.message || "Gagal menyimpan");
+        }
+    });
+
 });

@@ -117,8 +117,20 @@ def create_ekskul():
             WHERE id = ?
         """, (tahun_id,)).fetchone()
 
-        mulai = datetime.strptime(cek["semester_mulai"], "%Y-%m-%d").date()
-        akhir = datetime.strptime(cek["semester_akhir"], "%Y-%m-%d").date()
+        mulai = cek["semester_mulai"]
+        akhir = cek["semester_akhir"]
+
+        if isinstance(mulai, str):
+            mulai = datetime.strptime(
+                mulai,
+                "%Y-%m-%d"
+            ).date()
+
+        if isinstance(akhir, str):
+            akhir = datetime.strptime(
+                akhir,
+                "%Y-%m-%d"
+            ).date()
 
         if not (mulai <= today <= akhir):
             return jsonify({
