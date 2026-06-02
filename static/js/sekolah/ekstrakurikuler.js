@@ -103,18 +103,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 const tbody =
                     document.querySelector("#ekskul-table tbody");
 
+                const nomor =
+                    tbody.querySelectorAll("tr").length + 1;
+
+                const pembinaSelect =
+                    document.getElementById("ekskul-pembina");
+
+                const pembinaNama =
+                    pembinaSelect.options[
+                        pembinaSelect.selectedIndex
+                    ]?.text || "-";
+
                 const newRow =
                     document.createElement("tr");
 
                 newRow.dataset.id = data.id;
 
-                const nomor =
-                    tbody.querySelectorAll("tr").length + 1;
-
                 newRow.innerHTML = `
                     <td>${nomor}</td>
                     <td>${nama}</td>
-                    <td>${hari}</td>
+                    <td>${pembinaNama}</td>
                     <td>0</td>
                 `;
 
@@ -142,6 +150,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
     });
+
+    function refreshNomorRows() {
+
+        document
+            .querySelectorAll("#ekskul-table tbody tr")
+            .forEach((row, index) => {
+
+                const firstCell =
+                    row.querySelector("td");
+
+                if (firstCell) {
+                    firstCell.textContent = index + 1;
+                }
+
+            });
+
+    }
 
     function attachRowClick(row) {
 
@@ -284,6 +309,8 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             if (row) row.remove();
+
+            refreshNomorRows();
 
             selectedEkskulId = null;
 
