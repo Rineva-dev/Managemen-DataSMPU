@@ -151,15 +151,38 @@
     display: flex;
 }
 
-#anggota-ekskul-modal .rombel-modal {
-    width: 90%;
-    max-width: 1100px;
-    max-height: 85vh;
-    overflow: auto;
+.rombel-modal{
+    width: 95%;
+    max-width: 1200px;
+    height: 85vh;
 
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
+    background: #fff;
+    border-radius: 12px;
+
+    display:flex;
+    flex-direction:column;
+
+    overflow:hidden;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px 24px;
+    border-bottom:1px solid #eee;
+}
+
+.modal-header h3{
+    margin:0;
+}
+
+.close-rombel{
+    border:none;
+    background:none;
+    font-size:28px;
+    cursor:pointer;
 }
 
 /* =========================
@@ -187,42 +210,100 @@
 }
 
 .anggota-grid{
+    flex:1;
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
-    margin-top:20px;
+    padding:20px;
+    overflow:hidden;
 }
 
 .anggota-box{
+    display:flex;
+    flex-direction:column;
     border:1px solid #e5e7eb;
     border-radius:10px;
-    padding:12px;
+    overflow:hidden;
 }
 
-.anggota-box h4{
-    margin-bottom:12px;
+.anggota-box-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:12px 16px;
+
+    border-bottom:1px solid #eee;
+    background:#f8fafc;
+}
+
+.anggota-box-header h4{
+    margin:0;
+}
+
+.anggota-box-header span{
+    font-size:12px;
+    color:#666;
 }
 
 .anggota-list{
-    max-height:350px;
+    flex:1;
+
     overflow-y:auto;
+    padding:12px 16px;
 }
 
+/* Item */
 .anggota-item{
     display:flex;
     align-items:center;
-    gap:8px;
-    padding:6px 0;
+
+    gap:10px;
+
+    padding:8px 0;
+
+    border-bottom:1px solid #f1f1f1;
 }
 
-.anggota-item input{
-    width:16px;
-    height:16px;
+.anggota-item:last-child{
+    border-bottom:none;
+}
+
+.anggota-item label{
+    flex:1;
+    cursor:pointer;
+}
+
+/* Footer */
+.anggota-box-footer{
+    padding:12px 16px;
+    border-top:1px solid #eee;
+}
+
+/* Action bawah */
+.rombel-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+
+    padding:16px 24px;
+    border-top:1px solid #eee;
 }
 
 .rombel-overlay{
-    display:none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
 }
+
+.rombel-overlay.show{
+    display:flex;
+}
+
 
 #anggota-ekskul-modal.show{
     display:flex;

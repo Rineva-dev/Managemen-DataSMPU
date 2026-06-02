@@ -169,51 +169,74 @@
 <div id="anggota-ekskul-modal" class="rombel-overlay">
     <div class="rombel-modal">
 
-        <h3>Anggota Ekstrakurikuler</h3>
+        <div class="modal-header">
+            <h3>Kelola Anggota Ekstrakurikuler</h3>
+            <button type="button" class="close-rombel">&times;</button>
+        </div>
 
         <div class="anggota-grid">
 
-            <!-- SISWA TERSEDIA -->
+            <!-- KIRI -->
             <div class="anggota-box">
-                <h4>Daftar Siswa</h4>
 
-                <div id="siswa-available-list">
-                    <!-- render JS -->
+                <div class="anggota-box-header">
+                    <h4>Anggota Ekskul</h4>
+                    <span id="anggota-count">0 siswa</span>
                 </div>
 
-                <button
-                    type="button"
-                    id="btn-tambah-anggota"
-                    class="btn btn-add">
-                    Tambahkan →
-                </button>
+                <div
+                    id="anggota-ekskul-list"
+                    class="anggota-list">
+                </div>
+
+                <div class="anggota-box-footer">
+                    <button
+                        type="button"
+                        id="btn-hapus-anggota"
+                        class="btn btn-danger">
+                        ← Keluarkan
+                    </button>
+                </div>
+
             </div>
 
-            <!-- ANGGOTA EKSKUL -->
+            <!-- KANAN -->
             <div class="anggota-box">
-                <h4>Anggota Ekskul</h4>
 
-                <div id="anggota-ekskul-list">
-                    <!-- render JS -->
+                <div class="anggota-box-header">
+                    <h4>Daftar Siswa</h4>
+                    <span id="available-count">0 siswa</span>
                 </div>
 
-                <button
-                    type="button"
-                    id="btn-hapus-anggota"
-                    class="btn btn-danger">
-                    ← Keluarkan
-                </button>
+                <div
+                    id="siswa-available-list"
+                    class="anggota-list">
+                </div>
+
+                <div class="anggota-box-footer">
+                    <button
+                        type="button"
+                        id="btn-tambah-anggota"
+                        class="btn btn-add">
+                        Tambahkan →
+                    </button>
+                </div>
+
             </div>
 
         </div>
 
         <div class="rombel-actions">
-            <button id="save-ekskul-anggota" class="btn btn-add">
-                Simpan
+            <button
+                id="save-ekskul-anggota"
+                class="btn btn-add">
+                Simpan Perubahan
             </button>
 
-            <button class="btn btn-cancel close-rombel">
-                Cancel
+            <button
+                type="button"
+                class="btn btn-cancel close-rombel">
+                Tutup
             </button>
         </div>
 
