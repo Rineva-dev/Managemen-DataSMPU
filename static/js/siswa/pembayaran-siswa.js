@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const pembayaran = document.getElementById("pembayaran-siswa-content");
         const riwayat = document.getElementById("riwayat-pembayaran-content");
 
-        // ⛔ JIKA SALAH SATU TIDAK ADA → STOP
         if (!pembayaran || !riwayat) {
             console.warn("showMenu(): elemen tidak ditemukan", {
                 pembayaran,
@@ -508,6 +507,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function bukaRiwayatPembayaran(nisn, nama, kelas) {
 
+        const elNisn  = document.getElementById("menu-riwayat-nisn");
+        const elNama  = document.getElementById("menu-riwayat-nama");
+        const elKelas = document.getElementById("menu-riwayat-kelas");
+
+        // ⛔ JIKA HALAMAN INI TIDAK PUNYA MENU RIWAYAT
+        if (!elNisn || !elNama || !elKelas) {
+            console.warn("Riwayat pembayaran tidak tersedia di halaman ini");
+            return;
+        }
+
         // simpan state
         sessionStorage.setItem("menuAktif", "riwayat_pembayaran");
         sessionStorage.setItem("riwayat_nisn", nisn);
@@ -518,11 +527,10 @@ document.addEventListener("DOMContentLoaded", function () {
         showMenu("riwayat");
 
         // isi header
-        document.getElementById("menu-riwayat-nisn").textContent = nisn;
-        document.getElementById("menu-riwayat-nama").textContent = nama;
-        document.getElementById("menu-riwayat-kelas").textContent = kelas;
+        elNisn.textContent  = nisn;
+        elNama.textContent  = nama;
+        elKelas.textContent = kelas;
 
-        // 🔥 INI INTINYA
         loadRiwayatPembayaran(nisn, 1, 10);
         loadSummaryPembayaran(nisn);
     }
