@@ -294,6 +294,17 @@
 .anggota-box-footer{
     padding:12px 16px;
     border-top:1px solid #eee;
+    display:flex;
+    align-items:center;
+}
+
+.anggota-box:first-child .anggota-box-footer{
+    justify-content:flex-end;
+}
+
+/* BOX KANAN = tombol di kiri */
+.anggota-box:last-child .anggota-box-footer{
+    justify-content:flex-start;
 }
 
 /* Action bawah */
