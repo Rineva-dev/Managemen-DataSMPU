@@ -108,8 +108,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 newRow.dataset.id = data.id;
 
+                const nomor =
+                    tbody.querySelectorAll("tr").length + 1;
+
                 newRow.innerHTML = `
-                    <td>Baru</td>
+                    <td>${nomor}</td>
                     <td>${nama}</td>
                     <td>${hari}</td>
                     <td>0</td>
