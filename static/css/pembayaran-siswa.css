@@ -309,8 +309,9 @@
         font-size: 13px;
     }
 
-    #riwayat-siswa .val::before {
-        content: "";
+    #riwayat-siswa .val::before,
+    #detail-siswa .val::before {
+        content: ": ";
     }
 
     /* MODAL */
