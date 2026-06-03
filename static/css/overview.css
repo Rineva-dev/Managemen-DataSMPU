@@ -18,7 +18,7 @@
 
 .overview-header p{
     color:#6b7280;
-    margin-top:6px;
+    margin-top:0;
     font-size:14px;
 }
 
@@ -27,7 +27,7 @@
     align-items: center;
     gap: 6px;
     font-size: 13px;
-    color: #6b7280; /* abu-abu */
+    color: #6b7280;
     margin-bottom: 6px;
 }
 
