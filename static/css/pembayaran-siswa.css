@@ -292,15 +292,13 @@
     }
 
     /* DETAIL SISWA */
-    #riwayat-siswa p,
-    #detail-siswa p {
+    #riwayat-siswa p {
         flex-direction: column;
         gap: 2px;
         margin-bottom: 10px;
     }
 
-    #riwayat-siswa .label,
-    #detail-siswa .label {
+    #riwayat-siswa .label {
         width: 100%;
         font-size: 12px;
     }
@@ -310,9 +308,8 @@
         font-size: 13px;
     }
 
-    #riwayat-siswa .val::before,
-    #detail-siswa .val::before {
-        content: "";
+    #riwayat-siswa .val::before {
+        content: " ";
     }
 
     /* MODAL */
