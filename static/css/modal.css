@@ -312,7 +312,7 @@
 
     /* modal saas */
     .saas-modal{
-        padding:0;
+        padding: 10px 20px;
         max-height:calc(90vh - 30px);
         overflow-y:auto;
     }
