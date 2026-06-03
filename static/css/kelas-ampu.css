@@ -377,7 +377,12 @@
     outline:none;
     transition:.2s;
     background:#fff;
-    height: 45px !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.form-group textarea::-webkit-scrollbar{
+    display:none;
 }
 
 .form-group textarea{
@@ -642,6 +647,6 @@ input:checked + .pill.alpha {
     }
 
     .mulai-mengajar-modal {
-        height:80vh;
+        max-height:80vh;
     }
 }
