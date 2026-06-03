@@ -151,25 +151,6 @@
     transition: transform .4s cubic-bezier(.22,.61,.36,1);
 }
 
-/* ================= Responsive ================= */
-
-@media (max-width: 768px) {
-    .saas-datetime-card {
-        flex-direction: column;
-        text-align: center;
-        gap: 25px;
-        padding: 28px;
-    }
-
-    .datetime-divider {
-        display: none;
-    }
-
-    .saas-clock {
-        font-size: 44px;
-    }
-}
-
 /* ===============================
    ABSEN RULES BAR
 ================================= */
@@ -236,7 +217,7 @@
     .datetime-main {
         flex-direction: column;
         text-align: center;
-        gap: 25px;
+        gap: 5px;
     }
 
     .datetime-divider {
@@ -253,5 +234,27 @@
 
     .rule-time {
         font-size: 13px;
+    }
+
+    .saas-date {
+        margin-bottom: 0;
+    }
+
+    .saas-datetime-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px;
+    }
+
+    .saas-clock {
+        font-size: 44px;
+    }
+
+    .saas-label {
+        margin-top: 10px;
+    }
+
+    .button-bar {
+        gap: 14px;
     }
 }
