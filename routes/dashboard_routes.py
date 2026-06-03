@@ -470,12 +470,12 @@ def api_guru_dashboard():
         query_total = """
             SELECT COUNT(*) AS total FROM absensi
             WHERE guru_id = %s
-            AND EXTRACT(YEAR FROM tanggal) = %s
+            AND EXTRACT(YEAR FROM tanggal::date) = %s
         """
         params = [guru_id, int(year)]
 
         if month:
-            query_total += " AND EXTRACT(MONTH FROM tanggal) = %s"
+            query_total += " AND EXTRACT(MONTH FROM tanggal::date) = %s"
             params.append(int(month))
 
         total_absensi = d.execute(query_total, tuple(params)).fetchone()["total"]
@@ -532,26 +532,26 @@ def api_guru_dashboard():
                 jml_masuk = d.execute("""
                     SELECT COUNT(*) AS total FROM absensi
                     WHERE guru_id=%s
-                    AND EXTRACT(YEAR FROM tanggal)=%s
-                    AND EXTRACT(MONTH FROM tanggal)=%s
+                    AND EXTRACT(YEAR FROM tanggal::date)=%s
+                    AND EXTRACT(MONTH FROM tanggal::date)=%s
                     AND status='masuk'
-                """, (guru_id, year, m)).fetchone()["total"]
+                """, (guru_id, int(year), bulan)).fetchone()["total"]
 
                 jml_terlambat = d.execute("""
                     SELECT COUNT(*) AS total FROM absensi
                     WHERE guru_id=%s
-                    AND EXTRACT(YEAR FROM tanggal)=%s
-                    AND EXTRACT(MONTH FROM tanggal)=%s
+                    AND EXTRACT(YEAR FROM tanggal::date)=%s
+                    AND EXTRACT(MONTH FROM tanggal::date)=%s
                     AND status='terlambat'
-                """, (guru_id, year, m)).fetchone()["total"]
+                """, (guru_id, int(year), bulan)).fetchone()["total"]
 
                 jml_tidak = d.execute("""
                     SELECT COUNT(*) AS total FROM absensi
                     WHERE guru_id=%s
-                    AND EXTRACT(YEAR FROM tanggal)=%s
-                    AND EXTRACT(MONTH FROM tanggal)=%s
+                    AND EXTRACT(YEAR FROM tanggal::date)=%s
+                    AND EXTRACT(MONTH FROM tanggal::date)=%s
                     AND status='izin_tidak_masuk'
-                """, (guru_id, year, m)).fetchone()["total"]
+                """, (guru_id, int(year), bulan)).fetchone()["total"]
 
                 labels.append(str(bulan))
                 masuk.append(jml_masuk)
