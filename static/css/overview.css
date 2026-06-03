@@ -37,7 +37,6 @@
     cursor:pointer;
     font-weight:600;
     transition:.2s;
-    box-shadow:0 8px 20px rgba(37,99,235,.15);
 }
 
 .btn-add-jurnal:hover{
@@ -630,10 +629,6 @@
 }
 
 @media (max-width: 480px){
-
-    .overview-page{
-        padding: 14px;
-    }
 
     .stats-card{
         border-radius: 12px;
