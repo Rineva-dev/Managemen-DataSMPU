@@ -335,3 +335,118 @@
 #anggota-ekskul-modal.show{
     display:flex;
 }
+
+/* =========================
+   RESPONSIVE TABLE + DETAIL
+========================= */
+
+/* Tablet */
+@media (max-width: 1024px){
+
+    #ekstrakurikuler-content .guru-filter-bar{
+        flex-wrap:wrap;
+        gap:12px;
+    }
+
+    #ekstrakurikuler-content #ekskulTahunDropdown{
+        margin-left:0;
+        width:220px;
+    }
+
+    #ekstrakurikuler-content .kelas-main{
+        flex-direction:column;
+    }
+
+    #ekstrakurikuler-content .kelas-left,
+    #ekskul-detail-panel{
+        width:100%;
+    }
+
+    .kelas-right{
+        position:relative;
+        top:auto;
+
+        min-width:0;
+        width:100%;
+
+        max-height:none;
+    }
+
+    .kelas-detail-body{
+        max-height:400px;
+    }
+
+    .anggota-grid{
+        grid-template-columns:1fr;
+    }
+
+    .rombel-modal{
+        height:90vh;
+    }
+
+}
+
+/* Mobile */
+@media (max-width: 768px){
+
+    #ekstrakurikuler-content .guru-filter-bar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    #ekstrakurikuler-content .kelas-action-bar{
+        flex-wrap:wrap;
+    }
+
+    #ekstrakurikuler-content #ekskulTahunDropdown{
+        width:100%;
+    }
+
+    .kelas-right{
+        padding:12px;
+        border-radius:10px;
+    }
+
+    .detail-table{
+        font-size:12px;
+    }
+
+    .detail-table th,
+    .detail-table td{
+        padding:8px 6px;
+        white-space:nowrap;
+    }
+
+    .anggota-grid{
+        padding:12px;
+        gap:12px;
+    }
+
+    .rombel-modal{
+        width:98%;
+        height:95vh;
+        border-radius:10px;
+    }
+
+    .modal-header{
+        padding:14px 16px;
+    }
+
+    .rombel-actions{
+        padding:12px 16px;
+        flex-wrap:wrap;
+    }
+
+    .rombel-actions .btn{
+        flex:1;
+    }
+
+    .anggota-box-footer{
+        justify-content:center !important;
+    }
+
+    .anggota-box-footer .btn{
+        width:100%;
+    }
+
+}
