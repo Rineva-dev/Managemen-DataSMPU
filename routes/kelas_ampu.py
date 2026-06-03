@@ -1017,9 +1017,9 @@ def nilai_kelas(kelas_mapel_id):
                     )
                 AS INTEGER) AS nilai_kehadiran,
 
-                COALESCE(n.keaktifan, 0) AS nilai_keaktifan,
-                COALESCE(n.harian, 0) AS nilai_harian,
-                COALESCE(n.uas, 0) AS nilai_uas
+                CAST(COALESCE(n.keaktifan, 0) AS INTEGER) AS nilai_keaktifan,
+                CAST(COALESCE(n.harian, 0) AS INTEGER) AS nilai_harian,
+                CAST(COALESCE(n.uas, 0) AS INTEGER) AS nilai_uas
 
             FROM kelas_siswa ks
 
