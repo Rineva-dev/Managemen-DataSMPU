@@ -359,12 +359,12 @@
 
     /* CHECKBOX GRID */
     .payment-checkbox-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2,1fr);
         gap: 8px;
     }
 
     .payment-check {
-        font-size: 13px;
+        height: 20px;
     }
 
 }
@@ -394,7 +394,7 @@
 
     .payment-check input[type="checkbox"] {
         width: 10px !important;
-        height: 10px;
+        height: auto;
     }
 
 }
