@@ -640,4 +640,8 @@ input:checked + .pill.alpha {
     .modal-header{
         padding:10px 0 0 0 !important;
     }
+
+    .mulai-mengajar-modal {
+        height:80vh;
+    }
 }
