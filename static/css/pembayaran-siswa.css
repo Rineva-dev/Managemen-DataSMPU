@@ -393,8 +393,8 @@
     }
 
     .payment-check input[type="checkbox"] {
-        width: 10px !important;
-        height: auto;
+        width: 14px !important;
+        min-height: 14px !important;
     }
 
 }
