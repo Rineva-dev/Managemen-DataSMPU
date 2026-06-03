@@ -18,16 +18,16 @@
         <!-- Absensi Harian (Semua kecuali admin) -->
         {% if role != 'admin' %}
         <a href="/absensi-harian"
-        class="{% if active_page == 'absensi_harian' %}active{% endif %}"
-        data-icon="absensi">
+        class="{% if active_page == 'absensi_harian' %}active{% endif %}">
+            <i data-lucide="calendar"></i>
             Absensi Harian
         </a>
         {% endif %}
 
         {% if role != 'admin' %}
         <a href="/kelas-ampu"
-        class="{% if active_page == 'kelas_ampu' %}active{% endif %}"
-        data-icon="class">
+        class="{% if active_page == 'kelas_ampu' %}active{% endif %}">
+            <i data-lucide="chalkboard-teacher"></i>
             Kelas Ampu
         </a>
 
@@ -36,66 +36,73 @@
         <!-- Menu Admin & Kepala Sekolah -->
         {% if role in ['admin', 'kepala_sekolah'] %}
         <a href="/master-data"
-        class="{% if active_page == 'master_data' %}active{% endif %}"
-        data-icon="master">
+        class="{% if active_page == 'master_data' %}active{% endif %}">
+            <i data-lucide="database"></i>
             Master Data
         </a>
 
         <a href="/akun-guru"
-        class="{% if active_page == 'akun_guru' %}active{% endif %}"
-        data-icon="guru">
+        class="{% if active_page == 'akun_guru' %}active{% endif %}">
+            <i data-lucide="users"></i>
             Akun Guru
         </a>
 
         <a href="/rekap-absensi"
-        class="{% if active_page == 'rekap_absensi' %}active{% endif %}"
-        data-icon="rekap">
+        class="{% if active_page == 'rekap_absensi' %}active{% endif %}">
+            <i data-lucide="bar-chart-2"></i>
             Rekap Absensi
         </a>
         {% endif %}
 
         {% if role in ['admin','waka_kurikulum'] %}
         <div class="menu-group">
-            <a href="javascript:void(0)" data-icon="school" class="menu-toggle">
+            <a href="javascript:void(0)" class="menu-toggle">
+                <i data-lucide="school"></i>
                 Sekolah
             </a>
 
             <div id="sekolah-submenu" class="submenu">
                 <a href="/tahun-pelajaran"
-                    class="{% if active_page == 'tahun_pelajaran' %}active{% endif %}" data-icon="academic-year">
+                    class="{% if active_page == 'tahun_pelajaran' %}active{% endif %}">
+                    <i data-lucide="calendar"></i>
                     Tahun Pelajaran
                 </a>
 
                 <a href="{{ url_for('kelas.index') }}"
-                    class="{% if active_page == 'kelas' %}active{% endif %}" data-icon="class">
+                    class="{% if active_page == 'kelas' %}active{% endif %}">
+                    <i data-lucide="layers"></i>
                     Kelas
                 </a>
 
                 <a href="/mapel"
-                    class="{% if active_page == 'mata_pelajaran' %}active{% endif %}" data-icon="mapel">
+                    class="{% if active_page == 'mata_pelajaran' %}active{% endif %}">
+                    <i data-lucide="book"></i>
                     Mata Pelajaran
                 </a>
 
                 <a href="{{ url_for('ekstrakurikuler.index') }}"
-                    class="{% if active_page == 'ekstrakurikuler' %}active{% endif %}" data-icon="ekstrakurikuler">
+                    class="{% if active_page == 'ekstrakurikuler' %}active{% endif %}">
+                    <i data-lucide="activity"></i>
                     Ekstrakurikuler
                 </a>
 
                 <a href="/peminatan"
-                    class="{% if active_page == 'peminatan' %}active{% endif %}" data-icon="peminatan">
+                    class="{% if active_page == 'peminatan' %}active{% endif %}">
+                    <i data-lucide="target"></i>
                     Peminatan
                 </a>
 
                 <a href="{{ url_for('kkm.index') }}"
-                    class="sidebar-link {% if active_page == 'kkm' %}active{% endif %}" data-icon="kkm">
-                    <span>KKM</span>
+                    class="sidebar-link {% if active_page == 'kkm' %}active{% endif %}">
+                    <i data-lucide="target"></i>
+                    KKM
                 </a>
             </div>
         </div>
         
         <a href="{{ url_for('siswa.index') }}"
-        class="{% if active_page in ['siswa','tambah_siswa','detail_siswa'] %}active{% endif %}"
-        data-icon="students">
+        class="{% if active_page in ['siswa','tambah_siswa','detail_siswa'] %}active{% endif %}">
+            <i data-lucide="users"></i>
             Siswa
         </a>
         
@@ -103,15 +110,16 @@
 
         {% if role in ['admin', 'bendahara'] %}
         <a href="/pembayaran-siswa"
-            class="{% if active_page == 'pembayaran_siswa' %}active{% endif %}"
-            data-icon="payment">
+            class="{% if active_page == 'pembayaran_siswa' %}active{% endif %}">
+            <i data-lucide="credit-card"></i>
             Pembayaran Siswa
         </a>
         {% endif %}
     </div>
 
     <div class="sidebar-bottom">
-        <a href="/logout" class="logout-btn" data-icon="logout">
+        <a href="/logout" class="logout-btn">
+            <i data-lucide="log-out"></i>
             Logout
         </a>
     </div>
