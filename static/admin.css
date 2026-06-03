@@ -40,7 +40,7 @@ body {
 
 html, body {
     margin: 0;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 /* Chart */
@@ -1048,7 +1048,7 @@ input.error, select.error {
 @media (max-width: 768px) {
     .main {
         position: relative;
-        height: 100vh;
+        min-height: 100vh;
         margin-left: var(--sidebar-width);
         display: flex;
         flex-direction: column;
@@ -1065,7 +1065,7 @@ input.error, select.error {
         position: relative;
         left: 0;
         right: 0;
-        overflow-y: auto;
+        overflow-y: visible;
         overflow-x: hidden;
         padding-bottom: 60px;
         padding: 25px 10px 10px;
