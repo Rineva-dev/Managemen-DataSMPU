@@ -39,8 +39,8 @@ body {
 }
 
 html, body {
-    min-height: 100%;
     margin: 0;
+    overflow-x: hidden;
 }
 
 /* Chart */
@@ -181,13 +181,11 @@ html, body {
         margin-bottom: 4px;
     }
 
-    /* Wrapper filter bulan + tahun */
     .month-filter-modern,
     .year-filter-modern {
         width: auto;
     }
 
-    /* Bungkus filter jadi satu baris */
     .month-filter-modern {
         margin-left: 0 !important;
         width: 150px;
@@ -1067,7 +1065,7 @@ input.error, select.error {
         position: relative;
         left: 0;
         right: 0;
-        overflow-y: auto;
+        overflow-y: visible;
         overflow-x: hidden;
         padding-bottom: 60px;
         padding: 25px 10px 10px;
@@ -2775,11 +2773,6 @@ body.loading {
 
     .summary-card {
         border-radius: 16px;
-    }
-
-    html, body {
-    overflow-x: hidden !important;
-    height: 100%;
     }
 
     .modal {
