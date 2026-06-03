@@ -687,8 +687,6 @@
 .nilai-table th:nth-child(1),
 .nilai-table td:nth-child(1) {
     width: 40px;
-    min-width: 40px;
-    max-width: 40px;
 }
 
 .nilai-table th:nth-child(2),
@@ -700,8 +698,7 @@
 
 .nilai-table th:nth-child(3),
 .nilai-table td:nth-child(3) {
-    min-width: 150px;
-    max-width: 300px;
+    width: 300px;
 }
 
 .nilai-table th:nth-child(4),
