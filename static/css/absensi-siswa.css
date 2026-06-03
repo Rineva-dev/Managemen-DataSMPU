@@ -56,7 +56,6 @@ body {
 .absensi-wrapper {
     max-width: 1380px;
     margin: 0 auto;
-    padding: 34px;
 }
 
 /* =========================================================
@@ -745,11 +744,6 @@ body {
 
     .session-info-item p {
         font-size: 13px;
-    }
-
-
-    .absensi-wrapper {
-        padding: 14px;
     }
 
     /* ================= HEADER ================= */
