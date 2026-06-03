@@ -1067,11 +1067,10 @@ input.error, select.error {
         position: relative;
         left: 0;
         right: 0;
-
         overflow-y: auto;
         overflow-x: hidden;
         padding-bottom: 60px;
-        padding: 10px;
+        padding: 25px 10px 10px;
     }
 
     #absensi-filter {
