@@ -404,13 +404,13 @@ def api_bendahara_dashboard():
                 tgl = f"{year}-{str(month).zfill(2)}-{str(hari).zfill(2)}"
 
                 masuk = d.execute("""
-                    SELECT COALESCE(SUM(jumlah), 0)
+                    SELECT COALESCE(SUM(jumlah), 0) AS total
                     FROM penerimaan
                     WHERE tanggal = %s
                 """, (tgl,)).fetchone()["total"] if table_exists(d, "penerimaan") else 0
 
                 keluar = d.execute("""
-                    SELECT COALESCE(SUM(jumlah), 0)
+                    SELECT COALESCE(SUM(jumlah), 0) AS total
                     FROM pengeluaran
                     WHERE tanggal = %s
                 """, (tgl,)).fetchone()["total"] if table_exists(d, "pengeluaran") else 0
@@ -427,18 +427,18 @@ def api_bendahara_dashboard():
                 m = str(bulan).zfill(2)
 
                 masuk = d.execute("""
-                    SELECT COALESCE(SUM(jumlah), 0)
+                    SELECT COALESCE(SUM(jumlah), 0) AS total
                     FROM penerimaan
-                    WHERE strftime('%Y', tanggal) = %s
-                    AND strftime('%m', tanggal) = %s
-                """, (year, m)).fetchone()["total"] if table_exists(d, "penerimaan") else 0
+                    WHERE EXTRACT(YEAR FROM tanggal) = %s
+                    AND EXTRACT(MONTH FROM tanggal) = %s
+                """, (int(year), bulan)).fetchone()["total"] if table_exists(d, "penerimaan") else 0
 
                 keluar = d.execute("""
-                    SELECT COALESCE(SUM(jumlah), 0)
+                    SELECT COALESCE(SUM(jumlah), 0) AS total
                     FROM pengeluaran
-                    WHERE strftime('%Y', tanggal) = %s
-                    AND strftime('%m', tanggal) = %s
-                """, (year, m)).fetchone()["total"] if table_exists(d, "pengeluaran") else 0
+                    WHERE EXTRACT(YEAR FROM tanggal) = %s
+                    AND EXTRACT(MONTH FROM tanggal) = %s
+                """, (int(year), bulan)).fetchone()["total"] if table_exists(d, "pengeluaran") else 0
 
                 labels.append(str(bulan))
                 pemasukan.append(masuk)
