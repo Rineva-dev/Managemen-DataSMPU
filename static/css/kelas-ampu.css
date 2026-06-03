@@ -653,9 +653,11 @@ input:checked + .pill.alpha {
         min-width:100%;
     }
 
-    .kelas-info-grid{
-        grid-template-columns:1fr;
+    
+    .kelas-ampu-grid{
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr))
     }
+
 
     .jadwal-content{
         flex-direction:column;
