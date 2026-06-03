@@ -81,6 +81,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin-bottom: 0;
 }
 
 .form-group.full{
@@ -156,9 +157,6 @@
 
 /* Mobile */
 @media(max-width: 900px){
-    .time-range{
-        grid-template-columns: 1fr;
-    }
 
     .time-separator{
         display: none;
@@ -284,6 +282,10 @@
 
     .absensi-row.header{
         display: none;
+    }
+
+    .time-range {
+        text-align: center;
     }
 
 }
