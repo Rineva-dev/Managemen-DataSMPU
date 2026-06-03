@@ -75,9 +75,7 @@ body {
 }
 
 .absensi-header h2 {
-
     margin: 0;
-
     font-size: 30px;
     font-weight: 800;
 
@@ -85,7 +83,7 @@ body {
 }
 
 .absensi-header p {
-    margin-top: 8px;
+    margin-top: 0;
     color: var(--muted);
     font-size: 15px;
 }
