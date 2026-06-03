@@ -698,6 +698,12 @@
     max-width: 90px;
 }
 
+.nilai-table th:nth-child(3),
+.nilai-table td:nth-child(3) {
+    min-width: 150px;
+    max-width: 300px;
+}
+
 .nilai-table th:nth-child(4),
 .nilai-table td:nth-child(4),
 .nilai-table th:nth-child(5),
