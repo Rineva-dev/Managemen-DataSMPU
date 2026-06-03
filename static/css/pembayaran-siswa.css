@@ -253,7 +253,6 @@
     display:flex !important;
     align-items:center;
     gap:8px;
-    cursor:pointer;
     line-height:1;
 }
 
@@ -263,6 +262,7 @@
     margin:0;
     flex-shrink:0;
     vertical-align:middle;
+    cursor:pointer;
 }
 
 .payment-check span{
