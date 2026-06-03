@@ -93,7 +93,7 @@
                 <input
                     type="date"
                     name="tanggal"
-                    value="{{ jurnal.tanggal[:10] }}"
+                    value="{{ jurnal.tanggal.strftime('%Y-%m-%d') }}"
                     required>
             </div>
 
@@ -103,7 +103,7 @@
                     <input
                         type="time"
                         name="jam_mulai"
-                        value="{{ jurnal.jam_mulai[:5] }}"
+                        value="{{ jurnal.jam_mulai.strftime('%H:%M') if jurnal.jam_mulai else '' }}"
                         required>
                 </div>
 
@@ -114,7 +114,7 @@
                     <input
                         type="time"
                         name="jam_selesai"
-                        value="{{ jurnal.jam_selesai[:5] }}"
+                        value="{{ jurnal.jam_selesai.strftime('%H:%M') if jurnal.jam_selesai else '' }}"
                         required>
                 </div>
             </div>
