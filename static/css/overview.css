@@ -154,6 +154,7 @@
     font-weight: 700;
     margin: 0;
     color: #111827;
+    padding-right: 16px;
 }
 
 .stats-icon.total{
@@ -268,11 +269,16 @@
 }
 
 .overview-table th:nth-child(3),
-.overview-table td:nth-child(3),
+.overview-table td:nth-child(3) {
+    text-align: center;
+    width: 120px;
+    white-space: nowrap;
+}
+
 .overview-table th:nth-child(2),
 .overview-table td:nth-child(2) {
     text-align: center;
-    width: 100px;
+    width: 90px;
 }
 
 .overview-table th:nth-child(5),
