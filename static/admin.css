@@ -710,12 +710,6 @@ select:disabled {
     font-weight: 600;
 }
 
-/* PHOTO */
-.profile-photo-wrapper {
-    position:relative;
-    
-}
-
 .modal-photo-modern {
     width:120px;
     height:120px;
@@ -1008,14 +1002,6 @@ input.error, select.error {
     gap: 8px;
 }
 
-.action-btn {
-    width: 36px;
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .aksi-cell {
     text-align: center;
 }
@@ -1074,6 +1060,7 @@ input.error, select.error {
 
     .modern-header {
         flex-shrink: 0;
+        height: 58px;
     }
 
     .content {
@@ -2797,18 +2784,47 @@ body.loading {
     }
 
     .modal {
+        align-items: flex-end;
+        padding: 0;
         overflow: hidden;
     }
 
     .modal > .modal-content {
-        max-width: 100%;
         width: 100%;
+        max-width: 100%;
         max-height: 92vh;
-        border-radius: 8px;
-        padding: 0 10px 10px 10px;
+
+        margin: 0;
+        border-radius: 22px 22px 0 0;
+
+        padding: 0;
         overflow-y: auto;
         overflow-x: hidden;
-        animation: slideUpModal 0.25s ease;
+
+        animation: mobileModalUp 0.25s ease;
+    }
+
+    @keyframes mobileModalUp {
+        from {
+            transform: translateY(40px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .modal-content::before {
+        content: "";
+        width: 46px;
+        height: 5px;
+        background: #d1d5db;
+        border-radius: 999px;
+
+        display: block;
+
+        margin: 12px auto 6px;
     }
 
     .modal-content {
@@ -2831,8 +2847,6 @@ body.loading {
     }
 
     .modal-photo-modern {
-        width:90px;
-        height:90px;
         border-radius:50%;
         object-fit:cover;
         border:2px solid transparent;
@@ -2842,6 +2856,16 @@ body.loading {
         box-shadow:
             0 12px 30px rgba(0,0,0,0.15),
             0 0 0 6px rgba(255,255,255,0.7);
+    }
+
+    .modal-photo-modern,
+    .modal-avatar-initial {
+        width: 82px;
+        height: 82px;
+    }
+
+    .modal-avatar-initial {
+        font-size: 30px;
     }
 
     #display-fullname {
@@ -2865,8 +2889,43 @@ body.loading {
     }
 
     .profile-top {
-        gap:15px;
-        border-radius: 0;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        padding: 24px 18px 20px;
+
+        gap: 14px;
+
+        border-radius: 22px 22px 0 0;
+
+        margin: 0;
+    }
+
+    .profile-top::after {
+        left: 20px;
+        right: 20px;
+    }
+
+    .profile-name-block {
+        width: 100%;
+    }
+
+    #display-fullname {
+        font-size: 22px;
+        line-height: 1.2;
+    }
+
+    #display-fullname::after {
+        margin: 8px auto 0;
+        width: 120px;
+    }
+
+    .profile-role-badge {
+        margin-top: 10px;
+    }
+
+    .profile-top {
         margin-top: 0 !important;
     }
 
@@ -2885,30 +2944,59 @@ body.loading {
 
     .profile-form-grid {
         grid-template-columns: 1fr;
-        gap: 10px;
+        padding: 18px;
+        gap: 14px;
     }
 
     .profile-footer {
         flex-direction: row-reverse;
         gap: 10px;
-        padding: 14px 16px 18px;
+        position: sticky;
+        bottom: 0;
+
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(12px);
+
+        padding: 14px 18px calc(14px + env(safe-area-inset-bottom));
+
+        border-top: 1px solid #f1f1f1;
+
+        z-index: 20;
     }
+
+    .form-group label {
+        margin-bottom: 4px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        min-height: 44px;
+        font-size: 14px;
+    }
+
 
     .profile-footer button {
         width: 100%;
-
+        height: 46px;
+        border-radius: 12px;
+        font-weight: 600;
     }
 
     .edit-photo-btn {
-        left: auto;
-        right: 0;
+        width: 34px;
+        height: 34px;
+
+        right: -2px;
         bottom: 0;
     }
 
     .delete-photo-btn {
-        left: auto;
+        width: 30px;
+        height: 30px;
+
         right: -6px;
-        bottom: 36px;
+        bottom: 32px;
     }
 
     .modal-content::before {
