@@ -22,34 +22,6 @@
     font-size:14px;
 }
 
-.breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: #6b7280;
-    margin-bottom: 6px;
-}
-
-.breadcrumb-link {
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.breadcrumb-link:hover {
-    text-decoration: underline;
-}
-
-.breadcrumb-separator {
-    color: #9ca3af;
-}
-
-.breadcrumb-current {
-    color: #6b7280;
-}
-
-
 /* ========================================
     BUTTON
 ======================================== */
