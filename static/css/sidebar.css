@@ -186,16 +186,6 @@
     transform: translateX(4px);
 }
 
-.sidebar a::before {
-    content: "";
-    width: 20px;
-    height: 20px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    flex-shrink: 0;
-}
-
 .logo {
     text-align: center;
     padding: 20px 20px;
