@@ -1060,7 +1060,7 @@ input.error, select.error {
 
     .modern-header {
         flex-shrink: 0;
-        height: 58px;
+        height: 44px;
     }
 
     .content {
@@ -2821,10 +2821,7 @@ body.loading {
         height: 5px;
         background: #d1d5db;
         border-radius: 999px;
-
         display: block;
-
-        margin: 12px auto 6px;
     }
 
     .modal-content {

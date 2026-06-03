@@ -713,3 +713,124 @@
     max-width: 100px;
 }
 
+
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+@media (max-width: 576px) {
+
+    /* HEADER */
+    .nilai-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .nilai-header h2 {
+        font-size: 18px;
+    }
+
+    .nilai-header p {
+        font-size: 13px;
+    }
+
+    /* TOOLBAR */
+    .nilai-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    /* ACTION BAR */
+    .nilai-action-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px;
+    }
+
+    /* TOP GRID */
+    .nilai-top-grid {
+        flex-direction: column;
+    }
+
+    /* CARD */
+    .kkm-info-card {
+        width: 100%;
+        flex: 1;
+        padding: 14px;
+        overflow-x: auto;
+    }
+
+    /* SUMMARY */
+    .nilai-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-cards {
+        padding: 16px;
+    }
+
+    .summary-cards strong {
+        font-size: 24px;
+    }
+
+    /* TABLE */
+    .nilai-table-wrapper {
+        overflow-x: auto;
+        border-radius: 12px;
+    }
+
+    .nilai-table {
+        min-width: 820px;
+    }
+
+    .nilai-table th,
+    .nilai-table td {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    /* INPUT */
+    .nilai-cell input {
+        width: 60px;
+        font-size: 13px;
+        padding: 5px 6px;
+    }
+
+    /* BUTTON */
+    .btn-back {
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+    }
+
+    /* GRADE TABLE */
+    .kkm-grade-table {
+        min-width: 360px;
+    }
+
+    .kkm-grade-table th,
+    .kkm-grade-table td {
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+
+    /* BADGE */
+    .nilai-badge {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+
+    .grade-badge {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+    }
+
+}

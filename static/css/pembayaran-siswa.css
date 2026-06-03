@@ -269,3 +269,132 @@
     display:flex;
     align-items:center;
 }
+
+/* =========================================
+   MOBILE RESPONSIVE
+========================================= */
+@media (max-width: 768px) {
+
+    /* SEARCH RESULT */
+    .search-result {
+        max-height: 180px;
+        font-size: 13px;
+    }
+
+    .search-item {
+        padding: 10px 12px;
+    }
+
+    /* BADGE */
+    .badge {
+        font-size: 11px;
+        padding: 3px 7px;
+    }
+
+    /* DETAIL SISWA */
+    #riwayat-siswa p,
+    #detail-siswa p {
+        flex-direction: column;
+        gap: 2px;
+        margin-bottom: 10px;
+    }
+
+    #riwayat-siswa .label,
+    #detail-siswa .label {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    #riwayat-siswa .val,
+    #detail-siswa .val {
+        font-size: 13px;
+    }
+
+    #riwayat-siswa .val::before,
+    #detail-siswa .val::before {
+        content: "";
+    }
+
+    /* MODAL */
+    .pembayaran-modal {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 12px;
+    }
+
+    /* GRID FORM */
+    .add-tanggal-bayar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    /* INFO SISWA */
+    .info-siswa-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .info-value {
+        font-size: 14px;
+        word-break: break-word;
+    }
+
+    /* TABLE */
+    .table-wrapper {
+        overflow-x: auto;
+        border-radius: 10px;
+    }
+
+    #menu-riwayat-table {
+        min-width: 650px;
+    }
+
+    #menu-riwayat-table th,
+    #menu-riwayat-table td {
+        padding: 10px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    /* CHECKBOX GRID */
+    .payment-checkbox-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .payment-check {
+        font-size: 13px;
+    }
+
+}
+
+/* EXTRA SMALL DEVICE */
+@media (max-width: 480px) {
+
+    .search-result {
+        max-height: 160px;
+    }
+
+    .search-item {
+        font-size: 12px;
+    }
+
+    .info-siswa-card {
+        padding: 12px;
+    }
+
+    #riwayat-pembayaran-content h3 {
+        font-size: 16px;
+    }
+
+    #menu-riwayat-table {
+        min-width: 560px;
+    }
+
+    .payment-check input[type="checkbox"] {
+        width: 15px !important;
+        height: 15px;
+    }
+
+}

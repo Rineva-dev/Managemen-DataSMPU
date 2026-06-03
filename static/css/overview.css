@@ -988,3 +988,204 @@
     }
 
 }
+
+/* =========================================
+   EXTRA MOBILE FIX
+========================================= */
+@media (max-width: 576px) {
+
+    /* PAGE */
+    body{
+        overflow-x: hidden;
+    }
+
+    /* HEADER */
+    .overview-header{
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+    }
+
+    .overview-header h2{
+        font-size: 20px;
+        line-height: 1.3;
+    }
+
+    .overview-header p{
+        font-size: 13px;
+    }
+
+    /* BUTTON */
+    .btn-add-jurnal{
+        width: 100%;
+        justify-content: center;
+        padding: 12px;
+    }
+
+    /* STATS */
+    .overview-stats{
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .stats-card{
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .stats-bottom{
+        gap: 12px;
+    }
+
+    .stats-bottom h3{
+        font-size: 22px;
+    }
+
+    .stats-icon{
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+    }
+
+    /* FILTER */
+    .overview-filter{
+        padding: 14px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .filter-left,
+    .filter-right{
+        width: 100%;
+    }
+
+    .filter-right{
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #search-jurnal,
+    .overview-filter input{
+        width: 100%;
+    }
+
+    /* TABLE */
+    .overview-table-wrapper{
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 10px;
+    }
+
+    .overview-table{
+        min-width: 760px;
+    }
+
+    .overview-table th,
+    .overview-table td{
+        padding: 10px 8px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    /* KOLOM */
+    .materi-col{
+        min-width: 180px;
+    }
+
+    .catatan-col{
+        max-width: 160px;
+    }
+
+    .catatan-text{
+        max-width: 120px;
+        font-size: 12px;
+    }
+
+    /* BADGE */
+    .badge-pertemuan,
+    .badge-hadir{
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    /* ACTION */
+    .table-actions{
+        gap: 6px;
+    }
+
+    .btn-table-edit,
+    .btn-table-detail,
+    .btn-table-delete{
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+    }
+
+    /* PAGINATION */
+    .overview-pagination{
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .pagination-info{
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .pagination-controls{
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .pagination-controls button,
+    .pagination-page{
+        min-width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    /* MODAL */
+    .catatan-modal{
+        padding: 14px;
+    }
+
+    .catatan-modal-card{
+        max-width: 100%;
+        border-radius: 18px;
+    }
+
+    .catatan-modal-header{
+        padding: 18px;
+    }
+
+    .catatan-modal-header h3{
+        font-size: 18px;
+    }
+
+    .catatan-modal-body{
+        padding: 18px;
+    }
+
+    .catatan-modal-body textarea{
+        min-height: 140px;
+        padding: 14px;
+        font-size: 14px;
+    }
+
+    .catatan-modal-footer{
+        padding: 18px;
+        flex-direction: column-reverse;
+    }
+
+    .btn-catatan-save,
+    .btn-catatan-cancel{
+        width: 100%;
+        justify-content: center;
+    }
+}
