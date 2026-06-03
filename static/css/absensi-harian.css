@@ -255,6 +255,10 @@
     }
 
     .button-bar {
-        gap: 14px;
+        gap: 14px !important;
+    }
+
+    .btn-absensi {
+        min-width: 120px !important;
     }
 }
