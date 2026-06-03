@@ -292,7 +292,8 @@
     }
 
     /* DETAIL SISWA */
-    #riwayat-siswa p {
+    #riwayat-siswa p,
+    #detail-siswa p {
         flex-direction: column;
         gap: 2px;
         margin-bottom: 10px;
@@ -311,7 +312,7 @@
 
     #riwayat-siswa .val::before,
     #detail-siswa .val::before {
-        content: ": ";
+        content: "";
     }
 
     /* MODAL */
