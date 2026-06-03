@@ -202,22 +202,22 @@ def api_admin_dashboard():
 
                 jml_masuk = d.execute("""
                     SELECT COUNT(*) AS total FROM absensi
-                    WHERE EXTRACT(YEAR FROM tanggal) = %s
-                    AND EXTRACT(MONTH FROM tanggal) = %s
+                    WHERE EXTRACT(YEAR FROM tanggal::date) = %s
+                    AND EXTRACT(MONTH FROM tanggal::date) = %s
                     AND status = 'masuk'
                 """, (tahun_sekarang, bulan)).fetchone()["total"]
 
                 jml_terlambat = d.execute("""
                     SELECT COUNT(*) AS total FROM absensi
-                    WHERE EXTRACT(YEAR FROM tanggal) = %s
-                    AND EXTRACT(MONTH FROM tanggal) = %s
+                    WHERE EXTRACT(YEAR FROM tanggal::date) = %s
+                    AND EXTRACT(MONTH FROM tanggal::date) = %s
                     AND status = 'terlambat'
                 """, (tahun_sekarang, bulan)).fetchone()["total"]
 
                 jml_tidak = d.execute("""
                     SELECT COUNT(*) AS total FROM absensi
-                    WHERE EXTRACT(YEAR FROM tanggal) = %s
-                    AND EXTRACT(MONTH FROM tanggal) = %s
+                    WHERE EXTRACT(YEAR FROM tanggal::date) = %s
+                    AND EXTRACT(MONTH FROM tanggal::date) = %s
                     AND status = 'izin_tidak_masuk'
                 """, (tahun_sekarang, bulan)).fetchone()["total"]
 
@@ -429,15 +429,15 @@ def api_bendahara_dashboard():
                 masuk = d.execute("""
                     SELECT COALESCE(SUM(jumlah), 0) AS total
                     FROM penerimaan
-                    WHERE EXTRACT(YEAR FROM tanggal) = %s
-                    AND EXTRACT(MONTH FROM tanggal) = %s
+                    WHERE EXTRACT(YEAR FROM tanggal::date) = %s
+                    AND EXTRACT(MONTH FROM tanggal::date) = %s
                 """, (int(year), bulan)).fetchone()["total"] if table_exists(d, "penerimaan") else 0
 
                 keluar = d.execute("""
                     SELECT COALESCE(SUM(jumlah), 0) AS total
                     FROM pengeluaran
-                    WHERE EXTRACT(YEAR FROM tanggal) = %s
-                    AND EXTRACT(MONTH FROM tanggal) = %s
+                    WHERE EXTRACT(YEAR FROM tanggal::date) = %s
+                    AND EXTRACT(MONTH FROM tanggal::date) = %s
                 """, (int(year), bulan)).fetchone()["total"] if table_exists(d, "pengeluaran") else 0
 
                 labels.append(str(bulan))
