@@ -859,6 +859,8 @@ saveMapelBtn.addEventListener("click", async () => {
         if (result.success) {
             showNotification("Berhasil simpan mapel", "success");
             mapelModal.classList.remove("show");
+        } else {
+            showNotification(result.message || "Gagal simpan mapel", "error");
         }
 
     } catch (err) {
