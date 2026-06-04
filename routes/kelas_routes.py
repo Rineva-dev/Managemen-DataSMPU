@@ -510,25 +510,15 @@ def save_mapel_kelas():
     items = data["data"]
 
     with db() as d:
-        used = d.execute("""
-            SELECT 1
-            FROM absensi_mengajar am
-            JOIN kelas_mapel km ON km.id = am.kelas_mapel_id
-            WHERE km.kelas_id = ?
-            LIMIT 1
-        """, (kelas_id,)).fetchone()
 
-        if used:
-            return jsonify({
-                "success": False,
-                "message": "Mapel kelas tidak bisa diubah karena sudah memiliki data absensi."
-            })
-        
-        d.execute("""
-            DELETE FROM kelas_mapel
+        old_rows = d.execute("""
+            SELECT id, mapel_id
+            FROM kelas_mapel
             WHERE kelas_id = ?
-        """, (kelas_id,))
+        """, (kelas_id,)).fetchall()
 
+        old_mapel = {r["mapel_id"]: r["id"] for r in old_rows}
+        
         for item in items:
 
             mapel_id = item.get("mapel_id")
@@ -617,26 +607,75 @@ def save_mapel_kelas():
             # ==========================
             # INSERT DATA (BOLEH KOSONG)
             # ==========================
-            d.execute("""
-                INSERT INTO kelas_mapel (
-                    kelas_id,
-                    mapel_id,
-                    guru_id,
-                    jp,
-                    hari,
-                    jam_mulai,
-                    jam_selesai
+            new_mapel_ids = []
+
+            for item in items:
+
+                mapel_id = item.get("mapel_id")
+                guru_id = item.get("guru_id") or None
+                jp = item.get("jp") or 0
+                hari = item.get("hari") or None
+                jam_mulai = item.get("jam_mulai") or None
+                jam_selesai = item.get("jam_selesai") or None
+
+                new_mapel_ids.append(mapel_id)
+
+                # ===== JIKA SUDAH ADA → UPDATE =====
+                if mapel_id in old_mapel:
+
+                    km_id = old_mapel[mapel_id]
+
+                    d.execute("""
+                        UPDATE kelas_mapel
+                        SET guru_id = ?, jp = ?, hari = ?, jam_mulai = ?, jam_selesai = ?
+                        WHERE id = ?
+                    """, (
+                        guru_id,
+                        jp,
+                        hari,
+                        jam_mulai,
+                        jam_selesai,
+                        km_id
+                    ))
+
+                # ===== JIKA BARU → INSERT =====
+                else:
+                    d.execute("""
+                        INSERT INTO kelas_mapel (
+                            kelas_id, mapel_id, guru_id, jp, hari, jam_mulai, jam_selesai
+                        )
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        kelas_id,
+                        mapel_id,
+                        guru_id,
+                        jp,
+                        hari,
+                        jam_mulai,
+                        jam_selesai
+                    ))
+
+        for mapel_id, km_id in old_mapel.items():
+
+            if mapel_id not in new_mapel_ids:
+
+                used = d.execute("""
+                    SELECT 1
+                    FROM absensi_mengajar
+                    WHERE kelas_mapel_id = ?
+                    LIMIT 1
+                """, (km_id,)).fetchone()
+
+                if used:
+                    return jsonify({
+                        "success": False,
+                        "message": "Mapel yang sudah memiliki absensi tidak bisa dihapus."
+                    })
+
+                d.execute(
+                    "DELETE FROM kelas_mapel WHERE id = ?",
+                    (km_id,)
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (
-                kelas_id,
-                mapel_id,
-                guru_id,
-                jp,
-                hari,
-                jam_mulai,
-                jam_selesai
-            ))
 
         # ==========================
         # AUTO INSERT KKM
