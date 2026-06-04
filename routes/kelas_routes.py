@@ -523,6 +523,11 @@ def save_mapel_kelas():
                 "success": False,
                 "message": "Mapel kelas tidak bisa diubah karena sudah memiliki data absensi."
             })
+        
+        d.execute("""
+            DELETE FROM kelas_mapel
+            WHERE kelas_id = ?
+        """, (kelas_id,))
 
         for item in items:
 
