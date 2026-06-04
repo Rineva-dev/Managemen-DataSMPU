@@ -533,7 +533,7 @@ function getGuruIdByMapel(mapelId) {
 async function loadMapelKelas(kelasId) {
     
     try {
-        const res = await fetch(`/sekolah/kelas/api/${kelasId}/mapel-jadwal`);
+        const res = await fetch(`/sekolah/kelas/api/${kelasId}/mapel`);
         const data = await res.json();
 
         mapelBody.innerHTML = "";
@@ -743,7 +743,11 @@ function refreshMapelDropdowns() {
         // restore jika masih valid
         if (
             current &&
-            mapelKelasCache.some(m => String(m.mapel_id) === current && m.jp > 0)
+            mapelKelasCache.some(
+                m =>
+                    String(m.mapel_id) === String(current) &&
+                    (m.jenis === "kegiatan" || m.jp > 0)
+            )
         ) {
             select.value = current;
         }
@@ -1312,8 +1316,11 @@ jadwalTopBtn.addEventListener("click", async () => {
         await loadMapelKelas(selectedKelas.id);
     }
 
-    const hasJP = mapelKelasCache.some(m => m.jp > 0);
-    if (!hasJP) {
+    const hasValidMapel = mapelKelasCache.some(
+        m => m.jenis === "kegiatan" || m.jp > 0
+    );
+
+    if (!hasValidMapel) {
         showNotification(
             "Atur JP mata pelajaran terlebih dahulu",
             "warning"
