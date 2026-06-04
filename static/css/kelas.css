@@ -776,6 +776,7 @@
     }
 
     .kelas-action-bar {
+        display: flex;
         flex-wrap: nowrap;
         overflow-x: auto;
         padding: 6px 0 10px;
