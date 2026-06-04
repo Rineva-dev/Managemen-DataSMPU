@@ -327,7 +327,7 @@
 @media (max-width: 768px) {
 
     #kelasTahunDropdown {
-        width: 150px;
+        width: 100%;
     }
 
     #kelas-tahun-dropdown {
@@ -773,5 +773,45 @@
 
     #jadwal-kelas-modal .modal-footer button {
         width: 100%;
+    }
+
+    .kelas-action-bar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 6px 2px 10px;
+        gap: 12px;
+
+        /* swipe halus */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .kelas-action-bar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* tombol jadi icon-only */
+    .kelas-action-bar .btn-aksi-container {
+        min-width: 44px;
+        height: 44px;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+        font-size: 0; /* sembunyikan teks */
+    }
+
+    /* icon diperbesar */
+    .kelas-action-bar .btn-aksi-container svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* state disabled tetap jelas */
+    .kelas-action-bar .btn-aksi-container:disabled {
+        opacity: 0.45;
     }
 }
