@@ -447,7 +447,7 @@ def get_mapel_kelas(kelas_id):
         mapel = d.execute("""
             SELECT id, nama, jenis
             FROM mata_pelajaran
-            WHERE jenis IN ('wajib', 'mulok', 'kegiatan')
+            WHERE jenis IN ('wajib', 'mulok')
             ORDER BY nama ASC
         """).fetchall()
         
