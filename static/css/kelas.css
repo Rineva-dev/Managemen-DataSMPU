@@ -585,3 +585,39 @@
 .remove-jam-btn:hover {
     background: #fffcfc;
 }
+
+@media (max-width: 576px) {
+
+    .saas-modal-mapel {
+        min-width: 0;          /* 🔥 MATIKAN 800px */
+        width: 100%;
+        max-width: 100%;
+        height: 100vh;
+
+        border-radius: 0 !important;
+    }
+
+    .mapel-modal-overlay {
+        align-items: stretch;
+        justify-content: stretch;
+    }
+
+    .modal-header,
+    .modal-footer {
+        padding: 14px 16px;
+    }
+
+    .modal-title h3 {
+        font-size: 15px;
+    }
+
+    .modal-body {
+        padding: 12px 14px;
+    }
+
+    /* tabel tetap bisa scroll */
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+}
