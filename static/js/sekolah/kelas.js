@@ -544,7 +544,6 @@ async function loadMapelKelas(kelasId) {
 
         const wajib    = mapelList.filter(m => m.jenis === "wajib");
         const mulok    = mapelList.filter(m => m.jenis === "mulok");
-        const kegiatan = mapelList.filter(m => m.jenis === "kegiatan");
 
         mapelKelasCache = data.mapel.map(m => {
 
@@ -642,34 +641,6 @@ async function loadMapelKelas(kelasId) {
             mapelBody.insertAdjacentHTML(
                 "beforeend",
                 renderRows(mulok, 1)
-            );
-        }
-
-        if (kegiatan.length) {
-
-            mapelBody.insertAdjacentHTML("beforeend", `
-                <tr class="group-header"
-                    style="background-color:#fff8dc;
-                    height:40px;
-                    font-weight:bold;">
-
-                    <td class="group-label"
-                        style="padding:10px 5px;">
-                        C
-                    </td>
-
-                    <td class="group-title"
-                        colspan="5"
-                        style="padding:10px 5px;
-                        font-weight:bold;">
-                        Kegiatan
-                    </td>
-                </tr>
-            `);
-
-            mapelBody.insertAdjacentHTML(
-                "beforeend",
-                renderRows(kegiatan, 1)
             );
         }
 
