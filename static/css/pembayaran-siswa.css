@@ -52,12 +52,14 @@
 }
 
 #detail-siswa {
-    margin-bottom: 20px!important;
+    margin-bottom: 15px!important;
 }
 
 #riwayat-siswa p,
 #detail-siswa p {
     display: flex;
+    margin: 4px;
+    font-size: 13px;
 }
 
 #riwayat-siswa .label,
