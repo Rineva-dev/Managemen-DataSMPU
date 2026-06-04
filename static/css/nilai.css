@@ -834,6 +834,7 @@
         width: auto;
     }
 
+    .kkm-grade-table th:nth-child(2),
     .kkm-grade-table td:nth-child(2) {
         width: 56px;
     }
