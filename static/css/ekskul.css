@@ -449,4 +449,45 @@
         width:100%;
     }
 
+    .kelas-action-bar {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 6px 0 10px;
+        gap: 4px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        width: 100%;
+    }
+
+    .kelas-action-bar p {
+        display: none;
+    }
+
+    .kelas-action-bar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* tombol jadi icon-only */
+    .kelas-action-bar .btn-aksi-container {
+        width: 100%;
+        min-width: 44px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        font-size: 0;
+    }
+
+    /* icon diperbesar */
+    .kelas-action-bar .btn-aksi-container svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .filter-container {
+        gap: 0;
+    }
+
 }
