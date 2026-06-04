@@ -395,7 +395,7 @@
     }
 
     #ekstrakurikuler-content .kelas-action-bar{
-        flex-wrap:wrap;
+        flex-wrap:nowrap;
     }
 
     #ekstrakurikuler-content #ekskulTahunDropdown{
