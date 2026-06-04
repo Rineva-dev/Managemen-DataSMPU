@@ -679,4 +679,91 @@
     .rombel-footer button {
         width: 100%;
     }
+
+    .jadwal-header {
+        padding: 14px 16px;
+        margin-bottom: 12px;
+    }
+
+    .jadwal-header h2 {
+        font-size: 18px;
+    }
+
+    .jadwal-table {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .jadwal-row {
+        display: block;
+        padding: 14px;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    .jadwal-row > div {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+
+    .jadwal-row .hari::before {
+        content: "Hari";
+        font-weight: 600;
+        color: #666;
+    }
+
+    .jadwal-row .jam::before {
+        content: "Jam";
+        font-weight: 600;
+        color: #666;
+    }
+
+    .jadwal-row .mapel::before {
+        content: "Mapel";
+        font-weight: 600;
+        color: #666;
+    }
+
+    .jadwal-row .guru::before {
+        content: "Guru";
+        font-weight: 600;
+        color: #666;
+    }
+
+    .jadwal-aksi {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .jadwal-aksi button {
+        flex: 1;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .jadwal-form {
+        width: 100%;
+        padding: 14px;
+    }
+
+    .jadwal-form .form-group {
+        margin-bottom: 12px;
+    }
+
+    .jadwal-form button {
+        width: 100%;
+    }
+
+    .jadwal-row {
+        transition: transform .2s;
+    }
+
+    .jadwal-row:active {
+        transform: scale(.98);
+    }
 }
