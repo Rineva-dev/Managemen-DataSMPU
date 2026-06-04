@@ -405,7 +405,7 @@
     outline:none;
     transition:.2s;
     background:#fff;
-    height:45px;
+    min-height:42px;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }

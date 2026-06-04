@@ -64,15 +64,51 @@ def dashboard():
 
         elif role == "guru":
 
+            # =========================
+            # TOTAL ABSENSI PRIBADI
+            # =========================
             total_absensi_pribadi = d.execute("""
-                SELECT COUNT(*) AS total FROM absensi
-                WHERE guru_id=%s
+                SELECT COUNT(*) AS total
+                FROM absensi
+                WHERE guru_id = %s
             """, (guru_id,)).fetchone()["total"]
+
+            # =========================
+            # TOTAL KELAS DIAMPU
+            # =========================
+            total_kelas = d.execute("""
+                SELECT COUNT(DISTINCT kelas_id) AS total
+                FROM kelas_mapel
+                WHERE guru_id = %s
+            """, (guru_id,)).fetchone()["total"]
+
+            # =========================
+            # TOTAL SISWA DARI KELAS YANG DIAMPU
+            # =========================
+            total_siswa = d.execute("""
+                SELECT COUNT(DISTINCT ks.siswa_id) AS total
+                FROM kelas_mapel km
+                JOIN kelas_siswa ks ON ks.kelas_id = km.kelas_id
+                WHERE km.guru_id = %s
+            """, (guru_id,)).fetchone()["total"]
+
+            # =========================
+            # TOTAL LOG (ABSENSI MAPEL / MENGAJAR)
+            # (kalau belum ada tabelnya, aman 0)
+            # =========================
+            total_log = d.execute("""
+                SELECT COUNT(*) AS total
+                FROM absensi_mengajar
+                WHERE guru_id = %s
+            """, (guru_id,)).fetchone()["total"] if table_exists(d, "absensi_mengajar") else 0
 
             return render_template(
                 "dashboard.html",
                 active_page="dashboard",
                 role=role,
+                total_kelas=total_kelas,
+                total_siswa=total_siswa,
+                total_log=total_log,
                 total_absensi_pribadi=total_absensi_pribadi
             )
         
@@ -651,11 +687,41 @@ def api_guru_dashboard():
 
         activity = activity[:7]
 
+        # ======================
+        # TOTAL KELAS DIAMPU
+        # ======================
+        row = d.execute("""
+            SELECT COUNT(DISTINCT kelas_id) AS total
+            FROM kelas_mapel
+            WHERE guru_id = %s
+        """, (guru_id,)).fetchone()
+        total_kelas = row["total"] if row else 0
+
+        # ======================
+        # TOTAL SISWA
+        # ======================
+        row = d.execute("""
+            SELECT COUNT(DISTINCT ks.siswa_id) AS total
+            FROM kelas_mapel km
+            JOIN kelas_siswa ks ON ks.kelas_id = km.kelas_id
+            WHERE km.guru_id = %s
+        """, (guru_id,)).fetchone()
+        total_siswa = row["total"] if row else 0
+
+        # ======================
+        # TOTAL LOG
+        # ======================
+        total_log = d.execute("""
+            SELECT COUNT(*) AS total
+            FROM absensi_mengajar
+            WHERE guru_id = %s
+        """, (guru_id,)).fetchone()["total"] if table_exists(d, "absensi_mengajar") else 0
+
     return jsonify({
-        "total_kelas": 0,
-        "total_log": 0,
+        "total_kelas": total_kelas,
+        "total_log": total_log,
         "total_absensi_pribadi": total_absensi,
-        "total_siswa": 0,
+        "total_siswa": total_siswa,
         "absen_hari_ini": 0,
         "chart": {
             "labels": labels,
