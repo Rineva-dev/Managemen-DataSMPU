@@ -528,7 +528,7 @@ def save_mapel_kelas():
         # ==========================
         for item in items:
 
-            mapel_id = item.get("mapel_id")
+            mapel_id = int(item.get("mapel_id"))
             guru_id = item.get("guru_id") or None
             jp = item.get("jp") or 0
             hari = item.get("hari")
@@ -561,7 +561,7 @@ def save_mapel_kelas():
         # ==========================
         for item in items:
 
-            mapel_id = item.get("mapel_id")
+            mapel_id = int(item.get("mapel_id"))
             guru_id = item.get("guru_id") or None
             jp = item.get("jp") or 0
             hari = item.get("hari")
