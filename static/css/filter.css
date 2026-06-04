@@ -148,7 +148,7 @@
     #absensi-filter .custom-dropdown {
         width: 100% !important;
         min-width: unset;
-        flex-direction: none !important;
+        flex-direction: row;
     }
 
     /* Box selected */
