@@ -533,7 +533,7 @@ function getGuruIdByMapel(mapelId) {
 async function loadMapelKelas(kelasId) {
     
     try {
-        const res = await fetch(`/sekolah/kelas/api/${kelasId}/mapel`);
+        const res = await fetch(`/sekolah/kelas/api/${kelasId}/mapel-jadwal`);
         const data = await res.json();
 
         window._mapelMaster = data.mapel;

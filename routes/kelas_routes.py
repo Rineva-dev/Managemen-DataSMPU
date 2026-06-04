@@ -477,6 +477,27 @@ def get_mapel_kelas(kelas_id):
         "mapel_kelas": [dict(mk) for mk in mapel_kelas]
     })
 
+@kelas_bp.route("/api/<int:kelas_id>/mapel-jadwal")
+def get_mapel_jadwal(kelas_id):
+
+    seed_mapel_kegiatan()
+
+    with db() as d:
+
+        mapel = d.execute("""
+            SELECT id, nama, jenis
+            FROM mata_pelajaran
+            WHERE jenis IN ('wajib', 'mulok', 'kegiatan')
+            ORDER BY
+                CASE jenis
+                    WHEN 'kegiatan' THEN 0
+                    ELSE 1
+                END,
+                nama ASC
+        """).fetchall()
+
+    return jsonify([dict(m) for m in mapel])
+
 @kelas_bp.route("/api/mapel/save", methods=["POST"])
 def save_mapel_kelas():
 
