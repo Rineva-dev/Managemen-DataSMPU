@@ -103,7 +103,6 @@
 #absensi-filter {
     display: flex;
     align-items: center;
-    gap: 20px;
     flex-wrap: wrap;
 }
 
@@ -129,4 +128,59 @@
         border-left: none !important;
     }
     
+}
+
+/* ===============================
+   ABSENSI FILTER – MOBILE FIX
+================================= */
+
+@media (max-width: 768px) {
+
+    /* Container filter */
+    #absensi-filter {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        padding: 0;
+    }
+
+    /* Setiap dropdown full width */
+    #absensi-filter .custom-dropdown {
+        width: 100% !important;
+        min-width: unset;
+    }
+
+    /* Box selected */
+    #absensi-filter .dropdown-selected,
+    #absensi-filter .absen-filter-selected {
+        width: 100%;
+        justify-content: space-between;
+        font-size: 14px;
+        padding: 12px 14px;
+    }
+
+    /* Dropdown option panel */
+    #absensi-filter .dropdown-options,
+    #absensi-filter .absen-filter-options {
+        width: 100%;
+        left: 0;
+        right: 0;
+        max-height: 240px;
+        overflow-y: auto;
+    }
+
+    /* Reset button */
+    #filter-reset {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+
+    /* Judul */
+    #absensi-content h3 {
+        margin-bottom: 12px;
+    }
 }
