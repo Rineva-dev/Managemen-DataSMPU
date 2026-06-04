@@ -58,7 +58,7 @@
 #riwayat-siswa p,
 #detail-siswa p {
     display: flex;
-    margin: 4px;
+    margin: 8px 0;
     font-size: 13px;
 }
 
@@ -324,7 +324,7 @@
     /* GRID FORM */
     .add-tanggal-bayar {
         grid-template-columns: 1fr;
-        gap: 14px;
+        gap: 0;
     }
 
     /* INFO SISWA */
