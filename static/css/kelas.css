@@ -811,6 +811,10 @@
         width: 16px;
         height: 16px;
     }
+
+    .filter-container {
+        gap: 0;
+    }
 }
 
 .kelas-action-bar p {
