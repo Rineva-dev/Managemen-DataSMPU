@@ -830,8 +830,14 @@ saveMapelBtn.addEventListener("click", async () => {
 
         if (!item) return;
 
-        // mapel biasa
-        if (item.jenis !== "kegiatan" && jp > 0) {
+        if (item.jenis === "kegiatan") {
+            payload.push({
+                mapel_id,
+                guru_id: null,
+                jp: 1
+            });
+        } 
+        else if (jp > 0) {
             payload.push({ mapel_id, guru_id, jp });
         }
     });
