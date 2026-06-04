@@ -3014,6 +3014,15 @@ body.loading {
         box-shadow: none;
         border-left: none;
     }
+
+    .filter-search-group {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .filter-input {
+        width: 100%;
+    }
 }
 
 
