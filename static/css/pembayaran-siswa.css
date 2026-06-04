@@ -402,6 +402,8 @@
 
     .filter-search-group {
         margin-left: 0;
+        display: grid;
+        width: 100%;
     }
 
 }
