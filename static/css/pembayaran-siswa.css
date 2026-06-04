@@ -396,4 +396,12 @@
         min-height: 14px !important;
     }
 
+    .add-btn {
+        width: 100%;
+    }
+
+    .filter-search-group {
+        margin-left: 0;
+    }
+
 }
