@@ -139,7 +139,6 @@
     /* Container filter */
     #absensi-filter {
         display: flex;
-        flex-direction: column;
         gap: 12px;
         width: 100%;
         padding: 0;
