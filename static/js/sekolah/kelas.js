@@ -536,13 +536,15 @@ async function loadMapelKelas(kelasId) {
         const res = await fetch(`/sekolah/kelas/api/${kelasId}/mapel-jadwal`);
         const data = await res.json();
 
-        window._mapelMaster = data.mapel;
-
         mapelBody.innerHTML = "";
 
-        const wajib = data.mapel.filter(m => m.jenis === "wajib");
-        const mulok = data.mapel.filter(m => m.jenis === "mulok");
-        const kegiatan = data.mapel.filter(m => m.jenis === "kegiatan");
+        const mapelList = Array.isArray(data.mapel) ? data.mapel : [];
+
+        window._mapelMaster = mapelList;
+
+        const wajib    = mapelList.filter(m => m.jenis === "wajib");
+        const mulok    = mapelList.filter(m => m.jenis === "mulok");
+        const kegiatan = mapelList.filter(m => m.jenis === "kegiatan");
 
         mapelKelasCache = data.mapel.map(m => {
 
