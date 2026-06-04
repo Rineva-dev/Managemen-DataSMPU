@@ -505,9 +505,9 @@ def get_mapel_jadwal(kelas_id):
 @kelas_bp.route("/api/mapel/save", methods=["POST"])
 def save_mapel_kelas():
 
-    data = request.json
-    kelas_id = data["kelas_id"]
-    items = data["data"]
+    data = request.get_json()
+    kelas_id = data.get("kelas_id")
+    items = data.get("data", [])
 
     with db() as d:
 
@@ -518,7 +518,11 @@ def save_mapel_kelas():
         """, (kelas_id,)).fetchall()
 
         old_mapel = {r["mapel_id"]: r["id"] for r in old_rows}
-        
+        new_mapel_ids = []
+
+        # ==========================
+        # LOOP UTAMA (SATU SAJA)
+        # ==========================
         for item in items:
 
             mapel_id = item.get("mapel_id")
@@ -528,7 +532,9 @@ def save_mapel_kelas():
             jam_mulai = item.get("jam_mulai") or None
             jam_selesai = item.get("jam_selesai") or None
 
-            # 🔥 ambil jenis mapel
+            new_mapel_ids.append(mapel_id)
+
+            # ambil jenis mapel
             mapel = d.execute("""
                 SELECT jenis
                 FROM mata_pelajaran
@@ -537,35 +543,29 @@ def save_mapel_kelas():
 
             jenis_mapel = mapel["jenis"] if mapel else None
 
-            # 🔥 guru wajib kecuali kegiatan
-            if (
-                jp > 0
-                and jenis_mapel != "kegiatan"
-                and not guru_id
-            ):
+            # guru wajib kecuali kegiatan
+            if jp > 0 and jenis_mapel != "kegiatan" and not guru_id:
                 return jsonify({
                     "success": False,
                     "message": "Guru untuk mapel belum ditentukan."
                 })
 
             # ==========================
-            # CEK BENTROK HANYA JIKA LENGKAP
+            # CEK BENTROK
             # ==========================
             if hari and jam_mulai and jam_selesai:
 
-                # Bentrok kelas
                 konflik_kelas = d.execute("""
                     SELECT 1
                     FROM kelas_mapel
                     WHERE kelas_id = ?
                     AND hari = ?
-                    AND (
-                        ? < jam_selesai
-                        AND ? > jam_mulai
-                    )
+                    AND mapel_id != ?
+                    AND (? < jam_selesai AND ? > jam_mulai)
                 """, (
                     kelas_id,
                     hari,
+                    mapel_id,
                     jam_mulai,
                     jam_selesai
                 )).fetchone()
@@ -576,19 +576,14 @@ def save_mapel_kelas():
                         "message": f"Bentrok jadwal kelas di {hari}"
                     })
 
-                # Bentrok guru (jika ada guru)
                 if guru_id:
-
                     konflik_guru = d.execute("""
                         SELECT 1
                         FROM kelas_mapel
                         WHERE guru_id = ?
                         AND hari = ?
                         AND kelas_id != ?
-                        AND (
-                            ? < jam_selesai
-                            AND ? > jam_mulai
-                        )
+                        AND (? < jam_selesai AND ? > jam_mulai)
                     """, (
                         guru_id,
                         hari,
@@ -602,59 +597,44 @@ def save_mapel_kelas():
                             "success": False,
                             "message": f"Guru bentrok di {hari}"
                         })
-                        
 
             # ==========================
-            # INSERT DATA (BOLEH KOSONG)
+            # UPDATE / INSERT
             # ==========================
-            new_mapel_ids = []
+            if mapel_id in old_mapel:
 
-            for item in items:
+                d.execute("""
+                    UPDATE kelas_mapel
+                    SET guru_id=?, jp=?, hari=?, jam_mulai=?, jam_selesai=?
+                    WHERE id=?
+                """, (
+                    guru_id,
+                    jp,
+                    hari,
+                    jam_mulai,
+                    jam_selesai,
+                    old_mapel[mapel_id]
+                ))
 
-                mapel_id = item.get("mapel_id")
-                guru_id = item.get("guru_id") or None
-                jp = item.get("jp") or 0
-                hari = item.get("hari") or None
-                jam_mulai = item.get("jam_mulai") or None
-                jam_selesai = item.get("jam_selesai") or None
+            else:
+                d.execute("""
+                    INSERT INTO kelas_mapel (
+                        kelas_id, mapel_id, guru_id, jp, hari, jam_mulai, jam_selesai
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    kelas_id,
+                    mapel_id,
+                    guru_id,
+                    jp,
+                    hari,
+                    jam_mulai,
+                    jam_selesai
+                ))
 
-                new_mapel_ids.append(mapel_id)
-
-                # ===== JIKA SUDAH ADA → UPDATE =====
-                if mapel_id in old_mapel:
-
-                    km_id = old_mapel[mapel_id]
-
-                    d.execute("""
-                        UPDATE kelas_mapel
-                        SET guru_id = ?, jp = ?, hari = ?, jam_mulai = ?, jam_selesai = ?
-                        WHERE id = ?
-                    """, (
-                        guru_id,
-                        jp,
-                        hari,
-                        jam_mulai,
-                        jam_selesai,
-                        km_id
-                    ))
-
-                # ===== JIKA BARU → INSERT =====
-                else:
-                    d.execute("""
-                        INSERT INTO kelas_mapel (
-                            kelas_id, mapel_id, guru_id, jp, hari, jam_mulai, jam_selesai
-                        )
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
-                    """, (
-                        kelas_id,
-                        mapel_id,
-                        guru_id,
-                        jp,
-                        hari,
-                        jam_mulai,
-                        jam_selesai
-                    ))
-
+        # ==========================
+        # HAPUS MAPEL YANG DICORET
+        # ==========================
         for mapel_id, km_id in old_mapel.items():
 
             if mapel_id not in new_mapel_ids:
@@ -672,10 +652,9 @@ def save_mapel_kelas():
                         "message": "Mapel yang sudah memiliki absensi tidak bisa dihapus."
                     })
 
-                d.execute(
-                    "DELETE FROM kelas_mapel WHERE id = ?",
-                    (km_id,)
-                )
+                d.execute("DELETE FROM kelas_mapel WHERE id = ?", (km_id,))
+
+        d.commit()
 
         # ==========================
         # AUTO INSERT KKM
@@ -692,11 +671,7 @@ def save_mapel_kelas():
             ON CONFLICT (mapel_id, tingkat) DO NOTHING
         """, (kelas_id,))
 
-        d.commit()
-
-    return jsonify({
-        "success": True
-    })
+    return jsonify({"success": True})
 
 @kelas_bp.route("/api/jadwal/save", methods=["POST"])
 def save_jadwal():
