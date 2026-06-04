@@ -422,4 +422,8 @@
         border-left: none;
     }
 
+    #pembayaran-search-btn {
+        display: none;
+    }
+
 }
