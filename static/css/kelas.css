@@ -598,8 +598,10 @@
     }
 
     .mapel-modal-overlay {
-        align-items: stretch;
-        justify-content: stretch;
+        align-items: center;        /* 🔥 bukan stretch */
+        justify-content: center;
+        padding: 14px;              /* 🔥 jarak atas & bawah */
+
     }
 
     .modal-header,
