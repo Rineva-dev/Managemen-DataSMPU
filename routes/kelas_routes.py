@@ -510,10 +510,19 @@ def save_mapel_kelas():
     items = data["data"]
 
     with db() as d:
-        d.execute("""
-                DELETE FROM kelas_mapel
-                WHERE kelas_id = ?
-            """, (kelas_id,))
+        used = d.execute("""
+            SELECT 1
+            FROM absensi_mengajar am
+            JOIN kelas_mapel km ON km.id = am.kelas_mapel_id
+            WHERE km.kelas_id = ?
+            LIMIT 1
+        """, (kelas_id,)).fetchone()
+
+        if used:
+            return jsonify({
+                "success": False,
+                "message": "Mapel kelas tidak bisa diubah karena sudah memiliki data absensi."
+            })
 
         for item in items:
 
