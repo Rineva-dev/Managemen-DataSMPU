@@ -649,7 +649,7 @@ def save_mapel_kelas():
                 75
             FROM kelas_mapel km
             JOIN kelas k ON k.id = km.kelas_id
-            WHERE km.kelas_id = %s
+            WHERE km.kelas_id = ?
             ON CONFLICT (mapel_id, tingkat) DO NOTHING
         """, (kelas_id,))
 

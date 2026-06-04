@@ -815,6 +815,33 @@ saveMapelBtn.addEventListener("click", async () => {
 
     try {
 
+        // =============================
+        // VALIDASI FRONTEND
+        // =============================
+
+        const usedSlots = [];
+
+        for (const row of rows) {
+
+            const hari = row.querySelector(".hari-select")?.value;
+            const mulai = row.querySelector(".jam-mulai")?.value;
+            const selesai = row.querySelector(".jam-selesai")?.value;
+
+            if (!hari || !mulai || !selesai) continue;
+
+            const slot = `${hari}-${mulai}-${selesai}`;
+
+            if (usedSlots.includes(slot)) {
+                showNotification(
+                    "Jam bentrok di hari yang sama!",
+                    "warning"
+                );
+                return;
+            }
+
+            usedSlots.push(slot);
+        }
+
         const res = await fetch("/sekolah/kelas/api/mapel/save", {
             method: "POST",
             headers: {
@@ -837,33 +864,6 @@ saveMapelBtn.addEventListener("click", async () => {
     } catch (err) {
         console.error(err);
         showNotification("Gagal simpan", "error");
-    }
-
-    // =============================
-    // VALIDASI FRONTEND
-    // =============================
-
-    const usedSlots = [];
-
-    for (const row of rows) {
-
-        const hari = row.querySelector(".hari-select")?.value;
-        const mulai = row.querySelector(".jam-mulai")?.value;
-        const selesai = row.querySelector(".jam-selesai")?.value;
-
-        if (!hari || !mulai || !selesai) continue;
-
-        const slot = `${hari}-${mulai}-${selesai}`;
-
-        if (usedSlots.includes(slot)) {
-            showNotification(
-                "Jam bentrok di hari yang sama!",
-                "warning"
-            );
-            return;
-        }
-
-        usedSlots.push(slot);
     }
 });
 
