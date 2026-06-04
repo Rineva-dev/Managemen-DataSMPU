@@ -337,10 +337,10 @@
 }
 
 .modal-header p{
-    margin-top:6px;
+    margin-top:0;
     color:#64748b;
     font-size:14px;
-    margin-left: -25px !important;
+    margin-left: -5px !important;
 }
 
 .modal-body.mengajar {
