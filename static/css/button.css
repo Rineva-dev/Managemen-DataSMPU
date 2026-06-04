@@ -752,6 +752,13 @@
         right: auto;
         left: 0;
     }
+
+    #add-tahun-btn,
+    #add-kelas-btn,
+    #add-guru-btn,
+    #add-akun-btn {
+        width: 100%;
+    }
 }
 
 /* ================= BACK BUTTON ================= */
