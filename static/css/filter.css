@@ -148,6 +148,7 @@
     #absensi-filter .custom-dropdown {
         width: 100% !important;
         min-width: unset;
+        flex-direction: none !important;
     }
 
     /* Box selected */
@@ -155,8 +156,6 @@
     #absensi-filter .absen-filter-selected {
         width: 100%;
         justify-content: space-between;
-        font-size: 14px;
-        padding: 12px 14px;
     }
 
     /* Dropdown option panel */
