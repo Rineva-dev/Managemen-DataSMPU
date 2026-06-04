@@ -1427,6 +1427,7 @@ input.error, select.error {
     overflow-y: visible;
     scroll-behavior: smooth;
     scrollbar-width: none;
+    scrollbar-color: #ff6a00 transparent;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -1465,12 +1466,6 @@ input.error, select.error {
 .table-wrapper::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, #ff7a26, #e65c00);
     transition: background-color 0.3s, box-shadow 0.3s ease-in-out;
-}
-
-/* Firefox */
-.table-wrapper {
-    scrollbar-width: thin;
-    scrollbar-color: #ff6a00 transparent;
 }
 
 .table-wrapper::-webkit-scrollbar-button {
