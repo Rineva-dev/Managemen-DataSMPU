@@ -557,7 +557,9 @@ async function loadMapelKelas(kelasId) {
                 nama: m.nama,
                 jenis: m.jenis,
                 guru_id: savedItem?.guru_id || null,
-                jp: savedItem?.jp || 0
+                jp: m.jenis === "kegiatan"
+                    ? 1
+                    : (savedItem?.jp || 0)
             };
         });
 
@@ -574,7 +576,7 @@ async function loadMapelKelas(kelasId) {
                     <td>${m.nama}</td>
 
                     <td>
-                        <select class="guru-select" style="width:250px; height:40px; border-radius:5px; padding-top:0!important; padding-bottom:0!important; padding-left:5px;">
+                        <select class="guru-select" ${m.jenis === "kegiatan" ? "disabled" : ""} style="width:250px; height:40px; border-radius:5px; padding-top:0!important; padding-bottom:0!important; padding-left:5px;">
                             <option value="">-</option>
 
                             ${data.guru.map(g => `
@@ -589,7 +591,7 @@ async function loadMapelKelas(kelasId) {
                     <td>
                         <input 
                             type="number"
-                            class="jp-input"
+                            class="jp-input" ${m.jenis === "kegiatan" ? 'disabled value="0"' : ''}
                             min="0"
                             value="0"
                             style="width:50px; height:40px; padding-left:12px; padding-right:5px; border-radius:5px;">
@@ -824,12 +826,13 @@ saveMapelBtn.addEventListener("click", async () => {
         const jp         = parseInt(row.querySelector(".jp-input").value) || 0;
 
         // 🔥 RULE UTAMA
-        if (jp > 0) {
-            payload.push({
-                mapel_id,
-                guru_id,
-                jp
-            });
+        const item = mapelKelasCache.find(m => m.mapel_id == mapel_id);
+
+        if (!item) return;
+
+        // mapel biasa
+        if (item.jenis !== "kegiatan" && jp > 0) {
+            payload.push({ mapel_id, guru_id, jp });
         }
     });
 
