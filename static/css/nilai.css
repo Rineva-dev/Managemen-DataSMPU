@@ -256,7 +256,7 @@
     KKM INFO CARD
 ========================================= */
 .kkm-info-card {
-    display: inline-block;
+    display: block;
     background: #ffffff;
     border-radius: 8px;
     padding: 20px 22px;
@@ -269,6 +269,7 @@
     flex: 1;
     width: 100%;
     max-width: 100%;
+    box-sizing: border-box;
 }
 
 /* ================= HEADER ================= */
@@ -389,10 +390,6 @@
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 768px) {
-
-    .kkm-info-card {
-        padding: 16px;
-    }
 
     .kkm-info-header {
         flex-direction: column;
@@ -766,10 +763,7 @@
 
     /* CARD */
     .kkm-info-card {
-        width: 100%;
-        flex: 1;
         padding: 14px;
-        overflow-x: auto;
     }
 
     /* SUMMARY */
