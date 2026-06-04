@@ -589,7 +589,7 @@
 @media (max-width: 576px) {
 
     .saas-modal-mapel {
-        min-width: 0;          /* 🔥 MATIKAN 800px */
+        min-width: 0;
         width: 100%;
         max-width: 100%;
         height: 100vh;
@@ -598,9 +598,9 @@
     }
 
     .mapel-modal-overlay {
-        align-items: center;        /* 🔥 bukan stretch */
+        align-items: center;
         justify-content: center;
-        padding: 14px;              /* 🔥 jarak atas & bawah */
+        padding: 14px;
 
     }
 
@@ -617,9 +617,66 @@
         padding: 12px 14px;
     }
 
-    /* tabel tetap bisa scroll */
     .table-wrapper {
         overflow-x: auto;
     }
 
+    .rombel-overlay {
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+    }
+
+    .rombel-container {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        max-height: calc(100vh - 24px);
+
+        border-radius: 14px;
+    }
+
+    .rombel-body {
+        flex-direction: column;
+        padding: 14px;
+        gap: 14px;
+    }
+
+    .rombel-panel {
+        width: 100%;
+    }
+
+    .rombel-list {
+        height: auto;
+        max-height: 35vh;
+    }
+
+    .rombel-actions {
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .rombel-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 20px;
+    }
+
+    .rombel-header {
+        padding: 14px 16px;
+    }
+
+    .rombel-header h3 {
+        font-size: 15px;
+    }
+
+    .rombel-footer {
+        padding: 12px 16px;
+        flex-direction: column;
+    }
+
+    .rombel-footer button {
+        width: 100%;
+    }
 }
