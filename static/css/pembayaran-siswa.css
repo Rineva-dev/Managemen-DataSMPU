@@ -402,7 +402,9 @@
 
     .filter-search-group {
         margin-left: 0;
-        display: grid;
+    }
+
+    .filter-input {
         width: 100%;
     }
 
