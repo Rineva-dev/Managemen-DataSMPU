@@ -171,6 +171,19 @@
         width: 100%;
     }
 
+    .filter-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 0;
+        background: none;
+        border-radius: none;
+        box-shadow: none;
+        border-left: none;
+    }
+
 }
 
 /* ========================================
