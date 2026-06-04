@@ -266,10 +266,8 @@
         0 2px 8px rgba(0,0,0,.04);
     width: 100%;
     min-width: 0;
-    flex: 1 1 auto;
-    width: 100%;
+    flex: 1;
     max-width: 100%;
-    box-sizing: border-box;
 }
 
 /* ================= HEADER ================= */
@@ -302,7 +300,6 @@
 .kkm-grade-table {
     border-collapse: collapse;
     width: 100%;
-    min-width: 420px;
 }
 
 .kkm-grade-table th,
@@ -764,6 +761,7 @@
     /* CARD */
     .kkm-info-card {
         padding: 14px;
+        box-sizing: border-box;
     }
 
     /* SUMMARY */
