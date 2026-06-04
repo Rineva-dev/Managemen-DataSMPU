@@ -477,6 +477,10 @@
     background: #fafafa;
 }
 
+.jadwal-toolbar {
+    padding-left: 30px;
+}
+
 /* SCROLL BODY */
 #jadwal-kelas-modal .table-wrapper {
     height: calc(90vh - 180px);
