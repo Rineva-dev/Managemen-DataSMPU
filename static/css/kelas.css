@@ -695,9 +695,8 @@
         min-width: 0;
         width: 100%;
         max-width: 100%;
-
         height: auto;
-        max-height: calc(100vh - 28px); /* center visual */
+        max-height: calc(100vh - 36px);
 
         border-radius: 14px !important;
     }
