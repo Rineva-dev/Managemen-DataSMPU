@@ -496,7 +496,11 @@ def get_mapel_jadwal(kelas_id):
                 nama ASC
         """).fetchall()
 
-    return jsonify([dict(m) for m in mapel])
+    return jsonify({
+        "mapel": [dict(m) for m in mapel],
+        "guru": [],
+        "mapel_kelas": []
+    })
 
 @kelas_bp.route("/api/mapel/save", methods=["POST"])
 def save_mapel_kelas():
