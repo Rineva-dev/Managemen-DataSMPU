@@ -1169,14 +1169,11 @@ addHariBtn.addEventListener("click", () => {
 
     hariMap[hari] = card;
 
-    // auto 1 jam pertama
     addJamRow(card);
 
-    // tombol tambah jam
     card.querySelector(".add-jam-btn")
         .addEventListener("click", () => addJamRow(card));
 
-    // 🔥 INI KUNCINYA
     renderHariCards();
 
     hariSelect.value = "";
@@ -1344,11 +1341,16 @@ jadwalTopBtn.addEventListener("click", async () => {
     jadwal.forEach(item => {
 
         let card = hariMap[item.hari];
+
         if (!card) {
             card = createHariCard(item.hari);
+
+            // ✅ PENTING: render card ke grid SEKARANG
+            jadwalGrid.appendChild(card);
         }
 
         const row = addJamRow(card);
+
         row.querySelector(".jam-mulai").value   = item.jam_mulai;
         row.querySelector(".jam-selesai").value = item.jam_selesai;
         row.querySelector(".mapel-select").value = item.mapel_id;
