@@ -679,91 +679,95 @@
     .rombel-footer button {
         width: 100%;
     }
+    
+    #jadwal-kelas-modal {
+        align-items: center;
+        justify-content: center;
+        padding: 14px;                 /* ruang atas & bawah */
+    }
 
-    .jadwal-header {
+    /* MODAL */
+    #jadwal-kelas-modal .saas-modal-mapel {
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+
+        height: auto;
+        max-height: calc(100vh - 28px); /* center visual */
+
+        border-radius: 14px !important;
+    }
+
+    /* HEADER */
+    #jadwal-kelas-modal .modal-header {
         padding: 14px 16px;
-        margin-bottom: 12px;
     }
 
-    .jadwal-header h2 {
-        font-size: 18px;
+    #jadwal-kelas-modal .modal-title h3 {
+        font-size: 15px;
     }
 
-    .jadwal-table {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .jadwal-row {
-        display: block;
-        padding: 14px;
-        border-radius: 12px;
-        background: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    }
-
-    .jadwal-row > div {
-        display: flex;
-        justify-content: space-between;
-        font-size: 14px;
-        margin-bottom: 6px;
-    }
-
-    .jadwal-row .hari::before {
-        content: "Hari";
-        font-weight: 600;
-        color: #666;
-    }
-
-    .jadwal-row .jam::before {
-        content: "Jam";
-        font-weight: 600;
-        color: #666;
-    }
-
-    .jadwal-row .mapel::before {
-        content: "Mapel";
-        font-weight: 600;
-        color: #666;
-    }
-
-    .jadwal-row .guru::before {
-        content: "Guru";
-        font-weight: 600;
-        color: #666;
-    }
-
-    .jadwal-aksi {
-        display: flex;
+    /* TOOLBAR (PILIH HARI) */
+    #jadwal-kelas-modal > .saas-modal-mapel > div:nth-child(2) {
+        flex-wrap: wrap;
+        padding: 10px 16px;
         gap: 10px;
-        margin-top: 10px;
     }
 
-    .jadwal-aksi button {
-        flex: 1;
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    .jadwal-form {
-        width: 100%;
-        padding: 14px;
-    }
-
-    .jadwal-form .form-group {
-        margin-bottom: 12px;
-    }
-
-    .jadwal-form button {
+    #jadwal-kelas-modal #hariDropdown {
         width: 100%;
     }
 
-    .jadwal-row {
-        transition: transform .2s;
+    #jadwal-kelas-modal #add-hari-btn {
+        width: 100%;
+        margin-left: 0 !important;
     }
 
-    .jadwal-row:active {
-        transform: scale(.98);
+    /* BODY */
+    #jadwal-kelas-modal .modal-body {
+        padding: 12px 14px;
+        overflow: hidden;
+    }
+
+    #jadwal-kelas-modal .table-wrapper {
+        max-height: calc(100vh - 260px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    /* GRID JADWAL → 1 KOLOM */
+    .jadwal-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 6px;
+    }
+
+    /* JAM ROW */
+    .jam-row {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .jam-row input {
+        width: 100%;
+    }
+
+    .jam-row select {
+        width: 100%;
+    }
+
+    .remove-jam-btn {
+        align-self: flex-end;
+    }
+
+    /* FOOTER */
+    #jadwal-kelas-modal .modal-footer {
+        flex-direction: column-reverse;
+        gap: 8px;
+        padding: 14px 16px;
+    }
+
+    #jadwal-kelas-modal .modal-footer button {
+        width: 100%;
     }
 }
