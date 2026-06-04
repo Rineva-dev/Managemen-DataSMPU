@@ -93,14 +93,13 @@ def dashboard():
             """, (guru_id,)).fetchone()["total"]
 
             # =========================
-            # TOTAL LOG (ABSENSI MENGAJAR)
+            # TOTAL LOG (JURNAL TERISI)
             # =========================
             total_log = d.execute("""
                 SELECT COUNT(*) AS total
-                FROM absensi_mengajar am
-                JOIN kelas_mapel km ON km.id = am.kelas_mapel_id
-                WHERE km.guru_id = %s
-            """, (guru_id,)).fetchone()["total"] if table_exists(d, "absensi_mengajar") else 0
+                FROM jurnal
+                WHERE guru_id = %s
+            """, (guru_id,)).fetchone()["total"] if table_exists(d, "jurnal") else 0
 
             return render_template(
                 "dashboard.html",
@@ -709,14 +708,13 @@ def api_guru_dashboard():
         total_siswa = row["total"] if row else 0
 
         # ======================
-        # TOTAL LOG
+        # TOTAL LOG (JURNAL)
         # ======================
         total_log = d.execute("""
             SELECT COUNT(*) AS total
-            FROM absensi_mengajar am
-            JOIN kelas_mapel km ON km.id = am.kelas_mapel_id
-            WHERE km.guru_id = %s
-        """, (guru_id,)).fetchone()["total"] if table_exists(d, "absensi_mengajar") else 0
+            FROM jurnal
+            WHERE guru_id = %s
+        """, (guru_id,)).fetchone()["total"] if table_exists(d, "jurnal") else 0
 
     return jsonify({
         "total_kelas": total_kelas,
