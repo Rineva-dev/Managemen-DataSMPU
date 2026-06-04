@@ -715,7 +715,7 @@
     }
 
     #jadwal-kelas-modal #hariDropdown {
-        width: 100%;
+        width: 100% !important;
     }
 
     #jadwal-kelas-modal #add-hari-btn {
