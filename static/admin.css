@@ -1426,7 +1426,7 @@ input.error, select.error {
     overflow-x: auto;
     overflow-y: visible;
     scroll-behavior: smooth;
-    scrollbar-width: none;
+    scrollbar-width: unset;
     scrollbar-color: #ff6a00 transparent;
 }
 
@@ -3017,6 +3017,10 @@ body.loading {
 
     .filter-input {
         width: 100%;
+    }
+
+    .table-wrapper {
+        scrollbar-width: none;
     }
 }
 
