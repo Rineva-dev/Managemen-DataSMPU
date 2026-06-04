@@ -394,10 +394,6 @@
         align-items:stretch;
     }
 
-    #ekstrakurikuler-content .kelas-action-bar{
-        flex-wrap:nowrap;
-    }
-
     #ekstrakurikuler-content #ekskulTahunDropdown{
         width:100%;
     }
