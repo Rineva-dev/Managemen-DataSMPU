@@ -122,11 +122,11 @@
         gap: 14px;
         align-items: center;
         margin-bottom: 20px;
-        padding: 0;
-        background: none;
-        border-radius: none;
-        box-shadow: none;
-        border-left: none;
+        padding: 0 !important;
+        background: none !important;
+        border-radius: none !important;
+        box-shadow: none !important;
+        border-left: none !important;
     }
     
 }
