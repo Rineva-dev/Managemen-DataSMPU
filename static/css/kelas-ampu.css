@@ -400,12 +400,12 @@
 .form-group textarea{
     width:100%;
     border:1px solid #dbe2ea;
-    border-radius:14px;
     padding:12px 14px;
     font-size:14px;
     outline:none;
     transition:.2s;
     background:#fff;
+    height:45px;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
