@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const val = modalInput.value.trim();
 
             if (!val) {
-                alert('Keterangan wajib diisi!');
+                showNotification('Keterangan wajib diisi!', "error");
                 return;
             }
 
