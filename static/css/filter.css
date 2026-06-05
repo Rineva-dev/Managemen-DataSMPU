@@ -181,4 +181,13 @@
     #absensi-content h3 {
         margin-bottom: 12px;
     }
+
+    .absen-filter-group {
+        flex: 1 1 100%;
+        min-width: 100px;
+    }
+
+    .absen-filter-bar {
+        flex-wrap: nowrap;
+    }
 }
