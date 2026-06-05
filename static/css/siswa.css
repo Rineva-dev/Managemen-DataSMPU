@@ -496,6 +496,10 @@
     .left-actions .btn p {
         display: none;
     }
+
+    .left-actions .btn svg {
+        margin: 0 !important;
+    }
 }
 
 .btn p {
