@@ -152,7 +152,7 @@
 }
 
 /* ===============================
-   ABSEN RULES BAR
+    ABSEN RULES BAR
 ================================= */
 
 .absen-rules {
@@ -198,7 +198,6 @@
     overflow-x: hidden;
 }
 
-/* scrollbar halus (opsional, cakep) */
 .absen-filter-options::-webkit-scrollbar {
     width: 6px;
 }
