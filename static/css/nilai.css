@@ -780,7 +780,7 @@
     /* TABLE */
     .nilai-table-wrapper {
         overflow-x: auto;
-        border-radius: 12px;
+        border-radius: 8px 8px 0 0;
     }
 
     .nilai-table {
