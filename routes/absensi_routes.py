@@ -126,13 +126,13 @@ def api_absensi_guru():
 
         if status_request == "masuk":
 
-            if jam > 13:
+            if jam > 19:
                 return jsonify({
                     "status": "error",
                     "message": "Sudah lewat batas waktu absen masuk"
                 }), 400
 
-            batas_terlambat = (7 * 60) + 30
+            batas_terlambat = (7 * 60) + 15
             total_menit = jam * 60 + menit
 
             if total_menit > batas_terlambat and not alasan:
@@ -184,7 +184,7 @@ def api_absensi_guru():
 
         elif status_request == "izin_tidak_masuk":
 
-            if jam >= 13:
+            if jam >= 19:
                 return jsonify({
                     "status": "error",
                     "message": "Batas waktu izin hari ini sudah lewat"
