@@ -1041,10 +1041,12 @@
 
     /* FILTER */
     .overview-filter{
-        padding: 14px;
+        padding: 0;
         flex-direction: column;
         align-items: stretch;
         gap: 12px;
+        border-left: 0;
+        background:0;
     }
 
     .filter-left,
