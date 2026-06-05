@@ -365,7 +365,6 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-
     min-height: var(--btn-height-lg);
     min-width: var(--btn-width-lg);
     padding: 0 22px;
@@ -375,7 +374,7 @@
     letter-spacing: .3px;
 
     border-radius: calc(var(--btn-radius) + 4px);
-    border: 1px solid rgb(255, 255, 255);
+    border: 0;
 
     backdrop-filter: blur(6px);
 
