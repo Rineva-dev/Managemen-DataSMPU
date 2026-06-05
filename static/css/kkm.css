@@ -173,13 +173,17 @@
 
     .kkm-toolbar {
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         align-items: center;
         padding: 0;
         background: none;
-        border-radius: none;
+        border-radius: 0;
         box-shadow: none;
         border-left: none;
+    }
+
+    .kkm-select {
+        width: 100%;
     }
 
 }
