@@ -727,13 +727,17 @@
 
     /* TOOLBAR */
     .nilai-toolbar {
-        flex-direction: column;
+        flex-direction: row;
         align-items: stretch;
         gap: 12px;
+        padding: 0;
         background: none;
         box-shadow: none;
         border-left: none;
+    }
 
+    .nilai-toolbar .btn-add {
+        width: 100px;
     }
 
     .search-box {
