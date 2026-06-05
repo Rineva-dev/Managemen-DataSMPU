@@ -1059,7 +1059,9 @@
         gap: 4px;
     }
 
-    #search-jurnal,
+    #search-jurnal {
+        min-width: 220px;
+    }
     .overview-filter input{
         width: 100%;
     }
