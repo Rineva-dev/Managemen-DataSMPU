@@ -18,8 +18,9 @@
 
             <!-- TAMBAH SISWA -->
             <div class="dropdown">
-                <button class="btn dropdown-toggle">
-                    Add Student
+                <button class="btn dropdown-toggle" title="Tambah Siswa">
+                    <i data-lucide="user-plus"></i>
+                    <p>Add Student</p>
                 </button>
                 <div class="dropdown-menu">
                     <a href="{{ url_for('siswa.tambah_siswa') }}">Siswa Baru</a>
@@ -28,22 +29,25 @@
             </div>
 
             <!-- NAIKKAN KELAS (NANTI AKTIF) -->
-            <button class="btn filter-btn-warning" id="btnNaikKelas">
-                Naikkan Kelas
+            <button class="btn filter-btn-warning" id="btnNaikKelas" title="Naikkan Kelas">
+                <i data-lucide="arrow-up-circle"></i>
+                <p>Naikkan Kelas</p>
             </button>
 
             {% if active_page == 'siswa' %}
 
             <button class="btn filter-btn-secondary"
-                    onclick="window.location.href='/students/arsip'">
-                Arsip
+                    onclick="window.location.href='/students/arsip'" title="Lihat Arsip Siswa">
+                <i data-lucide="archive"></i>
+                <p>Arsip</p>
             </button>
 
             {% else %}
 
             <button class="btn filter-btn-secondary"
-                    onclick="window.location.href='/students'">
-                Siswa Aktif
+                    onclick="window.location.href='/students'" title="Lihat Siswa Aktif">
+                <i data-lucide="user"></i>
+                <p>Siswa Aktif</p>
             </button>
 
             {% endif %}

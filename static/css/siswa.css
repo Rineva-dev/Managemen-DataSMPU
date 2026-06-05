@@ -433,3 +433,63 @@
     margin: 0 6px;
     color: #bbb;
 }
+
+/* ================= LEFT ACTIONS – MOBILE ICON MODE ================= */
+@media (max-width: 576px) {
+
+    .siswa-filter-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* LEFT ACTIONS JADI 1 BARIS ICON */
+    .left-actions {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 6px;
+
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .left-actions::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* BUTTON ICON ONLY */
+    .left-actions .btn {
+        min-width: 42px;
+        height: 42px;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 0; /* sembunyikan teks */
+        border-radius: 10px;
+    }
+
+    /* TAMPILKAN ICON SAJA */
+    .left-actions .btn i {
+        font-size: 18px;
+    }
+
+    /* DROPDOWN AMAN */
+    .left-actions .dropdown {
+        flex-shrink: 0;
+    }
+
+    /* SEARCH FULL WIDTH */
+    .filter-search-group {
+        width: 100%;
+    }
+
+    .filter-search-group input {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+}
