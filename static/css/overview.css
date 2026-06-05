@@ -1046,7 +1046,7 @@
         align-items: stretch;
         gap: 12px;
         border-left: 0;
-        background:0;
+        background:none;
     }
 
     .filter-left,
@@ -1055,8 +1055,8 @@
     }
 
     .filter-right{
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        gap: 4px;
     }
 
     #search-jurnal,
@@ -1181,5 +1181,9 @@
     .btn-catatan-cancel{
         width: 100%;
         justify-content: center;
+    }
+
+    #filter-tanggal {
+        min-width: 10px;
     }
 }
