@@ -729,8 +729,10 @@
     .nilai-toolbar {
         flex-direction: column;
         align-items: stretch;
-        padding: 14px;
         gap: 12px;
+        background: none;
+        box-shadow: none;
+
     }
 
     .search-box {
@@ -759,6 +761,7 @@
     /* SUMMARY */
     .nilai-summary-grid {
         grid-template-columns: 1fr;
+        margin-bottom: 20px;
     }
 
     .summary-cards {
