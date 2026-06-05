@@ -376,7 +376,7 @@
     .left-actions{
         display:flex;
         flex-wrap:wrap;
-        gap:8px;
+        gap:4px;
         width:100%;
     }
 
