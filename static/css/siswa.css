@@ -395,8 +395,7 @@
 
     .filter-search-group input{
         width:100%;
-        font-size:13px;
-        padding:8px 12px;
+        height:42px;
     }
 
     .filter-container{
