@@ -156,6 +156,7 @@
     #absensi-filter .absen-filter-selected {
         width: 100%;
         justify-content: space-between;
+        box-shadow: 0 8px 20px rgb(0 0 0 / 11%);
     }
 
     /* Dropdown option panel */
