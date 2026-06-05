@@ -3013,10 +3013,12 @@ body.loading {
     .filter-search-group {
         margin-left: 0;
         width: 100%;
+        height: 42px;
     }
 
     .filter-input {
         width: 100%;
+        height: 42px;
     }
 
     .table-wrapper {
