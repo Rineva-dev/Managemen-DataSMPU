@@ -448,6 +448,11 @@
         gap: 4px;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        width: 100%;
+    }
+
+    .left-actions > * {
+        flex: 1 1 0;
     }
 
     .left-actions::-webkit-scrollbar {
@@ -455,15 +460,12 @@
     }
 
     .left-actions .btn {
-        height: 42px;
         padding: 0;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        width: 42px;
         height: 42px;
-        min-width: 42px;
     }
 
     /* SVG ICON (lucide) */
