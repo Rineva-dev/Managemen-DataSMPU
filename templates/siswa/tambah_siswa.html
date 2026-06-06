@@ -1,11 +1,16 @@
 <div class="page-tambah-siswa">
     <div class="tambah-container">
 
-        <!-- TOMBOL KEMBALI -->
-        <a href="{{ url_for('siswa.detail_siswa', nisn=siswa.nisn) if siswa else url_for('siswa.index') }}" class="btn btn-back-top">
-            <span class="icon-arrow">←</span>
-            <span>Back</span>
-        </a>
+        <div class="breadcrumb">
+            <a href="{{ url_for('siswa.detail_siswa', nisn=siswa.nisn) if siswa else url_for('siswa.index') }}" class="breadcrumb-link">
+                Data Siswa
+            </a>
+
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-current">
+                Tambah Siswa Baru
+            </span>
+        </div>
 
         <div class="container">
             <div class="card-tambah-siswa">
