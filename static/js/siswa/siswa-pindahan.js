@@ -104,6 +104,16 @@ document.addEventListener("DOMContentLoaded", () => {
             progressActive.style.width = stepWidth + "%";
         }
 
+        progressActive.classList.remove("has-prev", "has-next");
+
+        if (currentStep > 0) {
+            progressActive.classList.add("has-prev");
+        }
+
+        if (currentStep < steps.length - 1) {
+            progressActive.classList.add("has-next");
+        }
+
         // auto focus
         const firstInput = steps[currentStep].querySelector("input, textarea");
         firstInput?.focus();
