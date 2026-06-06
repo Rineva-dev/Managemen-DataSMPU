@@ -126,29 +126,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ================= NEXT BUTTON =================
-    btn.addEventListener("click", (e) => {
+    nextBtns.forEach(btn => {
 
-        e.preventDefault();
+        btn.addEventListener("click", (e) => {
 
-        if (!validateStep()) {
+            e.preventDefault();
 
-            if (!notifShowing) {
-                notifShowing = true;
-                showNotification("Wajib isi semua data", "error");
+            if (!validateStep()) {
 
-                setTimeout(() => notifShowing = false, 1500);
+                if (!notifShowing) {
+                    notifShowing = true;
+                    showNotification("Wajib isi semua data", "error");
+
+                    setTimeout(() => notifShowing = false, 1500);
+                }
+                return;
             }
-            return;
-        }
 
-        // ✅ BARU TANDAI DONE KALAU VALID
-        stepStatus[currentStep] = "done";
+            // ✅ BARU TANDAI DONE KALAU VALID
+            stepStatus[currentStep] = "done";
 
-        if (currentStep < steps.length - 1) {
-            currentStep++;
-            updateStepUI();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                updateStepUI();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+
+        });
 
     });
 
@@ -181,6 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (currentStep < steps.length - 1) {
 
                     if (validateStep()) {
+                        stepStatus[currentStep] = "done";
                         currentStep++;
                         updateStepUI();
                     }
