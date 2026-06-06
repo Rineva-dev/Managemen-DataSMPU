@@ -50,15 +50,6 @@
     width: var(--step-progress);
 }
 
-.page-tambah-siswa .progress-bar {
-    box-shadow: 0 0 0 rgba(0,0,0,0);
-}
-.page-tambah-siswa .progress-bar.step-2,
-.page-tambah-siswa .progress-bar.step-3,
-.page-tambah-siswa .progress-bar.step-4 {
-    box-shadow: 0 0 12px rgba(22,163,74,.4);
-}
-
 /* STEP WARNA */
 .page-tambah-siswa .step.active .circle {
     background: #facc15;
