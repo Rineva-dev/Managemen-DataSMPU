@@ -2,24 +2,16 @@
     <div class="tambah-container">
 
         <div class="breadcrumb">
-            <a href="#" class="breadcrumb-link">
-                Kelas Ampu
+            <a href="{{ url_for('siswa.detail_siswa', nisn=siswa.nisn) if siswa else url_for('siswa.index') }}" class="breadcrumb-link">
+                Data Siswa
             </a>
-            <span class="breadcrumb-separator">›</span>
-            <a href="#" class="breadcrumb-link">
-                Overview
-            </a>
+
             <span class="breadcrumb-separator">›</span>
             <span class="breadcrumb-current">
-                Absensi Siswa
+                Tambah Siswa Pindahan
             </span>
         </div>
 
-        <!-- TOMBOL KEMBALI -->
-        <a href="{{ url_for('siswa.detail_siswa', nisn=siswa.nisn) if siswa else url_for('siswa.index') }}" class="btn btn-back-top">
-            <span class="icon-arrow">←</span>
-            <span>Back</span>
-        </a>
 
         <div class="container">
             <div class="card-tambah-siswa">
