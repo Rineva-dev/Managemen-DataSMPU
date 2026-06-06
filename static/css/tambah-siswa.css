@@ -42,6 +42,37 @@
     transition: width .3s ease;
 }
 
+/* WARNA DINAMIS PROGRESS */
+.page-tambah-siswa .progress-bar.step-1 {
+    background: #eba225; /* kuning */
+}
+.page-tambah-siswa .progress-bar.step-2 {
+    background: #22c55e; /* hijau muda */
+}
+.page-tambah-siswa .progress-bar.step-3 {
+    background: #16a34a; /* hijau */
+}
+.page-tambah-siswa .progress-bar.step-4 {
+    background: #15803d; /* hijau tua */
+}
+
+.page-tambah-siswa .stepper {
+    --step-progress: 0%;
+}
+
+.page-tambah-siswa .stepper::after {
+    width: var(--step-progress);
+}
+
+.page-tambah-siswa .progress-bar {
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+}
+.page-tambah-siswa .progress-bar.step-2,
+.page-tambah-siswa .progress-bar.step-3,
+.page-tambah-siswa .progress-bar.step-4 {
+    box-shadow: 0 0 12px rgba(22,163,74,.4);
+}
+
 /* ================= FORM STEP ================= */
 .page-tambah-siswa form {
     position: relative;

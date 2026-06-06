@@ -34,16 +34,44 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentStep = 0;
 
     function showStep(index) {
+        const totalSteps = steps.length;
+
+        /* FORM STEP */
         steps.forEach((step, i) => {
             step.classList.toggle("active", i === index);
         });
 
+        /* STEPPER */
         stepIndicators.forEach((indicator, i) => {
             indicator.classList.remove("active", "done");
 
             if (i < index) indicator.classList.add("done");
             if (i === index) indicator.classList.add("active");
         });
+
+        /* PROGRESS BAR BAWAH */
+        const progressBar = document.getElementById("progressBar");
+        const percent = ((index + 1) / totalSteps) * 100;
+
+        progressBar.style.width = percent + "%";
+
+        // reset class warna
+        progressBar.className = "progress-bar step-" + (index + 1);
+
+        /* GARIS STEPPER ATAS */
+        const stepper = document.querySelector(".stepper");
+        if (stepper) {
+            const line = stepper.querySelector("::after");
+            stepper.style.setProperty(
+                "--step-progress",
+                ((index) / (totalSteps - 1)) * 100 + "%"
+            );
+        }
+
+        stepper?.style.setProperty(
+            "--step-progress",
+            (index / (totalSteps - 1)) * 100 + "%"
+        );
     }
 
     /* ======================================================
