@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
        DROPDOWN (punya kamu – aman)
     ====================================================== */
     const dropdowns = document.querySelectorAll(".dropdown");
+    const progressDone   = document.querySelector(".progress-done");
+    const progressPrev   = document.querySelector(".progress-prev");
+    const progressActive = document.querySelector(".progress-active");
+    const progressNext   = document.querySelector(".progress-next");
 
     dropdowns.forEach(dropdown => {
         const toggle = dropdown.querySelector(".dropdown-toggle");
@@ -34,49 +38,45 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentStep = 0;
     const stepStatus = Array(steps.length).fill("empty");
 
-    function showStep(index) {
-        const totalSteps = steps.length;
+    /* ================= PROGRESS BAR – FINAL PRESISI ================= */
+    const total = steps.length;
+    const stepWidth = 100 / total;
 
-        /* FORM STEP */
-        steps.forEach((step, i) => {
-            step.classList.toggle("active", i === index);
-        });
+    // RESET
+    [progressDone, progressPrev, progressActive, progressNext].forEach(el => {
+        el.style.width = "0%";
+        el.style.left = "0%";
+    });
 
-        /* UPDATE STATUS STEP */
-        stepStatus.forEach((_, i) => {
-            if (i < index && stepStatus[i] !== "done") {
-                // kalau pernah valid, biarkan done
-                stepStatus[i] = stepStatus[i] === "done" ? "done" : "done";
-            }
-            if (i === index) stepStatus[i] = "active";
-            if (i > index && stepStatus[i] !== "done") stepStatus[i] = "empty";
-        });
+    // ================= STEP 0 =================
+    if (index === 0) {
 
-        /* STEPPER WARNA */
-        stepIndicators.forEach((indicator, i) => {
-            indicator.classList.remove("active", "done");
+        // ACTIVE (kuning)
+        progressActive.style.left = "0%";
+        progressActive.style.width = stepWidth + "%";
 
-            if (stepStatus[i] === "done") indicator.classList.add("done");
-            if (stepStatus[i] === "active") indicator.classList.add("active");
-        });
+        // NEXT (abu)
+        progressNext.style.left = stepWidth + "%";
+        progressNext.style.width = (100 - stepWidth) + "%";
 
-        /* PROGRESS BAR (GRADASI) */
-        const progressBar = document.getElementById("progressBar");
-        const percent = ((index + 1) / totalSteps) * 100;
+    }
+    // ================= STEP > 0 =================
+    else {
 
-        progressBar.style.width = percent + "%";
-        progressBar.className = "progress-bar";
+        // DONE (hijau)
+        progressDone.style.left = "0%";
+        progressDone.style.width = (index * stepWidth) + "%";
 
-        if (index === 0) progressBar.classList.add("step-active");
-        else if (index < totalSteps - 1) progressBar.classList.add("step-mix");
-        else progressBar.classList.add("step-done");
+        // ACTIVE (kuning)
+        progressActive.style.left = (index * stepWidth) + "%";
+        progressActive.style.width = stepWidth + "%";
 
-        /* GARIS STEPPER */
-        const stepper = document.querySelector(".stepper");
-        stepper?.style.setProperty(
-            "--step-progress",
-            (index / (totalSteps - 1)) * 100 + "%"
-        );
+        // NEXT (abu)
+        const nextWidth = 100 - ((index + 1) * stepWidth);
+        if (nextWidth > 0) {
+            progressNext.style.left = ((index + 1) * stepWidth) + "%";
+            progressNext.style.width = nextWidth + "%";
+        }
     }
 
     /* ======================================================

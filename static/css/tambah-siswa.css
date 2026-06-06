@@ -71,11 +71,10 @@
 }
 
 /* ================= PROGRESS BAR FINAL ================= */
-
 .progress {
     position: relative;
     height: 6px;
-    background: #e5e7eb; /* abu future */
+    background: #e5e7eb;
     border-radius: 999px;
     overflow: hidden;
 }
