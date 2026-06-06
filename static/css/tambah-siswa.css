@@ -100,39 +100,36 @@
 }
 
 /* ===== GRADASI DARI STEP SELESAI ===== */
-/* HIJAU → KUNING (HANYA DI PINGGIR KIRI) */
 .progress-active.has-prev {
     background: linear-gradient(
         90deg,
         #16a34a 0%,
-        #16a34a 12%,
-        #facc15 28%,
+        #16a34a 6%,
+        #facc15 14%,
         #facc15 100%
     );
 }
 
 /* ===== GRADASI KE STEP BERIKUTNYA ===== */
-/* KUNING → ABU (HANYA DI PINGGIR KANAN) */
 .progress-active.has-next {
     background: linear-gradient(
         90deg,
         #facc15 0%,
-        #facc15 72%,
-        #e5e7eb 88%,
+        #facc15 86%,
+        #e5e7eb 94%,
         #e5e7eb 100%
     );
 }
 
 /* ===== KASUS TENGAH ===== */
-/* HIJAU → KUNING → ABU */
 .progress-active.has-prev.has-next {
     background: linear-gradient(
         90deg,
         #16a34a 0%,
-        #16a34a 12%,
-        #facc15 30%,
-        #facc15 70%,
-        #e5e7eb 88%,
+        #16a34a 6%,
+        #facc15 18%,
+        #facc15 82%,
+        #e5e7eb 94%,
         #e5e7eb 100%
     );
 }
