@@ -431,6 +431,10 @@
     height: 15px;
 }
 
+.left-actions {
+    align-items: center !important;
+}
+
 /* ================= LEFT ACTIONS – FULL WIDTH FIX ================= */
 @media (max-width: 576px) {
 
