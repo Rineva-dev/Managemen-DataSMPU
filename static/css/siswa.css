@@ -435,6 +435,20 @@
     align-items: center !important;
 }
 
+.left-actions .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 42px;
+}
+
+.left-actions .dropdown-toggle i,
+.left-actions .dropdown-toggle svg {
+    line-height: 1;
+    margin: 0;
+}
+
 /* ================= LEFT ACTIONS – FULL WIDTH FIX ================= */
 @media (max-width: 576px) {
 
