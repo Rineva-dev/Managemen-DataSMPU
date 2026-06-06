@@ -449,6 +449,7 @@
         align-items: center;
         justify-content: center;
         font-size: 0;
+        min-width: 10px;
     }
 
     .left-actions .btn svg {
@@ -465,6 +466,7 @@
 
     .left-actions .dropdown {
         margin: 0;
+        min-width: 10px;
     }
 
     .filter-search-group {
