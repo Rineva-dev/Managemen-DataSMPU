@@ -84,12 +84,13 @@
 
 .page-tambah-siswa input,
 .page-tambah-siswa select {
-    border-radius: 10px;
+    border-radius: 8px;
     border: 1px solid #e5e7eb;
     background: #f9fafb;
-    font-size: 14px;
+    font-size: 13px;
     transition: all .2s ease;
     width: 100%;
+    height: 42px
 }
 
 .page-tambah-siswa input:focus,
@@ -97,6 +98,12 @@
     background: #ffffff;
     border-color: #2563eb;
     box-shadow: 0 0 0 4px rgba(37,99,235,.15);
+}
+
+.dropdown-selected {
+    height: 42px;
+    background: #f9f9f9;
+    box-shadow: none;
 }
 
 /* ================= ACTION BUTTON ================= */
@@ -111,12 +118,13 @@
 .page-tambah-siswa .btn {
     padding: 0 6px;
     border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
     border: none;
     text-decoration: none;
     transition: .2s;
+    min-width: 140px;
 }
 
 .page-tambah-siswa .btn-primary {
