@@ -112,6 +112,7 @@
 /* =========================================================
     PRIMARY
 ========================================================= */
+.dropdown-toggle-add,
 .dropdown-toggle,
 .filter-btn,
 .btn-add {
@@ -796,6 +797,10 @@
 ================================ */
 .dropdown-toggle {
     gap: 0 !important;
+}
+
+.dropdown-toggle-add {
+    gap: 8px !important;
 }
 
 .dropdown-toggle svg {
