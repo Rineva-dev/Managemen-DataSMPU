@@ -328,4 +328,10 @@
         max-width: 100%;
     }
 
+    .dropdown-selected {
+        height: 43px;
+        box-shadow: none;
+        background: #f9f9f9;
+    }
+
 }
