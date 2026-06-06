@@ -436,10 +436,6 @@
     display: block;
 }
 
-.button.btn.dropdown-toggle.add {
-    gap: 8px !important;
-}
-
 /* ================= LEFT ACTIONS – FULL WIDTH FIX ================= */
 @media (max-width: 576px) {
 
