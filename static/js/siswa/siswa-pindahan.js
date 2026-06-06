@@ -57,9 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (stepStatus[index] === "done") {
                 step.classList.add("done");
+                circle.textContent = "";
             }
             else if (stepStatus[index] === "active") {
                 step.classList.add("active");
+                circle.textContent = index + 1;
+            }
+            else {
+                circle.textContent = index + 1;
             }
 
         });
