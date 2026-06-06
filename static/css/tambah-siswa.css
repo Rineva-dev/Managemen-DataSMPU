@@ -233,10 +233,6 @@
         grid-template-columns: 1fr;
     }
 
-    .page-tambah-siswa .actions {
-        flex-direction: column-reverse;
-    }
-
     .page-tambah-siswa .step span {
         display: none;
     }
@@ -417,6 +413,7 @@
     .page-tambah-siswa .section-header {
         padding: 12px;
         border-radius: 10px;
+        margin-top: 0;
     }
 
     .page-tambah-siswa .section-icon {
