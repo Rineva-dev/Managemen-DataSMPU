@@ -356,6 +356,10 @@
         flex-shrink:0;
     }
 
+    .dropdown-menu {
+        right: 0 !important;
+    }
+
     .filter-search-group{
         width:100%;
     }
