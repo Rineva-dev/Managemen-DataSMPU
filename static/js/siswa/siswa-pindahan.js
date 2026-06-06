@@ -83,25 +83,21 @@ document.addEventListener("DOMContentLoaded", () => {
         // ================================
         if (currentStep === 0) {
 
-            // ❌ TIDAK ADA HIJAU
             progressDone.style.width = "0%";
-
-            // ✅ KUNING DIMULAI DARI STEP 1
             progressActive.style.left = "0%";
             progressActive.style.width = stepWidth + "%";
 
-        }
-        // ================================
-        // STEP > 0 (NORMAL)
-        // ================================
-        else {
+        } else {
 
-            // HIJAU = step yang sudah lewat
+            const overlap = stepWidth * 0.15;
+
             progressDone.style.width = (currentStep * stepWidth) + "%";
 
-            // KUNING = step aktif
-            progressActive.style.left = progressDone.style.width;
-            progressActive.style.width = stepWidth + "%";
+            progressActive.style.left =
+                (currentStep * stepWidth - overlap) + "%";
+
+            progressActive.style.width =
+                (stepWidth + overlap) + "%";
         }
 
         progressActive.classList.remove("has-prev", "has-next");
