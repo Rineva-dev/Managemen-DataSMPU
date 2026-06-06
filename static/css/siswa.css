@@ -464,9 +464,16 @@
         line-height: 1;
     }
 
-    .left-actions .dropdown {
-        margin: 0;
-        min-width: 10px;
+    .dropdown {
+        position: relative;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 180px;
+        z-index: 1000;
     }
 
     .filter-search-group {

@@ -897,4 +897,21 @@ document.addEventListener("DOMContentLoaded", function () {
         renderTable();
 
     }
+
+    document.addEventListener("click", function (e) {
+        const toggle = e.target.closest(".dropdown-toggle");
+        if (!toggle) return;
+
+        const dropdown = toggle.closest(".dropdown");
+        const menu = dropdown.querySelector(".dropdown-menu");
+
+        menu.style.left = "";
+        menu.style.right = "";
+
+        const rect = menu.getBoundingClientRect();
+        if (rect.right > window.innerWidth) {
+            menu.style.right = "0";
+            menu.style.left = "auto";
+        }
+    });
 });
