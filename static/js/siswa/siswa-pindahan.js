@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressBar = document.getElementById("progressBar");
 
     let currentStep = 0;
+    const stepStatus = Array(steps.length).fill("empty");
     let notifShowing = false;
 
     // ================= AUTO NUMBER STEP =================
@@ -35,48 +36,56 @@ document.addEventListener("DOMContentLoaded", () => {
     // ================= UPDATE UI =================
     function updateStepUI() {
 
-        // tampilkan step form
+        // ===== FORM STEP =====
         steps.forEach((step, index) => {
-            step.classList.remove("active");
-            if (index === currentStep) {
-                step.classList.add("active");
-            }
+            step.classList.toggle("active", index === currentStep);
         });
 
-        // update stepper atas
+        // ===== UPDATE STATUS =====
+        stepStatus.forEach((_, i) => {
+            if (i === currentStep) stepStatus[i] = "active";
+            if (i > currentStep && stepStatus[i] !== "done") stepStatus[i] = "empty";
+        });
+
+        // ===== STEPPER ATAS =====
         stepIndicators.forEach((step, index) => {
 
             step.classList.remove("active", "done");
-
             const circle = step.querySelector(".circle");
 
-            if (index === currentStep) {
-
+            if (stepStatus[index] === "done") {
+                step.classList.add("done");
+                circle.textContent = "✓";
+            }
+            else if (stepStatus[index] === "active") {
                 step.classList.add("active");
                 circle.textContent = index + 1;
-
-            } else if (index < currentStep) {
-
-                step.classList.add("done");
-                circle.textContent = "";
-
-            } else {
-
+            }
+            else {
                 circle.textContent = index + 1;
-
             }
 
         });
 
-        // update progress bar
-        const progressPercent = ((currentStep) / (steps.length - 1)) * 100;
-        progressBar.style.width = progressPercent + "%";
+        // ===== PROGRESS BAR (GRADASI) =====
+        const percent = (currentStep / (steps.length - 1)) * 100;
+        progressBar.style.width = percent + "%";
 
-        // auto focus input pertama
-        const firstInput = steps[currentStep].querySelector("input, textarea");
-        if (firstInput) {
-            firstInput.focus();
+        progressBar.className = "progress-bar";
+
+        if (currentStep === 0) {
+            progressBar.classList.add("step-active");
+        } 
+        else if (currentStep < steps.length - 1) {
+            progressBar.classList.add("step-mix");
+        } 
+        else {
+            progressBar.classList.add("step-done");
         }
+
+        // auto focus
+        const firstInput = steps[currentStep].querySelector("input, textarea");
+        firstInput?.focus();
     }
 
     // ================= VALIDASI STEP =================
@@ -117,34 +126,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ================= NEXT BUTTON =================
-    nextBtns.forEach(btn => {
+    btn.addEventListener("click", (e) => {
 
-        btn.addEventListener("click", (e) => {
+        e.preventDefault();
 
-            e.preventDefault();
+        if (!validateStep()) {
 
-            if (!validateStep()) {
+            if (!notifShowing) {
+                notifShowing = true;
+                showNotification("Wajib isi semua data", "error");
 
-                if(!notifShowing){
-                    notifShowing = true;
-
-                    showNotification("Wajib isi semua data", "error");
-
-                    setTimeout(()=>{
-                        notifShowing = false;
-                    },1500);
-                }
-                return;
-                
+                setTimeout(() => notifShowing = false, 1500);
             }
+            return;
+        }
 
-            if (currentStep < steps.length - 1) {
-                currentStep++;
-                updateStepUI();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            }
+        // ✅ BARU TANDAI DONE KALAU VALID
+        stepStatus[currentStep] = "done";
 
-        });
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            updateStepUI();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
 
     });
 
