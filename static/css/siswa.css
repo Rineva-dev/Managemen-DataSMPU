@@ -433,6 +433,8 @@
 
 .left-actions {
     align-items: center !important;
+    display: flex;
+    gap: 4px;
 }
 
 /* ================= LEFT ACTIONS – FULL WIDTH FIX ================= */
