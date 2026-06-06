@@ -50,6 +50,16 @@
     width: var(--step-progress);
 }
 
+.step.done .circle {
+    font-size: 0 !important;
+}
+
+.step.done .circle::after {
+    content: "✓";
+    font-size: 14px;
+    color: #fff;
+}
+
 /* STEP WARNA */
 .page-tambah-siswa .step.active .circle {
     background: #facc15;
