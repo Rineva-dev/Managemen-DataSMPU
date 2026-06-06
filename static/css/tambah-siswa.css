@@ -87,6 +87,30 @@
     background: #16a34a;
 }
 
+/* STEP WARNA */
+.step.active .circle {
+    background: #facc15; /* kuning */
+    color: #78350f;
+}
+
+.step.done .circle {
+    background: #16a34a; /* hijau */
+    color: white;
+}
+
+/* PROGRESS BAR */
+.progress-bar.step-active {
+    background: #facc15;
+}
+
+.progress-bar.step-mix {
+    background: linear-gradient(90deg, #16a34a, #facc15);
+}
+
+.progress-bar.step-done {
+    background: #16a34a;
+}
+
 /* ================= FORM STEP ================= */
 .page-tambah-siswa form {
     position: relative;
