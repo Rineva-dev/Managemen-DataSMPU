@@ -74,7 +74,6 @@ document.addEventListener("DOMContentLoaded", () => {
         progressBar.style.width = percent + "%";
         progressBar.className = "progress-bar";
 
-        // STATE WARNA
         if (currentStep === 0) {
             progressBar.classList.add("state-start");
         }

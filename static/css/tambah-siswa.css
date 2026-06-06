@@ -71,10 +71,9 @@
 }
 
 /* ================= PROGRESS BAR ================= */
-
 .page-tambah-siswa .progress {
     height: 6px;
-    background: #e5e7eb; /* abu */
+    background: #e5e7eb;
     border-radius: 999px;
     overflow: hidden;
 }
