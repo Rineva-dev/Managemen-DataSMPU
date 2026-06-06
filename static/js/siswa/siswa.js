@@ -56,31 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
             window.location.href = '/naikkan-kelas';
     });
 
-        dropdowns.forEach(dropdown => {
-            const toggle = dropdown.querySelector(".dropdown-toggle");
-
-            if (toggle) {
-                toggle.addEventListener("click", function (e) {
-                    e.stopPropagation();
-
-                    // Tutup dropdown lain
-                    dropdowns.forEach(d => {
-                        if (d !== dropdown) {
-                            d.classList.remove("open");
-                        }
-                    });
-
-                    // Toggle dropdown ini
-                    dropdown.classList.toggle("open");
-                });
-            }
-        });
-
-        // Klik luar → tutup semua
-        document.addEventListener("click", function () {
-            dropdowns.forEach(d => d.classList.remove("open"));
-        });
-
         // CHECK ALL
         document.getElementById("check-all")?.addEventListener("change", function() {
             document.querySelectorAll("input[name='selected']")
@@ -101,6 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let activeWrap = null;
 
     document.addEventListener("click", function(e){
+
+        if (e.target.closest(".dropdown")) return;
 
         const target = e.target instanceof Element ? e.target : null;
         const btn = target ? target.closest(".aksi-btn") : null;
