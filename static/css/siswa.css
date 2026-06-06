@@ -436,6 +436,48 @@
     display: block;
 }
 
+/* ================= STEP 2 – PENDIDIKAN ================= */
+
+/* Container visual per section */
+.page-tambah-siswa .form-step:nth-of-type(2) {
+    row-gap: 22px;
+}
+
+/* Section block */
+.page-tambah-siswa .section-header {
+    grid-column: 1 / -1;
+    padding: 14px 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+/* Spacing setelah section header */
+.page-tambah-siswa .section-header + .form-group {
+    margin-top: 6px;
+}
+
+/* Lebih enak dibaca */
+.page-tambah-siswa .section-header h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* Field penting full width */
+.page-tambah-siswa textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+/* ================= STEP 2 GRID CONTROL ================= */
+.page-tambah-siswa .form-step:nth-of-type(2) .form-group:nth-of-type(1),
+.page-tambah-siswa .form-step:nth-of-type(2) .form-group:nth-of-type(3),
+.page-tambah-siswa .form-step:nth-of-type(2) .form-group:nth-of-type(8),
+.page-tambah-siswa .form-step:nth-of-type(2) .form-group:nth-of-type(9) {
+    grid-column: 1 / -1;
+}
+
 /* ================= LEFT ACTIONS – FULL WIDTH FIX ================= */
 @media (max-width: 576px) {
 
@@ -489,6 +531,20 @@
 
     .modal-body {
         padding: 0;
+    }
+
+    .page-tambah-siswa .section-header {
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .page-tambah-siswa .section-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .page-tambah-siswa textarea {
+        min-height: 80px;
     }
 
 }
