@@ -71,7 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // ===== PROGRESS BAR (FINAL & PRESISI) =====
         const total = steps.length;
-        const stepWidth = 100 / (total - 1);
+        const stepWidth = 100 / total;
+        const fade = stepWidth * 0.18;
 
         // RESET
         progressDone.style.width = "0%";
@@ -80,30 +81,30 @@ document.addEventListener("DOMContentLoaded", () => {
         progressActive.classList.remove("has-prev", "has-next");
 
         if (currentStep === 0) {
-
-            // STEP 1
-            // KUNING FULL DI STEP 1
-            progressDone.style.width = "0%";
             progressActive.style.left = "0%";
             progressActive.style.width = stepWidth + "%";
             progressActive.classList.add("has-next");
 
         } else {
 
-            // CONTOH STEP 2:
-            // progress-done = 25%
-            // progress-active = left 17% | width 37%
+            // =========================
+            // HIJAU SOLID (STEP SELESAI)
+            // =========================
+            progressDone.style.width =
+                (currentStep * stepWidth) + "%";
 
-            const doneWidth = currentStep * stepWidth;
-            const activeWidth = stepWidth * 1.48;   // ≈ 37%
-            const activeLeft  = doneWidth - (stepWidth * 0.32); // ≈ 17%
+            // =========================
+            // KUNING SOLID (STEP AKTIF)
+            // =========================
+            progressActive.style.left =
+                (currentStep * stepWidth) + "%";
 
-            progressDone.style.width = doneWidth + "%";
-            progressActive.style.left = activeLeft + "%";
-            progressActive.style.width = activeWidth + "%";
+            progressActive.style.width =
+                stepWidth + "%";
 
             progressActive.classList.add("has-prev");
-            if (currentStep < steps.length - 1) {
+
+            if (currentStep < total - 1) {
                 progressActive.classList.add("has-next");
             }
         }
