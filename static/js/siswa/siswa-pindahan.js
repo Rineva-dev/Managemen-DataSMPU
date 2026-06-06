@@ -69,45 +69,52 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
 
-        // ===== PROGRESS BAR (FIXED & BENAR) =====
+        // ===== PROGRESS BAR (FINAL & PRESISI) =====
         const total = steps.length;
-        const stepWidth = 100 / (total - 1);
+        const stepWidth = 100 / total;
+        const fade = stepWidth * 0.18;
 
         // RESET
         progressDone.style.width = "0%";
         progressActive.style.width = "0%";
         progressActive.style.left = "0%";
+        progressActive.classList.remove("has-prev", "has-next");
 
-        // ================================
-        // STEP 0 (AWAL) — KHUSUS
-        // ================================
+        /*
+        TARGET VISUAL:
+        [ HIJAU ] — (HIJAU→KUNING) — [ KUNING ] — (KUNING→ABU) — [ ABU ]
+        */
+
         if (currentStep === 0) {
 
-            progressDone.style.width = "0%";
+            // STEP 1 (awal)
+            // Kuning full di step 1
             progressActive.style.left = "0%";
             progressActive.style.width = stepWidth + "%";
+            progressActive.classList.add("has-next");
 
         } else {
 
-            const overlap = stepWidth * 0.15;
+            // =========================
+            // HIJAU SOLID (STEP SELESAI)
+            // =========================
+            progressDone.style.width =
+                (currentStep * stepWidth) + "%";
 
-            progressDone.style.width = (currentStep * stepWidth) + "%";
-
+            // =========================
+            // KUNING SOLID (STEP AKTIF)
+            // =========================
             progressActive.style.left =
-                (currentStep * stepWidth - overlap) + "%";
+                (currentStep * stepWidth) + "%";
 
             progressActive.style.width =
-                (stepWidth + overlap) + "%";
-        }
+                stepWidth + "%";
 
-        progressActive.classList.remove("has-prev", "has-next");
-
-        if (currentStep > 0) {
             progressActive.classList.add("has-prev");
-        }
 
-        if (currentStep < steps.length - 1) {
-            progressActive.classList.add("has-next");
+            if (currentStep < total - 1) {
+                progressActive.classList.add("has-next");
+            }
         }
 
         // auto focus
