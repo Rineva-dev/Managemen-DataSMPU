@@ -1426,7 +1426,7 @@ input.error, select.error {
     overflow-x: auto;
     overflow-y: visible;
     scroll-behavior: smooth;
-    scrollbar-width: unset;
+    scrollbar-width: thin;
     scrollbar-color: #ff6a00 transparent;
 }
 
