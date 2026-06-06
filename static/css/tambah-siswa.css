@@ -89,6 +89,7 @@
     background: #f9fafb;
     font-size: 14px;
     transition: all .2s ease;
+    width: 100%;
 }
 
 .page-tambah-siswa input:focus,
