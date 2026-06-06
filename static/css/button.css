@@ -803,6 +803,7 @@
     gap: 8px !important;
 }
 
+.dropdown-toggle-add svg,
 .dropdown-toggle svg {
     width: 15px;
     height: 15px;
