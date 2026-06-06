@@ -38,45 +38,59 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentStep = 0;
     const stepStatus = Array(steps.length).fill("empty");
 
-    /* ================= PROGRESS BAR – FINAL PRESISI ================= */
-    const total = steps.length;
-    const stepWidth = 100 / total;
+    function showStep(index) {
 
-    // RESET
-    [progressDone, progressPrev, progressActive, progressNext].forEach(el => {
-        el.style.width = "0%";
-        el.style.left = "0%";
-    });
+        const total = steps.length;
+        const stepWidth = 100 / total;
 
-    // ================= STEP 0 =================
-    if (index === 0) {
+        // RESET
+        [progressDone, progressPrev, progressActive, progressNext].forEach(el => {
+            el.style.width = "0%";
+            el.style.left = "0%";
+        });
 
-        // ACTIVE (kuning)
-        progressActive.style.left = "0%";
-        progressActive.style.width = stepWidth + "%";
+        // ================= STEP 0 =================
+        if (index === 0) {
 
-        // NEXT (abu)
-        progressNext.style.left = stepWidth + "%";
-        progressNext.style.width = (100 - stepWidth) + "%";
+            // ACTIVE (kuning)
+            progressActive.style.left = "0%";
+            progressActive.style.width = stepWidth + "%";
 
-    }
-    // ================= STEP > 0 =================
-    else {
+            // NEXT (abu)
+            progressNext.style.left = stepWidth + "%";
+            progressNext.style.width = (100 - stepWidth) + "%";
 
-        // DONE (hijau)
-        progressDone.style.left = "0%";
-        progressDone.style.width = (index * stepWidth) + "%";
-
-        // ACTIVE (kuning)
-        progressActive.style.left = (index * stepWidth) + "%";
-        progressActive.style.width = stepWidth + "%";
-
-        // NEXT (abu)
-        const nextWidth = 100 - ((index + 1) * stepWidth);
-        if (nextWidth > 0) {
-            progressNext.style.left = ((index + 1) * stepWidth) + "%";
-            progressNext.style.width = nextWidth + "%";
         }
+        // ================= STEP > 0 =================
+        else {
+
+            // DONE (hijau)
+            progressDone.style.left = "0%";
+            progressDone.style.width = (index * stepWidth) + "%";
+
+            // ACTIVE (kuning)
+            progressActive.style.left = (index * stepWidth) + "%";
+            progressActive.style.width = stepWidth + "%";
+
+            // NEXT (abu)
+            const nextWidth = 100 - ((index + 1) * stepWidth);
+            if (nextWidth > 0) {
+                progressNext.style.left = ((index + 1) * stepWidth) + "%";
+                progressNext.style.width = nextWidth + "%";
+            }
+        }
+
+        /* ===== FORM STEP ===== */
+        steps.forEach((step, i) => {
+            step.classList.toggle("active", i === index);
+        });
+
+        /* ===== STEPPER ===== */
+        stepIndicators.forEach((indicator, i) => {
+            indicator.classList.remove("active", "done");
+            if (i < index) indicator.classList.add("done");
+            if (i === index) indicator.classList.add("active");
+        });
     }
 
     /* ======================================================
