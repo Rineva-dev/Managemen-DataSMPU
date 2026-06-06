@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextBtns = document.querySelectorAll(".btn-next");
     const prevBtns = document.querySelectorAll(".btn-prev");
     const progressBar = document.getElementById("progressBar");
+    const progressDone = document.querySelector(".progress-done");
+    const progressActive = document.querySelector(".progress-active");
 
     let currentStep = 0;
     const stepStatus = Array(steps.length).fill("empty");
@@ -67,22 +69,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
 
-        // ===== PROGRESS BAR DINAMIS =====
-        const totalStep = steps.length - 1;
-        const percent = (currentStep / totalStep) * 100;
+        // ===== PROGRESS BAR (FIXED & BENAR) =====
+        const total = steps.length;
+        const stepWidth = 100 / (total - 1);
 
-        progressBar.style.width = percent + "%";
-        progressBar.className = "progress-bar";
+        // 1️⃣ HIJAU = step yang sudah selesai
+        progressDone.style.width = (currentStep * stepWidth) + "%";
 
-        if (currentStep === 0) {
-            progressBar.classList.add("state-start");
-        }
-        else if (currentStep < totalStep) {
-            progressBar.classList.add("state-middle");
-        }
-        else {
-            progressBar.classList.add("state-end");
-        }
+        // 2️⃣ KUNING = step aktif (1 step penuh)
+        progressActive.style.left = progressDone.style.width;
+        progressActive.style.width = stepWidth + "%";
 
         // auto focus
         const firstInput = steps[currentStep].querySelector("input, textarea");

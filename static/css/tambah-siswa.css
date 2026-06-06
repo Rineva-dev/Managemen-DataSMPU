@@ -70,41 +70,41 @@
     color: #fff;
 }
 
-/* ================= PROGRESS BAR ================= */
+/* ================= PROGRESS BAR FIX ================= */
+
 .page-tambah-siswa .progress {
+    position: relative;
     height: 6px;
-    background: #e5e7eb;
+    background: #e5e7eb; /* abu = future */
     border-radius: 999px;
     overflow: hidden;
 }
 
-.page-tambah-siswa .progress-bar {
+/* STEP DONE (HIJAU) */
+.progress-done {
+    position: absolute;
+    left: 0;
+    top: 0;
     height: 100%;
     width: 0%;
-    border-radius: 999px;
-    transition: width .35s ease, background .35s ease;
+    background: #16a34a;
+    transition: width .35s ease;
 }
 
-/* WARNA STATE */
-.progress-bar.state-start {
-    background: linear-gradient(
-        90deg,
-        #facc15 0%,
-        #e5e7eb 100%
-    );
-}
-
-.progress-bar.state-middle {
+/* STEP ACTIVE (KUNING + GRADASI) */
+.progress-active {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    left: 0;
     background: linear-gradient(
         90deg,
         #16a34a 0%,
         #facc15 50%,
-        #e5e7eb 100%
+        #facc15 100%
     );
-}
-
-.progress-bar.state-end {
-    background: #16a34a;
+    transition: width .35s ease, left .35s ease;
 }
 
 /* ================= FORM STEP ================= */
