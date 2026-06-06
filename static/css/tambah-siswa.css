@@ -389,6 +389,10 @@
     color: #6b7280;
 }
 
+/* STEP 1: tombol Next di kanan */
+.page-tambah-siswa .form-step:first-of-type .actions {
+    justify-content: flex-end;
+}
 
 @media (max-width: 640px) {
 
