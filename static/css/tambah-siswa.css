@@ -61,12 +61,12 @@
 
 /* STEP WARNA */
 .page-tambah-siswa .step.active .circle {
-    background: #facc15; /* kuning */
+    background: #facc15;
     color: #78350f;
 }
 
 .page-tambah-siswa .step.done .circle {
-    background: #16a34a; /* hijau */
+    background: #16a34a;
     color: #fff;
 }
 
