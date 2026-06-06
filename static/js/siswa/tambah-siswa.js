@@ -91,6 +91,17 @@ document.addEventListener("DOMContentLoaded", function () {
             if (i < index) indicator.classList.add("done");
             if (i === index) indicator.classList.add("active");
         });
+
+        // ===== AKTIFKAN GRADASI SESUAI POSISI STEP =====
+        progressActive.classList.remove("has-prev", "has-next");
+
+        if (index > 0) {
+            progressActive.classList.add("has-prev");
+        }
+
+        if (index < steps.length - 1) {
+            progressActive.classList.add("has-next");
+        }
     }
 
     /* ======================================================
