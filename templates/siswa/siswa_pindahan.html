@@ -1,6 +1,20 @@
 <div class="page-tambah-siswa">
     <div class="tambah-container">
 
+        <div class="breadcrumb">
+            <a href="/kelas-ampu" class="breadcrumb-link">
+                Kelas Ampu
+            </a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="/kelas-ampu/{{ absensi.kelas_mapel_id }}/overview" class="breadcrumb-link">
+                Overview
+            </a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-current">
+                Absensi Siswa
+            </span>
+        </div>
+
         <!-- TOMBOL KEMBALI -->
         <a href="{{ url_for('siswa.detail_siswa', nisn=siswa.nisn) if siswa else url_for('siswa.index') }}" class="btn btn-back-top">
             <span class="icon-arrow">←</span>
