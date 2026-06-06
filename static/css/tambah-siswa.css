@@ -126,10 +126,30 @@
     background: linear-gradient(
         90deg,
         #16a34a 0%,
-        #16a34a 6%,
-        #facc15 18%,
+        #16a34a 15%,
+        #facc15 25%,
         #facc15 82%,
         #e5e7eb 94%,
+        #e5e7eb 100%
+    );
+}
+
+.progress-active.has-prev:not(.has-next) {
+    background: linear-gradient(
+        90deg,
+        #16a34a 0%,
+        #16a34a 15%,
+        #facc15 30%,
+        #facc15 100%
+    );
+}
+
+.progress-active:not(.has-prev).has-next {
+    background: linear-gradient(
+        90deg,
+        #facc15 0%,
+        #facc15 80%,
+        #e5e7eb 95%,
         #e5e7eb 100%
     );
 }
