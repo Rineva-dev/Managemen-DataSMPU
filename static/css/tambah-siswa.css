@@ -93,13 +93,6 @@
     height: 42px
 }
 
-.page-tambah-siswa input:focus,
-.page-tambah-siswa select:focus {
-    background: #ffffff;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 4px rgba(37,99,235,.15);
-}
-
 .dropdown-selected {
     height: 42px;
     background: #f9f9f9;
