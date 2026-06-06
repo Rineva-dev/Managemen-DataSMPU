@@ -67,20 +67,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
 
-        // ===== PROGRESS BAR (GRADASI) =====
-        const percent = (currentStep / (steps.length - 1)) * 100;
-        progressBar.style.width = percent + "%";
+        // ===== PROGRESS BAR DINAMIS =====
+        const totalStep = steps.length - 1;
+        const percent = (currentStep / totalStep) * 100;
 
+        progressBar.style.width = percent + "%";
         progressBar.className = "progress-bar";
 
+        // STATE WARNA
         if (currentStep === 0) {
-            progressBar.classList.add("step-active");
-        } 
-        else if (currentStep < steps.length - 1) {
-            progressBar.classList.add("step-mix");
-        } 
+            progressBar.classList.add("state-start");
+        }
+        else if (currentStep < totalStep) {
+            progressBar.classList.add("state-middle");
+        }
         else {
-            progressBar.classList.add("step-done");
+            progressBar.classList.add("state-end");
         }
 
         // auto focus

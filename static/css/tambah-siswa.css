@@ -70,44 +70,41 @@
     color: #fff;
 }
 
-/* PROGRESS BAR GRADASI */
-.page-tambah-siswa .progress-bar.step-active {
-    background: #facc15;
+/* ================= PROGRESS BAR ================= */
+
+.page-tambah-siswa .progress {
+    height: 6px;
+    background: #e5e7eb; /* abu */
+    border-radius: 999px;
+    overflow: hidden;
 }
 
-.page-tambah-siswa .progress-bar.step-mix {
+.page-tambah-siswa .progress-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    transition: width .35s ease, background .35s ease;
+}
+
+/* WARNA STATE */
+.progress-bar.state-start {
     background: linear-gradient(
         90deg,
-        #16a34a,
-        #facc15
+        #facc15 0%,
+        #e5e7eb 100%
     );
 }
 
-.page-tambah-siswa .progress-bar.step-done {
-    background: #16a34a;
+.progress-bar.state-middle {
+    background: linear-gradient(
+        90deg,
+        #16a34a 0%,
+        #facc15 50%,
+        #e5e7eb 100%
+    );
 }
 
-/* STEP WARNA */
-.step.active .circle {
-    background: #facc15; /* kuning */
-    color: #78350f;
-}
-
-.step.done .circle {
-    background: #16a34a; /* hijau */
-    color: white;
-}
-
-/* PROGRESS BAR */
-.progress-bar.step-active {
-    background: #facc15;
-}
-
-.progress-bar.step-mix {
-    background: linear-gradient(90deg, #16a34a, #facc15);
-}
-
-.progress-bar.step-done {
+.progress-bar.state-end {
     background: #16a34a;
 }
 
