@@ -323,6 +323,10 @@
     margin: 24px 0 12px;
 }
 
+.section-header h4 {
+    margin: 0 !important;
+}
+
 .section-icon {
     width: 34px;
     height: 34px;
