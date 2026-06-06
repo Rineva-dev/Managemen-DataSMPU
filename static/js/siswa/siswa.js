@@ -8,22 +8,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
     dropdowns.forEach(dropdown => {
         const toggle = dropdown.querySelector(".dropdown-toggle");
+        const menu = dropdown.querySelector(".dropdown-menu");
 
-        if (toggle) {
-            toggle.addEventListener("click", function (e) {
-                e.stopPropagation();
+        if (!toggle || !menu) return;
 
-                // Tutup dropdown lain
-                dropdowns.forEach(d => {
-                    if (d !== dropdown) {
-                        d.classList.remove("active");
-                    }
-                });
+        toggle.addEventListener("click", function (e) {
+            e.stopPropagation();
 
-                // Toggle dropdown ini
-                dropdown.classList.toggle("active");
+            // tutup dropdown lain
+            dropdowns.forEach(d => {
+                if (d !== dropdown) d.classList.remove("open");
             });
-        }
+
+            dropdown.classList.toggle("open");
+
+            // === AUTO POSITION FIX ===
+            menu.style.left = "";
+            menu.style.right = "";
+
+            // paksa browser render dulu
+            requestAnimationFrame(() => {
+                const rect = menu.getBoundingClientRect();
+
+                if (rect.right > window.innerWidth) {
+                    menu.style.right = "0";
+                    menu.style.left = "auto";
+                } else {
+                    menu.style.left = "0";
+                    menu.style.right = "auto";
+                }
+            });
+        });
+    });
+
+    // klik luar → tutup
+    document.addEventListener("click", () => {
+        dropdowns.forEach(d => d.classList.remove("open"));
     });
 
     // Klik di luar → tutup semua
@@ -898,20 +918,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    document.addEventListener("click", function (e) {
-        const toggle = e.target.closest(".dropdown-toggle");
-        if (!toggle) return;
-
-        const dropdown = toggle.closest(".dropdown");
-        const menu = dropdown.querySelector(".dropdown-menu");
-
-        menu.style.left = "";
-        menu.style.right = "";
-
-        const rect = menu.getBoundingClientRect();
-        if (rect.right > window.innerWidth) {
-            menu.style.right = "0";
-            menu.style.left = "auto";
-        }
-    });
 });
