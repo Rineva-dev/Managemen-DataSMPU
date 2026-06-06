@@ -315,11 +315,41 @@
     max-width: 100%;
 }
 
+/* ================= ICON (LUCIDE) ================= */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 24px 0 12px;
+}
+
+.section-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2563eb;
+}
+
+.section-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+}
+
+.btn-back-top i svg {
+    width: 18px;
+    height: 18px;
+}
+
 @media (max-width: 640px) {
 
     .page-tambah-siswa .card-tambah-siswa {
         padding: 20px 16px;
-        border-radius: 16px;
+        border-radius: 12px;
     }
 
     .page-tambah-siswa .container {
@@ -332,6 +362,7 @@
         height: 43px;
         box-shadow: none;
         background: #f9f9f9;
+        font-size: 14px;
     }
 
 }
