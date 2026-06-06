@@ -70,6 +70,7 @@
 .page-tambah-siswa .form-group {
     display: flex;
     flex-direction: column;
+    gap: 0;
 }
 
 .page-tambah-siswa .form-group.full {
@@ -347,12 +348,6 @@
 
 
 /* ================= STEP 2 – PENDIDIKAN ================= */
-
-/* Container visual per section */
-.page-tambah-siswa .form-step:nth-of-type(2) {
-    row-gap: 22px;
-}
-
 /* Section block */
 .page-tambah-siswa .section-header {
     grid-column: 1 / -1;
@@ -365,6 +360,7 @@
     font-size: 14px;
     font-weight: 700;
     color: #1f2937;
+    margin-top: 20px;
 }
 
 /* Field penting full width */
