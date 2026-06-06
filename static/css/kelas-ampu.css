@@ -44,7 +44,6 @@
     box-shadow:0 0 0 3px rgba(37,99,235,.12);
 }
 
-
 .breadcrumb {
     display: flex;
     align-items: center;
@@ -71,8 +70,6 @@
 .breadcrumb-current {
     color: #6b7280;
 }
-
-
 
 /* =========================================================
    GRID
