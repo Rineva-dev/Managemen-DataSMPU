@@ -73,12 +73,36 @@ document.addEventListener("DOMContentLoaded", () => {
         const total = steps.length;
         const stepWidth = 100 / (total - 1);
 
-        // 1️⃣ HIJAU = step yang sudah selesai
-        progressDone.style.width = (currentStep * stepWidth) + "%";
+        // RESET
+        progressDone.style.width = "0%";
+        progressActive.style.width = "0%";
+        progressActive.style.left = "0%";
 
-        // 2️⃣ KUNING = step aktif (1 step penuh)
-        progressActive.style.left = progressDone.style.width;
-        progressActive.style.width = stepWidth + "%";
+        // ================================
+        // STEP 0 (AWAL) — KHUSUS
+        // ================================
+        if (currentStep === 0) {
+
+            // ❌ TIDAK ADA HIJAU
+            progressDone.style.width = "0%";
+
+            // ✅ KUNING DIMULAI DARI STEP 1
+            progressActive.style.left = "0%";
+            progressActive.style.width = stepWidth + "%";
+
+        }
+        // ================================
+        // STEP > 0 (NORMAL)
+        // ================================
+        else {
+
+            // HIJAU = step yang sudah lewat
+            progressDone.style.width = (currentStep * stepWidth) + "%";
+
+            // KUNING = step aktif
+            progressActive.style.left = progressDone.style.width;
+            progressActive.style.width = stepWidth + "%";
+        }
 
         // auto focus
         const firstInput = steps[currentStep].querySelector("input, textarea");
