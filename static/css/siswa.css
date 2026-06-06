@@ -420,6 +420,22 @@
     padding: 0 20px;
 }
 
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    display: none;
+    min-width: 180px;
+    z-index: 1000;
+}
+
+.dropdown.open .dropdown-menu {
+    display: block;
+}
+
 /* ================= LEFT ACTIONS – FULL WIDTH FIX ================= */
 @media (max-width: 576px) {
 
@@ -457,18 +473,6 @@
     .left-actions .btn i {
         font-size: 20px;
         line-height: 1;
-    }
-
-    .dropdown {
-        position: relative;
-    }
-
-    .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        min-width: 180px;
-        z-index: 1000;
     }
 
     .filter-search-group {

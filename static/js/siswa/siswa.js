@@ -22,11 +22,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             dropdown.classList.toggle("open");
 
-            // === AUTO POSITION FIX ===
+            // reset posisi
             menu.style.left = "";
             menu.style.right = "";
 
-            // paksa browser render dulu
+            // hitung setelah tampil
             requestAnimationFrame(() => {
                 const rect = menu.getBoundingClientRect();
 
@@ -42,13 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // klik luar → tutup
-    document.addEventListener("click", () => {
-        dropdowns.forEach(d => d.classList.remove("open"));
-    });
-
-    // Klik di luar → tutup semua
     document.addEventListener("click", function () {
-        dropdowns.forEach(d => d.classList.remove("active"));
+        dropdowns.forEach(d => d.classList.remove("open"));
     });
 
     document.getElementById("check-all")?.addEventListener("change", function() {
