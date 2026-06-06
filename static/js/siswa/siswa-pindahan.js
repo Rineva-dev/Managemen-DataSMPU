@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // ===== PROGRESS BAR (FINAL & PRESISI) =====
         const total = steps.length;
         const stepWidth = 100 / total;
-        const fade = stepWidth * 0.18;
+        const fade = stepWidth * 0.15;
 
         // RESET
         progressDone.style.width = "0%";
