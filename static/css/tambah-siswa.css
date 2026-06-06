@@ -70,50 +70,71 @@
     color: #fff;
 }
 
-/* ================= PROGRESS BAR FIX ================= */
+/* ================= PROGRESS BAR FINAL ================= */
+
 .progress {
     position: relative;
     height: 6px;
-    background: #e5e7eb;
+    background: #e5e7eb; /* abu future */
     border-radius: 999px;
     overflow: hidden;
 }
 
+/* HIJAU SOLID (STEP SELESAI) */
 .progress-done {
     position: absolute;
     left: 0;
     height: 100%;
     background: #16a34a;
     z-index: 1;
+    transition: width .35s ease;
 }
 
-.progress-prev {
-    position: absolute;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        #16a34a 0%,
-        #facc15 100%
-    );
-    z-index: 2;
-}
-
+/* STEP AKTIF (KUNING + GRADASI) */
 .progress-active {
     position: absolute;
     height: 100%;
     background: #facc15;
-    z-index: 3;
+    z-index: 2;
+    transition: left .35s ease, width .35s ease;
 }
 
-.progress-next {
-    position: absolute;
-    height: 100%;
+/* ===== GRADASI DARI STEP SELESAI ===== */
+/* HIJAU → KUNING (HANYA DI PINGGIR KIRI) */
+.progress-active.has-prev {
+    background: linear-gradient(
+        90deg,
+        #16a34a 0%,
+        #16a34a 12%,
+        #facc15 28%,
+        #facc15 100%
+    );
+}
+
+/* ===== GRADASI KE STEP BERIKUTNYA ===== */
+/* KUNING → ABU (HANYA DI PINGGIR KANAN) */
+.progress-active.has-next {
     background: linear-gradient(
         90deg,
         #facc15 0%,
+        #facc15 72%,
+        #e5e7eb 88%,
         #e5e7eb 100%
     );
-    z-index: 2;
+}
+
+/* ===== KASUS TENGAH ===== */
+/* HIJAU → KUNING → ABU */
+.progress-active.has-prev.has-next {
+    background: linear-gradient(
+        90deg,
+        #16a34a 0%,
+        #16a34a 12%,
+        #facc15 30%,
+        #facc15 70%,
+        #e5e7eb 88%,
+        #e5e7eb 100%
+    );
 }
 
 /* ================= FORM STEP ================= */
