@@ -358,6 +358,7 @@
 
     .dropdown-menu {
         right: 0 !important;
+        left: auto;
     }
 
     .filter-search-group{
