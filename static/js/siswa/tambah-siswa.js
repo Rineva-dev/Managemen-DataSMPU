@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const stepIndicators = document.querySelectorAll(".step");
 
     let currentStep = 0;
+    const stepStatus = Array(steps.length).fill("empty");
 
     function showStep(index) {
         const totalSteps = steps.length;
@@ -41,33 +42,37 @@ document.addEventListener("DOMContentLoaded", function () {
             step.classList.toggle("active", i === index);
         });
 
-        /* STEPPER */
+        /* UPDATE STATUS STEP */
+        stepStatus.forEach((_, i) => {
+            if (i < index && stepStatus[i] !== "done") {
+                // kalau pernah valid, biarkan done
+                stepStatus[i] = stepStatus[i] === "done" ? "done" : "done";
+            }
+            if (i === index) stepStatus[i] = "active";
+            if (i > index && stepStatus[i] !== "done") stepStatus[i] = "empty";
+        });
+
+        /* STEPPER WARNA */
         stepIndicators.forEach((indicator, i) => {
             indicator.classList.remove("active", "done");
 
-            if (i < index) indicator.classList.add("done");
-            if (i === index) indicator.classList.add("active");
+            if (stepStatus[i] === "done") indicator.classList.add("done");
+            if (stepStatus[i] === "active") indicator.classList.add("active");
         });
 
-        /* PROGRESS BAR BAWAH */
+        /* PROGRESS BAR (GRADASI) */
         const progressBar = document.getElementById("progressBar");
         const percent = ((index + 1) / totalSteps) * 100;
 
         progressBar.style.width = percent + "%";
+        progressBar.className = "progress-bar";
 
-        // reset class warna
-        progressBar.className = "progress-bar step-" + (index + 1);
+        if (index === 0) progressBar.classList.add("step-active");
+        else if (index < totalSteps - 1) progressBar.classList.add("step-mix");
+        else progressBar.classList.add("step-done");
 
-        /* GARIS STEPPER ATAS */
+        /* GARIS STEPPER */
         const stepper = document.querySelector(".stepper");
-        if (stepper) {
-            const line = stepper.querySelector("::after");
-            stepper.style.setProperty(
-                "--step-progress",
-                ((index) / (totalSteps - 1)) * 100 + "%"
-            );
-        }
-
         stepper?.style.setProperty(
             "--step-progress",
             (index / (totalSteps - 1)) * 100 + "%"
@@ -145,6 +150,8 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
 
             if (!validateStep(currentStep)) return;
+
+            stepStatus[currentStep] = "done";
 
             if (currentStep < steps.length - 1) {
                 currentStep++;
