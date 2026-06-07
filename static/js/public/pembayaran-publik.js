@@ -75,6 +75,9 @@ function resetTagihanUI() {
 
 input.addEventListener("input", async () => {
 
+    selectedSiswa = null;
+    resetTagihanUI();
+
     document.getElementById("student-card").style.display = "none";
     document.getElementById("btn-cari").style.display = "none";
 
