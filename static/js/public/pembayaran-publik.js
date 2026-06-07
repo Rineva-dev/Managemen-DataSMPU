@@ -61,10 +61,10 @@ input.addEventListener("input", async () => {
                 `NISN : ${siswa.nisn}`;
 
             document.getElementById("siswa-kelas").textContent =
-                siswa.kelas || "-";
+                '${s.tingkat} || "-"';
 
             document.getElementById("siswa-rombel").textContent =
-                siswa.rombel || "-";
+                '${s.sub_kelas} || "-"';
 
             document.getElementById("siswa-badge").textContent =
                 `${siswa.kelas || ""} ${siswa.rombel || ""}`;
