@@ -47,11 +47,14 @@
             <input
                 type="text"
                 id="search-siswa"
+                autocomplete="off"
                 placeholder="Cari NISN atau Nama Siswa">
 
             <div id="hasil-siswa"></div>
 
         </div>
+
+        <input type="hidden" id="selected-siswa-id">
 
         <button id="btn-cari" class="btn-primary">
             Cek Tagihan
@@ -474,6 +477,6 @@
     </div>
 
 </div>
-
+<script src="{{ url_for('static', filename='js/public/pembayaran-publik.js') }}"></script>
 </body>
 </html>
