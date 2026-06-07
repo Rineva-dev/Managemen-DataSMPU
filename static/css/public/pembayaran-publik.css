@@ -41,12 +41,200 @@ body{
 }
 
 /* =========================
-   HERO
-========================= */
-/* =========================
-   HERO SAAS MODERN
+   TOPBAR
 ========================= */
 
+.topbar{
+    height:78px;
+
+    background:rgba(255,255,255,.82);
+
+    backdrop-filter:blur(14px);
+
+    border:1px solid #eef2f7;
+
+    border-radius:24px;
+
+    padding:0 24px;
+
+    margin-bottom:22px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    box-shadow:
+        0 10px 30px rgba(15,23,42,.04);
+}
+
+/* LEFT */
+
+.topbar-left{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.topbar-logo{
+    width:42px;
+    height:42px;
+
+    border-radius:14px;
+
+    background:#f8fafc;
+
+    border:1px solid #e5e7eb;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.topbar-logo img{
+    width:26px;
+    height:26px;
+    object-fit:contain;
+}
+
+.topbar-brand{
+    font-size:15px;
+    font-weight:800;
+
+    color:#0f172a;
+
+    letter-spacing:-0.2px;
+}
+
+/* NAV */
+
+.topbar-nav{
+    display:flex;
+    align-items:center;
+    gap:28px;
+}
+
+.topbar-nav a{
+    text-decoration:none;
+
+    color:#64748b;
+
+    font-size:14px;
+    font-weight:600;
+
+    transition:.2s;
+}
+
+.topbar-nav a:hover{
+    color:#0f172a;
+}
+
+/* ACTION */
+
+.topbar-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.btn-nav-outline{
+    height:42px;
+
+    padding:0 18px;
+
+    border-radius:14px;
+
+    border:1px solid #dbe4ee;
+
+    text-decoration:none;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#0f172a;
+
+    font-size:14px;
+    font-weight:700;
+
+    transition:.2s;
+}
+
+.btn-nav-outline:hover{
+    background:#f8fafc;
+}
+
+.btn-nav-primary{
+    height:42px;
+
+    padding:0 18px;
+
+    border-radius:14px;
+
+    text-decoration:none;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #16a34a,
+            #22c55e
+        );
+
+    color:white;
+
+    font-size:14px;
+    font-weight:700;
+
+    box-shadow:
+        0 10px 20px rgba(34,197,94,.18);
+
+    transition:.2s;
+}
+
+.btn-nav-primary:hover{
+    transform:translateY(-1px);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:900px){
+
+    .topbar{
+        height:auto;
+
+        padding:18px;
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+    }
+
+    .topbar-nav{
+        width:100%;
+
+        gap:20px;
+    }
+
+    .topbar-actions{
+        width:100%;
+    }
+
+    .btn-nav-outline,
+    .btn-nav-primary{
+        flex:1;
+    }
+}
+
+/* =========================
+   HERO
+========================= */
 .hero{
     position:relative;
 
