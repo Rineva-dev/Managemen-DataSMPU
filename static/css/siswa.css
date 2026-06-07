@@ -416,6 +416,10 @@
     gap: 4px;
 }
 
+.saas-modal {
+    width: 450px;
+}
+
 .modal-body {
     padding: 0 20px;
 }
