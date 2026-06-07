@@ -92,18 +92,17 @@ def search_siswa():
 @public_bp.route("/tagihan-spp")
 def tagihan_spp():
 
+    siswa_id = request.args.get("siswa_id", type=int)
+    if not siswa_id:
+        return jsonify([])
+
+    today = date.today()
+
     try:
-
-        siswa_id = request.args.get("siswa_id", type=int)
-        if not siswa_id:
-            return jsonify([])
-
-        today = date.today()
-
         with db() as d:
 
             siswa = d.execute("""
-                SELECT tanggal_masuk
+                SELECT tahun_masuk, status
                 FROM siswa
                 WHERE id=?
             """, (siswa_id,)).fetchone()
@@ -111,38 +110,45 @@ def tagihan_spp():
             if not siswa:
                 return jsonify([])
 
-            # 🔥 DEBUG PENTING
-            print("RAW tanggal_masuk:", siswa["tanggal_masuk"])
+            if (siswa["status"] or "").lower() != "aktif":
+                return jsonify([])
 
-            tm = siswa["tanggal_masuk"]
+            # 🔑 TAHUN MASUK (TEXT → INT)
+            try:
+                tahun_masuk = int(siswa["tahun_masuk"])
+            except:
+                return jsonify([])
 
-            if not tm:
-                # fallback kalau NULL
-                tanggal_masuk = date(today.year, 7, 1)
-            elif isinstance(tm, str):
-                tanggal_masuk = datetime.strptime(tm, "%Y-%m-%d").date()
-            else:
-                tanggal_masuk = tm
+            # 🔑 BULAN PERTAMA SPP = JULI TAHUN MASUK
+            start = date(tahun_masuk, 7, 1)
 
-            # aturan awal SPP
-            if tanggal_masuk.month <= 7:
-                start = date(tanggal_masuk.year, 7, 1)
-            else:
-                start = date(tanggal_masuk.year, tanggal_masuk.month, 1)
-
+            # 🔑 BATAS AKHIR = BULAN SEKARANG
             end = date(today.year, today.month, 1)
+
+            lunas = d.execute("""
+                SELECT bulan, tahun
+                FROM pembayaran
+                WHERE siswa_id=?
+                  AND jenis='SPP'
+                  AND status='LUNAS'
+            """, (siswa_id,)).fetchall()
+
+            lunas_set = {(r["bulan"], r["tahun"]) for r in lunas}
 
             tagihan = []
             cur = start
 
             while cur <= end:
-                tagihan.append({
-                    "bulan": cur.month,
-                    "tahun": cur.year,
-                    "nominal": 400000,
-                    "status": "Belum Dibayar"
-                })
 
+                if (cur.month, cur.year) not in lunas_set:
+                    tagihan.append({
+                        "bulan": cur.month,
+                        "tahun": cur.year,
+                        "nominal": 400000,
+                        "status": "BELUM"
+                    })
+
+                # next month
                 if cur.month == 12:
                     cur = date(cur.year + 1, 1, 1)
                 else:
@@ -153,8 +159,4 @@ def tagihan_spp():
     except Exception as e:
         import traceback
         traceback.print_exc()
-
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
+        return jsonify({"error": str(e)}), 500

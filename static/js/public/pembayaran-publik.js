@@ -150,8 +150,18 @@ document.getElementById("btn-cari")
     tagihanList.innerHTML = "Memuat tagihan...";
 
     const res = await fetch(
-        `/public/tagihan-spp?siswa_id=${siswaId}`
+    `/public/tagihan-spp?siswa_id=${siswaId}`
     );
+
+    const data = await res.json();
+
+    if (!Array.isArray(data)) {
+        console.error("Tagihan error:", data);
+        alert("Gagal memuat tagihan");
+        return;
+    }
+
+    renderTagihan(data);
 
     const data = await res.json();
 
