@@ -75,17 +75,11 @@ function resetTagihanUI() {
 
 input.addEventListener("input", async () => {
 
-    selectedSiswa = null;
-    resetTagihanUI();
-
-    document.getElementById("student-card").style.display = "none";
-    document.getElementById("btn-cari").style.display = "none";
-
     document.getElementById("grand-total").textContent = "Rp0";
 
     const q = input.value.trim();
 
-    if (q.length < 2) {
+    if (q.length < 1) {
         hasil.style.display = "none";
         return;
     }
@@ -120,7 +114,13 @@ input.addEventListener("input", async () => {
         `;
 
         item.onclick = () => {
+            selectedSiswa = null;
+
             resetTagihanUI();
+
+            document.getElementById("student-card").style.display = "none";
+            document.getElementById("btn-cari").style.display = "none";
+
             selectedSiswa = siswa;
 
             document.getElementById(
@@ -132,17 +132,13 @@ input.addEventListener("input", async () => {
 
             hasil.style.display = "none";
 
-            document.getElementById("siswa-nama").textContent =
-                siswa.nama;
+            document.getElementById("siswa-nama").textContent = siswa.nama;
 
-            document.getElementById("siswa-nisn").textContent =
-                `NISN : ${siswa.nisn}`;
+            document.getElementById("siswa-nisn").textContent = `NISN : ${siswa.nisn}`;
 
-            document.getElementById("siswa-kelas").textContent =
-                siswa.tingkat || "-";
+            document.getElementById("siswa-kelas").textContent = siswa.tingkat || "-";
 
-            document.getElementById("siswa-rombel").textContent =
-                siswa.sub_kelas || "-";
+            document.getElementById("siswa-rombel").textContent = siswa.sub_kelas || "-";
 
             document.getElementById("siswa-orangtua").textContent =
                 siswa.nama_ayah?.trim() ||
@@ -156,15 +152,8 @@ input.addEventListener("input", async () => {
             badge.textContent = statusMap[statusRaw] || "Aktif";
             badge.className = "student-badge " + badgeClass(statusRaw);
 
-            // tampilkan data siswa
-            document.getElementById(
-                "student-card"
-            ).style.display = "block";
-
-            // tampilkan tombol
-            document.getElementById(
-                "btn-cari"
-            ).style.display = "block";
+            document.getElementById("student-card").style.display = "block";
+            document.getElementById("btn-cari").style.display = "block";
         };
 
         hasil.appendChild(item);
