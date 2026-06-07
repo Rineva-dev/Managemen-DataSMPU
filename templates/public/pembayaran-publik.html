@@ -17,22 +17,25 @@
     <!-- HERO -->
     <div class="hero">
 
-        <div class="hero-glow glow-1"></div>
-        <div class="hero-glow glow-2"></div>
+        <div class="hero-bg"></div>
 
         <div class="hero-content">
 
-            <div class="hero-logo">
-                <img
-                    src="{{ url_for('static', filename='img/logo-sekolah.png') }}"
-                    alt="Logo Sekolah">
-            </div>
+            <div class="hero-left">
 
-            <div class="hero-text">
+                <div class="hero-brand">
 
-                <span class="hero-badge">
-                    Portal Pembayaran Online
-                </span>
+                    <div class="hero-logo">
+                        <img
+                            src="{{ url_for('static', filename='img/logo-sekolah.png') }}"
+                            alt="Logo Sekolah">
+                    </div>
+
+                    <span class="hero-chip">
+                        Portal Pembayaran Online
+                    </span>
+
+                </div>
 
                 <h1>
                     Pembayaran Siswa
@@ -43,9 +46,47 @@
                 </h2>
 
                 <p>
-                    Cek tagihan dan lakukan pembayaran siswa secara online
-                    dengan cepat, aman, dan modern.
+                    Cek tagihan siswa dan lakukan pembayaran sekolah
+                    secara online dengan cepat, aman, dan praktis.
                 </p>
+
+            </div>
+
+            <div class="hero-right">
+
+                <div class="hero-preview">
+
+                    <div class="preview-top">
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                        <span class="dot"></span>
+                    </div>
+
+                    <div class="preview-card">
+                        <small>Total Tagihan</small>
+                        <strong>Rp1.250.000</strong>
+                    </div>
+
+                    <div class="preview-list">
+
+                        <div class="preview-item">
+                            <span>SPP Juni 2026</span>
+                            <strong>Rp400.000</strong>
+                        </div>
+
+                        <div class="preview-item">
+                            <span>Pembangunan</span>
+                            <strong>Rp500.000</strong>
+                        </div>
+
+                        <div class="preview-item">
+                            <span>Seragam</span>
+                            <strong>Rp350.000</strong>
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
