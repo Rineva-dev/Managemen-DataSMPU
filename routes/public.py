@@ -37,15 +37,24 @@ def search_siswa():
                     s.id,
                     s.nisn,
                     s.nama,
-                    s.tingkat,
-                    s.sub_kelas,
-                    s.status
+                    s.status,
+                    k.tingkat,
+                    k.sub_kelas
+
                 FROM siswa s
-                WHERE s.status='aktif'
+
+                LEFT JOIN kelas_siswa ks
+                    ON ks.siswa_id = s.id
+
+                LEFT JOIN kelas k
+                    ON k.id = ks.kelas_id
+
+                WHERE s.status = 'aktif'
                 AND (
                     LOWER(s.nama) LIKE LOWER(?)
                     OR s.nisn LIKE ?
                 )
+
                 ORDER BY s.nama
                 LIMIT 10
             """, (
