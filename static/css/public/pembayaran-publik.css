@@ -75,24 +75,9 @@ body{
     gap:14px;
 }
 
-.topbar-logo{
-    width:42px;
-    height:42px;
-
-    border-radius:14px;
-
-    background:#f8fafc;
-
-    border:1px solid #e5e7eb;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
 .topbar-logo img{
-    width:26px;
-    height:26px;
+    width:126px;
+    height:auto;
     object-fit:contain;
 }
 
