@@ -92,54 +92,50 @@ def search_siswa():
 @public_bp.route("/tagihan-spp")
 def tagihan_spp():
 
-    siswa_id = request.args.get("siswa_id", type=int)
-    if not siswa_id:
-        return jsonify([])
+    try:
 
-    today = date.today()
-
-    with db() as d:
-
-        siswa = d.execute("""
-            SELECT tanggal_masuk
-            FROM siswa
-            WHERE id=?
-        """, (siswa_id,)).fetchone()
-
-        if not siswa:
+        siswa_id = request.args.get("siswa_id", type=int)
+        if not siswa_id:
             return jsonify([])
 
-        # ✅ AMAN UNTUK DATE / STRING
-        tm = siswa["tanggal_masuk"]
-        if isinstance(tm, str):
-            tanggal_masuk = datetime.strptime(tm, "%Y-%m-%d").date()
-        else:
-            tanggal_masuk = tm
+        today = date.today()
 
-        # 🔑 BULAN MULAI TAGIHAN
-        if tanggal_masuk.month <= 7:
-            start = date(tanggal_masuk.year, 7, 1)
-        else:
-            start = date(tanggal_masuk.year, tanggal_masuk.month, 1)
+        with db() as d:
 
-        end = date(today.year, today.month, 1)
+            siswa = d.execute("""
+                SELECT tanggal_masuk
+                FROM siswa
+                WHERE id=?
+            """, (siswa_id,)).fetchone()
 
-        lunas = d.execute("""
-            SELECT bulan, tahun
-            FROM pembayaran
-            WHERE siswa_id=?
-              AND LOWER(jenis)='spp'
-              AND LOWER(status)='lunas'
-        """, (siswa_id,)).fetchall()
+            if not siswa:
+                return jsonify([])
 
-        lunas_set = {(r["bulan"], r["tahun"]) for r in lunas}
+            # 🔥 DEBUG PENTING
+            print("RAW tanggal_masuk:", siswa["tanggal_masuk"])
 
-        tagihan = []
-        cur = start
+            tm = siswa["tanggal_masuk"]
 
-        while cur <= end:
+            if not tm:
+                # fallback kalau NULL
+                tanggal_masuk = date(today.year, 7, 1)
+            elif isinstance(tm, str):
+                tanggal_masuk = datetime.strptime(tm, "%Y-%m-%d").date()
+            else:
+                tanggal_masuk = tm
 
-            if (cur.month, cur.year) not in lunas_set:
+            # aturan awal SPP
+            if tanggal_masuk.month <= 7:
+                start = date(tanggal_masuk.year, 7, 1)
+            else:
+                start = date(tanggal_masuk.year, tanggal_masuk.month, 1)
+
+            end = date(today.year, today.month, 1)
+
+            tagihan = []
+            cur = start
+
+            while cur <= end:
                 tagihan.append({
                     "bulan": cur.month,
                     "tahun": cur.year,
@@ -147,9 +143,18 @@ def tagihan_spp():
                     "status": "Belum Dibayar"
                 })
 
-            if cur.month == 12:
-                cur = date(cur.year + 1, 1, 1)
-            else:
-                cur = date(cur.year, cur.month + 1, 1)
+                if cur.month == 12:
+                    cur = date(cur.year + 1, 1, 1)
+                else:
+                    cur = date(cur.year, cur.month + 1, 1)
 
-    return jsonify(tagihan)
+        return jsonify(tagihan)
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
