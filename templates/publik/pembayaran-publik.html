@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pembayaran Siswa Online</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/publik/pembayaran-publik.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="hero">
+        <h1>Sistem Pembayaran Siswa</h1>
+        <p>
+            SMP IT Hamzanwadi NW
+            <br>
+            Cek tagihan dan lakukan pembayaran secara online.
+        </p>
+    </div>
+
+    <!-- CARI NISN -->
+
+    <div class="search-card">
+
+        <h2>Cek Tagihan Siswa</h2>
+
+        <div class="search-box">
+            <input
+                type="text"
+                id="nisn"
+                placeholder="Masukkan NISN siswa">
+            <button id="btn-cari">
+                Cari Tagihan
+            </button>
+        </div>
+
+    </div>
+
+    <!-- DATA SISWA + TAGIHAN -->
+
+    <div class="grid">
+
+        <!-- DATA SISWA -->
+
+        <div class="card">
+
+            <h3>Data Siswa</h3>
+
+            <div class="info-item">
+                <span>NISN</span>
+                <strong id="siswa-nisn">1234567890</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Nama</span>
+                <strong id="siswa-nama">Ahmad Fauzi</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Kelas</span>
+                <strong id="siswa-kelas">VIII A</strong>
+            </div>
+
+            <div class="info-item">
+                <span>Rombel</span>
+                <strong id="siswa-rombel">Al-Fatih</strong>
+            </div>
+
+        </div>
+
+        <!-- TAGIHAN -->
+
+        <div class="card">
+
+            <h3>Tagihan Aktif</h3>
+
+            <div id="tagihan-list">
+
+                <div class="tagihan-item">
+                    <div class="tagihan-left">
+                        <input type="checkbox">
+                        <span>SPP Juni 2026</span>
+                    </div>
+                    <strong>Rp100.000</strong>
+                </div>
+
+                <div class="tagihan-item">
+                    <div class="tagihan-left">
+                        <input type="checkbox">
+                        <span>SPP Juli 2026</span>
+                    </div>
+                    <strong>Rp100.000</strong>
+                </div>
+
+                <div class="tagihan-item">
+                    <div class="tagihan-left">
+                        <input type="checkbox">
+                        <span>Ekstrakurikuler</span>
+                    </div>
+                    <strong>Rp50.000</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOTAL -->
+
+    <div class="total-card">
+
+        <h3>Total Pembayaran</h3>
+
+        <div class="total-value" id="grand-total">
+            Rp250.000
+        </div>
+
+    </div>
+
+    <!-- RIWAYAT -->
+
+    <div class="card">
+
+        <h3>Riwayat Pembayaran</h3>
+
+        <table class="history-table">
+
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Pembayaran</th>
+                    <th>Nominal</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>01-05-2026</td>
+                    <td>SPP Mei</td>
+                    <td>Rp100.000</td>
+                    <td>
+                        <span class="badge badge-success">
+                            Lunas
+                        </span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>01-06-2026</td>
+                    <td>SPP Juni</td>
+                    <td>Rp100.000</td>
+                    <td>
+                        <span class="badge badge-warning">
+                            Menunggu
+                        </span>
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- BAYAR -->
+
+    <div class="pay-section">
+
+        <button class="pay-btn" id="btn-bayar">
+            Bayar Sekarang
+        </button>
+
+    </div>
+
+    <div class="footer">
+        © 2026 SMP IT Hamzanwadi NW
+    </div>
+
+</div>
+
+</body>
+</html>
