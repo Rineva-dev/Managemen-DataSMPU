@@ -39,6 +39,22 @@ function badgeClass(status) {
     return "secondary";
 }
 
+const displayInput = document.getElementById("nominal_display");
+const hiddenInput  = document.getElementById("nominal_value");
+
+displayInput.addEventListener("input", function () {
+    let angka = this.value.replace(/[^0-9]/g, "");
+
+    hiddenInput.value = angka;
+    this.value = formatRupiah(angka);
+});
+
+function formatRupiah(angka) {
+    if (!angka) return "";
+    return "Rp " + angka
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
 input.addEventListener("input", async () => {
 
     const q = input.value.trim();
@@ -277,10 +293,8 @@ function renderPembangunan(data) {
 
         <div class="custom-payment">
             <label>Nominal Pembayaran</label>
-            <input
-                type="number"
-                id="pembangunan-nominal"
-                placeholder="Masukkan nominal pembayaran">
+            <input type="text" id="nominal_display" placeholder="Rp 0">
+            <input type="hidden" id="nominal_value" name="nominal">
         </div>
     `;
 }
