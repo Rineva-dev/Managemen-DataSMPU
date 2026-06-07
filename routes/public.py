@@ -67,7 +67,9 @@ def search_siswa():
 
     except Exception as e:
 
-        print("SEARCH SISWA ERROR:", e)
+        import traceback
+
+        traceback.print_exc()
 
         return jsonify({
             "success": False,
