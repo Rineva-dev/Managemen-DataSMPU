@@ -45,9 +45,35 @@ function formatRupiah(angka) {
         .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-input.addEventListener("input", async () => {
+function resetTagihanUI() {
 
-    selectedSiswa = null;
+    // reset list tagihan
+    tagihanList.innerHTML = "";
+    tagihanCount.textContent = "0 Tagihan";
+
+    // reset card pembangunan
+    const card = document.getElementById("card-pembangunan");
+    const content = document.getElementById("pembangunan-content");
+
+    if (card) card.style.display = "none";
+    if (content) content.innerHTML = "";
+
+    // reset input pembangunan
+    const hidden = document.getElementById("nominal_value");
+    if (hidden) hidden.value = "";
+
+    const display = document.getElementById("nominal_display");
+    if (display) display.value = "";
+
+    // reset checkbox lama (penting!)
+    document.querySelectorAll(".tagihan-checkbox")
+        .forEach(cb => cb.checked = false);
+
+    // reset total
+    document.getElementById("grand-total").textContent = "Rp0";
+}
+
+input.addEventListener("input", async () => {
 
     document.getElementById("student-card").style.display = "none";
     document.getElementById("btn-cari").style.display = "none";
@@ -91,7 +117,7 @@ input.addEventListener("input", async () => {
         `;
 
         item.onclick = () => {
-
+            resetTagihanUI();
             selectedSiswa = siswa;
 
             document.getElementById(
