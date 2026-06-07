@@ -1205,3 +1205,78 @@ def import_siswa_pindahan():
         "berhasil": sukses,
         "gagal": gagal
     })
+
+@siswa_bp.route("/students/nonaktifkan", methods=["POST"])
+def nonaktifkan_siswa():
+
+    data = request.get_json(silent=True)
+
+    if not data:
+        return jsonify({
+            "success": False,
+            "message": "Data request tidak valid"
+        }), 400
+
+    siswa_id = data.get("id")
+    tanggal_nonaktif = data.get("tanggal_nonaktif")
+    alasan = data.get("alasan")
+
+    if not siswa_id or not tanggal_nonaktif:
+        return jsonify({
+            "success": False,
+            "message": "Tanggal non aktif wajib diisi"
+        }), 400
+
+    try:
+        tanggal_nonaktif = normalize_date(tanggal_nonaktif)
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        }), 400
+
+    with db() as d:
+
+        # cek siswa
+        siswa = d.execute("""
+            SELECT id, status
+            FROM siswa
+            WHERE id = ?
+        """, (siswa_id,)).fetchone()
+
+        if not siswa:
+            return jsonify({
+                "success": False,
+                "message": "Siswa tidak ditemukan"
+            })
+
+        if siswa["status"] != "aktif":
+            return jsonify({
+                "success": False,
+                "message": "Siswa sudah tidak aktif"
+            })
+
+        # ❗ WAJIB: keluarkan dari rombel
+        d.execute("""
+            DELETE FROM kelas_siswa
+            WHERE siswa_id = ?
+        """, (siswa_id,))
+
+        # update status
+        d.execute("""
+            UPDATE siswa
+            SET
+                status = 'nonaktif',
+                tanggal_nonaktif = ?,
+                alasan_nonaktif = ?
+            WHERE id = ?
+        """, (
+            tanggal_nonaktif,
+            alasan,
+            siswa_id
+        ))
+
+    return jsonify({
+        "success": True,
+        "message": "Siswa berhasil dinonaktifkan"
+    })
