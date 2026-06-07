@@ -67,7 +67,7 @@ input.addEventListener("input", async () => {
                 siswa.sub_kelas || "-";
 
             document.getElementById("siswa-badge").textContent =
-                siswa.status || "Aktif";
+                siswa.status || "-";
 
             // tampilkan data siswa
             document.getElementById(
