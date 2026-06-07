@@ -51,8 +51,7 @@ def search_siswa():
                 LEFT JOIN kelas k
                     ON k.id = ks.kelas_id
 
-                WHERE s.status = 'aktif'
-                AND (
+                WHERE (
                     LOWER(s.nama) LIKE LOWER(?)
                     OR s.nisn LIKE ?
                 )
