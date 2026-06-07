@@ -52,6 +52,8 @@ input.addEventListener("input", async () => {
     document.getElementById("student-card").style.display = "none";
     document.getElementById("btn-cari").style.display = "none";
 
+    document.getElementById("grand-total").textContent = "Rp0";
+
     const q = input.value.trim();
 
     if (q.length < 2) {
@@ -295,7 +297,14 @@ function renderPembangunan(data) {
     const hiddenInput  = document.getElementById("nominal_value");
 
     displayInput.addEventListener("input", function () {
+
         let angka = this.value.replace(/[^0-9]/g, "");
+        const sisaMaks = data.sem1.sisa + data.sem2.sisa;
+
+        // 🚫 Batasi tidak boleh melebihi sisa
+        if (parseInt(angka || 0) > sisaMaks) {
+            angka = sisaMaks.toString();
+        }
 
         hiddenInput.value = angka;
         this.value = formatRupiah(angka);
