@@ -720,31 +720,58 @@ def edit_siswa(nisn):
                 d.execute("""
                     UPDATE siswa
                     SET
-                        nis = :nis,
-                        nama = :nama,
-                        jk = :jk,
+                        nis = %s,
+                        nama = %s,
+                        jk = %s,
 
-                        tempat_lahir = :tempat_lahir,
-                        tanggal_lahir = :tanggal_lahir,
+                        tempat_lahir = %s,
+                        tanggal_lahir = %s,
 
-                        kelas_pindah = :kelas_pindah,
-                        semester_pindah = :semester_pindah,
-                        kelas_diterima = :kelas_diterima,
-                        semester_diterima = :semester_diterima,
+                        kelas_pindah = %s,
+                        semester_pindah = %s,
+                        kelas_diterima = %s,
+                        semester_diterima = %s,
 
-                        alamat = :alamat,
-                        desa = :desa,
-                        kecamatan = :kecamatan,
-                        kabupaten = :kabupaten,
-                        provinsi = :provinsi,
+                        alamat = %s,
+                        desa = %s,
+                        kecamatan = %s,
+                        kabupaten = %s,
+                        provinsi = %s,
 
-                        nama_ayah = :nama_ayah,
-                        pekerjaan_ayah = :pekerjaan_ayah,
-                        nama_ibu = :nama_ibu,
-                        pekerjaan_ibu = :pekerjaan_ibu,
-                        no_hp = :no_hp
-                    WHERE id = :id
-                """, {**data, "id": siswa["id"]})
+                        nama_ayah = %s,
+                        pekerjaan_ayah = %s,
+                        nama_ibu = %s,
+                        pekerjaan_ibu = %s,
+                        no_hp = %s
+
+                    WHERE id = %s
+                """, (
+                    data["nis"],
+                    data["nama"],
+                    data["jk"],
+
+                    data["tempat_lahir"],
+                    data["tanggal_lahir"],
+
+                    data["kelas_pindah"],
+                    data["semester_pindah"],
+                    data["kelas_diterima"],
+                    data["semester_diterima"],
+
+                    data["alamat"],
+                    data["desa"],
+                    data["kecamatan"],
+                    data["kabupaten"],
+                    data["provinsi"],
+
+                    data["nama_ayah"],
+                    data["pekerjaan_ayah"],
+                    data["nama_ibu"],
+                    data["pekerjaan_ibu"],
+                    data["no_hp"],
+
+                    siswa["id"]
+                ))
 
             flash("Data siswa berhasil diperbarui", "success")
             return redirect(url_for("siswa.detail_siswa", nisn=nisn))
