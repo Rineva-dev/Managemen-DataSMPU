@@ -47,6 +47,7 @@ body{
 .topbar{
     position: sticky;
     z-index: 5;
+    top: 25px;
     background:rgba(255,255,255,.82);
     backdrop-filter:blur(14px);
     border:1px solid #eef2f7;
