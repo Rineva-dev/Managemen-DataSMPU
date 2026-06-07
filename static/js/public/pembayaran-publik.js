@@ -2,6 +2,9 @@ const input = document.getElementById("search-siswa");
 const hasil = document.getElementById("hasil-siswa");
 
 let selectedSiswa = null;
+const cardTagihan = document.getElementById("card-tagihan");
+const tagihanList = document.getElementById("tagihan-list");
+const tagihanCount = document.getElementById("tagihan-count");
 
 const statusMap = {
     aktif: "Aktif",
@@ -143,21 +146,47 @@ document.getElementById("btn-cari")
             "selected-siswa-id"
         ).value;
 
-    console.log(
-        "Ambil tagihan siswa:",
-        siswaId
-    );
+    cardTagihan.style.display = "block";
+    tagihanList.innerHTML = "Memuat tagihan...";
 
-    // nanti fetch ke backend
-    /*
     const res = await fetch(
-        `/public/tagihan/${siswaId}`
+        `/public/tagihan-spp?siswa_id=${siswaId}`
     );
 
     const data = await res.json();
 
-    renderTagihan(data);
-    */
+    tagihanList.innerHTML = "";
+    tagihanCount.textContent = `${data.length} Tagihan`;
+
+    if (data.length === 0) {
+        tagihanList.innerHTML = "<p>Tidak ada tagihan.</p>";
+        return;
+    }
+
+    data.forEach(t => {
+
+        const bulanNama = new Date(
+            t.tahun,
+            t.bulan - 1
+        ).toLocaleString("id-ID", { month: "long" });
+
+        tagihanList.innerHTML += `
+            <label class="tagihan-row">
+                <input type="checkbox"
+                    class="tagihan-checkbox"
+                    data-nominal="${t.nominal}">
+                <div class="tagihan-detail">
+                    <strong>SPP ${bulanNama} ${t.tahun}</strong>
+                    <small>${t.status}</small>
+                </div>
+                <span class="nominal">
+                    Rp${t.nominal.toLocaleString("id-ID")}
+                </span>
+            </label>
+        `;
+    });
+
+    hitungTotal();
 });
 
 input.addEventListener("input", async () => {
@@ -173,4 +202,24 @@ input.addEventListener("input", async () => {
     ).style.display = "none";
 
     // kode pencarian yang sudah ada...
+});
+
+function hitungTotal() {
+
+    let total = 0;
+
+    document
+        .querySelectorAll(".tagihan-checkbox:checked")
+        .forEach(cb => {
+            total += parseInt(cb.dataset.nominal);
+        });
+
+    document.getElementById("grand-total").textContent =
+        "Rp" + total.toLocaleString("id-ID");
+}
+
+document.addEventListener("change", e => {
+    if (e.target.classList.contains("tagihan-checkbox")) {
+        hitungTotal();
+    }
 });

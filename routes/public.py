@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, abort, jsonify
+from datetime import datetime, date
 from utils.db import db
 
 public_bp = Blueprint(
@@ -87,3 +88,69 @@ def search_siswa():
             "success": False,
             "error": str(e)
         }), 500
+
+@public_bp.route("/tagihan-spp")
+def tagihan_spp():
+
+    siswa_id = request.args.get("siswa_id", type=int)
+    if not siswa_id:
+        return jsonify([])
+
+    with db() as d:
+
+        siswa = d.execute("""
+            SELECT tanggal_masuk, status
+            FROM siswa
+            WHERE id=?
+        """, (siswa_id,)).fetchone()
+
+        if not siswa or siswa["status"] == "LULUS":
+            return jsonify([])
+
+        tanggal_masuk = datetime.strptime(
+            siswa["tanggal_masuk"], "%Y-%m-%d"
+        ).date()
+
+        tp = d.execute("""
+            SELECT mulai, berakhir
+            FROM tahun_pelajaran
+            WHERE status='AKTIF'
+            LIMIT 1
+        """).fetchone()
+
+        if not tp:
+            return jsonify([])
+
+        mulai = datetime.strptime(tp["mulai"], "%Y-%m-%d").date()
+        akhir = datetime.strptime(tp["berakhir"], "%Y-%m-%d").date()
+
+        start = max(tanggal_masuk, mulai)
+        cur = date(start.year, start.month, 1)
+
+        lunas = d.execute("""
+            SELECT bulan, tahun
+            FROM pembayaran
+            WHERE siswa_id=?
+              AND jenis='SPP'
+              AND status='LUNAS'
+        """, (siswa_id,)).fetchall()
+
+        lunas_set = {(r["bulan"], r["tahun"]) for r in lunas}
+
+        tagihan = []
+
+        while cur <= akhir:
+            if (cur.month, cur.year) not in lunas_set:
+                tagihan.append({
+                    "bulan": cur.month,
+                    "tahun": cur.year,
+                    "nominal": 400000,
+                    "status": "BELUM"
+                })
+
+            if cur.month == 12:
+                cur = date(cur.year + 1, 1, 1)
+            else:
+                cur = date(cur.year, cur.month + 1, 1)
+
+    return jsonify(tagihan)

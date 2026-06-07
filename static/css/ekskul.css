@@ -353,7 +353,7 @@
 
     #ekstrakurikuler-content .guru-filter-bar{
         flex-wrap:wrap;
-        gap:12px;
+        gap:4px;
     }
 
     #ekstrakurikuler-content #ekskulTahunDropdown{
