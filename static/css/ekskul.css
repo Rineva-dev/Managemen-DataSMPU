@@ -46,6 +46,10 @@
     max-height: 400px;          
 }
 
+.dropdown-select {
+    box-shadow: none;
+}
+
 
 
 /* =========================
