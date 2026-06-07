@@ -20,7 +20,7 @@ def payment():
         "public/pembayaran-publik.html"
     )
 
-@public_bp.route("/api/public/search-siswa")
+@public_bp.route("/search-siswa")
 def search_siswa():
 
     q = request.args.get("q", "").strip()

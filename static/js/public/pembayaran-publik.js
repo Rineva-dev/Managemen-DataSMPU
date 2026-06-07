@@ -13,7 +13,7 @@ input.addEventListener("input", async () => {
     }
 
     const res = await fetch(
-        `/api/public/search-siswa?q=${encodeURIComponent(q)}`
+        `/public/search-siswa?q=${encodeURIComponent(q)}`
     );
 
     const data = await res.json();
