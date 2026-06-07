@@ -57,6 +57,10 @@ body{
     box-shadow: 0px 12px 30px rgba(0, 0, 0, .1);
 }
 
+.topbar img {
+    height: 126px;
+}
+
 /* LEFT */
 
 .topbar-left{
