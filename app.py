@@ -1,13 +1,12 @@
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from flask import Flask, session, jsonify
+from flask import Flask, session, jsonify, request, redirect
 from flask_wtf.csrf import CSRFProtect
 from utils.time_helper import now_wita
 from utils.db import db
 from utils.init_db import init_db
 from routes import ALL_BLUEPRINTS
-
 
 app = Flask(__name__)
 
@@ -60,6 +59,25 @@ def inject_global_data():
 
     data["role_title"] = mapping.get(role, "")
     return data
+
+@app.before_request
+def payment_subdomain_router():
+
+    host = request.host.lower()
+
+    # Jika akses dari payment.smpuhamzanwadi.sch.id
+    if host.startswith("payment."):
+
+        # biarkan static dan route payment berjalan normal
+        if request.path.startswith("/static"):
+            return
+
+        if request.path.startswith("/public/payment"):
+            return
+
+        # jika buka root domain payment
+        if request.path == "/":
+            return redirect("/public/payment")
 
 @app.route("/api/server-time")
 def server_time():
