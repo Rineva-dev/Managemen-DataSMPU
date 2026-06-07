@@ -54,7 +54,6 @@ input.addEventListener("input", async () => {
 
             hasil.style.display = "none";
 
-            // tampilkan data siswa
             document.getElementById("siswa-nama").textContent =
                 siswa.nama;
 
@@ -70,8 +69,15 @@ input.addEventListener("input", async () => {
             document.getElementById("siswa-badge").textContent =
                 `${siswa.kelas || ""} ${siswa.rombel || ""}`;
 
-            document.getElementById("student-card").style.display =
-                "block";
+            // tampilkan data siswa
+            document.getElementById(
+                "student-card"
+            ).style.display = "block";
+
+            // tampilkan tombol
+            document.getElementById(
+                "btn-cari"
+            ).style.display = "block";
         };
 
         hasil.appendChild(item);
@@ -110,4 +116,19 @@ document.getElementById("btn-cari")
 
     renderTagihan(data);
     */
+});
+
+input.addEventListener("input", async () => {
+
+    selectedSiswa = null;
+
+    document.getElementById(
+        "student-card"
+    ).style.display = "none";
+
+    document.getElementById(
+        "btn-cari"
+    ).style.display = "none";
+
+    // kode pencarian yang sudah ada...
 });

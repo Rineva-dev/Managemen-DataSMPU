@@ -56,47 +56,52 @@
 
         <input type="hidden" id="selected-siswa-id">
 
-        <button id="btn-cari" class="btn-primary">
+        <!-- DATA SISWA -->
+        <div class="card student-card" id="student-card" style="display:none;">
+
+            <div class="student-header">
+
+                <div>
+
+                    <h2 id="siswa-nama"></h2>
+
+                    <p id="siswa-nisn"></p>
+
+                </div>
+
+                <div class="student-badge" id="siswa-badge"></div>
+
+            </div>
+
+            <div class="student-info">
+
+                <div class="info-box">
+                    <span>Kelas</span>
+                    <strong id="siswa-kelas">-</strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Rombel</span>
+                    <strong id="siswa-rombel">-</strong>
+                </div>
+
+                <div class="info-box">
+                    <span>Status</span>
+                    <strong id="siswa-status">Aktif</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <button
+            id="btn-cari"
+            class="btn-primary"
+            style="display:none;">
+
             Cek Tagihan
+
         </button>
-
-    </div>
-
-    <!-- DATA SISWA -->
-    <div class="card student-card" id="student-card" style="display:none;">
-
-        <div class="student-header">
-
-            <div>
-
-                <h2 id="siswa-nama"></h2>
-
-                <p id="siswa-nisn"></p>
-
-            </div>
-
-            <div class="student-badge" id="siswa-badge"></div>
-
-        </div>
-
-        <div class="student-info">
-
-            <div class="info-box">
-                <span>Kelas</span>
-                <strong id="siswa-kelas">-</strong>
-            </div>
-
-            <div class="info-box">
-                <span>Rombel</span>
-                <strong id="siswa-rombel">-</strong>
-            </div>
-
-            <div class="info-box">
-                <span>Status</span>
-                <strong id="siswa-status">Aktif</strong>
-            </div>
-
-        </div>
 
     </div>
 
