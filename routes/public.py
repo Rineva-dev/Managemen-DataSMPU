@@ -6,13 +6,14 @@ public_bp = Blueprint(
     url_prefix="/public"
 )
 
+@public_bp.before_request
+def only_payment_domain():
+
+    if not request.host.lower().startswith("payment."):
+        abort(404)
+
 @public_bp.route("/payment")
 def payment():
-
-    host = request.host.lower()
-
-    if not host.startswith("payment."):
-        abort(404)
 
     return render_template(
         "public/pembayaran-publik.html"
