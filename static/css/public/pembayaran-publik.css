@@ -94,17 +94,14 @@ body{
 
 .topbar-nav a{
     text-decoration:none;
-
     color:#64748b;
-
-    font-size:14px;
+    font-size:13px;
     font-weight:600;
-
     transition:.2s;
 }
 
 .topbar-nav a:hover{
-    color:#0f172a;
+    color:#000000;
 }
 
 /* ACTION */
@@ -117,7 +114,6 @@ body{
 
 .btn-nav-outline{
     padding: 10px 18px;
-
     border-radius: 50px;
     border:2px solid #ffb700;
     text-decoration:none;
@@ -126,7 +122,7 @@ body{
     justify-content:center;
     color:#ffb700;
     font-size:12px;
-    font-weight:700;
+    font-weight:600;
     transition:.2s;
 }
 
