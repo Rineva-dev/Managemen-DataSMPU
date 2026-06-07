@@ -3,6 +3,15 @@ const hasil = document.getElementById("hasil-siswa");
 
 let selectedSiswa = null;
 
+const statusMap = {
+    aktif: "Aktif",
+    lulus: "Lulus",
+    pindah: "Pindah",
+    "non aktif": "Non Aktif",
+    nonaktif: "Non Aktif",
+    non_aktif: "Non Aktif"
+};
+
 input.addEventListener("input", async () => {
 
     const q = input.value.trim();
@@ -71,8 +80,10 @@ input.addEventListener("input", async () => {
                 siswa.nama_ibu?.trim() ||
                 "-";
 
+            const statusRaw = (siswa.status || "").toLowerCase().trim();
+
             document.getElementById("siswa-badge").textContent =
-                siswa.status || "Aktif";
+                statusMap[statusRaw] || "Aktif";
 
             // tampilkan data siswa
             document.getElementById(
