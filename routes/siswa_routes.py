@@ -720,32 +720,34 @@ def edit_siswa(nisn):
                 d.execute("""
                     UPDATE siswa
                     SET
-                        nis = %s,
-                        nama = %s,
-                        jk = %s,
-                        tahun_masuk = %s,
+                        nis = ?,
+                        nama = ?,
+                        jk = ?,
 
-                        tempat_lahir = %s,
-                        tanggal_lahir = %s,
+                        tempat_lahir = ?,
+                        tanggal_lahir = ?,
 
-                        kelas_pindah = %s,
-                        semester_pindah = %s,
-                        kelas_diterima = %s,
-                        semester_diterima = %s,
+                        tahun_masuk = ?,
+                        asal_sd = ?,
 
-                        alamat = %s,
-                        desa = %s,
-                        kecamatan = %s,
-                        kabupaten = %s,
-                        provinsi = %s,
+                        kelas_pindah = ?,
+                        semester_pindah = ?,
+                        kelas_diterima = ?,
+                        semester_diterima = ?,
 
-                        nama_ayah = %s,
-                        pekerjaan_ayah = %s,
-                        nama_ibu = %s,
-                        pekerjaan_ibu = %s,
-                        no_hp = %s
+                        alamat = ?,
+                        desa = ?,
+                        kecamatan = ?,
+                        kabupaten = ?,
+                        provinsi = ?,
 
-                    WHERE id = %s
+                        nama_ayah = ?,
+                        pekerjaan_ayah = ?,
+                        nama_ibu = ?,
+                        pekerjaan_ibu = ?,
+                        no_hp = ?
+
+                    WHERE id = ?
                 """, (
                     data["nis"],
                     data["nama"],
@@ -753,7 +755,9 @@ def edit_siswa(nisn):
 
                     data["tempat_lahir"],
                     data["tanggal_lahir"],
+
                     data["tahun_masuk"],
+                    data["asal_sd"],
 
                     data["kelas_pindah"],
                     data["semester_pindah"],
