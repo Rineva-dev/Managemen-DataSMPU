@@ -46,10 +46,13 @@
     max-height: 400px;          
 }
 
-.dropdown-select {
-    box-shadow: none;
+.dropdown-selected {
+    box-shadow: none !important;
 }
 
+.btn-aksi-container {
+    height: 35px !important;
+}
 
 
 /* =========================
