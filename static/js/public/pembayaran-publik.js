@@ -224,11 +224,24 @@ function hitungTotal() {
 
     let total = 0;
 
+    // ===============================
+    // TOTAL DARI SPP
+    // ===============================
     document
         .querySelectorAll(".tagihan-checkbox:checked")
         .forEach(cb => {
-            total += parseInt(cb.dataset.nominal);
+            total += parseInt(cb.dataset.nominal || 0);
         });
+
+    // ===============================
+    // TOTAL DARI PEMBANGUNAN
+    // ===============================
+    const pembangunanValue =
+        document.getElementById("nominal_value");
+
+    if (pembangunanValue && pembangunanValue.value) {
+        total += parseInt(pembangunanValue.value || 0);
+    }
 
     document.getElementById("grand-total").textContent =
         "Rp" + total.toLocaleString("id-ID");
@@ -286,5 +299,7 @@ function renderPembangunan(data) {
 
         hiddenInput.value = angka;
         this.value = formatRupiah(angka);
+
+        hitungTotal();
     });
 }
