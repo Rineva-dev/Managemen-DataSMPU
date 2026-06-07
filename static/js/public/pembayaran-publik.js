@@ -12,6 +12,30 @@ const statusMap = {
     non_aktif: "Non Aktif"
 };
 
+function formatStatus(status) {
+    if (!status) return "Non Aktif";
+
+    const s = status.toLowerCase();
+
+    if (s === "aktif") return "Aktif";
+    if (s === "lulus") return "Lulus";
+    if (s === "pindah") return "Pindah";
+    if (s === "non aktif" || s === "nonaktif") return "Non Aktif";
+
+    return status;
+}
+
+function badgeClass(status) {
+    const s = (status || "").toLowerCase().trim();
+
+    if (s === "aktif") return "success";
+    if (s === "lulus") return "primary";
+    if (s === "pindah") return "warning";
+    if (s === "non aktif" || s === "nonaktif") return "danger";
+
+    return "secondary";
+}
+
 input.addEventListener("input", async () => {
 
     const q = input.value.trim();
@@ -82,8 +106,10 @@ input.addEventListener("input", async () => {
 
             const statusRaw = (siswa.status || "").toLowerCase().trim();
 
-            document.getElementById("siswa-badge").textContent =
-                statusMap[statusRaw] || "Aktif";
+            const badge = document.getElementById("siswa-badge");
+
+            badge.textContent = statusMap[statusRaw] || "Aktif";
+            badge.className = "student-badge " + badgeClass(statusRaw);
 
             // tampilkan data siswa
             document.getElementById(
