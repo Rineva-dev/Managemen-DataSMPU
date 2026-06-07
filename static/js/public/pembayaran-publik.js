@@ -135,35 +135,27 @@ document.getElementById("btn-cari")
 .addEventListener("click", async () => {
 
     if (!selectedSiswa) {
-
         alert("Pilih siswa terlebih dahulu");
-
         return;
     }
 
     const siswaId =
-        document.getElementById(
-            "selected-siswa-id"
-        ).value;
+        document.getElementById("selected-siswa-id").value;
 
     cardTagihan.style.display = "block";
     tagihanList.innerHTML = "Memuat tagihan...";
 
     const res = await fetch(
-    `/public/tagihan-spp?siswa_id=${siswaId}`
+        `/public/tagihan-spp?siswa_id=${siswaId}`
     );
 
     const data = await res.json();
 
     if (!Array.isArray(data)) {
         console.error("Tagihan error:", data);
-        alert("Gagal memuat tagihan");
+        tagihanList.innerHTML = "<p>Gagal memuat tagihan.</p>";
         return;
     }
-
-    renderTagihan(data);
-
-    const data = await res.json();
 
     tagihanList.innerHTML = "";
     tagihanCount.textContent = `${data.length} Tagihan`;
@@ -183,8 +175,8 @@ document.getElementById("btn-cari")
         tagihanList.innerHTML += `
             <label class="tagihan-row">
                 <input type="checkbox"
-                    class="tagihan-checkbox"
-                    data-nominal="${t.nominal}">
+                       class="tagihan-checkbox"
+                       data-nominal="${t.nominal}">
                 <div class="tagihan-detail">
                     <strong>SPP ${bulanNama} ${t.tahun}</strong>
                     <small>${t.status}</small>
