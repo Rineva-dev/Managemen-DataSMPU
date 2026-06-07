@@ -940,9 +940,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         const confirm = await showConfirm(
-            `Non aktifkan siswa <br>
-            <strong>${nonaktifNama.value}</strong>
-            mulai tanggal <b>${tanggal}</b>?`,
+            `Non aktifkan siswa <strong>${nonaktifNama.value}</strong> mulai tanggal <b>${tanggal}</b>?`,
             "Non Aktifkan",
             "btn-danger"
         )
