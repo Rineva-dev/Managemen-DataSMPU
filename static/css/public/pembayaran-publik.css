@@ -45,11 +45,13 @@ body{
 ========================= */
 
 .topbar{
+    position: sticky;
+    z-index: 5;
     background:rgba(255,255,255,.82);
     backdrop-filter:blur(14px);
     border:1px solid #eef2f7;
     border-radius:50px;
-    padding:10px 24px;
+    padding:13px 24px;
     margin-bottom:22px;
     display:flex;
     align-items:center;
