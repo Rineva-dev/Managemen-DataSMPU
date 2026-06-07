@@ -102,7 +102,7 @@ def tagihan_spp():
         with db() as d:
 
             siswa = d.execute("""
-                SELECT tahun_masuk, status
+                SELECT tahun_masuk, status, nonaktif_tanggal
                 FROM siswa
                 WHERE id=?
             """, (siswa_id,)).fetchone()
@@ -110,21 +110,32 @@ def tagihan_spp():
             if not siswa:
                 return jsonify([])
 
-            if (siswa["status"] or "").lower() != "aktif":
-                return jsonify([])
-
-            # 🔑 TAHUN MASUK (TEXT → INT)
+            # tahun masuk
             try:
                 tahun_masuk = int(siswa["tahun_masuk"])
             except:
                 return jsonify([])
 
-            # 🔑 BULAN PERTAMA SPP = JULI TAHUN MASUK
+            # bulan pertama SPP
             start = date(tahun_masuk, 7, 1)
 
-            # 🔑 BATAS AKHIR = BULAN SEKARANG
+            # ===== HITUNG BATAS AKHIR =====
             end = date(today.year, today.month, 1)
 
+            nonaktif_tanggal = siswa["nonaktif_tanggal"]
+
+            if nonaktif_tanggal:
+                na = nonaktif_tanggal
+
+                if na.day <= 10:
+                    if na.month == 1:
+                        end = date(na.year - 1, 12, 1)
+                    else:
+                        end = date(na.year, na.month - 1, 1)
+                else:
+                    end = date(na.year, na.month, 1)
+
+            # ===== DATA LUNAS =====
             lunas = d.execute("""
                 SELECT
                     bulan,
@@ -142,7 +153,6 @@ def tagihan_spp():
             cur = start
 
             while cur <= end:
-
                 if (cur.month, cur.year) not in lunas_set:
                     tagihan.append({
                         "bulan": cur.month,
