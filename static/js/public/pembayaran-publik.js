@@ -188,6 +188,24 @@ document.getElementById("btn-cari")
         `;
     });
 
+    // ===============================
+    // LOAD TAGIHAN PEMBANGUNAN
+    // ===============================
+    try {
+        const resP = await fetch(
+            `/public/tagihan-pembangunan?siswa_id=${siswaId}`
+        );
+
+        const pembangunan = await resP.json();
+
+        if (pembangunan && typeof pembangunan === "object") {
+            renderPembangunan(pembangunan);
+        }
+
+    } catch (err) {
+        console.error("Gagal load pembangunan:", err);
+    }
+
     hitungTotal();
 });
 
@@ -225,3 +243,44 @@ document.addEventListener("change", e => {
         hitungTotal();
     }
 });
+
+function renderPembangunan(data) {
+
+    const card = document.getElementById("card-pembangunan");
+    const content = document.getElementById("pembangunan-content");
+
+    card.style.display = "block";
+
+    if (data.lunas) {
+        document.getElementById("pembangunan-status").textContent = "Lunas";
+    } else {
+        document.getElementById("pembangunan-status").textContent = "Belum Lunas";
+    }
+
+    content.innerHTML = `
+        <div class="cicilan-grid">
+            <div class="info-box">
+                <span>Target</span>
+                <strong>Rp${data.total.toLocaleString("id-ID")}</strong>
+            </div>
+            <div class="info-box">
+                <span>Sudah Dibayar</span>
+                <strong>Rp${(data.sem1.terbayar + data.sem2.terbayar)
+                    .toLocaleString("id-ID")}</strong>
+            </div>
+            <div class="info-box">
+                <span>Sisa</span>
+                <strong>Rp${(data.sem1.sisa + data.sem2.sisa)
+                    .toLocaleString("id-ID")}</strong>
+            </div>
+        </div>
+
+        <div class="custom-payment">
+            <label>Nominal Pembayaran</label>
+            <input
+                type="number"
+                id="pembangunan-nominal"
+                placeholder="Masukkan nominal pembayaran">
+        </div>
+    `;
+}

@@ -163,3 +163,75 @@ def tagihan_spp():
         import traceback
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+    
+@public_bp.route("/bayar-pembangunan", methods=["POST"])
+def bayar_pembangunan():
+
+    data = request.json
+
+    siswa_id = data.get("siswa_id")
+    nominal = int(data.get("nominal", 0))
+
+    if nominal <= 0:
+        return jsonify({"error": "Nominal tidak valid"}), 400
+
+    with db() as d:
+
+        siswa = d.execute("""
+            SELECT nisn
+            FROM siswa
+            WHERE id=?
+        """, (siswa_id,)).fetchone()
+
+        if not siswa:
+            return jsonify({"error": "Siswa tidak ditemukan"}), 404
+
+        nisn = siswa["nisn"]
+
+        # total sebelumnya
+        row = d.execute("""
+            SELECT COALESCE(SUM(nominal),0) AS total
+            FROM pembayaran
+            WHERE nisn=?
+              AND jenis LIKE 'PEMBANGUNAN%'
+        """, (nisn,)).fetchone()
+
+        total_sebelumnya = row["total"]
+
+        sisa_total = 5000000 - total_sebelumnya
+        if sisa_total <= 0:
+            return jsonify({"error": "Pembangunan sudah lunas"}), 400
+
+        if nominal > sisa_total:
+            nominal = sisa_total  # auto potong
+
+        # ======================
+        # BAGI KE SEMESTER
+        # ======================
+        sem1_row = d.execute("""
+            SELECT COALESCE(SUM(nominal),0) AS total
+            FROM pembayaran
+            WHERE nisn=?
+              AND jenis='PEMBANGUNAN_SEM1'
+        """, (nisn,)).fetchone()
+
+        sem1_sisa = max(0, 3000000 - sem1_row["total"])
+
+        inserts = []
+
+        if sem1_sisa > 0:
+            ambil = min(sem1_sisa, nominal)
+            inserts.append(("PEMBANGUNAN_SEM1", ambil))
+            nominal -= ambil
+
+        if nominal > 0:
+            inserts.append(("PEMBANGUNAN_SEM2", nominal))
+
+        for jenis, jumlah in inserts:
+            d.execute("""
+                INSERT INTO pembayaran
+                    (nisn, jenis, tanggal, nominal)
+                VALUES (?, ?, CURRENT_DATE, ?)
+            """, (nisn, jenis, jumlah))
+
+    return jsonify({"success": True})
