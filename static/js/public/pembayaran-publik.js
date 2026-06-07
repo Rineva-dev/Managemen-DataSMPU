@@ -53,6 +53,25 @@ input.addEventListener("input", async () => {
                 `${siswa.nisn} - ${siswa.nama}`;
 
             hasil.style.display = "none";
+
+            // tampilkan data siswa
+            document.getElementById("siswa-nama").textContent =
+                siswa.nama;
+
+            document.getElementById("siswa-nisn").textContent =
+                `NISN : ${siswa.nisn}`;
+
+            document.getElementById("siswa-kelas").textContent =
+                siswa.kelas || "-";
+
+            document.getElementById("siswa-rombel").textContent =
+                siswa.rombel || "-";
+
+            document.getElementById("siswa-badge").textContent =
+                `${siswa.kelas || ""} ${siswa.rombel || ""}`;
+
+            document.getElementById("student-card").style.display =
+                "block";
         };
 
         hasil.appendChild(item);
@@ -60,40 +79,6 @@ input.addEventListener("input", async () => {
 
     hasil.style.display = "block";
 });
-
-item.onclick = () => {
-
-    selectedSiswa = siswa;
-
-    document.getElementById(
-        "selected-siswa-id"
-    ).value = siswa.id;
-
-    input.value =
-        `${siswa.nisn} - ${siswa.nama}`;
-
-    hasil.style.display = "none";
-
-    // tampilkan data siswa
-
-    document.getElementById("siswa-nama").textContent =
-        siswa.nama;
-
-    document.getElementById("siswa-nisn").textContent =
-        `NISN : ${siswa.nisn}`;
-
-    document.getElementById("siswa-kelas").textContent =
-        siswa.kelas || "-";
-
-    document.getElementById("siswa-rombel").textContent =
-        siswa.rombel || "-";
-
-    document.getElementById("siswa-badge").textContent =
-        `${siswa.kelas || ""} ${siswa.rombel || ""}`;
-
-    document.getElementById("student-card").style.display =
-        "block";
-};
 
 document.getElementById("btn-cari")
 .addEventListener("click", async () => {
