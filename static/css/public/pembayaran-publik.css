@@ -62,7 +62,6 @@ body{
 }
 
 /* LEFT */
-
 .topbar-left{
     display:flex;
     align-items:center;
@@ -78,14 +77,11 @@ body{
 .topbar-brand{
     font-size:15px;
     font-weight:800;
-
     color:#0f172a;
-
     letter-spacing:-0.2px;
 }
 
 /* NAV */
-
 .topbar-nav{
     display:flex;
     align-items:center;
@@ -94,14 +90,14 @@ body{
 
 .topbar-nav a{
     text-decoration:none;
-    color:#64748b;
+    color:#000000;
     font-size:13px;
     font-weight:600;
     transition:.2s;
 }
 
 .topbar-nav a:hover{
-    color:#000000;
+    color:#ffb700;
 }
 
 /* ACTION */
