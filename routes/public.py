@@ -126,11 +126,14 @@ def tagihan_spp():
             end = date(today.year, today.month, 1)
 
             lunas = d.execute("""
-                SELECT bulan, tahun
+                SELECT
+                    bulan,
+                    EXTRACT(YEAR FROM tanggal)::int AS tahun
                 FROM pembayaran
-                WHERE siswa_id=?
-                  AND jenis='SPP'
-                  AND status='LUNAS'
+                WHERE nisn = (
+                    SELECT nisn FROM siswa WHERE id = ?
+                )
+                AND jenis = 'SPP'
             """, (siswa_id,)).fetchall()
 
             lunas_set = {(r["bulan"], r["tahun"]) for r in lunas}
