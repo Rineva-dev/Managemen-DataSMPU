@@ -34,16 +34,19 @@ def search_siswa():
 
             rows = d.execute("""
                 SELECT
-                    id,
-                    nisn,
-                    nama
-                FROM siswa
-                WHERE status = 'aktif'
+                    s.id,
+                    s.nisn,
+                    s.nama,
+                    s.tingkat,
+                    s.sub_kelas,
+                    s.status
+                FROM siswa s
+                WHERE s.status='aktif'
                 AND (
-                    LOWER(nama) LIKE LOWER(?)
-                    OR nisn LIKE ?
+                    LOWER(s.nama) LIKE LOWER(?)
+                    OR s.nisn LIKE ?
                 )
-                ORDER BY nama
+                ORDER BY s.nama
                 LIMIT 10
             """, (
                 f"%{q}%",
@@ -54,7 +57,10 @@ def search_siswa():
             {
                 "id": r["id"],
                 "nisn": r["nisn"],
-                "nama": r["nama"]
+                "nama": r["nama"],
+                "tingkat": r["tingkat"],
+                "sub_kelas": r["sub_kelas"],
+                "status": r["status"]
             }
             for r in rows
         ])

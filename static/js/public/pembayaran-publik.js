@@ -61,13 +61,13 @@ input.addEventListener("input", async () => {
                 `NISN : ${siswa.nisn}`;
 
             document.getElementById("siswa-kelas").textContent =
-                '${s.tingkat} || "-"';
+                siswa.tingkat || "-";
 
             document.getElementById("siswa-rombel").textContent =
-                '${s.sub_kelas} || "-"';
+                siswa.sub_kelas || "-";
 
             document.getElementById("siswa-badge").textContent =
-                `${siswa.kelas || ""} ${siswa.rombel || ""}`;
+                siswa.status || "Aktif";
 
             // tampilkan data siswa
             document.getElementById(
