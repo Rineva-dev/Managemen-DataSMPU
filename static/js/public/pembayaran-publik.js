@@ -47,11 +47,12 @@ function formatRupiah(angka) {
 
 function resetTagihanUI() {
 
-    // reset list tagihan
+    const cardTagihan = document.getElementById("card-tagihan");
+    
+    if (cardTagihan) {cardTagihan.style.display = "none";}
+
     tagihanList.innerHTML = "";
     tagihanCount.textContent = "0 Tagihan";
-
-    // reset card pembangunan
     const card = document.getElementById("card-pembangunan");
     const content = document.getElementById("pembangunan-content");
 
