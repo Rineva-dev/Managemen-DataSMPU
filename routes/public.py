@@ -164,6 +164,73 @@ def tagihan_spp():
         traceback.print_exc()
         return jsonify({"error": str(e)}), 500
     
+@public_bp.route("/tagihan-pembangunan")
+def tagihan_pembangunan():
+
+    siswa_id = request.args.get("siswa_id", type=int)
+    if not siswa_id:
+        return jsonify({})
+
+    with db() as d:
+
+        siswa = d.execute("""
+            SELECT nisn
+            FROM siswa
+            WHERE id=?
+        """, (siswa_id,)).fetchone()
+
+        if not siswa:
+            return jsonify({})
+
+        nisn = siswa["nisn"]
+
+        # ======================
+        # TOTAL TERBAYAR
+        # ======================
+        row = d.execute("""
+            SELECT
+                COALESCE(SUM(nominal),0) AS total
+            FROM pembayaran
+            WHERE nisn=?
+              AND jenis LIKE 'PEMBANGUNAN%'
+        """, (nisn,)).fetchone()
+
+        total_bayar = row["total"]
+        target = 5000000
+
+        # ======================
+        # SEMESTER 1
+        # ======================
+        sem1 = d.execute("""
+            SELECT COALESCE(SUM(nominal),0) AS total
+            FROM pembayaran
+            WHERE nisn=?
+              AND jenis='PEMBANGUNAN_SEM1'
+        """, (nisn,)).fetchone()["total"]
+
+        # ======================
+        # SEMESTER 2
+        # ======================
+        sem2 = d.execute("""
+            SELECT COALESCE(SUM(nominal),0) AS total
+            FROM pembayaran
+            WHERE nisn=?
+              AND jenis='PEMBANGUNAN_SEM2'
+        """, (nisn,)).fetchone()["total"]
+
+    return jsonify({
+        "total": target,
+        "lunas": total_bayar >= target,
+        "sem1": {
+            "terbayar": sem1,
+            "sisa": max(0, 3000000 - sem1)
+        },
+        "sem2": {
+            "terbayar": sem2,
+            "sisa": max(0, 2000000 - sem2)
+        }
+    })
+    
 @public_bp.route("/bayar-pembangunan", methods=["POST"])
 def bayar_pembangunan():
 
