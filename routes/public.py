@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, abort
+from flask import Blueprint, render_template, request, abort, jsonify
+from utils.db import db
 
 public_bp = Blueprint(
     "public",
@@ -18,11 +19,6 @@ def payment():
     return render_template(
         "public/pembayaran-publik.html"
     )
-
-from flask import Blueprint, request, jsonify
-from utils.db import db
-
-public_bp = Blueprint("public", __name__)
 
 @public_bp.route("/api/public/search-siswa")
 def search_siswa():
