@@ -36,11 +36,9 @@ def search_siswa():
                 SELECT
                     id,
                     nisn,
-                    nama,
-                    tingkat,
-                    sub_kelas
+                    nama
                 FROM siswa
-                WHERE status='aktif'
+                WHERE status = 'aktif'
                 AND (
                     LOWER(nama) LIKE LOWER(?)
                     OR nisn LIKE ?
@@ -56,9 +54,7 @@ def search_siswa():
             {
                 "id": r["id"],
                 "nisn": r["nisn"],
-                "nama": r["nama"],
-                "kelas": r["tingkat"],
-                "rombel": r["sub_kelas"]
+                "nama": r["nama"]
             }
             for r in rows
         ])
