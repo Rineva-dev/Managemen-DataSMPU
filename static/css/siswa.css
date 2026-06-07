@@ -325,6 +325,10 @@
     gap: 12px;
 }
 
+#modalNonAktif.modal-body {
+    padding: 0 !important;
+}
+
 @media(max-width:768px){
     .siswa-hero{
         grid-template-columns:1fr;
