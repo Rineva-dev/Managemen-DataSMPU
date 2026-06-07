@@ -723,6 +723,7 @@ def edit_siswa(nisn):
                         nis = %s,
                         nama = %s,
                         jk = %s,
+                        tahun_masuk = %s,
 
                         tempat_lahir = %s,
                         tanggal_lahir = %s,
@@ -752,6 +753,7 @@ def edit_siswa(nisn):
 
                     data["tempat_lahir"],
                     data["tanggal_lahir"],
+                    data["tahun_masuk"],
 
                     data["kelas_pindah"],
                     data["semester_pindah"],
