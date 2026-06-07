@@ -96,6 +96,8 @@ def tagihan_spp():
     if not siswa_id:
         return jsonify([])
 
+    today = date.today()
+
     with db() as d:
 
         siswa = d.execute("""
@@ -104,28 +106,22 @@ def tagihan_spp():
             WHERE id=?
         """, (siswa_id,)).fetchone()
 
-        if not siswa or siswa["status"] == "LULUS":
+        if not siswa or siswa["status"].lower() != "aktif":
             return jsonify([])
 
         tanggal_masuk = datetime.strptime(
             siswa["tanggal_masuk"], "%Y-%m-%d"
         ).date()
 
-        tp = d.execute("""
-            SELECT mulai, berakhir
-            FROM tahun_pelajaran
-            WHERE status='AKTIF'
-            LIMIT 1
-        """).fetchone()
+        # 🔑 BULAN PERTAMA SPP = JULI TAHUN MASUK
+        start = date(tanggal_masuk.year, 7, 1)
 
-        if not tp:
-            return jsonify([])
+        # kalau masuk setelah Juli (misalnya Agustus)
+        if tanggal_masuk.month > 7:
+            start = date(tanggal_masuk.year, tanggal_masuk.month, 1)
 
-        mulai = datetime.strptime(tp["mulai"], "%Y-%m-%d").date()
-        akhir = datetime.strptime(tp["berakhir"], "%Y-%m-%d").date()
-
-        start = max(tanggal_masuk, mulai)
-        cur = date(start.year, start.month, 1)
+        # 🔑 BATAS AKHIR = BULAN SEKARANG
+        end = date(today.year, today.month, 1)
 
         lunas = d.execute("""
             SELECT bulan, tahun
@@ -138,8 +134,10 @@ def tagihan_spp():
         lunas_set = {(r["bulan"], r["tahun"]) for r in lunas}
 
         tagihan = []
+        cur = start
 
-        while cur <= akhir:
+        while cur <= end:
+
             if (cur.month, cur.year) not in lunas_set:
                 tagihan.append({
                     "bulan": cur.month,
@@ -148,6 +146,7 @@ def tagihan_spp():
                     "status": "BELUM"
                 })
 
+            # next month
             if cur.month == 12:
                 cur = date(cur.year + 1, 1, 1)
             else:
