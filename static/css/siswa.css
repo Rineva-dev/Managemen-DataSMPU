@@ -466,6 +466,18 @@
     margin-top: 2px;
 }
 
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 20000; /* ⬅️ HARUS PALING TINGGI */
+}
+
+.confirm-modal {
+    position: fixed;
+    z-index: 20001; /* ⬅️ DI ATAS OVERLAY */
+}
+
 /* ================= LEFT ACTIONS – FULL WIDTH FIX ================= */
 @media (max-width: 576px) {
 
