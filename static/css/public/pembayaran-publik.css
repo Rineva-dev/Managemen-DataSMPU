@@ -1,21 +1,35 @@
 :root{
     --primary:#16a34a;
     --primary-dark:#15803d;
-    --bg:#f4f6f9;
+    --primary-light:#dcfce7;
+
+    --bg:#f5f7fb;
     --card:#ffffff;
-    --text:#1f2937;
+
+    --text:#111827;
+    --muted:#6b7280;
+
     --border:#e5e7eb;
-    --shadow:0 10px 30px rgba(0,0,0,.08);
+
+    --success:#16a34a;
+    --danger:#dc2626;
+
+    --shadow:
+        0 10px 25px rgba(0,0,0,.05);
 }
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Inter,Segoe UI,Tahoma,sans-serif;
 }
 
 body{
+    font-family:
+        Inter,
+        Segoe UI,
+        sans-serif;
+
     background:var(--bg);
     color:var(--text);
 }
@@ -23,244 +37,506 @@ body{
 .container{
     max-width:1100px;
     margin:auto;
-    padding:20px;
+    padding:24px;
 }
 
-/* HEADER */
+/* =========================
+   HERO
+========================= */
 
 .hero{
-    background:linear-gradient(135deg,#16a34a,#22c55e);
+    background:
+        linear-gradient(
+            135deg,
+            #16a34a,
+            #22c55e
+        );
+
     color:white;
-    border-radius:20px;
-    padding:35px;
+
+    border-radius:24px;
+
+    padding:40px;
+
+    margin-bottom:24px;
+
     box-shadow:var(--shadow);
-    margin-bottom:25px;
 }
 
 .hero h1{
-    font-size:32px;
+    font-size:34px;
     margin-bottom:10px;
 }
 
 .hero p{
+    line-height:1.7;
     opacity:.95;
 }
 
-/* SEARCH */
-
-.search-card{
-    background:var(--card);
-    border-radius:18px;
-    padding:25px;
-    box-shadow:var(--shadow);
-    margin-bottom:25px;
-}
-
-.search-box{
-    display:flex;
-    gap:10px;
-    margin-top:15px;
-}
-
-.search-box input{
-    flex:1;
-    height:50px;
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:0 15px;
-    font-size:15px;
-}
-
-.search-box button{
-    height:50px;
-    padding:0 25px;
-    border:none;
-    border-radius:12px;
-    background:var(--primary);
-    color:white;
-    cursor:pointer;
-    font-weight:600;
-}
-
-.search-box button:hover{
-    background:var(--primary-dark);
-}
-
-/* GRID */
-
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-    margin-bottom:20px;
-}
+/* =========================
+   CARD
+========================= */
 
 .card{
     background:var(--card);
-    border-radius:18px;
-    padding:20px;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    margin-bottom:20px;
+
     box-shadow:var(--shadow);
 }
 
+.card h2,
 .card h3{
-    margin-bottom:15px;
-    color:var(--primary-dark);
+    margin-bottom:12px;
 }
 
-/* DATA SISWA */
-
-.info-item{
-    display:flex;
-    justify-content:space-between;
-    padding:10px 0;
-    border-bottom:1px solid var(--border);
+.subtitle{
+    color:var(--muted);
+    margin-bottom:18px;
 }
 
-.info-item:last-child{
+/* =========================
+   SEARCH
+========================= */
+
+.autocomplete-wrapper{
+    position:relative;
+}
+
+#search-siswa{
+    width:100%;
+    height:56px;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    padding:0 18px;
+
+    font-size:15px;
+
+    outline:none;
+}
+
+#search-siswa:focus{
+    border-color:var(--primary);
+}
+
+#hasil-siswa{
+    display:none;
+
+    position:absolute;
+
+    top:60px;
+    left:0;
+    right:0;
+
+    background:white;
+
+    border-radius:14px;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,.1);
+
+    z-index:10;
+}
+
+.btn-primary{
+    margin-top:18px;
+
+    width:100%;
+    height:52px;
+
     border:none;
+
+    border-radius:14px;
+
+    background:var(--primary);
+
+    color:white;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
 }
 
-/* TAGIHAN */
+.btn-primary:hover{
+    background:var(--primary-dark);
+}
 
-.tagihan-item{
+/* =========================
+   DATA SISWA
+========================= */
+
+.student-card{
+    margin-bottom:20px;
+}
+
+.student-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    padding:12px 0;
-    border-bottom:1px solid var(--border);
+
+    margin-bottom:20px;
 }
 
-.tagihan-item:last-child{
-    border:none;
+.student-header h2{
+    margin-bottom:5px;
 }
 
-.tagihan-left{
+.student-header p{
+    color:var(--muted);
+}
+
+.student-badge{
+    background:var(--primary-light);
+
+    color:var(--success);
+
+    font-weight:700;
+
+    padding:10px 16px;
+
+    border-radius:12px;
+}
+
+.student-info{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+}
+
+.info-box{
+    background:#f9fafb;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    padding:16px;
+}
+
+.info-box span{
+    display:block;
+
+    color:var(--muted);
+
+    font-size:13px;
+
+    margin-bottom:6px;
+}
+
+.info-box strong{
+    font-size:15px;
+}
+
+/* =========================
+   SECTION
+========================= */
+
+.section-title{
     display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:14px;
+}
+
+.tag-count{
+    background:#f3f4f6;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:12px;
+}
+
+/* =========================
+   TAGIHAN
+========================= */
+
+.tagihan-list{
+    display:flex;
+    flex-direction:column;
     gap:10px;
-    align-items:center;
 }
 
-.tagihan-left input{
+.tagihan-row{
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    padding:16px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.tagihan-row:hover{
+    background:#f9fafb;
+}
+
+.tagihan-row input{
     width:18px;
     height:18px;
 }
 
-/* STATUS */
-
-.badge{
-    padding:6px 12px;
-    border-radius:20px;
-    font-size:12px;
-    font-weight:600;
+.tagihan-detail{
+    flex:1;
 }
 
-.badge-success{
-    background:#dcfce7;
-    color:#166534;
+.tagihan-detail strong{
+    display:block;
 }
 
-.badge-warning{
-    background:#fef3c7;
-    color:#92400e;
+.tagihan-detail small{
+    color:var(--muted);
 }
 
-/* TOTAL */
+.nominal{
+    font-weight:700;
+    color:var(--primary-dark);
+}
 
-.total-card{
-    background:var(--card);
-    border-radius:18px;
-    padding:25px;
-    box-shadow:var(--shadow);
+/* =========================
+   CICILAN
+========================= */
+
+.cicilan-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
+
+    margin-top:18px;
+
     margin-bottom:20px;
 }
 
-.total-value{
-    font-size:32px;
-    color:var(--primary);
-    font-weight:700;
-    margin-top:10px;
+.custom-payment label{
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
 }
 
-/* HISTORY */
+.custom-payment input{
+    width:100%;
+
+    height:52px;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    padding:0 16px;
+
+    font-size:15px;
+}
+
+.custom-payment input:focus{
+    outline:none;
+    border-color:var(--primary);
+}
+
+.semester-lock{
+    background:#fef3c7;
+
+    color:#92400e;
+
+    border-radius:14px;
+
+    padding:16px;
+
+    margin-top:12px;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary-card{
+    position:sticky;
+    bottom:20px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:24px;
+
+    box-shadow:
+        0 20px 40px rgba(0,0,0,.12);
+
+    margin-bottom:24px;
+
+    z-index:20;
+}
+
+.summary-header{
+    margin-bottom:16px;
+}
+
+.summary-row{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+}
+
+.summary-row strong{
+    color:var(--success);
+
+    font-size:28px;
+}
+
+.btn-pay{
+    margin-top:0;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrapper{
+    overflow:auto;
+}
 
 .history-table{
     width:100%;
-    border-collapse:collapse;
-}
 
-.history-table th,
-.history-table td{
-    padding:12px;
-    border-bottom:1px solid var(--border);
-    text-align:left;
+    border-collapse:collapse;
 }
 
 .history-table th{
     background:#f9fafb;
+
+    text-align:left;
+
+    padding:14px;
+
+    border-bottom:1px solid var(--border);
 }
 
-/* BUTTON BAYAR */
+.history-table td{
+    padding:14px;
 
-.pay-section{
-    text-align:center;
-    margin-top:25px;
+    border-bottom:1px solid var(--border);
 }
 
-.pay-btn{
-    background:var(--primary);
-    color:white;
-    border:none;
-    padding:16px 40px;
-    border-radius:14px;
-    font-size:16px;
+/* =========================
+   BADGE
+========================= */
+
+.badge{
+    display:inline-block;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:12px;
+
     font-weight:600;
-    cursor:pointer;
-    transition:.2s;
 }
 
-.pay-btn:hover{
-    background:var(--primary-dark);
-    transform:translateY(-2px);
+.badge.success{
+    background:#dcfce7;
+    color:#166534;
 }
+
+.badge.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+/* =========================
+   FOOTER
+========================= */
 
 .footer{
     text-align:center;
-    margin-top:40px;
-    color:#6b7280;
-    font-size:14px;
+
+    color:var(--muted);
+
+    margin-top:30px;
+
+    padding-bottom:30px;
 }
 
-/* MOBILE */
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:768px){
 
-    .grid{
-        grid-template-columns:1fr;
-    }
-
-    .search-box{
-        flex-direction:column;
-    }
-
-    .search-box button{
-        width:100%;
+    .container{
+        padding:14px;
     }
 
     .hero{
-        padding:25px;
+        padding:28px;
     }
 
     .hero h1{
-        font-size:24px;
-    }
-
-    .total-value{
         font-size:26px;
     }
 
-    .history-table{
-        display:block;
-        overflow-x:auto;
-        white-space:nowrap;
+    .student-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:14px;
+    }
+
+    .student-info{
+        grid-template-columns:1fr;
+    }
+
+    .cicilan-grid{
+        grid-template-columns:1fr;
+    }
+
+    .tagihan-row{
+        flex-wrap:wrap;
+    }
+
+    .nominal{
+        width:100%;
+        margin-left:32px;
+    }
+
+    .summary-row{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+    }
+
+    .summary-row strong{
+        font-size:24px;
     }
 }
