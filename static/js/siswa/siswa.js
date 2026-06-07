@@ -229,6 +229,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const btn = e.target.closest(".btn-status")
         if(!btn) return
 
+        if(btn.dataset.status === "nonaktif") return
+
         e.preventDefault()
         closeMenu()
 
@@ -236,21 +238,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const status = btn.dataset.status
         const nama = btn.dataset.nama
 
-        let pesan = ""
-        let tombol = ""
-        let warna = ""
-
-        if(status === "nonaktif"){
-            pesan = `Yakin ingin <b>menonaktifkan</b> siswa <br><strong>${nama}</strong> ?`
-            tombol = "Nonaktifkan"
-            warna = "btn-warning"
-        }else{
-            pesan = `Yakin ingin <b>mengaktifkan</b> kembali siswa <br><strong>${nama}</strong> ?`
-            tombol = "Aktifkan"
-            warna = "btn-success"
-        }
-
-        const confirm = await showConfirm(pesan, tombol, warna)
+        // =====================
+        // HANYA UNTUK AKTIFKAN
+        // =====================
+        const confirm = await showConfirm(
+            `Yakin ingin <b>mengaktifkan</b> kembali siswa <br><strong>${nama}</strong> ?`,
+            "Aktifkan",
+            "btn-success"
+        )
 
         if(!confirm) return
 
@@ -263,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             body: JSON.stringify({
                 id: id,
-                status: status
+                status: "aktif"
             })
         })
         .then(res => res.json())
@@ -271,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if(res.success){
                 showNotification(res.message, "success")
-                updateStatusUI(btn, status)
+                updateStatusUI(btn, "aktif")
             }else{
                 showNotification(res.message, "error")
             }
@@ -889,5 +884,115 @@ document.addEventListener("DOMContentLoaded", function () {
         renderTable();
 
     }
+
+    /* ===============================
+    MODAL NON AKTIF SISWA
+    ================================ */
+
+    const modalNonAktif = document.getElementById("modalNonAktif")
+    const nonaktifId = document.getElementById("nonaktif-id")
+    const nonaktifNama = document.getElementById("nonaktif-nama")
+    const nonaktifTanggal = document.getElementById("nonaktif-tanggal")
+    const nonaktifAlasan = document.getElementById("nonaktif-alasan")
+
+    // OPEN MODAL
+    document.addEventListener("click", function(e){
+
+        const btn = e.target.closest(".btn-nonaktif")
+        if(!btn) return
+
+        e.preventDefault()
+        closeMenu()
+
+        nonaktifId.value = btn.dataset.id
+        nonaktifNama.value = btn.dataset.nama
+
+        // default tanggal = hari ini
+        nonaktifTanggal.value =
+            new Date().toISOString().split("T")[0]
+
+        nonaktifAlasan.value = ""
+
+        modalNonAktif.classList.add("show")
+    })
+
+    // CLOSE MODAL
+    modalNonAktif?.querySelectorAll(".close, .btn-cancel")
+    .forEach(btn=>{
+        btn.addEventListener("click",()=>{
+            modalNonAktif.classList.remove("show")
+        })
+    })
+
+    // SIMPAN NON AKTIF
+    document.getElementById("btnSimpanNonAktif")
+    ?.addEventListener("click", async function(){
+
+        const tanggal = nonaktifTanggal.value
+        const alasan = nonaktifAlasan.value.trim()
+
+        if(!tanggal){
+            showNotification(
+                "Tanggal mulai non aktif wajib diisi",
+                "warning"
+            )
+            return
+        }
+
+        const confirm = await showConfirm(
+            `Non aktifkan siswa <br>
+            <strong>${nonaktifNama.value}</strong>
+            mulai tanggal <b>${tanggal}</b>?`,
+            "Non Aktifkan",
+            "btn-danger"
+        )
+
+        if(!confirm) return
+
+        fetch("/students/nonaktifkan",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({
+                id: nonaktifId.value,
+                tanggal_nonaktif: tanggal,
+                alasan: alasan
+            })
+        })
+        .then(res=>res.json())
+        .then(res=>{
+
+            if(res.success){
+
+                showNotification(
+                    "Siswa berhasil dinonaktifkan",
+                    "success"
+                )
+
+                modalNonAktif.classList.remove("show")
+
+                const row = document.querySelector(
+                    `tr[data-id="${nonaktifId.value}"]`
+                )
+
+                if(row){
+                    row.style.transition = "all .25s ease"
+                    row.style.opacity = "0"
+                    row.style.transform = "scale(.98)"
+
+                    setTimeout(()=>{
+                        row.remove()
+                        checkEmptyTable()
+                    },250)
+                }
+
+            }else{
+                showNotification(res.message,"error")
+            }
+
+        })
+    })
 
 });
