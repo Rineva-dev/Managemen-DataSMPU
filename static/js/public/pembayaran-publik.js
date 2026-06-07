@@ -39,16 +39,6 @@ function badgeClass(status) {
     return "secondary";
 }
 
-const displayInput = document.getElementById("nominal_display");
-const hiddenInput  = document.getElementById("nominal_value");
-
-displayInput.addEventListener("input", function () {
-    let angka = this.value.replace(/[^0-9]/g, "");
-
-    hiddenInput.value = angka;
-    this.value = formatRupiah(angka);
-});
-
 function formatRupiah(angka) {
     if (!angka) return "";
     return "Rp " + angka
@@ -56,6 +46,11 @@ function formatRupiah(angka) {
 }
 
 input.addEventListener("input", async () => {
+
+    selectedSiswa = null;
+
+    document.getElementById("student-card").style.display = "none";
+    document.getElementById("btn-cari").style.display = "none";
 
     const q = input.value.trim();
 
@@ -225,21 +220,6 @@ document.getElementById("btn-cari")
     hitungTotal();
 });
 
-input.addEventListener("input", async () => {
-
-    selectedSiswa = null;
-
-    document.getElementById(
-        "student-card"
-    ).style.display = "none";
-
-    document.getElementById(
-        "btn-cari"
-    ).style.display = "none";
-
-    // kode pencarian yang sudah ada...
-});
-
 function hitungTotal() {
 
     let total = 0;
@@ -297,4 +277,14 @@ function renderPembangunan(data) {
             <input type="hidden" id="nominal_value" name="nominal">
         </div>
     `;
+
+    const displayInput = document.getElementById("nominal_display");
+    const hiddenInput  = document.getElementById("nominal_value");
+
+    displayInput.addEventListener("input", function () {
+        let angka = this.value.replace(/[^0-9]/g, "");
+
+        hiddenInput.value = angka;
+        this.value = formatRupiah(angka);
+    });
 }
