@@ -37,7 +37,7 @@ body{
 .container{
     max-width:1100px;
     margin:auto;
-    padding:24px;
+    padding:20px 24px 24px;
 }
 
 /* =========================
@@ -47,7 +47,7 @@ body{
 .topbar{
     position: sticky;
     z-index: 5;
-    top: 25px;
+    top: 20px;
     background:rgba(255,255,255,.82);
     backdrop-filter:blur(14px);
     border:1px solid #eef2f7;
