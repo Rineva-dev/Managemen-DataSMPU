@@ -47,62 +47,52 @@ body{
     position: relative;
     overflow: hidden;
 
-    background: linear-gradient(
-        135deg,
-        #1e3a8a,
-        #2563eb,
-        #3b82f6
-    );
+    padding: 60px 50px;
 
-    border-radius: 24px;
-
-    padding: 60px 40px;
+    border-radius: 32px;
 
     margin-bottom: 30px;
 
-    color: white;
+    background:
+        linear-gradient(
+            135deg,
+            #ffb619,
+            #ffe378,
+            #ffbd1b
+        );
+
+    box-shadow:
+        0 20px 50px rgba(255, 182, 25, 0.28);
+
+    isolation: isolate;
 }
 
-.hero::before,
-.hero::after {
-    content: "";
-
+/* glow */
+.hero-glow {
     position: absolute;
-
     border-radius: 50%;
-
-    background: rgba(255,255,255,0.08);
-
-    filter: blur(10px);
+    filter: blur(40px);
+    z-index: 0;
 }
 
-.hero::before {
-    width: 220px;
-    height: 220px;
+.glow-1 {
+    width: 240px;
+    height: 240px;
 
-    top: -60px;
-    right: -60px;
+    background: rgba(255,255,255,0.35);
+
+    top: -80px;
+    right: -50px;
 }
 
-.hero::after {
+.glow-2 {
     width: 180px;
     height: 180px;
 
-    bottom: -50px;
-    left: -50px;
-}
+    background: rgba(255,255,255,0.18);
 
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-
-    background:
-        linear-gradient(
-            rgba(255,255,255,0.04),
-            rgba(255,255,255,0.02)
-        );
-
-    backdrop-filter: blur(2px);
+    bottom: -60px;
+    left: -40px;
 }
 
 .hero-content {
@@ -111,71 +101,93 @@ body{
 
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 36px;
 }
 
 .hero-logo {
-    flex-shrink: 0;
+    width: 120px;
+    height: 120px;
 
-    width: 110px;
-    height: 110px;
+    border-radius: 28px;
 
-    background: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.25);
 
-    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(12px);
 
-    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.35);
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.08);
 }
 
 .hero-logo img {
-    width: 75px;
-    height: 75px;
-
+    width: 78px;
+    height: 78px;
     object-fit: contain;
 }
 
-.hero-text h1 {
-    font-size: 42px;
-    line-height: 1.1;
-
-    margin-bottom: 16px;
-
-    font-weight: 800;
-}
-
-.hero-text p {
-    font-size: 16px;
-
-    line-height: 1.7;
-
-    color: rgba(255,255,255,0.92);
-
-    max-width: 650px;
+.hero-text {
+    color: #3a2a00;
 }
 
 .hero-badge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
 
-    padding: 8px 14px;
-
-    margin-bottom: 18px;
+    padding: 8px 16px;
 
     border-radius: 999px;
 
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.4);
 
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.45);
 
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
+
+    margin-bottom: 20px;
+
+    backdrop-filter: blur(10px);
 
     letter-spacing: .3px;
+}
+
+.hero-text h1 {
+    font-size: 54px;
+    line-height: 1;
+
+    font-weight: 900;
+
+    margin: 0;
+}
+
+.hero-text h2 {
+    font-size: 42px;
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    margin-top: 10px;
+    margin-bottom: 18px;
+
+    color: rgba(58, 42, 0, 0.88);
+}
+
+.hero-text p {
+    font-size: 17px;
+    line-height: 1.8;
+
+    max-width: 650px;
+
+    color: rgba(58, 42, 0, 0.82);
+
+    margin: 0;
 }
 
 /* RESPONSIVE */
@@ -183,6 +195,7 @@ body{
 
     .hero {
         padding: 40px 24px;
+        border-radius: 24px;
     }
 
     .hero-content {
@@ -190,18 +203,26 @@ body{
         text-align: center;
     }
 
-    .hero-text h1 {
-        font-size: 32px;
-    }
-
     .hero-logo {
-        width: 90px;
-        height: 90px;
+        width: 95px;
+        height: 95px;
     }
 
     .hero-logo img {
-        width: 60px;
-        height: 60px;
+        width: 62px;
+        height: 62px;
+    }
+
+    .hero-text h1 {
+        font-size: 38px;
+    }
+
+    .hero-text h2 {
+        font-size: 28px;
+    }
+
+    .hero-text p {
+        font-size: 15px;
     }
 }
 
