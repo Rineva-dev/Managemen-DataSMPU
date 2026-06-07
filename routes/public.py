@@ -40,6 +40,8 @@ def search_siswa():
                     s.status,
                     k.tingkat,
                     k.sub_kelas
+                    s.nama_ayah,
+                    s.nama_ibu
 
                 FROM siswa s
 
@@ -69,7 +71,9 @@ def search_siswa():
                 "nama": r["nama"],
                 "tingkat": r["tingkat"],
                 "sub_kelas": r["sub_kelas"],
-                "status": r["status"]
+                "status": r["status"],
+                "nama_ayah": r["nama_ayah"],
+                "nama_ibu": r["nama_ibu"]
             }
             for r in rows
         ])

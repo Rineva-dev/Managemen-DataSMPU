@@ -66,8 +66,13 @@ input.addEventListener("input", async () => {
             document.getElementById("siswa-rombel").textContent =
                 siswa.sub_kelas || "-";
 
+            document.getElementById("siswa-orangtua").textContent =
+                siswa.nama_ayah?.trim() ||
+                siswa.nama_ibu?.trim() ||
+                "-";
+
             document.getElementById("siswa-badge").textContent =
-                siswa.status || "-";
+                siswa.status || "Aktif";
 
             // tampilkan data siswa
             document.getElementById(
