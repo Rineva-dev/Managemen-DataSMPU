@@ -23,40 +23,51 @@ def payment():
 @public_bp.route("/search-siswa")
 def search_siswa():
 
-    q = request.args.get("q", "").strip()
+    try:
 
-    if len(q) < 2:
-        return jsonify([])
+        q = request.args.get("q", "").strip()
 
-    with db() as d:
+        if len(q) < 2:
+            return jsonify([])
 
-        rows = d.execute("""
-            SELECT
-                id,
-                nisn,
-                nama,
-                tingkat,
-                sub_kelas
-            FROM siswa
-            WHERE status='aktif'
-            AND (
-                LOWER(nama) LIKE LOWER(?)
-                OR nisn LIKE ?
-            )
-            ORDER BY nama
-            LIMIT 10
-        """, (
-            f"%{q}%",
-            f"%{q}%"
-        )).fetchall()
+        with db() as d:
 
-    return jsonify([
-        {
-            "id": r["id"],
-            "nisn": r["nisn"],
-            "nama": r["nama"],
-            "kelas": r["tingkat"],
-            "rombel": r["sub_kelas"]
-        }
-        for r in rows
-    ])
+            rows = d.execute("""
+                SELECT
+                    id,
+                    nisn,
+                    nama,
+                    tingkat,
+                    sub_kelas
+                FROM siswa
+                WHERE status='aktif'
+                AND (
+                    LOWER(nama) LIKE LOWER(?)
+                    OR nisn LIKE ?
+                )
+                ORDER BY nama
+                LIMIT 10
+            """, (
+                f"%{q}%",
+                f"%{q}%"
+            )).fetchall()
+
+        return jsonify([
+            {
+                "id": r["id"],
+                "nisn": r["nisn"],
+                "nama": r["nama"],
+                "kelas": r["tingkat"],
+                "rombel": r["sub_kelas"]
+            }
+            for r in rows
+        ])
+
+    except Exception as e:
+
+        print("SEARCH SISWA ERROR:", e)
+
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
