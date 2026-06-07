@@ -250,27 +250,6 @@ body{
     margin-bottom:24px;
 }
 
-.hero-logo{
-    width:56px;
-    height:56px;
-
-    border-radius:18px;
-
-    background:#f8fafc;
-
-    border:1px solid #e5e7eb;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.hero-logo img{
-    width:36px;
-    height:36px;
-    object-fit:contain;
-}
-
 .hero-chip{
     height:36px;
 
