@@ -39,7 +39,7 @@ def search_siswa():
                     s.nama,
                     s.status,
                     k.tingkat,
-                    k.sub_kelas
+                    k.sub_kelas,
                     s.nama_ayah,
                     s.nama_ibu
 
