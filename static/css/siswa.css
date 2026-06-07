@@ -440,10 +440,15 @@
     display: block;
 }
 
+.form-hint {
+    text-align: left;
+    color: rgb(215, 140, 0);
+}
+
 .warning-note {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
+    gap: 6px;
     padding: 10px 12px;
     background: #fff7ed;
     border-left: 4px solid #f97316;
