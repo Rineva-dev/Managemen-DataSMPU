@@ -3,6 +3,7 @@
 ========================= */
 #ekstrakurikuler-content .guru-filter-bar {
     flex-wrap: nowrap;
+    gap: 4px;
 }
 
 #ekstrakurikuler-content #ekskulTahunDropdown {
@@ -13,7 +14,7 @@
 #ekstrakurikuler-content .kelas-action-bar {
     display: flex;
     flex-wrap: nowrap;
-    gap: 8px;
+    gap: 4px;
 }
 
 #ekstrakurikuler-content .kelas-main {
