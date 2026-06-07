@@ -102,7 +102,7 @@ def tagihan_spp():
         with db() as d:
 
             siswa = d.execute("""
-                SELECT tahun_masuk, status, nonaktif_tanggal
+                SELECT tahun_masuk, status, tanggal_nonaktif
                 FROM siswa
                 WHERE id=?
             """, (siswa_id,)).fetchone()
@@ -122,10 +122,10 @@ def tagihan_spp():
             # ===== HITUNG BATAS AKHIR =====
             end = date(today.year, today.month, 1)
 
-            nonaktif_tanggal = siswa["nonaktif_tanggal"]
+            tanggal_nonaktif = siswa["tanggal_nonaktif"]
 
-            if nonaktif_tanggal:
-                na = nonaktif_tanggal
+            if tanggal_nonaktif:
+                na = tanggal_nonaktif
 
                 if na.day <= 10:
                     if na.month == 1:
