@@ -171,65 +171,71 @@ def tagihan_pembangunan():
     if not siswa_id:
         return jsonify({})
 
-    with db() as d:
+    try:
+        with db() as d:
 
-        siswa = d.execute("""
-            SELECT nisn
-            FROM siswa
-            WHERE id=?
-        """, (siswa_id,)).fetchone()
+            siswa = d.execute("""
+                SELECT nisn
+                FROM siswa
+                WHERE id = %s
+            """, (siswa_id,)).fetchone()
 
-        if not siswa:
-            return jsonify({})
+            if not siswa:
+                return jsonify({})
 
-        nisn = siswa["nisn"]
+            nisn = siswa["nisn"]
 
-        # ======================
-        # TOTAL TERBAYAR
-        # ======================
-        row = d.execute("""
-            SELECT
-                COALESCE(SUM(nominal),0) AS total
-            FROM pembayaran
-            WHERE nisn=?
-              AND jenis LIKE 'PEMBANGUNAN%'
-        """, (nisn,)).fetchone()
+            # ======================
+            # TOTAL SUDAH DIBAYAR
+            # ======================
+            row = d.execute("""
+                SELECT COALESCE(SUM(nominal),0) AS total
+                FROM pembayaran
+                WHERE nisn = %s
+                  AND jenis LIKE 'PEMBANGUNAN%%'
+            """, (nisn,)).fetchone()
 
-        total_bayar = row["total"]
-        target = 5000000
+            total_terbayar = row["total"]
 
-        # ======================
-        # SEMESTER 1
-        # ======================
-        sem1 = d.execute("""
-            SELECT COALESCE(SUM(nominal),0) AS total
-            FROM pembayaran
-            WHERE nisn=?
-              AND jenis='PEMBANGUNAN_SEM1'
-        """, (nisn,)).fetchone()["total"]
+            # ======================
+            # SEMESTER 1
+            # ======================
+            sem1 = d.execute("""
+                SELECT COALESCE(SUM(nominal),0) AS total
+                FROM pembayaran
+                WHERE nisn = %s
+                  AND jenis = 'PEMBANGUNAN_SEM1'
+            """, (nisn,)).fetchone()["total"]
 
-        # ======================
-        # SEMESTER 2
-        # ======================
-        sem2 = d.execute("""
-            SELECT COALESCE(SUM(nominal),0) AS total
-            FROM pembayaran
-            WHERE nisn=?
-              AND jenis='PEMBANGUNAN_SEM2'
-        """, (nisn,)).fetchone()["total"]
+            # ======================
+            # SEMESTER 2
+            # ======================
+            sem2 = d.execute("""
+                SELECT COALESCE(SUM(nominal),0) AS total
+                FROM pembayaran
+                WHERE nisn = %s
+                  AND jenis = 'PEMBANGUNAN_SEM2'
+            """, (nisn,)).fetchone()["total"]
 
-    return jsonify({
-        "total": target,
-        "lunas": total_bayar >= target,
-        "sem1": {
-            "terbayar": sem1,
-            "sisa": max(0, 3000000 - sem1)
-        },
-        "sem2": {
-            "terbayar": sem2,
-            "sisa": max(0, 2000000 - sem2)
-        }
-    })
+        return jsonify({
+            "total": 5000000,
+            "lunas": total_terbayar >= 5000000,
+            "sem1": {
+                "target": 3000000,
+                "terbayar": sem1,
+                "sisa": max(0, 3000000 - sem1)
+            },
+            "sem2": {
+                "target": 2000000,
+                "terbayar": sem2,
+                "sisa": max(0, 2000000 - sem2)
+            }
+        })
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
     
 @public_bp.route("/bayar-pembangunan", methods=["POST"])
 def bayar_pembangunan():
