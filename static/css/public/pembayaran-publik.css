@@ -381,10 +381,10 @@ body{
 }
 
 #search-siswa:focus{
-    border-color:#22c55e;
+    border-color:#ffa500;
 
     box-shadow:
-        0 0 0 4px rgba(34,197,94,.08);
+        0 0 0 4px rgba(197, 170, 34, 0.08);
 }
 
 /* BUTTON */
@@ -481,11 +481,7 @@ body{
     padding: 0 18px;
     font-size: 15px;
     outline: none;
-    background: #fffef4;
-}
-
-#search-siswa:focus{
-    border-color:#ffa500;
+    background: #fffef9;
 }
 
 #hasil-siswa{
