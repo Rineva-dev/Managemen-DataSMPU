@@ -343,40 +343,6 @@ searchInput.addEventListener("input", function() {
 });
 
 // ======================================
-// HERO SCROLL
-// ======================================
-
-const btnHeroSearch =
-    document.getElementById("btn-hero-search");
-
-const cariSiswaSection =
-    document.getElementById("cari-siswa");
-
-window.addEventListener("load", () => {
-
-    setTimeout(() => {
-
-        cariSiswaSection.classList.add("show");
-
-    }, 200);
-
-});
-
-// =========================
-// SCROLL HALUS
-// =========================
-btnHeroSearch.addEventListener("click", function(e){
-
-    e.preventDefault();
-
-    cariSiswaSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
-
-});
-
-// ======================================
 // INIT
 // ======================================
 
