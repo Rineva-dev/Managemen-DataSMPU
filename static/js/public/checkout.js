@@ -47,10 +47,6 @@ function renderCart() {
         div.innerHTML = `
             <div class="cart-item-left">
 
-                <div class="cart-item-icon">
-                    <i data-lucide="receipt"></i>
-                </div>
-
                 <div>
 
                     <strong>

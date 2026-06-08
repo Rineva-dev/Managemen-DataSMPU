@@ -1011,3 +1011,28 @@ body{
 .btn-checkout:hover{
     transform:translateY(-2px);
 }
+
+.cart-item-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-shrink:0;
+}
+
+
+.cart-item-price{
+    font-size:18px;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.btn-remove{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    flex-shrink:0;
+}
