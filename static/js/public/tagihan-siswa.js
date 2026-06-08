@@ -343,6 +343,46 @@ searchInput.addEventListener("input", function() {
 });
 
 // ======================================
+// HERO SCROLL
+// ======================================
+
+const btnHeroSearch =
+    document.getElementById("btn-hero-search");
+
+const cariSiswaSection =
+    document.getElementById("cari-siswa");
+
+// tampilkan animasi saat page load
+window.addEventListener("load", function() {
+
+    setTimeout(() => {
+
+        cariSiswaSection.classList.add("show");
+
+    }, 200);
+});
+
+// scroll halus saat tombol diklik
+btnHeroSearch.addEventListener("click", function(e){
+
+    e.preventDefault();
+
+    cariSiswaSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    // animasi ulang
+    cariSiswaSection.classList.remove("show");
+
+    setTimeout(() => {
+
+        cariSiswaSection.classList.add("show");
+
+    }, 300);
+});
+
+// ======================================
 // INIT
 // ======================================
 
