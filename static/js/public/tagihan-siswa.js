@@ -680,33 +680,45 @@ async function loadBiodataSiswa() {
         // =========================
 
         document.getElementById(
-            "dropdown-nama"
+            "profile-nama"
         ).textContent =
             siswa.nama || "-";
 
         document.getElementById(
-            "dropdown-kelas"
+            "profile-nisn"
         ).textContent =
-            `${siswa.tingkat || "-"} ${siswa.sub_kelas || ""}`;
+            `NISN ${siswa.nisn || "-"}`;
 
         document.getElementById(
-            "dropdown-orangtua"
+            "profile-kelas"
         ).textContent =
-            siswa.nama_ayah ||
-            siswa.nama_ibu ||
-            "-";
+            `Kelas ${siswa.tingkat || "-"} ${siswa.sub_kelas || ""}`;
 
         document.getElementById(
-            "dropdown-alamat"
+            "profile-status"
         ).textContent =
-            siswa.alamat || "-";
+            `Status: ${siswa.status || "-"}`;
 
         document.getElementById(
-            "dropdown-lahir"
+            "profile-ttl"
         ).textContent =
             siswa.tempat_lahir && siswa.tanggal_lahir
                 ? `${siswa.tempat_lahir}, ${siswa.tanggal_lahir}`
                 : "-";
+
+        document.getElementById(
+            "profile-orangtua"
+        ).textContent =
+            `Orang Tua: ${
+                siswa.nama_ayah ||
+                siswa.nama_ibu ||
+                "-"
+            }`;
+
+        document.getElementById(
+            "profile-alamat"
+        ).textContent =
+            siswa.alamat || "-";
 
         const namaHeader =
             document.getElementById("nama-siswa-header");
