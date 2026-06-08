@@ -387,6 +387,51 @@ body{
     line-height: 1.5;
 }
 
+/* INLINE LABEL : VALUE */
+.info-item.inline {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    align-items: start;
+    column-gap: 10px;
+}
+
+.info-item.inline span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.info-item.inline strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+/* ADDRESS BLOCK */
+.profile-address {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 10px;
+
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #eef2f7;
+}
+
+.profile-address svg {
+    width: 18px;
+    height: 18px;
+    color: #64748b;
+    margin-top: 3px;
+}
+
+.profile-address p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #334155;
+}
+
 /* =========================
    LAYOUT
 ========================= */
