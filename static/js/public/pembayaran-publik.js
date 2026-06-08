@@ -132,9 +132,8 @@ document.getElementById("btn-cari")
         `/public/tagihan-siswa?siswa_id=${siswaId}`;
 });
 
-
 // ======================================
-// HERO SCROLL
+// HERO SCROLL SMOOTH PREMIUM
 // ======================================
 
 const btnHeroSearch =
@@ -149,13 +148,46 @@ if(btnHeroSearch && cariSiswaSection){
 
         e.preventDefault();
 
-        const target =
+        const targetPosition =
             cariSiswaSection.offsetTop - 100;
 
-        window.scrollTo({
-            top: target,
-            behavior: "smooth"
-        });
+        const startPosition =
+            window.pageYOffset;
+
+        const distance =
+            targetPosition - startPosition;
+
+        const duration = 1800;
+
+        let start = null;
+
+        function animation(currentTime){
+
+            if(start === null){
+                start = currentTime;
+            }
+
+            const timeElapsed =
+                currentTime - start;
+
+            const progress =
+                Math.min(timeElapsed / duration, 1);
+
+            // easing super smooth
+            const ease =
+                1 - Math.pow(1 - progress, 4);
+
+            window.scrollTo(
+                0,
+                startPosition + distance * ease
+            );
+
+            if(timeElapsed < duration){
+                requestAnimationFrame(animation);
+            }
+        }
+
+        requestAnimationFrame(animation);
 
     });
 

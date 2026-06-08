@@ -24,10 +24,6 @@
     box-sizing:border-box;
 }
 
-html{
-    scroll-behavior:smooth;
-}
-
 #cari-siswa{
     scroll-margin-top:120px;
 }
