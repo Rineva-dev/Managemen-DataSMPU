@@ -222,6 +222,121 @@ body{
 }
 
 /* =========================
+   PROFILE DROPDOWN – SAAS
+========================= */
+
+.profile-wrapper {
+    position: relative;
+}
+
+/* DROPDOWN CONTAINER */
+.profile-dropdown {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    width: 340px;
+
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+    pointer-events: none;
+
+    transition: 
+        opacity .2s ease,
+        transform .2s ease;
+
+    z-index: 1200;
+}
+
+/* SHOW STATE */
+.profile-dropdown.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* CARD */
+.profile-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px 22px;
+
+    box-shadow:
+        0 20px 40px rgba(0,0,0,.12),
+        0 0 0 1px rgba(0,0,0,.04);
+}
+
+/* HEADER */
+.profile-card h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.profile-card small {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* DIVIDER */
+.profile-card::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background: #eef2f7;
+    margin: 16px 0;
+}
+
+/* INFO LIST */
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ITEM */
+.profile-info p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+/* LABEL FEELING */
+.profile-info p::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+/* OPTIONAL: hover highlight */
+.profile-info p:hover {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 6px 8px;
+}
+
+.profile-dropdown::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: 22px;
+
+    width: 16px;
+    height: 16px;
+
+    background: white;
+    transform: rotate(45deg);
+
+    box-shadow:
+        -1px -1px 2px rgba(0,0,0,.04);
+}
+
+/* =========================
    LAYOUT
 ========================= */
 
