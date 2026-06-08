@@ -13,13 +13,29 @@ let cart = JSON.parse(
     localStorage.getItem("payment_cart") || "[]"
 );
 
+// ======================================
+// FORMAT TANGGAL (YYYY-MM-DD → DD-MM-YYYY)
+// ======================================
+function formatTanggal(isoDate, separator = "-") {
+
+    if (!isoDate) return "-";
+
+    const parts = isoDate.split("-");
+
+    if (parts.length !== 3) return isoDate;
+
+    const [year, month, day] = parts;
+
+    return `${day}${separator}${month}${separator}${year}`;
+}
+
 function rupiah(nominal) {
 
     return "Rp" + Number(nominal)
         .toLocaleString("id-ID");
 }
 
-async function loadNamaSiswa() {
+async function loadBiodataSiswa() {
 
     if (!siswaId) return;
 
@@ -33,27 +49,87 @@ async function loadNamaSiswa() {
 
         const siswa = await res.json();
 
-        const el =
+        // =========================
+        // HEADER NAME
+        // =========================
+        const namaHeader =
             document.getElementById("nama-siswa-header");
 
-        if (!el) return;
+        if (namaHeader) {
 
-        const parts =
-            (siswa.nama || "").split(" ");
+            const parts =
+                (siswa.nama || "").split(" ");
 
-        let nama =
-            parts.slice(0, 2).join(" ");
+            let nama =
+                parts.slice(0, 2).join(" ");
 
-        if (parts.length > 2) {
+            if (parts.length > 2) {
                 nama += "...";
             }
 
-        el.textContent = nama;
+            namaHeader.textContent = nama;
+        }
+
+        // =========================
+        // PROFILE DROPDOWN
+        // =========================
+        document.getElementById("profile-nama").textContent =
+            siswa.nama || "-";
+
+        document.getElementById("profile-nisn").textContent =
+            `NISN ${siswa.nisn || "-"}`;
+
+        document.getElementById("profile-kelas").textContent =
+            `${siswa.tingkat || "-"} ${siswa.sub_kelas || ""}`;
+
+        // ===== STATUS (WARNA)
+        const statusEl =
+            document.getElementById("profile-status");
+
+        const status =
+            (siswa.status || "AKTIF").toUpperCase();
+
+        statusEl.textContent =
+            status.charAt(0) + status.slice(1).toLowerCase();
+
+        statusEl.classList.remove(
+            "aktif",
+            "nonaktif",
+            "lulus"
+        );
+
+        if (status === "NONAKTIF") {
+            statusEl.classList.add("nonaktif");
+        }
+        else if (status === "LULUS") {
+            statusEl.classList.add("lulus");
+        }
+        else {
+            statusEl.classList.add("aktif");
+        }
+
+        // ===== TTL
+        document.getElementById("profile-ttl").textContent =
+            siswa.tempat_lahir && siswa.tanggal_lahir
+                ? `${siswa.tempat_lahir}, ${formatTanggal(siswa.tanggal_lahir)}`
+                : "-";
+
+        // ===== ORANG TUA
+        document.getElementById("profile-orangtua").textContent =
+            siswa.nama_ayah ||
+            siswa.nama_ibu ||
+            "-";
+
+        // ===== ALAMAT
+        document.getElementById("profile-alamat").textContent =
+            siswa.alamat || "-";
+
+        lucide.createIcons();
 
     } catch (err) {
 
         console.error(
-            "Gagal memuat nama siswa",
+            "Gagal memuat biodata siswa",
             err
         );
     }
@@ -143,5 +219,5 @@ document.addEventListener("click", function(e) {
 
     renderCart();
 });
-loadNamaSiswa();
+loadBiodataSiswa();
 renderCart();
