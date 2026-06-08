@@ -1037,7 +1037,7 @@ body{
     flex-shrink:0;
 }
 
-.btn-remove i {
+.btn-remove svg {
     width: 18px;
     height: 18px
 }
