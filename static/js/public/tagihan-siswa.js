@@ -106,7 +106,10 @@ function addToCart(data, cardElement) {
     if (
         data.kategori === "SPP"
     ) {
+
         cardElement.remove();
+
+        checkEmptyTagihan();
     }
 
     renderCart();
@@ -170,14 +173,7 @@ async function loadTagihanSPP() {
 
         billGrid.innerHTML = "";
 
-        if (!Array.isArray(data) || data.length === 0) {
-
-            billGrid.innerHTML = `
-                <div class="empty-tagihan">
-                    Tidak ada tagihan
-                </div>
-            `;
-
+        if (!Array.isArray(data)) {
             return;
         }
 
@@ -402,6 +398,33 @@ async function loadTagihanPembangunan() {
     }
 }
 
+function checkEmptyTagihan() {
+
+    const cards =
+        document.querySelectorAll(".bill-card");
+
+    const empty =
+        document.querySelector(".empty-tagihan");
+
+    if (cards.length === 0) {
+
+        if (!empty) {
+
+            billGrid.innerHTML = `
+                <div class="empty-tagihan">
+                    Tidak ada tagihan
+                </div>
+            `;
+        }
+
+    } else {
+
+        if (empty) {
+            empty.remove();
+        }
+    }
+}
+
 document.addEventListener("input", function(e) {
 
     const input =
@@ -621,10 +644,17 @@ async function loadBiodataSiswa() {
 // ======================================
 // INIT
 // ======================================
+async function init() {
 
-renderCart();
+    renderCart();
 
-loadBiodataSiswa();
+    await loadBiodataSiswa();
 
-loadTagihanSPP();
-loadTagihanPembangunan();
+    await loadTagihanSPP();
+
+    await loadTagihanPembangunan();
+
+    checkEmptyTagihan();
+}
+
+init();

@@ -512,11 +512,8 @@ body{
 
 .bill-footer{
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
-
     margin-top:auto;
 }
 
@@ -524,33 +521,41 @@ body{
     margin-top:16px;
 }
 
-/* BUTTON */
-
 .btn-add-cart{
     height:46px;
-
     padding:0 18px;
-
     border:none;
-
     border-radius:14px;
-
     background:
         linear-gradient(
             135deg,
             #ffb700,
             #ffc62a
         );
-
     color:white;
-
     display:flex;
     align-items:center;
     gap:8px;
-
     font-weight:700;
-
     cursor:pointer;
+}
+
+.empty-tagihan{
+    grid-column:1 / -1;
+
+    background:white;
+
+    border-radius:24px;
+
+    padding:50px 20px;
+
+    text-align:center;
+
+    color:#64748b;
+
+    font-size:15px;
+
+    box-shadow:var(--shadow);
 }
 
 /* =========================
