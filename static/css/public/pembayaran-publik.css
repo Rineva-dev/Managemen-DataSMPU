@@ -245,54 +245,33 @@ body{
 }
 
 .hero h1{
-    font-size:64px;
-
+    font-size:42px;
     line-height:1;
-
-    font-weight:900;
-
-    letter-spacing:-2px;
-
+    font-weight:800;
     color:#0f172a;
-
     margin-bottom:10px;
 }
 
 .hero h2{
     font-size:42px;
-
     line-height:1.1;
-
     font-weight:800;
-
     color:#334155;
-
     margin-bottom:20px;
 }
 
 .hero p{
     font-size:17px;
-
-    line-height:1.8;
-
     color:#64748b;
-
     max-width:620px;
 }
 
 /* RIGHT */
-
 .hero-preview{
     background:#ffffff;
-
     border:1px solid #e5e7eb;
-
     border-radius:28px;
-
     padding:24px;
-
-    box-shadow:
-        0 20px 40px rgba(15,23,42,.08);
 }
 
 .preview-top{
