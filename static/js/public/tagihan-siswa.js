@@ -362,7 +362,7 @@ window.addEventListener("load", () => {
 
         cariSiswaSection.classList.add("show");
 
-    }, 150);
+    }, 250);
 
 });
 

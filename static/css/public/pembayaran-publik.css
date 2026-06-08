@@ -210,16 +210,16 @@ body{
 
     transform:translateY(0);
 
-    transition:
-        opacity 5.2s cubic-bezier(.22,1,.36,1),
-        transform 5.2s cubic-bezier(.22,1,.36,1);
+        transition:
+        opacity 1.6s cubic-bezier(.22,1,.36,1),
+        transform 1.6s cubic-bezier(.22,1,.36,1);
 }
 
 /* mode animasi */
 .search-card.animate{
     opacity:0;
 
-    transform:translateY(90px);
+    transform:translateY(120px);
 }
 
 /* saat muncul */
