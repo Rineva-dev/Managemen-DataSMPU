@@ -153,8 +153,7 @@ function renderCart() {
 // ======================================
 // ADD TO CART
 // ======================================
-
-function addToCart(data) {
+function addToCart(data, buttonElement) {
 
     const exists = cart.find(item => item.id === data.id);
 
@@ -166,6 +165,24 @@ function addToCart(data) {
     }
 
     cart.push(data);
+
+    // =========================
+    // UBAH BUTTON
+    // =========================
+
+    buttonElement.classList.add("added");
+
+    buttonElement.disabled = true;
+
+    buttonElement.innerHTML = `
+        <i data-lucide="check"></i>
+
+        <span>
+            Ditambahkan
+        </span>
+    `;
+
+    lucide.createIcons();
 
     renderCart();
 
@@ -333,7 +350,6 @@ async function loadTagihanSPP() {
 // ======================================
 // ADD BUTTON DYNAMIC
 // ======================================
-
 document.addEventListener("click", function(e) {
 
     const btn = e.target.closest(".btn-add-cart");
@@ -345,7 +361,7 @@ document.addEventListener("click", function(e) {
         nama: btn.dataset.nama,
         kategori: btn.dataset.kategori,
         nominal: parseInt(btn.dataset.nominal)
-    });
+    }, btn);
 });
 
 // ======================================
