@@ -30,7 +30,7 @@ body{
         Segoe UI,
         sans-serif;
 
-    background:var(--bg);
+    background:var(--card);
     color:var(--text);
 }
 
@@ -192,39 +192,16 @@ body{
 ========================= */
 .hero{
     position:relative;
-
     overflow:hidden;
-
-    background:#ffffff;
-
     border-radius:32px;
-
-    padding:60px;
-
+    padding-top:60px;
     margin-bottom:28px;
-
-    border:1px solid #eef2f7;
-
-    box-shadow:
-        0 20px 60px rgba(15,23,42,.06);
 }
 
 .hero-bg{
     position:absolute;
 
     inset:0;
-
-    background:
-        radial-gradient(
-            circle at top right,
-            rgba(34,197,94,.08),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at bottom left,
-            rgba(59,130,246,.06),
-            transparent 30%
-        );
 
     pointer-events:none;
 }
