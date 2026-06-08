@@ -668,9 +668,21 @@ async function loadBiodataSiswa() {
         const statusEl =
             document.getElementById("siswa-status");
 
+        const status =
+            (siswa.status || "AKTIF").toUpperCase();
+
+        let dotClass = "status-active";
+
+        if (status === "NONAKTIF") {
+            dotClass = "status-inactive";
+        }
+        else if (status === "LULUS") {
+            dotClass = "status-graduate";
+        }
+
         statusEl.innerHTML = `
-            <span class="status-dot"></span>
-            ${siswa.status || "Aktif"}
+            <span class="status-dot ${dotClass}"></span>
+            ${status.charAt(0) + status.slice(1).toLowerCase()}
         `;
 
         lucide.createIcons();

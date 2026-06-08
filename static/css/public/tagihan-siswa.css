@@ -306,13 +306,23 @@ body{
     color:#f59e0b;
 }
 
-.status-dot{
-    width:10px;
-    height:10px;
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
 
-    border-radius:999px;
+.status-active {
+    background: #22c55e;
+}
 
-    background:#16a34a;
+.status-inactive {
+    background: #ef4444;
+}
+
+.status-graduate {
+    background: #3b82f6;
 }
 
 .student-meta{
