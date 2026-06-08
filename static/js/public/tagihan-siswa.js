@@ -640,11 +640,11 @@ async function loadBiodataSiswa() {
 
         if (namaHeader) {
 
-            let nama = siswa.nama || "";
+            let nama = 
+                (siswa.nama || "").split(" ");
 
-            // maksimal 12 karakter
-            if (nama.length > 12) {
-                nama = nama.substring(0, 12) + "...";
+            if (nama.length > 15) {
+                nama = nama.substring(0, 15) + "...";
             }
 
             namaHeader.textContent = nama;
