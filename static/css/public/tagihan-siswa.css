@@ -317,6 +317,76 @@ body{
     color: #f59e0b;
 }
 
+/* STATUS BADGE */
+#profile-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px 10px;
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    background: #ecfeff;
+    color: #0369a1;
+}
+
+/* optional state */
+#profile-status.aktif {
+    background: #dcfce7;
+    color: #166534;
+}
+
+#profile-status.nonaktif {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* TTL */
+#profile-ttl {
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    line-height: 1.5;
+}
+
+#profile-orangtua {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.info-item.full {
+    padding-top: 6px;
+}
+
+/* FOOTER AS INFO */
+.profile-actions {
+    margin-top: 18px;
+    padding: 14px 16px;
+
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #eef2f7;
+}
+
+.profile-actions span {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+#profile-alamat {
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    line-height: 1.5;
+}
+
 /* =========================
    LAYOUT
 ========================= */
