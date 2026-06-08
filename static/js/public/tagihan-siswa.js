@@ -353,18 +353,21 @@ const btnHeroSearch =
 const cariSiswaSection =
     document.getElementById("cari-siswa");
 
-// aktifkan mode animasi
-cariSiswaSection.classList.add("animate");
+if(cariSiswaSection){
 
-window.addEventListener("load", () => {
+    cariSiswaSection.classList.add("animate");
 
-    setTimeout(() => {
+    window.addEventListener("load", () => {
 
-        cariSiswaSection.classList.add("show");
+        setTimeout(() => {
 
-    }, 250);
+            cariSiswaSection.classList.add("show");
 
-});
+        }, 250);
+
+    });
+
+}
 
 // =========================
 // SCROLL HALUS
