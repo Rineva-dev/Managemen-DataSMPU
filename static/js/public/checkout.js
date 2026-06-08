@@ -53,10 +53,6 @@ function renderCart() {
                         ${item.nama}
                     </strong>
 
-                    <small>
-                        ${item.kategori}
-                    </small>
-
                 </div>
 
             </div>
