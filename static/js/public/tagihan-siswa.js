@@ -658,6 +658,22 @@ document.addEventListener("click", function(e) {
 });
 
 // ======================================
+// FORMAT TANGGAL (YYYY-MM-DD → DD-MM-YYYY)
+// ======================================
+function formatTanggal(isoDate, separator = "-") {
+
+    if (!isoDate) return "-";
+
+    const parts = isoDate.split("-");
+
+    if (parts.length !== 3) return isoDate;
+
+    const [year, month, day] = parts;
+
+    return `${day}${separator}${month}${separator}${year}`;
+}
+
+// ======================================
 // PROFILE STATUS HELPER (DROPDOWN ONLY)
 // ======================================
 function setProfileStatus(statusRaw) {
@@ -733,7 +749,7 @@ async function loadBiodataSiswa() {
             "profile-ttl"
         ).textContent =
             siswa.tempat_lahir && siswa.tanggal_lahir
-                ? `${siswa.tempat_lahir}, ${siswa.tanggal_lahir}`
+                ? `${siswa.tempat_lahir}, ${formatTanggal(siswa.tanggal_lahir)}`
                 : "-";
 
         document.getElementById(
