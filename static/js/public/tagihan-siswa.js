@@ -617,11 +617,6 @@ async function loadBiodataSiswa() {
         document.getElementById("siswa-rombel").textContent =
             `Rombel ${siswa.sub_kelas || ""}`;
 
-        document.getElementById("siswa-orangtua").textContent =
-            siswa.nama_ayah ||
-            siswa.nama_ibu ||
-            "-";
-
         const statusEl =
             document.getElementById("siswa-status");
 
