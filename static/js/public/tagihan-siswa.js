@@ -192,7 +192,6 @@ function addToCart(data, buttonElement) {
 // ======================================
 // REMOVE CART
 // ======================================
-
 document.addEventListener("click", function(e) {
 
     const btnRemove = e.target.closest(".btn-remove");
@@ -201,7 +200,42 @@ document.addEventListener("click", function(e) {
 
     const index = btnRemove.dataset.index;
 
+    // =========================
+    // AMBIL DATA ITEM
+    // =========================
+
+    const removedItem = cart[index];
+
+    // =========================
+    // HAPUS DARI CART
+    // =========================
+
     cart.splice(index, 1);
+
+    // =========================
+    // RESET BUTTON CARD
+    // =========================
+
+    const addButton = document.querySelector(
+        `.btn-add-cart[data-id="${removedItem.id}"]`
+    );
+
+    if (addButton) {
+
+        addButton.disabled = false;
+
+        addButton.classList.remove("added");
+
+        addButton.innerHTML = `
+            <i data-lucide="plus"></i>
+
+            <span>
+                Tambah
+            </span>
+        `;
+    }
+
+    lucide.createIcons();
 
     renderCart();
 
