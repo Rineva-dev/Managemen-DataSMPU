@@ -373,7 +373,7 @@ def siswa_detail():
                 LEFT JOIN kelas k
                     ON k.id = ks.kelas_id
 
-                WHERE s.id = %
+                WHERE s.id = %s
             """, (siswa_id,)).fetchone()
 
         if not siswa:
