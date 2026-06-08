@@ -86,7 +86,7 @@ function renderCart() {
 // ======================================
 // ADD TO CART
 // ======================================
-function addToCart(data, buttonElement) {
+function addToCart(data, cardElement) {
 
     const exists = cart.find(item => item.id === data.id);
 
@@ -100,22 +100,10 @@ function addToCart(data, buttonElement) {
     cart.push(data);
 
     // =========================
-    // UBAH BUTTON
+    // HILANGKAN CARD
     // =========================
 
-    buttonElement.classList.add("added");
-
-    buttonElement.disabled = true;
-
-    buttonElement.innerHTML = `
-        <i data-lucide="check"></i>
-
-        <span>
-            Ditambahkan
-        </span>
-    `;
-
-    lucide.createIcons();
+    cardElement.remove();
 
     renderCart();
 
@@ -148,25 +136,6 @@ document.addEventListener("click", function(e) {
     // =========================
     // RESET BUTTON CARD
     // =========================
-
-    const addButton = document.querySelector(
-        `.btn-add-cart[data-id="${removedItem.id}"]`
-    );
-
-    if (addButton) {
-
-        addButton.disabled = false;
-
-        addButton.classList.remove("added");
-
-        addButton.innerHTML = `
-            <i data-lucide="plus"></i>
-
-            <span>
-                Tambah
-            </span>
-        `;
-    }
 
     lucide.createIcons();
 
@@ -209,6 +178,15 @@ async function loadTagihanSPP() {
         }
 
         data.forEach((t, index) => {
+
+            const tagihanId = `spp-${t.bulan}-${t.tahun}`;
+
+            const existsInCart =
+                cart.find(item => item.id === tagihanId);
+
+            if (existsInCart) {
+                return;
+            }
 
             const bulanNama = new Date(
                 t.tahun,
@@ -281,7 +259,7 @@ async function loadTagihanSPP() {
 
                     <button
                         class="btn-add-cart"
-                        data-id="${index}"
+                        data-id="spp-${t.bulan}-${t.tahun}"
                         data-nama="SPP ${bulanNama} ${t.tahun}"
                         data-kategori="SPP"
                         data-nominal="${t.nominal}">
@@ -323,12 +301,15 @@ document.addEventListener("click", function(e) {
 
     if (!btn) return;
 
+    const card =
+        btn.closest(".bill-card");
+
     addToCart({
         id: btn.dataset.id,
         nama: btn.dataset.nama,
         kategori: btn.dataset.kategori,
         nominal: parseInt(btn.dataset.nominal)
-    }, btn);
+    }, card);
 });
 
 // ======================================
