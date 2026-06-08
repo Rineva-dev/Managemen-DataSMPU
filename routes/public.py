@@ -263,7 +263,7 @@ def bayar_pembangunan():
         siswa = d.execute("""
             SELECT nisn
             FROM siswa
-            WHERE id=?
+            WHERE id=%s
         """, (siswa_id,)).fetchone()
 
         if not siswa:
@@ -386,11 +386,7 @@ def siswa_detail():
             "status": siswa["status"],
 
             "tempat_lahir": siswa["tempat_lahir"],
-            "tanggal_lahir": (
-                siswa["tanggal_lahir"].strftime("%d-%m-%Y")
-                if siswa["tanggal_lahir"]
-                else ""
-            ),
+            "tanggal_lahir": siswa["tanggal_lahir"] or "",
             "alamat": siswa["alamat"],
 
             "tingkat": siswa["tingkat"],
