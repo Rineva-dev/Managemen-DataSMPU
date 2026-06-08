@@ -103,7 +103,11 @@ function addToCart(data, cardElement) {
     // HILANGKAN CARD
     // =========================
 
-    cardElement.remove();
+    if (
+        data.kategori === "SPP"
+    ) {
+        cardElement.remove();
+    }
 
     renderCart();
 
@@ -361,12 +365,20 @@ async function loadTagihanPembangunan() {
 
                 </div>
 
+            </div>
+
+            <div class="bill-input">
+
+                <input
+                    type="number"
+                    class="input-pembangunan"
+                    min="10000"
+                    max="${sisa}"
+                    placeholder="Masukkan nominal pembayaran">
+
                 <button
-                    class="btn-add-cart"
-                    data-id="pembangunan"
-                    data-nama="Biaya Pembangunan"
-                    data-kategori="PEMBANGUNAN"
-                    data-nominal="${sisa}">
+                    class="btn-add-pembangunan"
+                    data-max="${sisa}">
 
                     <i data-lucide="plus"></i>
 
@@ -391,6 +403,49 @@ async function loadTagihanPembangunan() {
         );
     }
 }
+
+document.addEventListener("click", function(e) {
+
+    const btn =
+        e.target.closest(".btn-add-pembangunan");
+
+    if (!btn) return;
+
+    const card =
+        btn.closest(".bill-card");
+
+    const input =
+        card.querySelector(".input-pembangunan");
+
+    const nominal =
+        parseInt(input.value || 0);
+
+    const sisa =
+        parseInt(btn.dataset.max);
+
+    if (nominal <= 0) {
+
+        showToast("Masukkan nominal");
+
+        return;
+    }
+
+    if (nominal > sisa) {
+
+        showToast(
+            "Nominal melebihi sisa tagihan"
+        );
+
+        return;
+    }
+
+    addToCart({
+        id: `pembangunan-${Date.now()}`,
+        nama: "Biaya Pembangunan",
+        kategori: "PEMBANGUNAN",
+        nominal: nominal
+    }, card);
+});
 
 // ======================================
 // ADD BUTTON DYNAMIC
