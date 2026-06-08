@@ -360,52 +360,10 @@ body{
 
 .info-item.full {
     padding-top: 6px;
-}
-
-/* FOOTER AS INFO */
-.profile-actions {
-    margin-top: 18px;
-    padding: 14px 16px;
-
-    border-radius: 14px;
-    background: #f8fafc;
-    border: 1px solid #eef2f7;
-}
-
-.profile-actions span {
-    display: block;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 4px;
-    font-weight: 500;
-}
-
-#profile-alamat {
-    font-size: 13px;
-    font-weight: 500;
-    color: #334155;
-    line-height: 1.5;
-}
-
-/* INLINE LABEL : VALUE */
-.info-item.inline {
     display: grid;
     grid-template-columns: 80px 1fr;
     align-items: start;
     column-gap: 10px;
-}
-
-.info-item.inline span {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-}
-
-.info-item.inline strong {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    line-height: 1.5;
 }
 
 /* ADDRESS BLOCK */
