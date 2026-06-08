@@ -238,7 +238,7 @@ body{
     display:flex;
     align-items:center;
     justify-content:space-between;
-
+    margin-bottom: 20px;
     gap:24px;
 
     box-shadow:
