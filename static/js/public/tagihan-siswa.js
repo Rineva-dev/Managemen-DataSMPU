@@ -352,20 +352,19 @@ const btnHeroSearch =
 const cariSiswaSection =
     document.getElementById("cari-siswa");
 
-// =========================
-// TAMPILKAN CARD SAAT LOAD
-// =========================
+window.addEventListener("load", () => {
 
-window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
 
-    cariSiswaSection.classList.add("show");
+        cariSiswaSection.classList.add("show");
+
+    }, 200);
 
 });
 
 // =========================
 // SCROLL HALUS
 // =========================
-
 btnHeroSearch.addEventListener("click", function(e){
 
     e.preventDefault();
