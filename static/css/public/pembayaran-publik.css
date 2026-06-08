@@ -205,24 +205,6 @@ body{
     height:18px;
 }
 
-.search-card{
-    opacity:0;
-
-    transform:
-        translateY(40px);
-
-    transition:
-        opacity .7s ease,
-        transform .7s ease;
-}
-
-.search-card.show{
-    opacity:1;
-
-    transform:
-        translateY(0);
-}
-
 /* =========================
    MOBILE
 ========================= */
