@@ -256,7 +256,6 @@ body{
 .student-info{
     display:flex;
     flex-direction:column;
-    gap:4px;
 }
 
 .student-avatar{
@@ -282,12 +281,12 @@ body{
 
 .student-banner h2{
     margin-top:4px;
-    margin-bottom:4px;
 }
 
 .student-banner small,
 .student-banner p{
     color:rgba(255,255,255,.85);
+    font-weight: 600;
 }
 
 .student-status{
@@ -315,6 +314,42 @@ body{
     border-radius:999px;
 
     background:#16a34a;
+}
+
+.student-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:10px;
+}
+
+.student-meta span{
+    padding:6px 12px;
+    border-radius:999px;
+
+    background:rgba(255,255,255,.18);
+
+    color:white;
+
+    font-size:13px;
+    font-weight:600;
+}
+
+.student-parent{
+    margin-top:12px;
+
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    color:rgba(255,255,255,.9);
+
+    font-size:14px;
+}
+
+.student-parent i{
+    width:16px;
+    height:16px;
 }
 
 /* =========================

@@ -342,11 +342,60 @@ searchInput.addEventListener("input", function() {
     });
 });
 
+// ======================================
+// LOAD BIODATA SISWA
+// ======================================
+
+async function loadBiodataSiswa() {
+
+    try {
+
+        const res = await fetch(
+            `/public/siswa-detail?siswa_id=${siswaId}`
+        );
+
+        const siswa = await res.json();
+
+        document.getElementById("siswa-nama").textContent =
+            siswa.nama || "-";
+
+        document.getElementById("siswa-nisn").textContent =
+            `NISN ${siswa.nisn || "-"}`;
+
+        document.getElementById("siswa-kelas").textContent =
+            `Kelas ${siswa.kelas || "-"}`;
+
+        document.getElementById("siswa-rombel").textContent =
+            `Rombel ${siswa.rombel || "-"}`;
+
+        document.getElementById("siswa-orangtua").textContent =
+            siswa.orang_tua || "-";
+
+        const statusEl =
+            document.getElementById("siswa-status");
+
+        statusEl.innerHTML = `
+            <span class="status-dot"></span>
+            ${siswa.status || "Aktif"}
+        `;
+
+    } catch (err) {
+
+        console.error(
+            "Gagal memuat biodata siswa",
+            err
+        );
+
+    }
+}
+
 
 // ======================================
 // INIT
 // ======================================
 
 renderCart();
+
+loadBiodataSiswa();
 
 loadTagihanSPP();

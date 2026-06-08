@@ -335,3 +335,60 @@ def checkout():
     return render_template(
         "public/checkout.html"
     )
+
+@public_bp.route("/siswa-detail")
+def siswa_detail():
+
+    siswa_id = request.args.get("siswa_id", type=int)
+
+    if not siswa_id:
+        return jsonify({}), 400
+
+    try:
+
+        with db() as d:
+
+            siswa = d.execute("""
+                SELECT
+                    s.id,
+                    s.nama,
+                    s.nisn,
+                    s.status,
+                    k.tingkat,
+                    k.sub_kelas,
+                    s.nama_ayah,
+                    s.nama_ibu
+
+                FROM siswa s
+
+                LEFT JOIN kelas_siswa ks
+                    ON ks.siswa_id = s.id
+
+                LEFT JOIN kelas k
+                    ON k.id = ks.kelas_id
+
+                WHERE s.id = ?
+            """, (siswa_id,)).fetchone()
+
+        if not siswa:
+            return jsonify({}), 404
+
+        return jsonify({
+            "id": siswa["id"],
+            "nama": siswa["nama"],
+            "nisn": siswa["nisn"],
+            "status": siswa["status"],
+            "tingkat": siswa["tingkat"],
+            "sub_kelas": siswa["sub_kelas"],
+            "nama_ayah": siswa["nama_ayah"],
+            "nama_ibu": siswa["nama_ibu"]
+        })
+
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc()
+
+        return jsonify({
+            "error": str(e)
+        }), 500
