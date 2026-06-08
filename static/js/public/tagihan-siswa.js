@@ -658,6 +658,39 @@ document.addEventListener("click", function(e) {
 });
 
 // ======================================
+// PROFILE STATUS HELPER (DROPDOWN ONLY)
+// ======================================
+function setProfileStatus(statusRaw) {
+
+    const el =
+        document.getElementById("profile-status");
+
+    if (!el) return;
+
+    const key =
+        (statusRaw || "")
+            .toString()
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, "");
+
+    let text = "Aktif";
+    let cls = "aktif";
+
+    if (key === "nonaktif") {
+        text = "Nonaktif";
+        cls = "nonaktif";
+    }
+    else if (key === "lulus") {
+        text = "Lulus";
+        cls = "lulus";
+    }
+
+    el.textContent = text;
+    el.className = cls;
+}
+
+// ======================================
 // LOAD BIODATA SISWA
 // ======================================
 
@@ -692,12 +725,9 @@ async function loadBiodataSiswa() {
         document.getElementById(
             "profile-kelas"
         ).textContent =
-            `${siswa.tingkat || "-"} ${siswa.sub_kelas || ""}`;
+            `${siswa.tingkat || "-"} - ${siswa.sub_kelas || ""}`;
 
-        document.getElementById(
-            "profile-status"
-        ).textContent =
-            `${siswa.status || "-"}`;
+        setProfileStatus(siswa.status);
 
         document.getElementById(
             "profile-ttl"
