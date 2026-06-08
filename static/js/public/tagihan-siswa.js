@@ -352,17 +352,20 @@ const btnHeroSearch =
 const cariSiswaSection =
     document.getElementById("cari-siswa");
 
-// tampilkan animasi saat page load
-window.addEventListener("load", function() {
+// =========================
+// TAMPILKAN CARD SAAT LOAD
+// =========================
 
-    setTimeout(() => {
+window.addEventListener("DOMContentLoaded", () => {
 
-        cariSiswaSection.classList.add("show");
+    cariSiswaSection.classList.add("show");
 
-    }, 200);
 });
 
-// scroll halus saat tombol diklik
+// =========================
+// SCROLL HALUS
+// =========================
+
 btnHeroSearch.addEventListener("click", function(e){
 
     e.preventDefault();
@@ -372,14 +375,6 @@ btnHeroSearch.addEventListener("click", function(e){
         block: "start"
     });
 
-    // animasi ulang
-    cariSiswaSection.classList.remove("show");
-
-    setTimeout(() => {
-
-        cariSiswaSection.classList.add("show");
-
-    }, 300);
 });
 
 // ======================================
