@@ -133,49 +133,18 @@ document.getElementById("btn-cari")
 });
 
 
-// ======================================
-// HERO SCROLL
-// ======================================
-
-const btnHeroSearch =
-    document.getElementById("btn-hero-search");
-
-const cariSiswaSection =
-    document.getElementById("cari-siswa");
-
-// =========================
-// ANIMASI MUNCUL
-// =========================
-
-if(cariSiswaSection){
-
-    cariSiswaSection.classList.add("animate");
-
-    window.addEventListener("load", () => {
-
-        setTimeout(() => {
-
-            cariSiswaSection.classList.add("show");
-
-        }, 250);
-
-    });
-
-}
-
-// =========================
-// SCROLL HALUS
-// =========================
-
 if(btnHeroSearch && cariSiswaSection){
 
     btnHeroSearch.addEventListener("click", function(e){
 
         e.preventDefault();
 
-        cariSiswaSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
+        const target =
+            cariSiswaSection.offsetTop - 100;
+
+        window.scrollTo({
+            top: target,
+            behavior: "smooth"
         });
 
     });
