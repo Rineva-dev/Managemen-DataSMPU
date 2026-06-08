@@ -168,9 +168,9 @@ function renderCart() {
 
                 <div>
 
-                    <strong>
+                    <p>
                         ${item.nama}
-                    </strong>
+                    </p>
 
                 </div>
 
@@ -178,9 +178,9 @@ function renderCart() {
 
             <div class="cart-item-right">
 
-                <strong>
+                <p>
                     ${rupiah(item.nominal)}
-                </strong>
+                </p>
 
                 <button
                     class="btn-remove"
