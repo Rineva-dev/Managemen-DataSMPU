@@ -232,21 +232,17 @@ const profileDropdown =
 if (btnProfile && profileDropdown) {
 
     btnProfile.addEventListener("click", function (e) {
-
         e.stopPropagation();
-
         profileDropdown.classList.toggle("show");
     });
 
-    // Klik di luar → tutup
+    // klik di luar → tutup
     document.addEventListener("click", function () {
-
         profileDropdown.classList.remove("show");
     });
 
-    // Klik di dalam dropdown → jangan nutup
+    // klik di dalam dropdown → jangan nutup
     profileDropdown.addEventListener("click", function (e) {
-
         e.stopPropagation();
     });
 }
