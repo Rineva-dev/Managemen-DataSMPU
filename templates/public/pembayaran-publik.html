@@ -16,21 +16,23 @@
 
     <!-- HEADER -->
     <header class="topbar">
-        <img
-            src="{{ url_for('static', filename='img/logo-header.png') }}"
-            alt="Logo">
+        <div class="topbar-left">
+            <img
+                src="{{ url_for('static', filename='img/logo-header.png') }}"
+                alt="Logo">
 
-        <nav class="topbar-nav">
+            <nav class="topbar-nav">
 
-            <a href="https://smpuhamzanwadi.sch.id/">
-                Beranda
-            </a>
+                <a href="https://smpuhamzanwadi.sch.id/">
+                    Beranda
+                </a>
 
-            <a href="#">
-                Kontak
-            </a>
+                <a href="#">
+                    Kontak
+                </a>
 
-        </nav>
+            </nav>
+        </div>
 
         <div class="topbar-actions">
 
@@ -146,7 +148,7 @@
         <h2>Cari Data Siswa</h2>
 
         <p class="subtitle">
-            Masukkan NISN atau nama siswa lalau klik cek tagihan untuk melihat pembayaran.
+            Masukkan NISN atau nama siswa lalu klik cek tagihan untuk melihat pembayaran.
         </p>
 
         <div class="autocomplete-wrapper">
