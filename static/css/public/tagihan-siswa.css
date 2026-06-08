@@ -258,16 +258,17 @@ body{
 .student-avatar{
     width:70px;
     height:70px;
-
     border-radius:22px;
     display:flex;
     align-items:center;
     justify-content:center;
-}
-
-.student-avatar{
     background:rgba(255,255,255,.18);
     color:white;
+}
+
+.student-avatar svg {
+    width: 50px;
+    height: 50px;
 }
 
 .student-avatar i{
