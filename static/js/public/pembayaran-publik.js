@@ -2,10 +2,6 @@ const input = document.getElementById("search-siswa");
 const hasil = document.getElementById("hasil-siswa");
 
 let selectedSiswa = null;
-const cardTagihan = document.getElementById("card-tagihan");
-const tagihanList = document.getElementById("tagihan-list");
-const tagihanCount = document.getElementById("tagihan-count");
-
 const statusMap = {
     aktif: "Aktif",
     lulus: "Lulus",
@@ -39,44 +35,7 @@ function badgeClass(status) {
     return "secondary";
 }
 
-function formatRupiah(angka) {
-    if (!angka) return "";
-    return "Rp " + angka
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
-function resetTagihanUI() {
-
-    const cardTagihan = document.getElementById("card-tagihan");
-    
-    if (cardTagihan) {cardTagihan.style.display = "none";}
-
-    tagihanList.innerHTML = "";
-    tagihanCount.textContent = "0 Tagihan";
-    const card = document.getElementById("card-pembangunan");
-    const content = document.getElementById("pembangunan-content");
-
-    if (card) card.style.display = "none";
-    if (content) content.innerHTML = "";
-
-    // reset input pembangunan
-    const hidden = document.getElementById("nominal_value");
-    if (hidden) hidden.value = "";
-
-    const display = document.getElementById("nominal_display");
-    if (display) display.value = "";
-
-    // reset checkbox lama (penting!)
-    document.querySelectorAll(".tagihan-checkbox")
-        .forEach(cb => cb.checked = false);
-
-    // reset total
-    document.getElementById("grand-total").textContent = "Rp0";
-}
-
 input.addEventListener("input", async () => {
-
-    document.getElementById("grand-total").textContent = "Rp0";
 
     const q = input.value.trim();
 
@@ -115,12 +74,6 @@ input.addEventListener("input", async () => {
         `;
 
         item.onclick = () => {
-            selectedSiswa = null;
-
-            resetTagihanUI();
-
-            document.getElementById("student-card").style.display = "none";
-            document.getElementById("btn-cari").style.display = "none";
 
             selectedSiswa = siswa;
 
@@ -164,170 +117,19 @@ input.addEventListener("input", async () => {
 });
 
 document.getElementById("btn-cari")
-.addEventListener("click", async () => {
+.addEventListener("click", () => {
 
     if (!selectedSiswa) {
+
         alert("Pilih siswa terlebih dahulu");
+
         return;
     }
 
     const siswaId =
         document.getElementById("selected-siswa-id").value;
 
-    cardTagihan.style.display = "block";
-    tagihanList.innerHTML = "Memuat tagihan...";
-
-    const res = await fetch(
-        `/public/tagihan-spp?siswa_id=${siswaId}`
-    );
-
-    const data = await res.json();
-
-    if (!Array.isArray(data)) {
-        console.error("Tagihan error:", data);
-        tagihanList.innerHTML = "<p>Gagal memuat tagihan.</p>";
-        return;
-    }
-
-    tagihanList.innerHTML = "";
-    tagihanCount.textContent = `${data.length} Tagihan`;
-
-    if (data.length === 0) {
-        tagihanList.innerHTML = "<p>Tidak ada tagihan.</p>";
-        return;
-    }
-
-    data.forEach(t => {
-
-        const bulanNama = new Date(
-            t.tahun,
-            t.bulan - 1
-        ).toLocaleString("id-ID", { month: "long" });
-
-        tagihanList.innerHTML += `
-            <label class="tagihan-row">
-                <input type="checkbox"
-                       class="tagihan-checkbox"
-                       data-nominal="${t.nominal}">
-                <div class="tagihan-detail">
-                    <strong>SPP ${bulanNama} ${t.tahun}</strong>
-                    <small>${t.status}</small>
-                </div>
-                <span class="nominal">
-                    Rp${t.nominal.toLocaleString("id-ID")}
-                </span>
-            </label>
-        `;
-    });
-
-    // ===============================
-    // LOAD TAGIHAN PEMBANGUNAN
-    // ===============================
-    try {
-        const resP = await fetch(
-            `/public/tagihan-pembangunan?siswa_id=${siswaId}`
-        );
-
-        const pembangunan = await resP.json();
-
-        if (pembangunan && typeof pembangunan === "object") {
-            renderPembangunan(pembangunan);
-        }
-
-    } catch (err) {
-        console.error("Gagal load pembangunan:", err);
-    }
-
-    hitungTotal();
+    // pindah halaman
+    window.location.href =
+        `/public/tagihan?siswa_id=${siswaId}`;
 });
-
-function hitungTotal() {
-
-    let total = 0;
-
-    // ===============================
-    // TOTAL DARI SPP
-    // ===============================
-    document
-        .querySelectorAll(".tagihan-checkbox:checked")
-        .forEach(cb => {
-            total += parseInt(cb.dataset.nominal || 0);
-        });
-
-    // ===============================
-    // TOTAL DARI PEMBANGUNAN
-    // ===============================
-    const pembangunanValue =
-        document.getElementById("nominal_value");
-
-    if (pembangunanValue && pembangunanValue.value) {
-        total += parseInt(pembangunanValue.value || 0);
-    }
-
-    document.getElementById("grand-total").textContent =
-        "Rp" + total.toLocaleString("id-ID");
-}
-
-document.addEventListener("change", e => {
-    if (e.target.classList.contains("tagihan-checkbox")) {
-        hitungTotal();
-    }
-});
-
-function renderPembangunan(data) {
-
-    const card = document.getElementById("card-pembangunan");
-    const content = document.getElementById("pembangunan-content");
-
-    card.style.display = "block";
-
-    if (data.lunas) {
-        document.getElementById("pembangunan-status").textContent = "Lunas";
-    } else {
-        document.getElementById("pembangunan-status").textContent = "Belum Lunas";
-    }
-
-    content.innerHTML = `
-        <div class="cicilan-grid">
-            <div class="info-box">
-                <span>Target</span>
-                <strong>Rp${data.total.toLocaleString("id-ID")}</strong>
-            </div>
-            <div class="info-box">
-                <span>Sudah Dibayar</span>
-                <strong>Rp${(data.sem1.terbayar + data.sem2.terbayar)
-                    .toLocaleString("id-ID")}</strong>
-            </div>
-            <div class="info-box">
-                <span>Sisa</span>
-                <strong>Rp${(data.sem1.sisa + data.sem2.sisa)
-                    .toLocaleString("id-ID")}</strong>
-            </div>
-        </div>
-
-        <div class="custom-payment">
-            <label>Nominal Pembayaran</label>
-            <input type="text" id="nominal_display" placeholder="Rp 0">
-            <input type="hidden" id="nominal_value" name="nominal">
-        </div>
-    `;
-
-    const displayInput = document.getElementById("nominal_display");
-    const hiddenInput  = document.getElementById("nominal_value");
-
-    displayInput.addEventListener("input", function () {
-
-        let angka = this.value.replace(/[^0-9]/g, "");
-        const sisaMaks = data.sem1.sisa + data.sem2.sisa;
-
-        // 🚫 Batasi tidak boleh melebihi sisa
-        if (parseInt(angka || 0) > sisaMaks) {
-            angka = sisaMaks.toString();
-        }
-
-        hiddenInput.value = angka;
-        this.value = formatRupiah(angka);
-
-        hitungTotal();
-    });
-}

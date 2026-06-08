@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Tagihan Siswa
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/public/tagihan-siswa.css') }}">
+
+</head>
+
+<body class="billing-page">
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="market-header">
+
+    <!-- LEFT -->
+    <div class="market-left">
+
+        <a href="/public/pembayaran"
+           class="market-logo">
+
+            <img
+                src="{{ url_for('static', filename='img/logo-header.png') }}"
+                alt="Logo">
+
+        </a>
+
+    </div>
+
+    <!-- CENTER -->
+    <div class="market-search">
+
+        <i data-lucide="search"></i>
+
+        <input
+            type="text"
+            placeholder="Cari tagihan...">
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="market-actions">
+
+        <!-- NOTIF -->
+        <button class="icon-button">
+
+            <i data-lucide="bell"></i>
+
+            <span class="icon-badge">
+                2
+            </span>
+
+        </button>
+
+        <!-- CART -->
+        <button class="icon-button">
+
+            <i data-lucide="shopping-cart"></i>
+
+            <span class="icon-badge cart-count">
+                0
+            </span>
+
+        </button>
+
+        <!-- PROFILE -->
+        <button class="profile-button">
+
+            <i data-lucide="user"></i>
+
+            <span>
+                Wali Murid
+            </span>
+
+        </button>
+
+    </div>
+
+</header>
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div class="market-layout">
+
+    <!-- =========================
+         CONTENT
+    ========================= -->
+
+    <main class="market-content">
+
+        <!-- =========================
+             STUDENT BANNER
+        ========================= -->
+
+        <section class="student-banner">
+
+            <div class="student-left">
+
+                <div class="student-avatar">
+
+                    <i data-lucide="graduation-cap"></i>
+
+                </div>
+
+                <div>
+
+                    <small>
+                        Data Siswa
+                    </small>
+
+                    <h2>
+                        Ahmad Fauzan
+                    </h2>
+
+                    <p>
+                        NISN 123456789 • Kelas IX A
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="student-status">
+
+                <span class="status-dot"></span>
+
+                Aktif
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+             FILTER
+        ========================= -->
+
+        <section class="filter-row">
+
+            <button class="filter-chip active">
+                Semua
+            </button>
+
+            <button class="filter-chip">
+                SPP
+            </button>
+
+            <button class="filter-chip">
+                Pembangunan
+            </button>
+
+            <button class="filter-chip">
+                Ekstrakurikuler
+            </button>
+
+            <button class="filter-chip">
+                Seragam
+            </button>
+
+        </section>
+
+        <!-- =========================
+             BILL GRID
+        ========================= -->
+
+        <section class="bill-grid">
+
+            <!-- CARD -->
+
+            <div class="bill-card">
+
+                <div class="bill-top">
+
+                    <span class="bill-category">
+                        SPP
+                    </span>
+
+                    <span class="bill-status unpaid">
+
+                        Belum Lunas
+
+                    </span>
+
+                </div>
+
+                <h3>
+                    SPP Juni 2026
+                </h3>
+
+                <p>
+                    Pembayaran SPP bulan Juni
+                    tahun ajaran 2026.
+                </p>
+
+                <div class="bill-meta">
+
+                    <div class="bill-meta-item">
+
+                        <i data-lucide="calendar"></i>
+
+                        <span>
+                            Jatuh Tempo
+                        </span>
+
+                    </div>
+
+                    <strong>
+                        10 Juni 2026
+                    </strong>
+
+                </div>
+
+                <div class="bill-footer">
+
+                    <div>
+
+                        <small>
+                            Total Tagihan
+                        </small>
+
+                        <strong class="bill-price">
+
+                            Rp400.000
+
+                        </strong>
+
+                    </div>
+
+                    <button class="btn-add-cart">
+
+                        <i data-lucide="plus"></i>
+
+                        <span>
+                            Tambah
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- CARD -->
+
+            <div class="bill-card">
+
+                <div class="bill-top">
+
+                    <span class="bill-category pembangunan">
+                        Pembangunan
+                    </span>
+
+                    <span class="bill-status unpaid">
+
+                        Belum Lunas
+
+                    </span>
+
+                </div>
+
+                <h3>
+                    Pembangunan Semester 1
+                </h3>
+
+                <p>
+                    Pembayaran pembangunan
+                    semester ganjil.
+                </p>
+
+                <div class="bill-meta">
+
+                    <div class="bill-meta-item">
+
+                        <i data-lucide="calendar"></i>
+
+                        <span>
+                            Jatuh Tempo
+                        </span>
+
+                    </div>
+
+                    <strong>
+                        15 Juni 2026
+                    </strong>
+
+                </div>
+
+                <div class="bill-footer">
+
+                    <div>
+
+                        <small>
+                            Total Tagihan
+                        </small>
+
+                        <strong class="bill-price">
+
+                            Rp500.000
+
+                        </strong>
+
+                    </div>
+
+                    <button class="btn-add-cart">
+
+                        <i data-lucide="plus"></i>
+
+                        <span>
+                            Tambah
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- CARD -->
+
+            <div class="bill-card">
+
+                <div class="bill-top">
+
+                    <span class="bill-category ekskul">
+                        Ekskul
+                    </span>
+
+                    <span class="bill-status unpaid">
+
+                        Belum Lunas
+
+                    </span>
+
+                </div>
+
+                <h3>
+                    Ekskul Futsal
+                </h3>
+
+                <p>
+                    Pembayaran kegiatan
+                    ekstrakurikuler futsal.
+                </p>
+
+                <div class="bill-meta">
+
+                    <div class="bill-meta-item">
+
+                        <i data-lucide="calendar"></i>
+
+                        <span>
+                            Jatuh Tempo
+                        </span>
+
+                    </div>
+
+                    <strong>
+                        20 Juni 2026
+                    </strong>
+
+                </div>
+
+                <div class="bill-footer">
+
+                    <div>
+
+                        <small>
+                            Total Tagihan
+                        </small>
+
+                        <strong class="bill-price">
+
+                            Rp150.000
+
+                        </strong>
+
+                    </div>
+
+                    <button class="btn-add-cart">
+
+                        <i data-lucide="plus"></i>
+
+                        <span>
+                            Tambah
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="cart-sidebar">
+
+        <div class="cart-header">
+
+            <div>
+
+                <small>
+                    Keranjang Pembayaran
+                </small>
+
+                <h3>
+                    Checkout
+                </h3>
+
+            </div>
+
+            <div class="cart-icon">
+
+                <i data-lucide="shopping-cart"></i>
+
+            </div>
+
+        </div>
+
+        <!-- EMPTY -->
+        <div class="cart-empty">
+
+            <i data-lucide="shopping-cart"></i>
+
+            <p>
+                Belum ada tagihan dipilih
+            </p>
+
+        </div>
+
+        <!-- CART ITEMS -->
+        <div class="cart-items">
+
+            <!-- DIISI VIA JS -->
+
+        </div>
+
+        <!-- TOTAL -->
+        <div class="cart-summary">
+
+            <div class="summary-row">
+
+                <span>
+                    Total Pembayaran
+                </span>
+
+                <strong id="cart-total">
+
+                    Rp0
+
+                </strong>
+
+            </div>
+
+            <button class="btn-checkout">
+
+                <i data-lucide="credit-card"></i>
+
+                <span>
+                    Bayar Sekarang
+                </span>
+
+            </button>
+
+        </div>
+
+    </aside>
+
+</div>
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div class="toast-notification"
+     id="toast">
+
+    <i data-lucide="check-circle"></i>
+
+    <span>
+        Tagihan ditambahkan ke keranjang
+    </span>
+
+</div>
+
+<!-- =========================
+     SCRIPT
+========================= -->
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+    lucide.createIcons();
+</script>
+
+<script src="{{ url_for('static', filename='js/public/tagihan-siswa.js') }}"></script>
+
+</body>
+</html>
