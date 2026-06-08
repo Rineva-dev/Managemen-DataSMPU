@@ -294,6 +294,104 @@ async function loadTagihanSPP() {
     }
 }
 
+async function loadTagihanPembangunan() {
+
+    try {
+
+        const res = await fetch(
+            `/public/tagihan-pembangunan?siswa_id=${siswaId}`
+        );
+
+        const data = await res.json();
+
+        if (data.lunas) {
+            return;
+        }
+
+        const sisa =
+            (data.sem1.sisa || 0) +
+            (data.sem2.sisa || 0);
+
+        const card =
+            document.createElement("div");
+
+        card.className = "bill-card";
+
+        card.dataset.kategori =
+            "pembangunan";
+
+        card.innerHTML = `
+            <div class="bill-top">
+
+                <span class="bill-category pembangunan">
+                    PEMBANGUNAN
+                </span>
+
+                <span class="bill-status unpaid">
+                    Belum Lunas
+                </span>
+
+            </div>
+
+            <h3>
+                Biaya Pembangunan
+            </h3>
+
+            <p>
+                Semester 1:
+                ${rupiah(data.sem1.terbayar)}
+                / 3.000.000
+                <br>
+                Semester 2:
+                ${rupiah(data.sem2.terbayar)}
+                / 2.000.000
+            </p>
+
+            <div class="bill-footer">
+
+                <div>
+
+                    <small>
+                        Sisa Tagihan
+                    </small>
+
+                    <strong class="bill-price">
+                        ${rupiah(sisa)}
+                    </strong>
+
+                </div>
+
+                <button
+                    class="btn-add-cart"
+                    data-id="pembangunan"
+                    data-nama="Biaya Pembangunan"
+                    data-kategori="PEMBANGUNAN"
+                    data-nominal="${sisa}">
+
+                    <i data-lucide="plus"></i>
+
+                    <span>
+                        Tambah
+                    </span>
+
+                </button>
+
+            </div>
+        `;
+
+        billGrid.appendChild(card);
+
+        lucide.createIcons();
+
+    } catch (err) {
+
+        console.error(
+            "Gagal memuat pembangunan",
+            err
+        );
+    }
+}
+
 // ======================================
 // ADD BUTTON DYNAMIC
 // ======================================
@@ -451,3 +549,4 @@ renderCart();
 loadBiodataSiswa();
 
 loadTagihanSPP();
+loadTagihanPembangunan();
