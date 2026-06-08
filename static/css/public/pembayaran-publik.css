@@ -192,9 +192,7 @@ body{
 ========================= */
 .hero{
     position:relative;
-    overflow:hidden;
-    border-radius:32px;
-    padding-top:60px;
+    padding-top:30px;
     margin-bottom:28px;
 }
 
