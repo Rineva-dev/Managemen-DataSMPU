@@ -34,9 +34,7 @@ async function loadNamaSiswa() {
         const siswa = await res.json();
 
         const el =
-            document.getElementById(
-                "nama-siswa-header"
-            );
+            document.getElementById("nama-siswa-header");
 
         if (!el) return;
 
@@ -46,10 +44,9 @@ async function loadNamaSiswa() {
         let nama =
             parts.slice(0, 2).join(" ");
 
-        if (nama.length > 15) {
-            nama =
-                nama.substring(0, 15) + "...";
-        }
+        if (parts.length > 2) {
+                nama += "...";
+            }
 
         el.textContent = nama;
 
