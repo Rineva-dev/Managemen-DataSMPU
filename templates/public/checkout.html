@@ -23,44 +23,43 @@
     <!-- LEFT -->
     <div class="market-left">
 
-        <a href="/public/pembayaran"
-           class="market-logo">
-
-            <img
-                src="{{ url_for('static', filename='img/logo-header.png') }}"
-                alt="Logo">
-
+        <a href="/public/pembayaran" class="market-logo">
+            <img src="..." alt="Logo">
         </a>
 
-    </div>
+        <nav class="market-menu">
 
-    <!-- CENTER -->
-    <div class="market-search">
+            <a href="/">Beranda</a>
 
-        <i data-lucide="search"></i>
+            <a href="/public/pembayaran">
+                Pembayaran
+            </a>
 
-        <input
-            type="text"
-            placeholder="Cari tagihan...">
+            <a href="/public/tagihan-siswa?siswa_id={{ siswa_id }}">
+                Cek Tagihan
+            </a>
+
+            <a href="#">
+                Kontak
+            </a>
+
+        </nav>
 
     </div>
 
     <!-- RIGHT -->
     <div class="market-actions">
 
-        <!-- CEK TAGIHAN -->
-        <a href="/public/tagihan-siswa?siswa_id={{ siswa_id }}"
-            class="profile-button">
+        <div class="market-search">
 
-                <i data-lucide="receipt"></i>
+            <i data-lucide="search"></i>
 
-                <span>
-                    Cek Tagihan
-                </span>
+            <input
+                type="text"
+                placeholder="Cari tagihan...">
 
-            </a>
+        </div>
 
-        <!-- NOTIF -->
         <button class="icon-button">
 
             <i data-lucide="bell"></i>
