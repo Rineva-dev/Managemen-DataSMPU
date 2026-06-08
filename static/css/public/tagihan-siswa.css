@@ -533,26 +533,63 @@ body{
     cursor:pointer;
 }
 
-/* ========================================
-   BUTTON SUDAH DITAMBAHKAN
-======================================== */
+/* =========================
+   INPUT PEMBANGUNAN
+========================= */
 
-.btn-add-cart.added {
-
-    background: #16a34a;
-
-    color: white;
-
-    border-color: #16a34a;
-
-    cursor: not-allowed;
-
-    opacity: .9;
+.bill-input {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
 }
 
-.btn-add-cart:disabled {
+.input-pembangunan {
+    flex: 1;
+    height: 44px;
+    padding: 0 14px;
 
-    pointer-events: none;
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    outline: none;
+    transition: 0.2s;
+}
+
+.input-pembangunan:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+}
+
+.btn-add-pembangunan {
+    height: 44px;
+    padding: 0 16px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #2563eb;
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+    transition: .2s;
+}
+
+.btn-add-pembangunan:hover {
+    transform: translateY(-1px);
+}
+
+.btn-add-pembangunan i {
+    width: 18px;
+    height: 18px;
 }
 
 /* =========================
