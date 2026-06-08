@@ -344,20 +344,6 @@ body{
     color: #991b1b;
 }
 
-/* TTL */
-#profile-ttl {
-    font-size: 13px;
-    font-weight: 500;
-    color: #334155;
-    line-height: 1.5;
-}
-
-#profile-orangtua {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-}
-
 .info-item.full {
     padding-top: 6px;
     display: grid;
