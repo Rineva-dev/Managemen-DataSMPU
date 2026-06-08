@@ -1036,3 +1036,8 @@ body{
 
     flex-shrink:0;
 }
+
+.btn-remove i {
+    width: 18px;
+    height: 18px
+}
