@@ -398,31 +398,59 @@ async function loadTagihanPembangunan() {
     }
 }
 
-function checkEmptyTagihan() {
+function checkEmptyTagihan(filter = "all") {
 
     const cards =
         document.querySelectorAll(".bill-card");
 
-    const empty =
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+
+        const kategori =
+            card.dataset.kategori;
+
+        if (
+            filter === "all" ||
+            kategori === filter
+        ) {
+            visibleCount++;
+        }
+    });
+
+    const oldEmpty =
         document.querySelector(".empty-tagihan");
 
-    if (cards.length === 0) {
-
-        if (!empty) {
-
-            billGrid.innerHTML = `
-                <div class="empty-tagihan">
-                    Tidak ada tagihan
-                </div>
-            `;
-        }
-
-    } else {
-
-        if (empty) {
-            empty.remove();
-        }
+    if (oldEmpty) {
+        oldEmpty.remove();
     }
+
+    if (visibleCount > 0) {
+        return;
+    }
+
+    let pesan = "Tidak ada tagihan";
+
+    if (filter === "spp") {
+        pesan = "Tidak ada tagihan SPP";
+    }
+
+    if (filter === "pembangunan") {
+        pesan = "Tidak ada tagihan Pembangunan";
+    }
+
+    if (filter === "ekstrakurikuler") {
+        pesan = "Tidak ada tagihan Ekstrakurikuler";
+    }
+
+    billGrid.insertAdjacentHTML(
+        "beforeend",
+        `
+        <div class="empty-tagihan">
+            ${pesan}
+        </div>
+        `
+    );
 }
 
 document.addEventListener("input", function(e) {
@@ -585,6 +613,8 @@ document.addEventListener("click", function(e) {
                 card.style.display = "none";
             }
         });
+
+    checkEmptyTagihan(filter);
 });
 
 // ======================================
@@ -649,7 +679,7 @@ async function init() {
 
     await loadTagihanPembangunan();
 
-    checkEmptyTagihan();
+    checkEmptyTagihan("all");
 }
 
 init();
