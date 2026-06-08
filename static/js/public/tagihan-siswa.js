@@ -199,6 +199,8 @@ async function loadTagihanSPP() {
 
             card.className = "bill-card";
 
+            card.dataset.kategori = "spp";
+
             card.innerHTML = `
                 <div class="bill-top">
 
@@ -335,11 +337,55 @@ searchInput.addEventListener("input", function() {
                 .toLowerCase();
 
         if (title.includes(keyword)) {
-            card.style.display = "flex";
+            card.style.display = "";
         } else {
             card.style.display = "none";
         }
     });
+});
+
+// ======================================
+// FILTER TAGIHAN
+// ======================================
+
+document.addEventListener("click", function(e) {
+
+    const chip =
+        e.target.closest(".filter-chip");
+
+    if (!chip) return;
+
+    // aktifkan chip terpilih
+    document
+        .querySelectorAll(".filter-chip")
+        .forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+    chip.classList.add("active");
+
+    const filter =
+        chip.dataset.filter;
+
+    document
+        .querySelectorAll(".bill-card")
+        .forEach(card => {
+
+            const kategori =
+                card.dataset.kategori;
+
+            if (
+                filter === "all" ||
+                kategori === filter
+            ) {
+
+                card.style.display = "";
+
+            } else {
+
+                card.style.display = "none";
+            }
+        });
 });
 
 // ======================================
