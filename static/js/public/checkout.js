@@ -224,7 +224,7 @@ document.addEventListener("click", function(e) {
 // PROFILE DROPDOWN TOGGLE
 // ===============================
 const btnProfile =
-    document.getElementById("btn-profile-siswa");
+    document.getElementById("profile-btn");
 
 const profileDropdown =
     document.getElementById("profile-dropdown");
