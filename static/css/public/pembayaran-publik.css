@@ -476,20 +476,16 @@ body{
 #search-siswa{
     width:100%;
     height:56px;
-
-    border:1px solid var(--border);
-
-    border-radius:14px;
-
-    padding:0 18px;
-
-    font-size:15px;
-
-    outline:none;
+    border: 1px solid #ffa500;
+    border-radius: 14px;
+    padding: 0 18px;
+    font-size: 15px;
+    outline: none;
+    background: #fffdf0;
 }
 
 #search-siswa:focus{
-    border-color:var(--primary);
+    border-color:#ffa500;
 }
 
 #hasil-siswa{
