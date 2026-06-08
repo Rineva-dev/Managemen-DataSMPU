@@ -635,6 +635,21 @@ async function loadBiodataSiswa() {
 
         const siswa = await res.json();
 
+        const namaHeader =
+            document.getElementById("nama-siswa-header");
+
+        if (namaHeader) {
+
+            let nama = siswa.nama || "";
+
+            // maksimal 12 karakter
+            if (nama.length > 12) {
+                nama = nama.substring(0, 12) + "...";
+            }
+
+            namaHeader.textContent = nama;
+        }
+
         document.getElementById("siswa-nama").textContent =
             siswa.nama || "-";
 

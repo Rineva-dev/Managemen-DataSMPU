@@ -19,6 +19,52 @@ function rupiah(nominal) {
         .toLocaleString("id-ID");
 }
 
+async function loadNamaSiswa() {
+
+    if (!siswaId) return;
+
+    try {
+
+        const res = await fetch(
+            `/public/siswa-detail?siswa_id=${siswaId}`
+        );
+
+        if (!res.ok) return;
+
+        const siswa = await res.json();
+
+        const el =
+            document.getElementById(
+                "nama-siswa-header"
+            );
+
+        if (!el) return;
+
+        const parts =
+            (siswa.nama || "").split(" ");
+
+        let nama =
+            parts.slice(0, 2).join(" ");
+
+        if (nama.length > 15) {
+            nama =
+                nama.substring(0, 15) + "...";
+        }
+
+        el.textContent = nama;
+
+    } catch (err) {
+
+        console.error(
+            "Gagal memuat nama siswa",
+            err
+        );
+    }
+}
+
+const siswaId =
+    document.getElementById("siswa-id")?.value;
+
 function renderCart() {
 
     cartItems.innerHTML = "";
@@ -100,5 +146,5 @@ document.addEventListener("click", function(e) {
 
     renderCart();
 });
-
+loadNamaSiswa();
 renderCart();
