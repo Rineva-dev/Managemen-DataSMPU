@@ -687,17 +687,17 @@ async function loadBiodataSiswa() {
         document.getElementById(
             "profile-nisn"
         ).textContent =
-            `NISN ${siswa.nisn || "-"}`;
+            `NISN: ${siswa.nisn || "-"}`;
 
         document.getElementById(
             "profile-kelas"
         ).textContent =
-            `Kelas ${siswa.tingkat || "-"} ${siswa.sub_kelas || ""}`;
+            `${siswa.tingkat || "-"} ${siswa.sub_kelas || ""}`;
 
         document.getElementById(
             "profile-status"
         ).textContent =
-            `Status: ${siswa.status || "-"}`;
+            `${siswa.status || "-"}`;
 
         document.getElementById(
             "profile-ttl"
@@ -709,7 +709,7 @@ async function loadBiodataSiswa() {
         document.getElementById(
             "profile-orangtua"
         ).textContent =
-            `Orang Tua: ${
+            `${
                 siswa.nama_ayah ||
                 siswa.nama_ibu ||
                 "-"
