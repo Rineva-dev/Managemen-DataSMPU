@@ -367,7 +367,10 @@ async function loadBiodataSiswa() {
             `NISN ${siswa.nisn}`;
 
         document.getElementById("siswa-kelas").textContent =
-            `Kelas ${siswa.tingkat || ""} ${siswa.sub_kelas || ""}`;
+            `Kelas ${siswa.tingkat || ""}`;
+
+        document.getElementById("siswa-rombel").textContent =
+            `Rombel ${siswa.sub_kelas || ""}`;
 
         document.getElementById("siswa-orangtua").textContent =
             siswa.nama_ayah ||
