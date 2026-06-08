@@ -258,12 +258,13 @@ body{
 .student-avatar{
     width:70px;
     height:70px;
-    border-radius:22px;
+    border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
     background:rgba(255,255,255,.18);
     color:white;
+    border: 1px solid #ffffff59;
 }
 
 .student-avatar svg {
