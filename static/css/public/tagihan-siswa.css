@@ -933,6 +933,7 @@ body{
     padding:70px 20px;
     text-align:center;
     color:var(--muted);
+    gap: 10px;
 }
 
 .cart-empty i{
