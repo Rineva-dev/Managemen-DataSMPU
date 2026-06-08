@@ -397,7 +397,21 @@ body{
     box-shadow:var(--shadow);
 
     transition:.25s;
+
+    display:flex;
+    flex-direction:column;
 }
+
+.bill-card p{
+    color:var(--muted);
+
+    line-height:1.7;
+
+    margin-bottom:22px;
+
+    flex:1;
+}
+
 
 .bill-card:hover{
     transform:translateY(-4px);
@@ -502,6 +516,20 @@ body{
     font-size:24px;
 
     color:#0f172a;
+}
+
+.bill-footer{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-top:auto;
+}
+
+.bill-input{
+    margin-top:16px;
 }
 
 /* BUTTON */
