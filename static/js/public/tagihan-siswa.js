@@ -370,11 +370,9 @@ async function loadTagihanPembangunan() {
             <div class="bill-input">
 
                 <input
-                    type="number"
+                    type="text"
                     class="input-pembangunan"
-                    min="10000"
-                    max="${sisa}"
-                    placeholder="Masukkan nominal pembayaran">
+                    placeholder="Contoh: Rp 5.000.000">
 
                 <button
                     class="btn-add-pembangunan"
@@ -404,6 +402,28 @@ async function loadTagihanPembangunan() {
     }
 }
 
+document.addEventListener("input", function(e) {
+
+    const input =
+        e.target.closest(".input-pembangunan");
+
+    if (!input) return;
+
+    let value =
+        input.value.replace(/\D/g, "");
+
+    if (!value) {
+
+        input.value = "";
+
+        return;
+    }
+
+    input.value =
+        "Rp " +
+        Number(value).toLocaleString("id-ID");
+});
+
 document.addEventListener("click", function(e) {
 
     const btn =
@@ -417,8 +437,9 @@ document.addEventListener("click", function(e) {
     const input =
         card.querySelector(".input-pembangunan");
 
-    const nominal =
-        parseInt(input.value || 0);
+    const nominal = parseInt(
+        input.value.replace(/\D/g, "")
+    ) || 0;
 
     const sisa =
         parseInt(btn.dataset.max);
@@ -445,6 +466,8 @@ document.addEventListener("click", function(e) {
         kategori: "PEMBANGUNAN",
         nominal: nominal
     }, card);
+
+    input.value = "";
 });
 
 // ======================================
