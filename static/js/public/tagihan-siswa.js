@@ -354,22 +354,25 @@ async function loadBiodataSiswa() {
             `/public/siswa-detail?siswa_id=${siswaId}`
         );
 
+        if (!res.ok) {
+            throw new Error("Gagal mengambil data siswa");
+        }
+
         const siswa = await res.json();
 
         document.getElementById("siswa-nama").textContent =
             siswa.nama || "-";
 
         document.getElementById("siswa-nisn").textContent =
-            `NISN ${siswa.nisn || "-"}`;
+            `NISN ${siswa.nisn}`;
 
         document.getElementById("siswa-kelas").textContent =
-            `Kelas ${siswa.kelas || "-"}`;
-
-        document.getElementById("siswa-rombel").textContent =
-            `Rombel ${siswa.rombel || "-"}`;
+            `Kelas ${siswa.tingkat || ""} ${siswa.sub_kelas || ""}`;
 
         document.getElementById("siswa-orangtua").textContent =
-            siswa.orang_tua || "-";
+            siswa.nama_ayah ||
+            siswa.nama_ibu ||
+            "-";
 
         const statusEl =
             document.getElementById("siswa-status");
@@ -379,16 +382,16 @@ async function loadBiodataSiswa() {
             ${siswa.status || "Aktif"}
         `;
 
+        lucide.createIcons();
+
     } catch (err) {
 
         console.error(
             "Gagal memuat biodata siswa",
             err
         );
-
     }
 }
-
 
 // ======================================
 // INIT
