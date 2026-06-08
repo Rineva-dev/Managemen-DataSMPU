@@ -318,3 +318,13 @@ def bayar_pembangunan():
             """, (nisn, jenis, jumlah))
 
     return jsonify({"success": True})
+
+@public_bp.route("/tagihan-siswa")
+def tagihan_siswa():
+
+    siswa_id = request.args.get("siswa_id")
+
+    return render_template(
+        "public/tagihan-siswa.html",
+        siswa_id=siswa_id
+    )

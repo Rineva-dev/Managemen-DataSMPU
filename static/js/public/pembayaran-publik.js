@@ -120,16 +120,14 @@ document.getElementById("btn-cari")
 .addEventListener("click", () => {
 
     if (!selectedSiswa) {
-
         alert("Pilih siswa terlebih dahulu");
-
         return;
     }
 
     const siswaId =
         document.getElementById("selected-siswa-id").value;
 
-    // pindah halaman
+    // redirect ke halaman tagihan siswa
     window.location.href =
-        `/public/tagihan?siswa_id=${siswaId}`;
+        `/public/tagihan-siswa?siswa_id=${siswaId}`;
 });
