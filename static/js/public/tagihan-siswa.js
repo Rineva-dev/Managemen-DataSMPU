@@ -14,15 +14,6 @@ const siswaId =
 const billGrid =
     document.getElementById("bill-grid");
 
-const cartItems =
-    document.querySelector(".cart-items");
-
-const cartEmpty =
-    document.querySelector(".cart-empty");
-
-const cartTotal =
-    document.getElementById("cart-total");
-
 const cartCount =
     document.querySelector(".cart-count");
 
@@ -82,7 +73,6 @@ function updateCartTotal() {
 // ======================================
 // RENDER CART
 // ======================================
-
 function renderCart() {
 
     localStorage.setItem(
@@ -90,71 +80,7 @@ function renderCart() {
         JSON.stringify(cart)
     );
 
-    cartItems.innerHTML = "";
-
-    if (cart.length === 0) {
-
-        cartEmpty.style.display = "flex";
-
-        updateCartTotal();
-
-        return;
-    }
-
-    cartEmpty.style.display = "none";
-
-    cart.forEach((item, index) => {
-
-        const div = document.createElement("div");
-
-        div.className = "cart-item";
-
-        div.innerHTML = `
-            <div class="cart-item-left">
-
-                <div class="cart-item-icon">
-
-                    <i data-lucide="receipt"></i>
-
-                </div>
-
-                <div>
-
-                    <strong>
-                        ${item.nama}
-                    </strong>
-
-                    <small>
-                        ${item.kategori}
-                    </small>
-
-                </div>
-
-            </div>
-
-            <div class="cart-item-right">
-
-                <strong>
-                    ${rupiah(item.nominal)}
-                </strong>
-
-                <button
-                    class="btn-remove"
-                    data-index="${index}">
-
-                    <i data-lucide="trash-2"></i>
-
-                </button>
-
-            </div>
-        `;
-
-        cartItems.appendChild(div);
-    });
-
-    lucide.createIcons();
-
-    updateCartTotal();
+    cartCount.textContent = cart.length;
 }
 
 // ======================================
@@ -403,25 +329,6 @@ document.addEventListener("click", function(e) {
         kategori: btn.dataset.kategori,
         nominal: parseInt(btn.dataset.nominal)
     }, btn);
-});
-
-// ======================================
-// CHECKOUT
-// ======================================
-
-document.querySelector(".btn-checkout")
-.addEventListener("click", function() {
-
-    if (cart.length === 0) {
-
-        alert("Keranjang masih kosong");
-
-        return;
-    }
-
-    console.log(cart);
-
-    alert("Checkout berhasil");
 });
 
 // ======================================
