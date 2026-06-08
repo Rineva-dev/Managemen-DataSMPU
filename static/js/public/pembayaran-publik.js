@@ -133,6 +133,16 @@ document.getElementById("btn-cari")
 });
 
 
+// ======================================
+// HERO SCROLL
+// ======================================
+
+const btnHeroSearch =
+    document.getElementById("btn-hero-search");
+
+const cariSiswaSection =
+    document.getElementById("cari-siswa");
+
 if(btnHeroSearch && cariSiswaSection){
 
     btnHeroSearch.addEventListener("click", function(e){
