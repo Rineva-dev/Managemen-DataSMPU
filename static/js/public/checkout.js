@@ -219,5 +219,37 @@ document.addEventListener("click", function(e) {
 
     renderCart();
 });
+
+// ===============================
+// PROFILE DROPDOWN TOGGLE
+// ===============================
+const btnProfile =
+    document.getElementById("btn-profile-siswa");
+
+const profileDropdown =
+    document.getElementById("profile-dropdown");
+
+if (btnProfile && profileDropdown) {
+
+    btnProfile.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+
+        profileDropdown.classList.toggle("show");
+    });
+
+    // Klik di luar → tutup
+    document.addEventListener("click", function () {
+
+        profileDropdown.classList.remove("show");
+    });
+
+    // Klik di dalam dropdown → jangan nutup
+    profileDropdown.addEventListener("click", function (e) {
+
+        e.stopPropagation();
+    });
+}
+
 loadBiodataSiswa();
 renderCart();
