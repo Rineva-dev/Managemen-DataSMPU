@@ -120,7 +120,7 @@ document.getElementById("btn-cari")
 .addEventListener("click", () => {
 
     if (!selectedSiswa) {
-        alert("Pilih siswa terlebih dahulu");
+        showNotification("Pilih siswa terlebih dahulu", "error");
         return;
     }
 
