@@ -349,8 +349,12 @@ searchInput.addEventListener("input", function() {
 const btnHeroSearch =
     document.getElementById("btn-hero-search");
 
+
 const cariSiswaSection =
     document.getElementById("cari-siswa");
+
+// aktifkan mode animasi
+cariSiswaSection.classList.add("animate");
 
 window.addEventListener("load", () => {
 
@@ -358,7 +362,7 @@ window.addEventListener("load", () => {
 
         cariSiswaSection.classList.add("show");
 
-    }, 200);
+    }, 150);
 
 });
 
