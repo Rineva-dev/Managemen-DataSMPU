@@ -332,8 +332,11 @@ def tagihan_siswa():
 @public_bp.route("/checkout")
 def checkout():
 
+    siswa_id = request.args.get("siswa_id")
+
     return render_template(
-        "public/checkout.html"
+        "public/checkout.html",
+        siswa_id=siswa_id
     )
 
 @public_bp.route("/siswa-detail")
