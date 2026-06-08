@@ -349,9 +349,12 @@ searchInput.addEventListener("input", function() {
 const btnHeroSearch =
     document.getElementById("btn-hero-search");
 
-
 const cariSiswaSection =
     document.getElementById("cari-siswa");
+
+// =========================
+// ANIMASI MUNCUL
+// =========================
 
 if(cariSiswaSection){
 
@@ -372,16 +375,21 @@ if(cariSiswaSection){
 // =========================
 // SCROLL HALUS
 // =========================
-btnHeroSearch.addEventListener("click", function(e){
 
-    e.preventDefault();
+if(btnHeroSearch && cariSiswaSection){
 
-    cariSiswaSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+    btnHeroSearch.addEventListener("click", function(e){
+
+        e.preventDefault();
+
+        cariSiswaSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
     });
 
-});
+}
 
 // ======================================
 // INIT
