@@ -32,32 +32,39 @@
     <!-- LEFT -->
     <div class="market-left">
 
-        <a href="/public/pembayaran"
-           class="market-logo">
-
-            <img
-                src="{{ url_for('static', filename='img/logo-header.png') }}"
-                alt="Logo">
-
+        <a href="/public/pembayaran" class="market-logo">
+            <img src="{{ url_for('static', filename='img/logo-header.png') }}" alt="Logo">
         </a>
 
-    </div>
+        <nav class="market-menu">
 
-    <!-- CENTER -->
-    <div class="market-search">
+            <a href="/">Beranda</a>
 
-        <i data-lucide="search"></i>
+            <a href="/public/payment">
+                Pembayaran
+            </a>
 
-        <input
-            type="text"
-            placeholder="Cari tagihan...">
+            <a href="#">
+                Kontak
+            </a>
+
+        </nav>
 
     </div>
 
     <!-- RIGHT -->
     <div class="market-actions">
 
-        <!-- NOTIF -->
+        <div class="market-search">
+
+            <i data-lucide="search"></i>
+
+            <input
+                type="text"
+                placeholder="Cari tagihan...">
+
+        </div>
+
         <button class="icon-button">
 
             <i data-lucide="bell"></i>
