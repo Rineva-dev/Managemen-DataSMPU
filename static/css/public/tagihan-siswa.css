@@ -267,7 +267,7 @@ body{
 .profile-info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px 16px;
+    gap: 10px 16px;
 }
 
 .info-item {
@@ -290,6 +290,12 @@ body{
 
 .info-item.full {
     grid-column: 1 / -1;
+}
+
+.info-item.full.ttl {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #eef2f7;
 }
 
 /* FOOTER */
