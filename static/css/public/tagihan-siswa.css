@@ -222,7 +222,6 @@ body{
 /* =========================
    STUDENT
 ========================= */
-
 .student-banner{
     background:
         linear-gradient(
@@ -236,6 +235,12 @@ body{
     border-radius:28px;
     padding:28px;
 
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:24px;
+
     box-shadow:
         0 20px 40px rgba(255,183,0,.25);
 }
@@ -248,7 +253,14 @@ body{
 .student-left{
     display:flex;
     align-items:center;
-    gap:18px;
+    gap:20px;
+    flex:1;
+}
+
+.student-info{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
 }
 
 .student-avatar{
@@ -271,17 +283,15 @@ body{
     height:34px;
 }
 
-.student-banner small{
-    color:var(--muted);
-}
 
 .student-banner h2{
     margin-top:4px;
     margin-bottom:4px;
 }
 
+.student-banner small,
 .student-banner p{
-    color:var(--muted);
+    color:rgba(255,255,255,.85);
 }
 
 .student-status{
