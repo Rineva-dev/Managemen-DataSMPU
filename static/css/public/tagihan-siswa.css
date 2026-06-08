@@ -197,6 +197,30 @@ body{
     cursor:pointer;
 }
 
+.profile-wrapper{
+    position:relative;
+}
+
+.profile-dropdown{
+    position:absolute;
+    top:110%;
+    right:0;
+    width:320px;
+    display:none;
+    z-index:1000;
+}
+
+.profile-dropdown.show{
+    display:block;
+}
+
+.profile-card{
+    background:#fff;
+    border-radius:16px;
+    padding:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+}
+
 /* =========================
    LAYOUT
 ========================= */

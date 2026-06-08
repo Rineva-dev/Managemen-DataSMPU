@@ -20,6 +20,12 @@ const cartCount =
 const toast =
     document.getElementById("toast");
 
+const profileButton =
+    document.querySelector(".profile-button");
+
+const profileDropdown =
+    document.getElementById("profile-dropdown");
+
 // ======================================
 // STATE
 // ======================================
@@ -150,6 +156,40 @@ document.addEventListener("click", function(e) {
 
     showToast("Tagihan dihapus");
 });
+
+// ======================================
+// PROFILE DROPDOWN
+// ======================================
+
+profileButton?.addEventListener(
+    "click",
+    function(e) {
+
+        e.stopPropagation();
+
+        profileDropdown.classList.toggle(
+            "show"
+        );
+    }
+);
+
+document.addEventListener(
+    "click",
+    function() {
+
+        profileDropdown?.classList.remove(
+            "show"
+        );
+    }
+);
+
+profileDropdown?.addEventListener(
+    "click",
+    function(e) {
+
+        e.stopPropagation();
+    }
+);
 
 // ======================================
 // LOAD TAGIHAN SPP
@@ -634,6 +674,39 @@ async function loadBiodataSiswa() {
         }
 
         const siswa = await res.json();
+
+        // =========================
+        // PROFILE DROPDOWN DATA
+        // =========================
+
+        document.getElementById(
+            "dropdown-nama"
+        ).textContent =
+            siswa.nama || "-";
+
+        document.getElementById(
+            "dropdown-kelas"
+        ).textContent =
+            `${siswa.tingkat || "-"} ${siswa.sub_kelas || ""}`;
+
+        document.getElementById(
+            "dropdown-orangtua"
+        ).textContent =
+            siswa.nama_ayah ||
+            siswa.nama_ibu ||
+            "-";
+
+        document.getElementById(
+            "dropdown-alamat"
+        ).textContent =
+            siswa.alamat || "-";
+
+        document.getElementById(
+            "dropdown-lahir"
+        ).textContent =
+            siswa.tempat_lahir && siswa.tanggal_lahir
+                ? `${siswa.tempat_lahir}, ${siswa.tanggal_lahir}`
+                : "-";
 
         const namaHeader =
             document.getElementById("nama-siswa-header");

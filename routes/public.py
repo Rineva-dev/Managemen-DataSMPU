@@ -357,10 +357,13 @@ def siswa_detail():
                     s.nama,
                     s.nisn,
                     s.status,
-                    k.tingkat,
-                    k.sub_kelas,
+                    s.tempat_lahir,
+                    s.tanggal_lahir,
+                    s.alamat,
                     s.nama_ayah,
-                    s.nama_ibu
+                    s.nama_ibu,
+                    k.tingkat,
+                    k.sub_kelas
 
                 FROM siswa s
 
@@ -370,7 +373,7 @@ def siswa_detail():
                 LEFT JOIN kelas k
                     ON k.id = ks.kelas_id
 
-                WHERE s.id = ?
+                WHERE s.id = %
             """, (siswa_id,)).fetchone()
 
         if not siswa:
@@ -381,8 +384,18 @@ def siswa_detail():
             "nama": siswa["nama"],
             "nisn": siswa["nisn"],
             "status": siswa["status"],
+
+            "tempat_lahir": siswa["tempat_lahir"],
+            "tanggal_lahir": (
+                siswa["tanggal_lahir"].strftime("%d-%m-%Y")
+                if siswa["tanggal_lahir"]
+                else ""
+            ),
+            "alamat": siswa["alamat"],
+
             "tingkat": siswa["tingkat"],
             "sub_kelas": siswa["sub_kelas"],
+
             "nama_ayah": siswa["nama_ayah"],
             "nama_ibu": siswa["nama_ibu"]
         })
