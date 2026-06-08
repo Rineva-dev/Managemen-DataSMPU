@@ -8,14 +8,26 @@ lucide.createIcons();
 // ELEMENT
 // ======================================
 
-const cartItems = document.querySelector(".cart-items");
-const cartEmpty = document.querySelector(".cart-empty");
-const cartTotal = document.getElementById("cart-total");
-const cartCount = document.querySelector(".cart-count");
+const siswaId =
+    document.getElementById("siswa-id").value;
 
-const toast = document.getElementById("toast");
+const billGrid =
+    document.getElementById("bill-grid");
 
-const addButtons = document.querySelectorAll(".btn-add-cart");
+const cartItems =
+    document.querySelector(".cart-items");
+
+const cartEmpty =
+    document.querySelector(".cart-empty");
+
+const cartTotal =
+    document.getElementById("cart-total");
+
+const cartCount =
+    document.querySelector(".cart-count");
+
+const toast =
+    document.getElementById("toast");
 
 // ======================================
 // STATE
@@ -24,7 +36,7 @@ const addButtons = document.querySelectorAll(".btn-add-cart");
 let cart = [];
 
 // ======================================
-// FORMAT RUPIAH
+// FORMAT
 // ======================================
 
 function rupiah(nominal) {
@@ -37,7 +49,7 @@ function rupiah(nominal) {
 // TOAST
 // ======================================
 
-function showToast(message = "Berhasil ditambahkan") {
+function showToast(message = "Berhasil") {
 
     toast.querySelector("span").textContent = message;
 
@@ -73,7 +85,6 @@ function renderCart() {
 
     cartItems.innerHTML = "";
 
-    // EMPTY
     if (cart.length === 0) {
 
         cartEmpty.style.display = "flex";
@@ -95,7 +106,9 @@ function renderCart() {
             <div class="cart-item-left">
 
                 <div class="cart-item-icon">
+
                     <i data-lucide="receipt"></i>
+
                 </div>
 
                 <div>
@@ -143,15 +156,11 @@ function renderCart() {
 
 function addToCart(data) {
 
-    // =========================
-    // CEK DUPLIKAT
-    // =========================
-
     const exists = cart.find(item => item.id === data.id);
 
     if (exists) {
 
-        showToast("Tagihan sudah ada di keranjang");
+        showToast("Tagihan sudah ada");
 
         return;
     }
@@ -160,7 +169,7 @@ function addToCart(data) {
 
     renderCart();
 
-    showToast("Tagihan ditambahkan");
+    showToast("Ditambahkan ke keranjang");
 }
 
 // ======================================
@@ -183,34 +192,159 @@ document.addEventListener("click", function(e) {
 });
 
 // ======================================
-// ADD BUTTON
+// LOAD TAGIHAN SPP
 // ======================================
 
-addButtons.forEach((btn, index) => {
+async function loadTagihanSPP() {
 
-    btn.addEventListener("click", function() {
+    billGrid.innerHTML = `
+        <div class="loading">
+            Memuat tagihan...
+        </div>
+    `;
 
-        const card = btn.closest(".bill-card");
+    try {
 
-        const nama = card.querySelector("h3").textContent.trim();
+        const res = await fetch(
+            `/public/tagihan-spp?siswa_id=${siswaId}`
+        );
 
-        const kategori =
-            card.querySelector(".bill-category")
-                .textContent.trim();
+        const data = await res.json();
 
-        const nominalText =
-            card.querySelector(".bill-price")
-                .textContent
-                .replace(/[^\d]/g, "");
+        billGrid.innerHTML = "";
 
-        const nominal = parseInt(nominalText);
+        if (!Array.isArray(data) || data.length === 0) {
 
-        addToCart({
-            id: index + 1,
-            nama,
-            kategori,
-            nominal
+            billGrid.innerHTML = `
+                <div class="empty-tagihan">
+                    Tidak ada tagihan
+                </div>
+            `;
+
+            return;
+        }
+
+        data.forEach((t, index) => {
+
+            const bulanNama = new Date(
+                t.tahun,
+                t.bulan - 1
+            ).toLocaleString("id-ID", {
+                month: "long"
+            });
+
+            const card = document.createElement("div");
+
+            card.className = "bill-card";
+
+            card.innerHTML = `
+                <div class="bill-top">
+
+                    <span class="bill-category">
+                        SPP
+                    </span>
+
+                    <span class="bill-status unpaid">
+
+                        Belum Lunas
+
+                    </span>
+
+                </div>
+
+                <h3>
+                    SPP ${bulanNama} ${t.tahun}
+                </h3>
+
+                <p>
+                    Pembayaran SPP bulan
+                    ${bulanNama} ${t.tahun}
+                </p>
+
+                <div class="bill-meta">
+
+                    <div class="bill-meta-item">
+
+                        <i data-lucide="calendar"></i>
+
+                        <span>
+                            Tahun Ajaran
+                        </span>
+
+                    </div>
+
+                    <strong>
+                        ${t.tahun}
+                    </strong>
+
+                </div>
+
+                <div class="bill-footer">
+
+                    <div>
+
+                        <small>
+                            Total Tagihan
+                        </small>
+
+                        <strong class="bill-price">
+
+                            ${rupiah(t.nominal)}
+
+                        </strong>
+
+                    </div>
+
+                    <button
+                        class="btn-add-cart"
+                        data-id="${index}"
+                        data-nama="SPP ${bulanNama} ${t.tahun}"
+                        data-kategori="SPP"
+                        data-nominal="${t.nominal}">
+
+                        <i data-lucide="plus"></i>
+
+                        <span>
+                            Tambah
+                        </span>
+
+                    </button>
+
+                </div>
+            `;
+
+            billGrid.appendChild(card);
         });
+
+        lucide.createIcons();
+
+    } catch (err) {
+
+        console.error(err);
+
+        billGrid.innerHTML = `
+            <div class="empty-tagihan">
+                Gagal memuat tagihan
+            </div>
+        `;
+    }
+}
+
+// ======================================
+// ADD BUTTON DYNAMIC
+// ======================================
+
+document.addEventListener("click", function(e) {
+
+    const btn = e.target.closest(".btn-add-cart");
+
+    if (!btn) return;
+
+    addToCart({
+        id: btn.dataset.id,
+        nama: btn.dataset.nama,
+        kategori: btn.dataset.kategori,
+        nominal: parseInt(btn.dataset.nominal)
     });
 });
 
@@ -228,29 +362,9 @@ document.querySelector(".btn-checkout")
         return;
     }
 
-    console.log("DATA CHECKOUT:", cart);
+    console.log(cart);
 
-    alert(
-        "Checkout berhasil diproses"
-    );
-});
-
-// ======================================
-// FILTER CHIP
-// ======================================
-
-const chips = document.querySelectorAll(".filter-chip");
-
-chips.forEach(chip => {
-
-    chip.addEventListener("click", function() {
-
-        chips.forEach(c => {
-            c.classList.remove("active");
-        });
-
-        chip.classList.add("active");
-    });
+    alert("Checkout berhasil");
 });
 
 // ======================================
@@ -288,3 +402,5 @@ searchInput.addEventListener("input", function() {
 // ======================================
 
 renderCart();
+
+loadTagihanSPP();
