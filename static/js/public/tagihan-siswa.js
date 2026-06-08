@@ -640,10 +640,14 @@ async function loadBiodataSiswa() {
 
         if (namaHeader) {
 
-            let nama = siswa.nama || "";
+            const parts =
+                (siswa.nama || "").split(" ");
 
-            if (nama.length > 12) {
-                nama = nama.substring(0, 12) + "...";
+            let nama =
+                parts.slice(0, 2).join(" ");
+
+            if (parts.length > 2) {
+                nama += "...";
             }
 
             namaHeader.textContent = nama;
