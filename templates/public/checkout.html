@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Checkout Pembayaran
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/public/tagihan-siswa.css') }}">
+
+</head>
+
+<body class="billing-page">
+
+<header class="market-header">
+
+    <div class="market-left">
+
+        <a href="/public/pembayaran"
+           class="market-logo">
+
+            <img
+                src="{{ url_for('static', filename='img/logo-header.png') }}"
+                alt="Logo">
+
+        </a>
+
+    </div>
+
+</header>
+
+<div class="checkout-page">
+
+    <div class="checkout-card">
+
+        <div class="cart-header">
+
+            <div>
+
+                <small>
+                    Keranjang Pembayaran
+                </small>
+
+                <h3>
+                    Checkout
+                </h3>
+
+            </div>
+
+        </div>
+
+        <div class="cart-empty">
+
+            <i data-lucide="shopping-cart"></i>
+
+            <p>
+                Belum ada tagihan dipilih
+            </p>
+
+        </div>
+
+        <div class="cart-items">
+
+        </div>
+
+        <div class="cart-summary">
+
+            <div class="summary-row">
+
+                <span>
+                    Total Pembayaran
+                </span>
+
+                <strong id="cart-total">
+                    Rp0
+                </strong>
+
+            </div>
+
+            <button class="btn-checkout">
+
+                <i data-lucide="credit-card"></i>
+
+                <span>
+                    Bayar Sekarang
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+    lucide.createIcons();
+</script>
+
+<script src="{{ url_for('static', filename='js/public/checkout.js') }}"></script>
+
+</body>
+</html>

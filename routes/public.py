@@ -328,3 +328,10 @@ def tagihan_siswa():
         "public/tagihan-siswa.html",
         siswa_id=siswa_id
     )
+
+@public_bp.route("/checkout")
+def checkout():
+
+    return render_template(
+        "public/checkout.html"
+    )

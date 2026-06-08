@@ -33,7 +33,9 @@ const toast =
 // STATE
 // ======================================
 
-let cart = [];
+let cart = JSON.parse(
+    localStorage.getItem("payment_cart") || "[]"
+);
 
 // ======================================
 // FORMAT
@@ -82,6 +84,11 @@ function updateCartTotal() {
 // ======================================
 
 function renderCart() {
+
+    localStorage.setItem(
+        "payment_cart",
+        JSON.stringify(cart)
+    );
 
     cartItems.innerHTML = "";
 
