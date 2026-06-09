@@ -1639,3 +1639,226 @@ body{
 .tab-content.active{
     display:block;
 }
+
+/* =========================
+   PAYMENT TABS
+========================= */
+
+.payment-tabs{
+    width:100%;
+    max-width:900px;
+
+    margin:32px auto 0;
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:8px;
+
+    background:#ffffff;
+    border:1px solid #eef2f7;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.04);
+}
+
+.tab-btn{
+    flex:1;
+
+    height:54px;
+
+    border:none;
+    border-radius:14px;
+
+    background:transparent;
+
+    color:var(--muted);
+
+    font-size:14px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    position:relative;
+}
+
+.tab-btn:hover{
+    background:#f8fafc;
+    color:var(--text);
+}
+
+.tab-btn.active{
+    background:
+        linear-gradient(
+            135deg,
+            #ffb700,
+            #ffc62a
+        );
+
+    color:white;
+
+    box-shadow:
+        0 8px 18px rgba(255,183,0,.28);
+}
+
+/* =========================
+   PAYMENT CONTAINER
+========================= */
+
+.payment-container{
+    width:100%;
+    max-width:900px;
+
+    margin:24px auto 60px;
+    padding:0 20px;
+}
+
+/* =========================
+   TAB CONTENT
+========================= */
+
+.tab-content{
+    display:none;
+    animation:fadeTab .25s ease;
+}
+
+.tab-content.active{
+    display:block;
+}
+
+@keyframes fadeTab{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================
+   STATUS & HISTORY ITEM
+========================= */
+
+.status-item,
+.history-item{
+    background:#ffffff;
+
+    border:1px solid #eef2f7;
+    border-radius:18px;
+
+    padding:18px 20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    margin-bottom:14px;
+
+    transition:.2s;
+}
+
+.status-item:hover,
+.history-item:hover{
+    transform:translateY(-2px);
+    border-color:#ffd666;
+}
+
+.status-left,
+.history-left{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.status-title,
+.history-title{
+    font-size:15px;
+    font-weight:700;
+}
+
+.status-date,
+.history-date{
+    font-size:13px;
+    color:var(--muted);
+}
+
+.status-right,
+.history-right{
+    text-align:right;
+}
+
+.status-price,
+.history-price{
+    display:block;
+
+    font-size:18px;
+    font-weight:700;
+}
+
+.status-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-top:8px;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:12px;
+    font-weight:700;
+}
+
+.status-badge.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status-badge.success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-badge.failed{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .payment-tabs{
+        overflow:auto;
+        padding:6px;
+    }
+
+    .tab-btn{
+        min-width:180px;
+        flex:none;
+    }
+
+    .payment-container{
+        padding:0 14px;
+    }
+
+    .checkout-card{
+        padding:20px;
+        border-radius:22px;
+    }
+
+    .summary-row strong{
+        font-size:26px;
+    }
+}
