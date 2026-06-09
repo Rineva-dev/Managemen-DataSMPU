@@ -1042,8 +1042,8 @@ def generate_pembayaran():
         # ✅ PERBAIKAN VALIDASI & KONVERSI TOTAL
         # ==============================================
         # Cek kelengkapan data DULU
-        if not siswa_id or not metode:
-            return jsonify({"success": False, "error": "Data utama (siswa/metode) tidak lengkap"}), 400
+        if not siswa_id:
+            return jsonify({"success": False, "error": "ID Siswa tidak valid"}), 400
 
         if not total_str:
             total_str = "0"
@@ -1097,6 +1097,16 @@ def generate_pembayaran():
             except:
                 return jsonify({"success": False, "error": "Data detail keranjang rusak"}), 400
 
+            for item in detail_json:
+                cart_id = item.get("cart_id") or item.get("id")
+                if cart_id:
+                    d.execute("""
+                        UPDATE cart_pembayaran 
+                        SET status = 'CHECKED_OUT' 
+                        WHERE id = %s 
+                        AND status = 'CART' -- Hanya ubah yang masih CART
+                    """, (cart_id,))
+
             # =========================
             # 3. SIMPAN KE DATABASE
             # =========================
@@ -1139,10 +1149,23 @@ def get_cart():
         return jsonify([])
     
     with db() as d:
+        # ✅ PERBAIKAN: Ambil data yang statusnya CART ATAU CHECKED_OUT
+        # Ini supaya saat ganti metode, data masih bisa dibaca
         rows = d.execute("""
-            SELECT id, jenis, bulan, tahun, nominal 
+            SELECT id, jenis, bulan, tahun, nominal, status 
             FROM cart_pembayaran 
-            WHERE siswa_id = %s AND status = 'ACTIVE'
+            WHERE siswa_id = %s 
+              AND status IN ('CART', 'CHECKED_OUT') 
+            ORDER BY created_at DESC
         """, (siswa_id,)).fetchall()
         
-        return jsonify([dict(r) for r in rows])
+        # ✅ Hanya ambil item unik (hindari duplikat)
+        seen = set()
+        unique_rows = []
+        for r in rows:
+            key = (r["jenis"], r["bulan"], r["tahun"])
+            if key not in seen:
+                seen.add(key)
+                unique_rows.append(dict(r))
+        
+        return jsonify(unique_rows)

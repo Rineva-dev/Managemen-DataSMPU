@@ -780,7 +780,6 @@ async function loadRiwayatPembayaran() {
 let countdownTimer;
 
 // --- FUNGSI UTAMA: PROSES PEMBAYARAN OTOMATIS ---
-// --- FUNGSI UTAMA: PROSES PEMBAYARAN OTOMATIS ---
 async function prosesPembayaranOtomatis(metode) {
     const paymentDetailModal = document.getElementById("payment-detail-modal");
     const vaContent = document.getElementById("va-content");
@@ -792,19 +791,22 @@ async function prosesPembayaranOtomatis(metode) {
     qrisContent.style.display = "none";
 
     // ==============================================
-    // ✅ PERBAIKAN: MUAT ULANG KERANJANG DULU (WAJIB)
+    // ✅ PERBAIKAN: MUAT ULANG KERANJANG & PERBAIKI STATUS
     // ==============================================
     try {
         // Ambil data keranjang terbaru langsung dari server sebelum kirim
         const resCart = await fetch(`/public/get-cart?siswa_id=${siswaId}`);
         const dataCart = await resCart.json();
         
-        // Perbarui variabel global agar data pasti ada
-        cart = dataCart; 
-        cartTotalValue = cart.reduce((sum, item) => sum + parseInt(item.nominal), 0);
+        // ✅ Kembalikan status jadi CART dulu (karena mungkin sudah CHECKED_OUT sebelumnya)
+        // Kita anggap semua item yang ada di sini adalah item yang mau dibayar
+        cart = dataCart.filter(item => item.status === 'CART' || item.status === 'CHECKED_OUT'); 
         
-        console.log("Data Keranjang Terbaru:", cart);
-        console.log("Total Terbaru:", cartTotalValue);
+        // Hitung ulang total
+        cartTotalValue = cart.reduce((sum, item) => sum + parseInt(item.nominal || 0), 0);
+        
+        console.log("✅ Data Keranjang Terbaru:", cart);
+        console.log("✅ Total Terbaru:", cartTotalValue);
 
     } catch (e) {
         alert("Gagal mengambil data keranjang terbaru");
