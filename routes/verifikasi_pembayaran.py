@@ -11,8 +11,10 @@ verifikasi_bp = Blueprint("verifikasi", __name__,)
 @verifikasi_bp.route("/verifikasi-pembayaran")
 def verifikasi_pembayaran_page():
 
-    return render_template(
-        "siswa/verifikasi-pembayaran.html"
+    render_template(
+        "index.html",
+        active_page="pembayaran_siswa",
+        show_verifikasi_pembayaran=True
     )
 
 @verifikasi_bp.route("/verifikasi-pembayaran/list")
