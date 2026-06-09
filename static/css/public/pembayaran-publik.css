@@ -1034,6 +1034,23 @@ body{
     color:#22c55e;
 }
 
+/* khusus list kontak & alamat */
+.site-footer .footer-col ul li{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+/* kecilkan icon mail & phone */
+.site-footer .footer-col ul li svg{
+    width: 14px;
+    height: 14px;
+    stroke-width: 1.6;
+    flex-shrink: 0;
+    opacity: .85;
+}
+
 /* SOSIAL */
 .footer-social{
     display:flex;
