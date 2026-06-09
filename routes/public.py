@@ -842,7 +842,7 @@ def add_cart():
             "error": str(e)
         }), 500
     
-@public_bp.route("/cart/list")
+@public_bp.route("/cart")
 def cart_list():
 
     siswa_id = request.args.get(
