@@ -94,8 +94,7 @@ async function addToCart(data, cardElement) {
             method: "POST",
 
             headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken
+                "Content-Type": "application/json"
             },
 
             body: JSON.stringify({
