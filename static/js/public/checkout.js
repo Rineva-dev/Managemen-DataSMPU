@@ -148,7 +148,7 @@ async function loadCart() {
     try {
 
         const res = await fetch(
-            `/public/cart/list?siswa_id=${siswaId}`
+            `/public/cart?siswa_id=${siswaId}`
         );
 
         cart = await res.json();
