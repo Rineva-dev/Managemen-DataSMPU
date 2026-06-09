@@ -120,7 +120,7 @@
 <script src="{{ url_for('static', filename='js/siswa/siswa-pindahan.js') }}"></script>
 {% endif %}
 
-{% if active_page == "pembayaran_siswa" %}
+{% if active_page == "pembayaran_siswa" and not show_verifikasi_pembayaran %}
 <script src="{{ url_for('static', filename='js/siswa/pembayaran-siswa.js') }}"></script>
 {% endif %}
 
