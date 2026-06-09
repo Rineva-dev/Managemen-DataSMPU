@@ -115,19 +115,16 @@ def approve_pembayaran():
             # 2. OPTIONAL: kalau mau langsung masuk ke tabel pembayaran utama
             d.execute("""
                 INSERT INTO pembayaran (
-                    siswa_id,
-                    metode,
-                    total,
-                    detail,
+                    nisn,
+                    jenis,
                     tanggal,
-                    status
+                    nominal
                 )
-                VALUES (%s, %s, %s, %s, CURRENT_DATE, 'LUNAS')
+                VALUES (%s, %s, CURRENT_DATE, %s)
             """, (
-                trx["siswa_id"],
-                trx["metode"],
-                trx["total"],
-                trx.get("detail") or "[]"
+                trx["nisn"],
+                "PEMBAYARAN",
+                trx["total"]
             ))
 
         return jsonify({"success": True})
