@@ -1051,6 +1051,14 @@ body{
     opacity: .85;
 }
 
+.alamat {
+    align-items: flex-start !important;
+}
+
+.alamat svg {
+    margin-top: 3px;
+}
+
 /* SOSIAL */
 .footer-social{
     display:flex;
