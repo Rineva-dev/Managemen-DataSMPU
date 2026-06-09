@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, abort, jsonify
+from flask import Blueprint, render_template, request, abort, jsonify, current_app
 from datetime import datetime, date
 from utils.db import db
 from werkzeug.utils import secure_filename
@@ -411,57 +411,76 @@ def siswa_detail():
 @public_bp.route("/upload-pembayaran", methods=["POST"])
 def upload_pembayaran():
 
-    siswa_id = request.form.get("siswa_id", type=int)
-    total = request.form.get("total", type=int)
-    metode = request.form.get("metode")
-    bukti = request.files.get("bukti")
-
-    if not bukti:
-        return jsonify({
-            "success": False,
-            "error": "Bukti transfer wajib"
-        }), 400
-
     try:
 
-        filename = secure_filename(bukti.filename)
+        siswa_id = request.form.get("siswa_id")
+        total = request.form.get("total")
+        metode = request.form.get("metode")
 
-        upload_dir = "static/uploads/bukti-transfer"
-        os.makedirs(upload_dir, exist_ok=True)
+        file = request.files.get("bukti")
 
-        save_path = os.path.join(upload_dir, filename)
+        if not siswa_id:
+            return jsonify({
+                "success": False,
+                "error": "Siswa tidak ditemukan"
+            }), 400
 
-        bukti.save(save_path)
+        if not total:
+            return jsonify({
+                "success": False,
+                "error": "Total pembayaran kosong"
+            }), 400
 
+        if not file:
+            return jsonify({
+                "success": False,
+                "error": "Bukti transfer wajib upload"
+            }), 400
+
+        # =========================
+        # FOLDER UPLOAD
+        # =========================
+        upload_folder = os.path.join(
+            current_app.static_folder,
+            "uploads",
+            "bukti"
+        )
+
+        os.makedirs(upload_folder, exist_ok=True)
+
+        # =========================
+        # NAMA FILE
+        # =========================
+        filename = secure_filename(file.filename)
+
+        filename = (
+            f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
+        )
+
+        filepath = os.path.join(upload_folder, filename)
+
+        file.save(filepath)
+
+        # =========================
+        # SIMPAN DATABASE
+        # =========================
         with db() as d:
-
-            siswa = d.execute("""
-                SELECT nisn
-                FROM siswa
-                WHERE id = ?
-            """, (siswa_id,)).fetchone()
-
-            if not siswa:
-                return jsonify({
-                    "success": False,
-                    "error": "Siswa tidak ditemukan"
-                }), 404
 
             d.execute("""
                 INSERT INTO pembayaran_pending (
-                    nisn,
+                    siswa_id,
                     metode,
                     total,
-                    status,
-                    bukti_transfer
+                    bukti,
+                    status
                 )
-                VALUES (?, ?, ?, ?, ?)
+                VALUES (%s, %s, %s, %s, %s)
             """, (
-                siswa["nisn"],
+                siswa_id,
                 metode,
                 total,
-                "MENUNGGU VERIFIKASI",
-                save_path
+                filename,
+                "MENUNGGU VERIFIKASI"
             ))
 
         return jsonify({
