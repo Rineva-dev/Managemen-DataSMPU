@@ -100,10 +100,18 @@ async function addToCart(data, cardElement) {
             body: JSON.stringify({
                 siswa_id: siswaId,
                 jenis: data.kategori,
+                bulan: data.bulan || null,
+                tahun: data.tahun || null,
                 nominal: data.nominal,
                 detail: data
             })
         });
+
+        if (!res.ok) {
+            const text = await res.text();
+            console.error(text);
+            throw new Error("Request gagal");
+        }
 
         const result = await res.json();
 
@@ -333,6 +341,8 @@ async function loadTagihanSPP() {
                         data-id="spp-${t.bulan}-${t.tahun}"
                         data-nama="SPP ${bulanNama} ${t.tahun}"
                         data-kategori="SPP"
+                        data-bulan="${t.bulan}"
+                        data-tahun="${t.tahun}"
                         data-nominal="${t.nominal}">
 
                         <i data-lucide="plus"></i>
@@ -606,6 +616,8 @@ document.addEventListener("click", function(e) {
         id: btn.dataset.id,
         nama: btn.dataset.nama,
         kategori: btn.dataset.kategori,
+        bulan: parseInt(btn.dataset.bulan),
+        tahun: parseInt(btn.dataset.tahun),
         nominal: parseInt(btn.dataset.nominal)
     }, card);
 });
