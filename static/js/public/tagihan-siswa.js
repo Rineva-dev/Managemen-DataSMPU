@@ -827,6 +827,51 @@ async function loadBiodataSiswa() {
     }
 }
 
+const navKontak = document.querySelector(".nav-kontak");
+const footerKontak = document.getElementById("kontak");
+
+if (navKontak && footerKontak) {
+
+    navKontak.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        const targetPosition =
+            footerKontak.offsetTop - 40;
+
+        const startPosition =
+            window.pageYOffset;
+
+        const distance =
+            targetPosition - startPosition;
+
+        const duration = 1400;
+        let start = null;
+
+        function animation(currentTime) {
+
+            if (start === null) start = currentTime;
+
+            const timeElapsed = currentTime - start;
+            const progress = Math.min(timeElapsed / duration, 1);
+
+            // easing lembut
+            const ease = 1 - Math.pow(1 - progress, 3);
+
+            window.scrollTo(
+                0,
+                startPosition + distance * ease
+            );
+
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+            }
+        }
+
+        requestAnimationFrame(animation);
+    });
+}
+
 // ======================================
 // INIT
 // ======================================
