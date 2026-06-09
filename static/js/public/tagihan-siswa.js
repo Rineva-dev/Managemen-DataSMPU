@@ -319,7 +319,7 @@ async function loadTagihanSPP() {
                     </div>
 
                     <strong>
-                        ${t.tahun}
+                        ${t.tahun_pelajaran}
                     </strong>
 
                 </div>

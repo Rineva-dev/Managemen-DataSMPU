@@ -127,6 +127,8 @@ def tagihan_spp():
                 tahun_masuk = int(siswa["tahun_masuk"])
             except:
                 return jsonify([])
+            
+            tahun_ajaran = f"{tahun_masuk}/{tahun_masuk + 1}"
 
             start = date(tahun_masuk, 7, 1)
 
@@ -242,7 +244,7 @@ def tagihan_spp():
                     tagihan.append({
                         "bulan": cur.month,
                         "tahun": cur.year,
-                        "tahun_pelajaran": tahun_pelajaran_aktif,  # 🔥 TAMBAHAN PENTING
+                        "tahun_pelajaran": tahun_ajaran,
                         "nominal": 400000,
                         "status": "BELUM"
                     })
