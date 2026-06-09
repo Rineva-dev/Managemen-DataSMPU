@@ -97,22 +97,27 @@ def approve_pembayaran():
         with db() as d:
 
             trx = d.execute("""
-                SELECT *
-                FROM pembayaran_pending
-                WHERE id = %s
+                SELECT 
+                    pp.*,
+                    s.nisn
+                FROM pembayaran_pending pp
+                JOIN siswa s ON s.id = pp.siswa_id
+                WHERE pp.id = %s
             """, (pembayaran_id,)).fetchone()
 
             if not trx:
                 return jsonify({"success": False, "error": "Data tidak ditemukan"}), 404
 
-            # 1. update status jadi diterima
+            nisn = trx["nisn"]
+
+            # update status
             d.execute("""
                 UPDATE pembayaran_pending
                 SET status = 'DITERIMA'
                 WHERE id = %s
             """, (pembayaran_id,))
 
-            # 2. OPTIONAL: kalau mau langsung masuk ke tabel pembayaran utama
+            # insert pembayaran
             d.execute("""
                 INSERT INTO pembayaran (
                     nisn,
@@ -122,8 +127,8 @@ def approve_pembayaran():
                 )
                 VALUES (%s, %s, CURRENT_DATE, %s)
             """, (
-                trx["nisn"],
-                "PEMBAYARAN",
+                nisn,
+                trx["metode"] or "SPP",
                 trx["total"]
             ))
 
