@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, abort, jsonify, current_app
+from flask import Blueprint, render_template, request, abort, jsonify, current_app, send_from_directory
 from datetime import datetime, date
 from utils.db import db
 from werkzeug.utils import secure_filename
@@ -512,14 +512,11 @@ def upload_pembayaran():
         # =========================
         # FOLDER UPLOAD
         # =========================
-        upload_folder = os.path.join(
-            current_app.root_path,
-            "static",
-            "uploads",
-            "bukti"
-        )
-
+        upload_folder = "/var/smpu-storage/bukti"
         os.makedirs(upload_folder, exist_ok=True)
+
+        filepath = os.path.join(upload_folder, filename)
+        file.save(filepath)
 
         # =========================
         # NAMA FILE
@@ -529,10 +526,6 @@ def upload_pembayaran():
         filename = (
             f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
         )
-
-        filepath = os.path.join(upload_folder, filename)
-
-        file.save(filepath)
 
         # =========================
         # SIMPAN DATABASE
@@ -592,6 +585,13 @@ def upload_pembayaran():
             "error": str(e)
         }), 500
     
+@public_bp.route("/bukti/<filename>")
+def bukti_file(filename):
+    return send_from_directory(
+        "/var/smpu-storage/bukti",
+        filename
+    )
+
 @public_bp.route("/submit-transfer", methods=["POST"])
 def submit_transfer():
 
