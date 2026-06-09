@@ -780,6 +780,7 @@ async function loadRiwayatPembayaran() {
 let countdownTimer;
 
 // --- FUNGSI UTAMA: PROSES PEMBAYARAN OTOMATIS ---
+// --- FUNGSI UTAMA: PROSES PEMBAYARAN OTOMATIS ---
 async function prosesPembayaranOtomatis(metode) {
     const paymentDetailModal = document.getElementById("payment-detail-modal");
     const vaContent = document.getElementById("va-content");
@@ -790,16 +791,40 @@ async function prosesPembayaranOtomatis(metode) {
     vaContent.style.display = "none";
     qrisContent.style.display = "none";
 
-    // ✅ Pastikan semua data terisi sebelum dikirim
+    // ==============================================
+    // ✅ PERBAIKAN: MUAT ULANG KERANJANG DULU (WAJIB)
+    // ==============================================
+    try {
+        // Ambil data keranjang terbaru langsung dari server sebelum kirim
+        const resCart = await fetch(`/public/get-cart?siswa_id=${siswaId}`);
+        const dataCart = await resCart.json();
+        
+        // Perbarui variabel global agar data pasti ada
+        cart = dataCart; 
+        cartTotalValue = cart.reduce((sum, item) => sum + parseInt(item.nominal), 0);
+        
+        console.log("Data Keranjang Terbaru:", cart);
+        console.log("Total Terbaru:", cartTotalValue);
+
+    } catch (e) {
+        alert("Gagal mengambil data keranjang terbaru");
+        paymentDetailModal.style.display = "none";
+        return;
+    }
+
+    // ✅ Cek ulang setelah data dimuat ulang
     if (!cart || cart.length === 0 || cartTotalValue <= 0) {
         alert("Keranjang pembayaran kosong atau total tidak valid!");
         paymentDetailModal.style.display = "none";
         return;
     }
 
+    // ==============================================
+    // ✅ KIRIM DATA KE SERVER
+    // ==============================================
     const formData = new FormData();
     formData.append("siswa_id", siswaId);
-    formData.append("total", cartTotalValue); // Pastikan ini ANGKA
+    formData.append("total", cartTotalValue.toString()); // Pastikan jadi teks angka
     formData.append("metode", metode.toUpperCase());
     formData.append(
         "detail",
@@ -824,7 +849,7 @@ async function prosesPembayaranOtomatis(metode) {
         const result = await res.json();
 
         if (!result.success) {
-            alert("Gagal: " + result.error); // ✅ Tampilkan pesan error dari server
+            alert("Gagal: " + result.error);
             paymentDetailModal.style.display = "none";
             return;
         }

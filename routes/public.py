@@ -1042,8 +1042,14 @@ def generate_pembayaran():
         # ✅ PERBAIKAN VALIDASI & KONVERSI TOTAL
         # ==============================================
         # Cek kelengkapan data DULU
-        if not siswa_id or not total_str or not metode or not detail:
-            return jsonify({"success": False, "error": "Data tidak lengkap (kurang parameter)"}), 400
+        if not siswa_id or not metode:
+            return jsonify({"success": False, "error": "Data utama (siswa/metode) tidak lengkap"}), 400
+
+        if not total_str:
+            total_str = "0"
+
+        if not detail:
+            detail = "[]"
 
         # Baru ubah ke angka dengan aman
         try:
@@ -1130,3 +1136,18 @@ def generate_pembayaran():
         import traceback
         traceback.print_exc()
         return jsonify({"success": False, "error": f"Server Error: {str(e)}"}), 500
+    
+@public_bp.route("/get-cart")
+def get_cart():
+    siswa_id = request.args.get("siswa_id", type=int)
+    if not siswa_id:
+        return jsonify([])
+    
+    with db() as d:
+        rows = d.execute("""
+            SELECT id, jenis, bulan, tahun, nominal 
+            FROM cart_pembayaran 
+            WHERE siswa_id = %s AND status = 'ACTIVE'
+        """, (siswa_id,)).fetchall()
+        
+        return jsonify([dict(r) for r in rows])
