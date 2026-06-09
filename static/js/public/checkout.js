@@ -781,24 +781,26 @@ let countdownTimer;
 
 // --- FUNGSI UTAMA: PROSES PEMBAYARAN OTOMATIS ---
 async function prosesPembayaranOtomatis(metode) {
-    // Ambil elemen modal
     const paymentDetailModal = document.getElementById("payment-detail-modal");
     const vaContent = document.getElementById("va-content");
     const qrisContent = document.getElementById("qris-content");
     const detailTitle = document.getElementById("detail-title");
 
-    // Tampilkan modal baru
     paymentDetailModal.style.display = "flex";
-
-    // Sembunyikan konten VA & QRIS terlebih dahulu
     vaContent.style.display = "none";
     qrisContent.style.display = "none";
 
-    // Siapkan data yang dikirim ke Backend
+    // ✅ Pastikan semua data terisi sebelum dikirim
+    if (!cart || cart.length === 0 || cartTotalValue <= 0) {
+        alert("Keranjang pembayaran kosong atau total tidak valid!");
+        paymentDetailModal.style.display = "none";
+        return;
+    }
+
     const formData = new FormData();
     formData.append("siswa_id", siswaId);
-    formData.append("total", cartTotalValue);
-    formData.append("metode", metode.toUpperCase()); // Kirim 'VA' atau 'QRIS'
+    formData.append("total", cartTotalValue); // Pastikan ini ANGKA
+    formData.append("metode", metode.toUpperCase());
     formData.append(
         "detail",
         JSON.stringify(cart.map(item => ({
@@ -811,7 +813,6 @@ async function prosesPembayaranOtomatis(metode) {
     );
 
     try {
-        // Panggil API Generate Pembayaran
         const res = await fetch("/public/generate-pembayaran", {
             method: "POST",
             headers: {
@@ -823,44 +824,34 @@ async function prosesPembayaranOtomatis(metode) {
         const result = await res.json();
 
         if (!result.success) {
-            alert("Gagal membuat pembayaran: " + result.error);
+            alert("Gagal: " + result.error); // ✅ Tampilkan pesan error dari server
             paymentDetailModal.style.display = "none";
             return;
         }
 
         const data = result.data;
 
-        // === TAMPILKAN DATA SESUAI JENIS ===
         if (metode === 'va') {
-            // Tampilan VA
             detailTitle.innerText = 'Nomor Virtual Account';
             document.getElementById('va-number').innerText = data.kode;
             vaContent.style.display = 'block';
-
-            // Fungsi Salin Nomor VA
             document.getElementById('copy-va').onclick = () => {
                 navigator.clipboard.writeText(data.kode);
                 alert('Nomor VA berhasil disalin!');
             };
-
-            // Mulai hitung mundur
             mulaiHitungMundur(data.expired, 'expired-time');
 
         } else if (metode === 'qris') {
-            // Tampilan QRIS
-            detailTitle.innerText = 'Kode QRIS';
+            detailTitle.innerText = 'Kode QRIS Pembayaran';
             document.getElementById('qris-image').src = data.qr_image;
             qrisContent.style.display = 'block';
-
-            // Mulai hitung mundur
             mulaiHitungMundur(data.expired, 'qris-expired-time');
         }
 
-        // Pindah ke Tab Status Pembayaran
         pindahKeTabStatus();
 
     } catch (err) {
-        alert("Terjadi kesalahan koneksi, coba lagi.");
+        alert("Terjadi kesalahan koneksi");
         paymentDetailModal.style.display = "none";
         console.error("Error:", err);
     }

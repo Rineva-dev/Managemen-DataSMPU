@@ -1034,21 +1034,29 @@ import uuid
 def generate_pembayaran():
     try:
         siswa_id = request.form.get("siswa_id")
-        total = request.form.get("total")
+        total_str = request.form.get("total") # Ambil sebagai teks dulu
         metode = request.form.get("metode")
         detail = request.form.get("detail")
 
         # ==============================================
-        # ✅ PERBAIKAN 1: UBAH TOTAL JADI ANGKA (WAJIB)
+        # ✅ PERBAIKAN VALIDASI & KONVERSI TOTAL
         # ==============================================
+        # Cek kelengkapan data DULU
+        if not siswa_id or not total_str or not metode or not detail:
+            return jsonify({"success": False, "error": "Data tidak lengkap (kurang parameter)"}), 400
+
+        # Baru ubah ke angka dengan aman
         try:
-            total = int(float(total))
-        except:
-            total = 0
+            total = int(float(total_str))
+        except ValueError:
+            return jsonify({"success": False, "error": "Format total salah"}), 400
 
-        if not siswa_id or not total or not metode:
-            return jsonify({"success": False, "error": "Data tidak lengkap"}), 400
+        if total <= 0:
+            return jsonify({"success": False, "error": "Total pembayaran tidak boleh nol"}), 400
 
+        # ==============================================
+        # LANJUT KE PROSES
+        # ==============================================
         with db() as d:
 
             d.execute("""
@@ -1078,16 +1086,15 @@ def generate_pembayaran():
             # =========================
             # 2. UBAH STATUS KERANJANG
             # =========================
-            # ✅ Bagian ini sudah benar, biarkan saja
-            detail_json = json.loads(detail or "[]")
+            try:
+                detail_json = json.loads(detail)
+            except:
+                return jsonify({"success": False, "error": "Data detail keranjang rusak"}), 400
+
             for item in detail_json:
                 cart_id = item.get("cart_id") or item.get("id")
                 if cart_id:
-                    d.execute("""
-                        UPDATE cart_pembayaran 
-                        SET status = 'CHECKED_OUT' 
-                        WHERE id = %s
-                    """, (cart_id,))
+                    d.execute("UPDATE cart_pembayaran SET status = 'CHECKED_OUT' WHERE id = %s", (cart_id,))
 
             # =========================
             # 3. SIMPAN KE DATABASE
@@ -1100,8 +1107,8 @@ def generate_pembayaran():
             """, (
                 siswa_id,
                 metode,
-                total,
-                detail,
+                total,       # ✅ Angka yang sudah aman
+                detail,      # ✅ JSON asli lengkap
                 "MENUNGGU PEMBAYARAN",
                 kode_unik,
                 expired_at
@@ -1122,4 +1129,4 @@ def generate_pembayaran():
     except Exception as e:
         import traceback
         traceback.print_exc()
-        return jsonify({"success": False, "error": str(e)}), 500
+        return jsonify({"success": False, "error": f"Server Error: {str(e)}"}), 500
