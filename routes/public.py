@@ -1035,13 +1035,20 @@ def generate_pembayaran():
     try:
         siswa_id = request.form.get("siswa_id")
         total = request.form.get("total")
-        metode = request.form.get("metode") # VA atau QRIS
-        detail = request.form.get("detail") # JSON keranjang
+        metode = request.form.get("metode")
+        detail = request.form.get("detail")
 
         if not siswa_id or not total or not metode:
             return jsonify({"success": False, "error": "Data tidak lengkap"}), 400
 
         with db() as d:
+
+            d.execute("""
+                UPDATE pembayaran_pending 
+                SET status = 'DIBATALKAN' 
+                WHERE siswa_id = %s 
+                  AND status = 'MENUNGGU PEMBAYARAN'
+            """, (siswa_id,))
 
             # =========================
             # 1. BUAT KODE & DATA
@@ -1050,14 +1057,10 @@ def generate_pembayaran():
             qr_image = ""
             expired_at = datetime.now() + timedelta(hours=24) # Kadaluarsa 24 jam
 
-            # --- LOGIKA VA ---
             if metode == "VA":
-                # Contoh format nomor VA (nanti ganti dengan API asli)
                 kode_unik = f"8882{siswa_id}{int(datetime.now().timestamp()) % 1000000}"
             
-            # --- LOGIKA QRIS ---
             elif metode == "QRIS":
-                # Contoh data QRIS (nanti ganti dengan API asli)
                 kode_unik = f"QR-{uuid.uuid4().hex[:12]}"
                 qr_image = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + kode_unik
 
