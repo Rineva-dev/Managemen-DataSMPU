@@ -661,6 +661,11 @@ def status_pembayaran():
                     created_at
                 FROM pembayaran_pending
                 WHERE siswa_id = %s
+                AND status IN (
+                        'MENUNGGU',
+                        'MENUNGGU VERIFIKASI',
+                        'PENDING'
+                )
                 ORDER BY created_at DESC
             """, (siswa_id,)).fetchall()
 
@@ -695,6 +700,62 @@ def status_pembayaran():
             "success": False,
             "error": str(e)
         }), 500
+    
+@public_bp.route("/riwayat-pembayaran")
+def riwayat_pembayaran():
+
+    siswa_id = request.args.get("siswa_id", type=int)
+
+    if not siswa_id:
+        return jsonify([])
+
+    try:
+
+        with db() as d:
+
+            rows = d.execute("""
+                SELECT
+                    id,
+                    metode,
+                    total,
+                    detail,
+                    status,
+                    created_at
+                FROM pembayaran_pending
+                WHERE siswa_id = %s
+                  AND status IN (
+                        'DITOLAK',
+                        'DITERIMA',
+                        'LUNAS'
+                  )
+                ORDER BY created_at DESC
+            """, (siswa_id,)).fetchall()
+
+        result = []
+
+        for r in rows:
+
+            result.append({
+                "id": r["id"],
+                "metode": r["metode"],
+                "total": r["total"],
+                "detail": r["detail"],
+                "status": r["status"],
+                "tanggal": (
+                    r["created_at"].strftime("%d-%m-%Y %H:%M")
+                    if r["created_at"]
+                    else "-"
+                )
+            })
+
+        return jsonify(result)
+
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc()
+
+        return jsonify([]), 500
     
 @public_bp.route("/cart/add", methods=["POST"])
 def add_cart():

@@ -427,9 +427,6 @@ if (btnProfile && profileDropdown) {
     });
 }
 
-loadBiodataSiswa();
-loadCart();
-
 // ===============================
 // SUBMIT TRANSFER
 // ===============================
@@ -519,6 +516,7 @@ document
         document.getElementById("status-list");
 
     await loadStatusPembayaran();
+    await loadRiwayatPembayaran();
 
     // =========================
     // KOSONGKAN CART
@@ -647,4 +645,96 @@ async function loadStatusPembayaran() {
         console.error(err);
     }
 }
+
+async function loadRiwayatPembayaran() {
+
+    const historyList =
+        document.getElementById("history-list");
+
+    try {
+
+        const res = await fetch(
+            `/public/riwayat-pembayaran?siswa_id=${siswaId}`
+        );
+
+        const data = await res.json();
+
+        if (!data.length) {
+
+            historyList.innerHTML = `
+                <div class="cart-empty">
+
+                    <i data-lucide="receipt-text"></i>
+
+                    <p>
+                        Tidak Ada Riwayat Pembayaran
+                    </p>
+
+                </div>
+            `;
+
+            lucide.createIcons();
+
+            return;
+        }
+
+        historyList.innerHTML = data.map(item => {
+
+            return `
+
+                <div class="status-item">
+
+                    <div class="status-header">
+
+                        <div class="title-status">
+
+                            <strong>
+                                ${item.metode}
+                            </strong>
+
+                            <small>
+                                ${item.tanggal}
+                            </small>
+
+                        </div>
+
+                        <div class="status-badge ${
+                            item.status === "DITOLAK"
+                                ? "rejected"
+                                : "success"
+                        }">
+
+                            ${item.status}
+
+                        </div>
+
+                    </div>
+
+                    <div class="status-footer">
+
+                        <strong>Total</strong>
+
+                        <strong>
+                            ${rupiah(item.total)}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+        lucide.createIcons();
+
+    } catch(err) {
+
+        console.error(err);
+    }
+}
+
+loadBiodataSiswa();
+loadCart();
 loadStatusPembayaran();
+loadRiwayatPembayaran();
