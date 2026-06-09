@@ -10,6 +10,12 @@ public_bp = Blueprint(
     url_prefix="/public"
 )
 
+def get_tahun_pelajaran_by_date(d, tp_list):
+    for tp in tp_list:
+        if tp["semester_mulai"] <= d <= tp["semester_akhir"]:
+            return tp["tahun_pelajaran"]
+    return "-"
+
 @public_bp.before_request
 def only_payment_domain():
 
@@ -103,18 +109,8 @@ def tagihan_spp():
     try:
         with db() as d:
 
-            tp = d.execute("""
-                SELECT tahun_pelajaran
-                FROM tahun_pelajaran
-                WHERE semester_mulai <= CURRENT_DATE
-                AND semester_akhir >= CURRENT_DATE
-                LIMIT 1
-            """).fetchone()
-
-            tahun_pelajaran_aktif = tp["tahun_pelajaran"] if tp else "-"
-
             siswa = d.execute("""
-                SELECT tahun_masuk, status, tanggal_nonaktif
+                SELECT tahun_masuk, status, tanggal_nonaktif, nisn
                 FROM siswa
                 WHERE id=%s
             """, (siswa_id,)).fetchone()
@@ -122,70 +118,66 @@ def tagihan_spp():
             if not siswa:
                 return jsonify([])
 
-            # tahun masuk
-            try:
-                tahun_masuk = int(siswa["tahun_masuk"])
-            except:
+            # =========================
+            # AMBIL SEMUA TAHUN PELAJARAN
+            # =========================
+            tp_all = d.execute("""
+                SELECT tahun_pelajaran, semester_mulai, semester_akhir
+                FROM tahun_pelajaran
+                ORDER BY semester_mulai ASC
+            """).fetchall()
+
+            if not tp_all:
                 return jsonify([])
-            
-            tahun_ajaran = f"{tahun_masuk}/{tahun_masuk + 1}"
 
-            start = date(tahun_masuk, 7, 1)
+            # =========================
+            # RANGE GLOBAL
+            # =========================
+            start = tp_all[0]["semester_mulai"]
+            last_tp_end = tp_all[-1]["semester_akhir"]
 
-            # ===== HITUNG BATAS AKHIR =====
             end = date(today.year, today.month, 1)
 
-            from datetime import datetime
+            if last_tp_end:
+                last_end = date(last_tp_end.year, last_tp_end.month, 1)
+                end = min(end, last_end)
 
+            # =========================
+            # STOP SISWA (NON AKTIF)
+            # =========================
             tanggal_nonaktif = siswa["tanggal_nonaktif"]
 
             if tanggal_nonaktif:
-                na = (
-                    tanggal_nonaktif
-                    if isinstance(tanggal_nonaktif, date)
-                    else datetime.strptime(tanggal_nonaktif, "%Y-%m-%d").date()
-                )
+                if isinstance(tanggal_nonaktif, str):
+                    tanggal_nonaktif = datetime.strptime(tanggal_nonaktif, "%Y-%m-%d").date()
 
-                if na.day <= 10:
-                    if na.month == 1:
-                        end = date(na.year - 1, 12, 1)
+                if tanggal_nonaktif.day <= 10:
+                    if tanggal_nonaktif.month == 1:
+                        end = min(end, date(tanggal_nonaktif.year - 1, 12, 1))
                     else:
-                        end = date(na.year, na.month - 1, 1)
+                        end = min(end, date(tanggal_nonaktif.year, tanggal_nonaktif.month - 1, 1))
                 else:
-                    end = date(na.year, na.month, 1)
+                    end = min(end, date(tanggal_nonaktif.year, tanggal_nonaktif.month, 1))
 
             # =========================
-            # DATA SUDAH DIBAYAR
+            # DATA SUDAH BAYAR
             # =========================
             lunas = d.execute("""
-                SELECT
-                    bulan,
-                    tahun
+                SELECT bulan, tahun
                 FROM pembayaran
-                WHERE nisn = (
-                    SELECT nisn FROM siswa WHERE id = %s
-                )
+                WHERE nisn = %s
                 AND jenis = 'SPP'
-            """, (siswa_id,)).fetchall()
+            """, (siswa["nisn"],)).fetchall()
 
-            # =========================
-            # DATA MASIH PENDING
-            # =========================
             pending = d.execute("""
                 SELECT detail
                 FROM pembayaran_pending
                 WHERE siswa_id = %s
-                AND status IN (
-                    'MENUNGGU',
-                    'MENUNGGU VERIFIKASI',
-                    'PENDING'
-                )
+                AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING')
             """, (siswa_id,)).fetchall()
 
             cart_rows = d.execute("""
-                SELECT
-                    bulan,
-                    tahun
+                SELECT bulan, tahun
                 FROM cart_pembayaran
                 WHERE siswa_id = %s
                 AND jenis = 'SPP'
@@ -193,63 +185,59 @@ def tagihan_spp():
             """, (siswa_id,)).fetchall()
 
             lunas_set = set()
+
             for r in lunas:
-                lunas_set.add((r["bulan"], tahun_pelajaran_aktif))
+                lunas_set.add((r["bulan"], r["tahun"]))
 
             for c in cart_rows:
-                lunas_set.add((c["bulan"], tahun_pelajaran_aktif))
+                lunas_set.add((c["bulan"], c["tahun"]))
 
-            # =========================
-            # AMBIL BULAN/TAHUN DARI DETAIL
-            # =========================
             for p in pending:
-
                 detail = p["detail"] or ""
-
-                # contoh detail:
-                # "SPP Juli 2026"
-
                 parts = detail.split()
 
                 if len(parts) >= 3:
-
                     bulan_text = parts[1].lower()
-                    tahun = int(parts[2])
 
                     bulan_map = {
-                        "januari": 1,
-                        "februari": 2,
-                        "maret": 3,
-                        "april": 4,
-                        "mei": 5,
-                        "juni": 6,
-                        "juli": 7,
-                        "agustus": 8,
-                        "september": 9,
-                        "oktober": 10,
-                        "november": 11,
-                        "desember": 12
+                        "januari": 1, "februari": 2, "maret": 3, "april": 4,
+                        "mei": 5, "juni": 6, "juli": 7, "agustus": 8,
+                        "september": 9, "oktober": 10, "november": 11, "desember": 12
                     }
 
                     bulan = bulan_map.get(bulan_text)
+                    tahun = int(parts[2])
 
                     if bulan:
                         lunas_set.add((bulan, tahun))
 
+            # =========================
+            # HELPER: CEK TP
+            # =========================
+            def get_tp(d):
+                for tp in tp_all:
+                    if tp["semester_mulai"] <= d <= tp["semester_akhir"]:
+                        return tp["tahun_pelajaran"]
+                return "-"
+
+            # =========================
+            # GENERATE TAGIHAN
+            # =========================
             tagihan = []
             cur = start
 
             while cur <= end:
+
                 if (cur.month, cur.year) not in lunas_set:
+
                     tagihan.append({
                         "bulan": cur.month,
                         "tahun": cur.year,
-                        "tahun_pelajaran": tahun_ajaran,
+                        "tahun_pelajaran": get_tp(cur),
                         "nominal": 400000,
                         "status": "BELUM"
                     })
 
-                # next month
                 if cur.month == 12:
                     cur = date(cur.year + 1, 1, 1)
                 else:
