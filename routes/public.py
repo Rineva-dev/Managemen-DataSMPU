@@ -755,7 +755,7 @@ def riwayat_pembayaran():
 
         return jsonify([]), 500
     
-@public_bp.route("/cart/add", methods=["POST"])
+@public_bp.route("/add-cart", methods=["POST"])
 def add_cart():
 
     data = request.json
