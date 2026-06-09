@@ -384,7 +384,7 @@ renderCart();
 
 document
 .getElementById("submit-transfer")
-.addEventListener("click", () => {
+.addEventListener("click", async () => {
 
     const file =
         document.getElementById("bukti-transfer").files[0];
@@ -444,35 +444,7 @@ document
     const statusList =
         document.getElementById("status-list");
 
-    statusList.innerHTML = `
-        <div class="status-item">
-
-            <div class="status-left">
-
-                <strong class="status-title">
-                    Pembayaran Transfer Bank
-                </strong>
-
-                <small class="status-date">
-                    ${transaksi.tanggal}
-                </small>
-
-            </div>
-
-            <div class="status-right">
-
-                <strong class="status-price">
-                    ${rupiah(transaksi.total)}
-                </strong>
-
-                <div class="status-badge pending">
-                    MENUNGGU VERIFIKASI
-                </div>
-
-            </div>
-
-        </div>
-    `;
+    await loadStatusPembayaran();
 
     // =========================
     // KOSONGKAN CART
