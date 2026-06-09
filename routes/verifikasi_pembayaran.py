@@ -127,7 +127,7 @@ def approve_pembayaran():
                 trx["siswa_id"],
                 trx["metode"],
                 trx["total"],
-                trx["detail"]
+                trx.get("detail") or "[]"
             ))
 
         return jsonify({"success": True})

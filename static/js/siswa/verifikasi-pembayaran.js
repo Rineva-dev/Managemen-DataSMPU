@@ -273,7 +273,7 @@ async function approvePembayaran(id) {
         const result = await res.json();
 
         console.log("APPROVE RESPONSE:");
-        console.log(text);
+        console.log(result);
 
         if (result.success) {
 
