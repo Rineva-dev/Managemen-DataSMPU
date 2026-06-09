@@ -680,6 +680,34 @@ async function loadRiwayatPembayaran() {
 
         historyList.innerHTML = data.map(item => {
 
+            let detailHtml = "";
+
+            try {
+
+                const details =
+                    JSON.parse(item.detail || "[]");
+
+                detailHtml = details.map(d => `
+
+                    <div class="status-detail-item">
+
+                        <span>
+                            - ${d.nama}
+                        </span>
+
+                        <span>
+                            ${rupiah(d.nominal)}
+                        </span>
+
+                    </div>
+
+                `).join("");
+
+            } catch(e) {
+
+                console.error(e);
+            }
+
             return `
 
                 <div class="status-item">
@@ -710,9 +738,17 @@ async function loadRiwayatPembayaran() {
 
                     </div>
 
+                    <div class="status-detail">
+
+                        ${detailHtml}
+
+                    </div>
+
                     <div class="status-footer">
 
-                        <strong>Total</strong>
+                        <strong>
+                            Total
+                        </strong>
 
                         <strong>
                             ${rupiah(item.total)}
