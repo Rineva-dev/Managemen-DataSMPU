@@ -263,31 +263,29 @@ const modal = document.getElementById("bukti-modal");
 const modalImg = document.getElementById("bukti-image");
 const closeBtn = document.getElementById("close-bukti-modal");
 
-// open modal
-document.addEventListener("click", function (e) {
+if (modal && modalImg && closeBtn) {
 
-    const btn = e.target.closest(".btn-view-bukti");
-    if (!btn) return;
+    document.addEventListener("click", function (e) {
 
-    const url = btn.dataset.url;
+        const btn = e.target.closest(".btn-view-bukti");
+        if (!btn) return;
 
-    modalImg.src = url;
-    modal.style.display = "flex";
-});
+        modalImg.src = btn.dataset.url;
+        modal.style.display = "flex";
+    });
 
-// close modal
-closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-    modalImg.src = "";
-});
-
-// klik luar modal
-modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
+    closeBtn.addEventListener("click", () => {
         modal.style.display = "none";
         modalImg.src = "";
-    }
-});
+    });
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+            modalImg.src = "";
+        }
+    });
+}
 
 // ======================================
 // INIT
