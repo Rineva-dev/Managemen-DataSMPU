@@ -517,15 +517,7 @@ document
 
     await loadStatusPembayaran();
     await loadRiwayatPembayaran();
-
-    // =========================
-    // KOSONGKAN CART
-    // =========================
-    cart = [];
-
-    localStorage.removeItem("payment_cart");
-
-    renderCart();
+    await loadCart();
 
     // =========================
     // RESET INPUT FILE

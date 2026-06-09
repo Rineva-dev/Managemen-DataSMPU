@@ -207,8 +207,6 @@ def tagihan_spp():
                     if bulan:
                         lunas_set.add((bulan, tahun))
 
-            lunas_set = {(r["bulan"], r["tahun"]) for r in lunas}
-
             tagihan = []
             cur = start
 
