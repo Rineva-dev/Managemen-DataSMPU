@@ -84,10 +84,10 @@
 
     {% if show_riwayat %}
         {% include "siswa/riwayat-pembayaran.html" %}
-    {% elif show_overview %}
-        {% include "siswa/pembayaran-siswa.html" %}
-    {% else %}
+    {% elif show_verifikasi_pembayaran %}
         {% include "siswa/verifikasi-pembayaran.html" %}
+    {% else %}
+        {% include "siswa/pembayaran-siswa.html" %}
     {% endif %}
 
 {% endif %}
