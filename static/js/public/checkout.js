@@ -337,9 +337,27 @@ const btnCloseModal = document.getElementById("close-payment-modal");
 const modalTotal    = document.getElementById("modal-total");
 
 // buka modal metode
-btnCheckout.addEventListener("click", () => {
+btnCheckout.addEventListener("click", async () => {
     paymentModal.style.display = "flex";
-    modalTotal.textContent = rupiah(cartTotalValue);
+    
+    // ✅ SEBELUM TAMPILKAN, AMBIL DATA TERBARU DULU DARI SERVER
+    try {
+        const resCart = await fetch(`/public/get-cart?siswa_id=${siswaId}`);
+        const dataCart = await resCart.json();
+        
+        // Hitung ulang total yang pasti benar
+        const totalTerbaru = dataCart.reduce((sum, item) => sum + parseInt(item.nominal || 0), 0);
+        
+        // Perbarui variabel global dan tampilan
+        cartTotalValue = totalTerbaru;
+        modalTotal.textContent = rupiah(totalTerbaru);
+        
+    } catch (e) {
+        // Jika gagal ambil data, pakai data yang ada tapi tetap hitung ulang
+        const totalCadangan = cart.reduce((sum, item) => sum + parseInt(item.nominal || 0), 0);
+        cartTotalValue = totalCadangan;
+        modalTotal.textContent = rupiah(totalCadangan);
+    }
 });
 
 // tutup modal metode
