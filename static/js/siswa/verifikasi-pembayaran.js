@@ -205,12 +205,9 @@ document.addEventListener(
 
         if (btnApprove) {
 
-            const id =
-                btnApprove.dataset.id;
+            const id = btnApprove.dataset.id;
 
-            alert(
-                "Approve pembayaran ID " + id
-            );
+            approvePembayaran(id);
 
             return;
         }
@@ -251,6 +248,39 @@ async function rejectPembayaran(id) {
         } else {
 
             alert(result.error || "Gagal reject");
+        }
+
+    } catch (err) {
+
+        console.error(err);
+        alert("Terjadi kesalahan server");
+    }
+}
+
+async function approvePembayaran(id) {
+
+    try {
+
+        const res = await fetch("/verifikasi-pembayaran/approve", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({ id })
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+
+            alert("Pembayaran berhasil di-approve");
+
+            loadVerifikasiPembayaran(); // refresh tabel
+
+        } else {
+
+            alert(result.error || "Gagal approve");
         }
 
     } catch (err) {

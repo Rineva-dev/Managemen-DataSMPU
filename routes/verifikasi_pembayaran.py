@@ -85,6 +85,58 @@ def verifikasi_pembayaran_list():
 
         return jsonify([])
     
+@verifikasi_bp.route("/verifikasi-pembayaran/approve", methods=["POST"])
+def approve_pembayaran():
+    try:
+        data = request.get_json()
+        pembayaran_id = data.get("id")
+
+        if not pembayaran_id:
+            return jsonify({"success": False, "error": "ID tidak valid"}), 400
+
+        with db() as d:
+
+            trx = d.execute("""
+                SELECT *
+                FROM pembayaran_pending
+                WHERE id = %s
+            """, (pembayaran_id,)).fetchone()
+
+            if not trx:
+                return jsonify({"success": False, "error": "Data tidak ditemukan"}), 404
+
+            # 1. update status jadi diterima
+            d.execute("""
+                UPDATE pembayaran_pending
+                SET status = 'DITERIMA'
+                WHERE id = %s
+            """, (pembayaran_id,))
+
+            # 2. OPTIONAL: kalau mau langsung masuk ke tabel pembayaran utama
+            d.execute("""
+                INSERT INTO pembayaran (
+                    siswa_id,
+                    metode,
+                    total,
+                    detail,
+                    tanggal,
+                    status
+                )
+                VALUES (%s, %s, %s, %s, CURRENT_DATE, 'LUNAS')
+            """, (
+                trx["siswa_id"],
+                trx["metode"],
+                trx["total"],
+                trx["detail"]
+            ))
+
+        return jsonify({"success": True})
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": str(e)}), 500
+    
 @verifikasi_bp.route("/verifikasi-pembayaran/reject", methods=["POST"])
 def reject_pembayaran():
 
