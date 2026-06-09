@@ -13,6 +13,8 @@ let cart = JSON.parse(
     localStorage.getItem("payment_cart") || "[]"
 );
 
+let cartTotalValue = 0;
+
 // ======================================
 // FORMAT TANGGAL (YYYY-MM-DD → DD-MM-YYYY)
 // ======================================
@@ -313,6 +315,10 @@ document
     paymentModal.style.display = "none";
 
     if (method === "transfer") {
+
+        document.getElementById("transfer-total")
+            .textContent = rupiah(cartTotalValue);
+
         transferModal.style.display = "flex";
     } else {
         alert("Metode ini akan diaktifkan selanjutnya");
