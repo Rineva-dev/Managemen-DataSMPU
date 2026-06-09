@@ -979,7 +979,6 @@ body{
     margin-top:60px;
     background:#0f172a;
     color:#e5e7eb;
-    border-radius:28px;
     overflow:hidden;
 }
 
@@ -1077,10 +1076,6 @@ body{
 ========================= */
 
 @media(max-width:900px){
-
-    .site-footer{
-        border-radius:20px;
-    }
 
     .footer-container{
         grid-template-columns:1fr;
