@@ -162,15 +162,17 @@ def approve_pembayaran():
                         bulan,
                         tahun,
                         tanggal,
-                        nominal
+                        nominal,
+                        status
                     )
-                    VALUES (%s, %s, %s, %s, CURRENT_DATE, %s)
+                    VALUES (%s, %s, %s, %s, CURRENT_DATE, %s, %s)
                 """, (
                     nisn,
                     "SPP",
                     bulan,
                     tahun,
-                    nominal
+                    nominal,
+                    "DITERIMA"
                 ))
 
         return jsonify({"success": True})
