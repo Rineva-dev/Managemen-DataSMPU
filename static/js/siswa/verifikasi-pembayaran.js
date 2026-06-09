@@ -78,7 +78,8 @@ function renderTable(data) {
     tableBody.innerHTML = data.map((item, index) => {
 
         const buktiUrl = item.bukti
-            `${PAYMENT_BASE_URL}/public/bukti/${item.bukti}`;
+            ? `${PAYMENT_BASE_URL}/public/bukti/${item.bukti}`
+            : "#";
 
         return `
             <tr>
