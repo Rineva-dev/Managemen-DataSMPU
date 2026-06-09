@@ -678,3 +678,163 @@ def status_pembayaran():
             "success": False,
             "error": str(e)
         }), 500
+    
+@public_bp.route("/cart/add", methods=["POST"])
+def add_cart():
+
+    data = request.json
+
+    siswa_id = data.get("siswa_id")
+    jenis = data.get("jenis")
+    bulan = data.get("bulan")
+    tahun = data.get("tahun")
+    nominal = data.get("nominal")
+
+    if not siswa_id or not jenis or not nominal:
+        return jsonify({
+            "success": False,
+            "error": "Data tidak lengkap"
+        }), 400
+
+    try:
+
+        with db() as d:
+
+            # =========================
+            # CEK DUPLIKAT CART
+            # =========================
+            existing = d.execute("""
+                SELECT id
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                  AND jenis = %s
+                  AND COALESCE(bulan,0) = COALESCE(%s,0)
+                  AND COALESCE(tahun,0) = COALESCE(%s,0)
+                  AND status IN ('CART', 'PENDING')
+            """, (
+                siswa_id,
+                jenis,
+                bulan,
+                tahun
+            )).fetchone()
+
+            if existing:
+                return jsonify({
+                    "success": False,
+                    "error": "Tagihan sudah ada"
+                }), 400
+
+            # =========================
+            # INSERT CART
+            # =========================
+            d.execute("""
+                INSERT INTO cart_pembayaran (
+                    siswa_id,
+                    jenis,
+                    bulan,
+                    tahun,
+                    nominal,
+                    status
+                )
+                VALUES (
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    %s,
+                    'CART'
+                )
+            """, (
+                siswa_id,
+                jenis,
+                bulan,
+                tahun,
+                nominal
+            ))
+
+        return jsonify({
+            "success": True
+        })
+
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc()
+
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+    
+@public_bp.route("/cart/list")
+def cart_list():
+
+    siswa_id = request.args.get(
+        "siswa_id",
+        type=int
+    )
+
+    if not siswa_id:
+        return jsonify([])
+
+    try:
+
+        with db() as d:
+
+            rows = d.execute("""
+                SELECT
+                    id,
+                    jenis,
+                    bulan,
+                    tahun,
+                    nominal,
+                    status
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                  AND status IN ('CART', 'PENDING')
+                ORDER BY created_at DESC
+            """, (siswa_id,)).fetchall()
+
+        return jsonify([
+            {
+                "id": r["id"],
+                "jenis": r["jenis"],
+                "bulan": r["bulan"],
+                "tahun": r["tahun"],
+                "nominal": r["nominal"],
+                "status": r["status"]
+            }
+            for r in rows
+        ])
+
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc()
+
+        return jsonify([]), 500
+    
+@public_bp.route("/cart/delete/<int:cart_id>", methods=["DELETE"])
+def delete_cart(cart_id):
+
+    try:
+
+        with db() as d:
+
+            d.execute("""
+                DELETE FROM cart_pembayaran
+                WHERE id = %s
+            """, (cart_id,))
+
+        return jsonify({
+            "success": True
+        })
+
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc()
+
+        return jsonify({
+            "success": False
+        }), 500

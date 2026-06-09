@@ -13,11 +13,10 @@ const cartEmpty =
 const cartTotal =
     document.getElementById("cart-total");
 
-let cart = JSON.parse(
-    localStorage.getItem("payment_cart") || "[]"
-);
+let cart = [];
 
 let cartTotalValue = 0;
+
 
 // ======================================
 // FORMAT TANGGAL (YYYY-MM-DD → DD-MM-YYYY)
@@ -144,6 +143,27 @@ async function loadBiodataSiswa() {
 const siswaId =
     document.getElementById("siswa-id")?.value;
 
+async function loadCart() {
+
+    try {
+
+        const res = await fetch(
+            `/public/cart/list?siswa_id=${siswaId}`
+        );
+
+        cart = await res.json();
+
+        renderCart();
+
+    } catch(err) {
+
+        console.error(
+            "Gagal load cart",
+            err
+        );
+    }
+}
+
 function renderCart() {
 
     cartItems.innerHTML = "";
@@ -176,7 +196,7 @@ function renderCart() {
                 <div>
 
                     <p>
-                        ${item.nama}
+                        ${formatNamaTagihan(item)}
                     </p>
 
                 </div>
@@ -191,7 +211,7 @@ function renderCart() {
 
                 <button
                     class="btn-remove"
-                    data-index="${index}">
+                    data-id="${item.id}">
 
                     <i data-lucide="trash-2"></i>
 
@@ -208,23 +228,51 @@ function renderCart() {
     lucide.createIcons();
 }
 
-document.addEventListener("click", function(e) {
+function formatNamaTagihan(item) {
+
+    if (item.jenis === "SPP") {
+
+        const bulanNama = new Date(
+            item.tahun,
+            item.bulan - 1
+        ).toLocaleString("id-ID", {
+            month: "long"
+        });
+
+        return `SPP ${bulanNama} ${item.tahun}`;
+    }
+
+    if (item.jenis.includes("PEMBANGUNAN")) {
+        return "Biaya Pembangunan";
+    }
+
+    return item.jenis;
+}
+
+document.addEventListener("click", async function(e) {
 
     const btn =
         e.target.closest(".btn-remove");
 
     if (!btn) return;
 
-    const index = btn.dataset.index;
+    const cartId = btn.dataset.id;
 
-    cart.splice(index, 1);
+    try {
 
-    localStorage.setItem(
-        "payment_cart",
-        JSON.stringify(cart)
-    );
+        await fetch(
+            `/public/cart/delete/${cartId}`,
+            {
+                method: "DELETE"
+            }
+        );
 
-    renderCart();
+        await loadCart();
+
+    } catch(err) {
+
+        console.error(err);
+    }
 });
 
 const navKontak = document.querySelector(".nav-kontak");
@@ -380,7 +428,7 @@ if (btnProfile && profileDropdown) {
 }
 
 loadBiodataSiswa();
-renderCart();
+loadCart();
 
 // ===============================
 // SUBMIT TRANSFER
