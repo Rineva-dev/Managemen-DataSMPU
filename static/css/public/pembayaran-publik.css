@@ -67,7 +67,7 @@ body{
 .topbar-left{
     display:flex;
     align-items:center;
-    gap:28px; /* jarak logo ↔ nav */
+    gap:62px;
 }
 
 .topbar img {
@@ -97,7 +97,7 @@ body{
 .topbar-nav a{
     text-decoration:none;
     color:#000000;
-    font-size:13px;
+    font-size:14px;
     font-weight:600;
     transition:.2s;
 }
@@ -882,18 +882,6 @@ body{
     color:#92400e;
 }
 
-/* =========================
-   FOOTER
-========================= */
-
-.footer{
-    text-align:center;
-    color:var(--muted);
-    margin-top:30px;
-    padding-bottom:30px;
-    font-size: 12px
-}
-
 #hasil-siswa{
     position:absolute;
     top:60px;
@@ -980,5 +968,131 @@ body{
 
     .summary-row strong{
         font-size:24px;
+    }
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.site-footer{
+    margin-top:60px;
+    background:#0f172a;
+    color:#e5e7eb;
+    border-radius:28px;
+    overflow:hidden;
+}
+
+/* CONTAINER */
+.footer-container{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:40px;
+    padding:48px 56px;
+}
+
+/* BRAND */
+.footer-brand img{
+    height:36px;
+    margin-bottom:16px;
+}
+
+.footer-brand p{
+    font-size:14px;
+    line-height:1.6;
+    color:#cbd5f5;
+    max-width:380px;
+}
+
+/* COLUMN */
+.footer-col h4{
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:14px;
+    color:#ffffff;
+}
+
+.footer-col ul{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.footer-col li{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:14px;
+    color:#cbd5f5;
+    line-height:1.5;
+}
+
+.footer-col i{
+    width:18px;
+    height:18px;
+    margin-top:2px;
+    color:#22c55e;
+}
+
+/* SOSIAL */
+.footer-social{
+    display:flex;
+    gap:14px;
+}
+
+.footer-social a{
+    width:40px;
+    height:40px;
+    border-radius:12px;
+    background:rgba(255,255,255,.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ffffff;
+    transition:.25s;
+}
+
+.footer-social a:hover{
+    background:#22c55e;
+    transform:translateY(-2px);
+}
+
+.footer-social i{
+    width:18px;
+    height:18px;
+}
+
+/* BOTTOM */
+.footer-bottom{
+    background:rgba(0,0,0,.25);
+    text-align:center;
+    padding:16px;
+    font-size:13px;
+    color:#94a3b8;
+}
+
+/* =========================
+   FOOTER MOBILE
+========================= */
+
+@media(max-width:900px){
+
+    .site-footer{
+        border-radius:20px;
+    }
+
+    .footer-container{
+        grid-template-columns:1fr;
+        gap:32px;
+        padding:32px 24px;
+    }
+
+    .footer-brand p{
+        max-width:100%;
+    }
+
+    .footer-social{
+        margin-top:6px;
     }
 }
