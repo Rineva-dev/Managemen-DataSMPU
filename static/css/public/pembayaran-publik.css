@@ -1075,16 +1075,12 @@ body{
     justify-content:center;
     color:#ffffff;
     transition:.25s;
+    text-decoration: none !important;
 }
 
 .footer-social a:hover{
     background:#22c55e;
     transform:translateY(-2px);
-}
-
-.footer-social i{
-    width:18px;
-    height:18px;
 }
 
 /* BOTTOM */
