@@ -499,7 +499,8 @@ def upload_pembayaran():
         # FOLDER UPLOAD
         # =========================
         upload_folder = os.path.join(
-            current_app.static_folder,
+            current_app.root_path,
+            "static",
             "uploads",
             "bukti"
         )
