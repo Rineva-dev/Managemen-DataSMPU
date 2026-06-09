@@ -1809,7 +1809,6 @@ body{
 .status-price,
 .history-price{
     display:block;
-
     font-size:18px;
     font-weight:700;
 }
@@ -1832,6 +1831,7 @@ body{
 .status-badge.pending{
     background:#fef3c7;
     color:#92400e;
+    margin-top: 0 !important;
 }
 
 .status-badge.success{
@@ -1908,11 +1908,6 @@ body{
     font-weight:700;
 }
 
-.status-badge.pending{
-    background:#fff7db;
-    color:#b45309;
-    margin-top: 0 !important;
-}
 
 .status-detail-item{
     display:flex;
@@ -1973,7 +1968,8 @@ body{
 }
 
 .footer-title,
-.status-price{
+.status-price,
+.history-price {
     font-size:18px;
     font-weight:700;
     color:#16a34a;

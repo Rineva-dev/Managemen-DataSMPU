@@ -599,7 +599,7 @@ async function loadStatusPembayaran() {
 
                     <div class="status-header">
 
-                        <div class=title-status>
+                        <div class="title-status">
 
                             <strong class="status-title">
                                 ${item.metode}
@@ -726,7 +726,7 @@ async function loadRiwayatPembayaran() {
 
                         </div>
 
-                        <div class="status-badge ${
+                        <div class="status-badge failed${
                             item.status === "DITOLAK"
                                 ? "rejected"
                                 : "success"
