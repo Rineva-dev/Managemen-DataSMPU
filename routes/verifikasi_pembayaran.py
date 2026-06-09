@@ -109,6 +109,7 @@ def approve_pembayaran():
                 return jsonify({"success": False, "error": "Data tidak ditemukan"}), 404
 
             nisn = trx["nisn"]
+            siswa_id = trx["siswa_id"]  # <-- ambil siswa_id
             import json
 
             details = json.loads(trx["detail"] or "[]")
@@ -128,18 +129,39 @@ def approve_pembayaran():
                 "desember": 12
             }
 
-            # update status
+            # update status pembayaran_pending
             d.execute("""
                 UPDATE pembayaran_pending
                 SET status = 'DITERIMA'
                 WHERE id = %s
             """, (pembayaran_id,))
 
-            # insert pembayaran
+            # ==============================================
+            # TAMBAHAN: Ubah status cart jadi SELESAI
+            # ==============================================
             for item in details:
+                bulan_text = item.get("bulan")
+                tahun = item.get("tahun")
 
-                # contoh item dari detail:
-                # {"bulan": "Juli", "tahun": 2026, "nominal": 400000}
+                bulan = None
+                if isinstance(bulan_text, int):
+                    bulan = bulan_text
+                elif bulan_text:
+                    bulan = bulan_map.get(str(bulan_text).strip().lower())
+
+                if bulan and tahun:
+                    d.execute("""
+                        UPDATE cart_pembayaran
+                        SET status = 'SELESAI'
+                        WHERE siswa_id = %s
+                          AND jenis = 'SPP'
+                          AND bulan = %s
+                          AND tahun = %s
+                    """, (siswa_id, bulan, tahun))
+            # ==============================================
+
+            # insert ke tabel pembayaran
+            for item in details:
 
                 bulan_text = item.get("bulan")
                 tahun = item.get("tahun")

@@ -194,6 +194,14 @@ def tagihan_spp():
                 AND status = 'CART'
             """, (siswa_id,)).fetchall()
 
+            cart_proses = d.execute("""
+                SELECT bulan, tahun
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                AND jenis = 'SPP'
+                AND status IN ('CHECKED_OUT','SELESAI','PENDING')
+            """, (siswa_id,)).fetchall()
+
             lunas_set = set()
 
             for r in lunas:
@@ -202,6 +210,9 @@ def tagihan_spp():
                 lunas_set.add((int(r["bulan"]), int(r["tahun"])))
 
             for c in cart_rows:
+                lunas_set.add((c["bulan"], c["tahun"]))
+
+            for c in cart_proses:
                 lunas_set.add((c["bulan"], c["tahun"]))
 
             for p in lunas_pending:
