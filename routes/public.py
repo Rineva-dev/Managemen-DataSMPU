@@ -111,12 +111,12 @@ def tagihan_spp():
                 LIMIT 1
             """).fetchone()
 
-            tahun_pelajaran_aktif = tp["tahun_pelajaran"] if tp else None
+            tahun_pelajaran_aktif = tp["tahun_pelajaran"] if tp else "-"
 
             siswa = d.execute("""
                 SELECT tahun_masuk, status, tanggal_nonaktif
                 FROM siswa
-                WHERE id=?
+                WHERE id=%s
             """, (siswa_id,)).fetchone()
 
             if not siswa:
