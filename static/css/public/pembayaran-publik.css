@@ -1031,6 +1031,10 @@ body{
     color:#22c55e;
 }
 
+.footer-col i:hover{
+    color:#ffffff;
+}
+
 
 
 /* khusus list kontak & alamat */
