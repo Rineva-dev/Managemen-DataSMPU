@@ -263,7 +263,11 @@ document.addEventListener("click", async function(e) {
         await fetch(
             `/public/cart/delete/${cartId}`,
             {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    "X-CSRFToken": csrfToken
+                }
+
             }
         );
 
