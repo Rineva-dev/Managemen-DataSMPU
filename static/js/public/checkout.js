@@ -406,9 +406,6 @@ document
 
     const res = await fetch("/public/upload-pembayaran", {
         method: "POST",
-        headers: {
-                "X-CSRFToken": csrfToken
-            },
         body: formData
     });
 
