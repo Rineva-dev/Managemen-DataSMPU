@@ -265,6 +265,49 @@ if (navKontak && footerKontak) {
     });
 }
 
+// ==============================
+// PAYMENT MODAL
+// ==============================
+
+const paymentModal = document.getElementById("payment-modal");
+const btnCheckout = document.querySelector(".btn-checkout");
+const btnCloseModal = document.getElementById("close-payment-modal");
+const modalTotal = document.getElementById("modal-total");
+
+// Buka modal
+btnCheckout.addEventListener("click", () => {
+    paymentModal.style.display = "flex";
+    modalTotal.textContent = document.getElementById("cart-total").textContent;
+});
+
+// Tutup modal
+btnCloseModal.addEventListener("click", () => {
+    paymentModal.style.display = "none";
+});
+
+// Select method UI
+document.querySelectorAll(".payment-method").forEach(method => {
+    method.addEventListener("click", () => {
+        document.querySelectorAll(".payment-method")
+            .forEach(m => m.classList.remove("active"));
+        method.classList.add("active");
+        method.querySelector("input").checked = true;
+    });
+});
+
+// Konfirmasi pembayaran
+document.getElementById("confirm-payment")
+.addEventListener("click", () => {
+
+    const selectedMethod =
+        document.querySelector('input[name="payment_method"]:checked').value;
+
+    console.log("Metode dipilih:", selectedMethod);
+
+    // next step:
+    // redirect / request backend
+});
+
 // ===============================
 // PROFILE DROPDOWN TOGGLE
 // ===============================

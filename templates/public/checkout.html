@@ -204,6 +204,69 @@
 
 </div>
 
+<!-- ============================= -->
+<!-- MODAL METODE PEMBAYARAN -->
+<!-- ============================= -->
+<div class="modal-overlay" id="payment-modal">
+
+    <div class="payment-modal">
+
+        <!-- HEADER -->
+        <div class="payment-modal-header">
+            <h3>Pilih Metode Pembayaran</h3>
+            <button class="modal-close" id="close-payment-modal">
+                &times;
+            </button>
+        </div>
+
+        <!-- TOTAL -->
+        <div class="payment-total">
+            <span>Total Pembayaran</span>
+            <strong id="modal-total">Rp 0</strong>
+        </div>
+
+        <!-- METODE LIST -->
+        <div class="payment-methods">
+
+            <!-- VA -->
+            <label class="payment-method active">
+                <input type="radio" name="payment_method" value="va" checked>
+                <div class="method-info">
+                    <strong>Virtual Account</strong>
+                    <small>Otomatis & terverifikasi</small>
+                </div>
+                <span class="method-badge">Rekomendasi</span>
+            </label>
+
+            <!-- QRIS -->
+            <label class="payment-method">
+                <input type="radio" name="payment_method" value="qris">
+                <div class="method-info">
+                    <strong>QRIS</strong>
+                    <small>Scan via e-Wallet / M-Banking</small>
+                </div>
+            </label>
+
+            <!-- TRANSFER -->
+            <label class="payment-method">
+                <input type="radio" name="payment_method" value="transfer">
+                <div class="method-info">
+                    <strong>Transfer Bank</strong>
+                    <small>Manual (konfirmasi diperlukan)</small>
+                </div>
+            </label>
+
+        </div>
+
+        <!-- ACTION -->
+        <button class="btn-confirm-payment" id="confirm-payment">
+            Lanjutkan Pembayaran
+        </button>
+
+    </div>
+
+</div>
+
 <footer class="site-footer">
 
     <div class="footer-container">
