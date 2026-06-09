@@ -3,6 +3,9 @@
 // ======================================
 
 lucide.createIcons();
+const csrfToken = document
+    .querySelector('meta[name="csrf-token"]')
+    ?.getAttribute("content");
 
 // ======================================
 // ELEMENT
@@ -95,6 +98,7 @@ async function addToCart(data, cardElement) {
 
             headers: {
                 "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
             },
 
             body: JSON.stringify({
