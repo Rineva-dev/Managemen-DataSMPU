@@ -340,20 +340,29 @@ const modalTotal    = document.getElementById("modal-total");
 btnCheckout.addEventListener("click", async () => {
     paymentModal.style.display = "flex";
     
-    // ✅ SEBELUM TAMPILKAN, AMBIL DATA TERBARU DULU DARI SERVER
     try {
-        const resCart = await fetch(`/public/get-cart?siswa_id=${siswaId}`);
+        // ✅ PAKAI ENDPOINT YANG BENAR: /public/cart (bukan get-cart)
+        const resCart = await fetch(`/public/cart?siswa_id=${siswaId}`);
+        if (!resCart.ok) throw new Error("Gagal ambil data");
+        
         const dataCart = await resCart.json();
         
-        // Hitung ulang total yang pasti benar
-        const totalTerbaru = dataCart.reduce((sum, item) => sum + parseInt(item.nominal || 0), 0);
+        // ✅ Pastikan nominal berupa angka, lalu jumlahkan
+        const totalTerbaru = dataCart.reduce((sum, item) => {
+            const nominal = parseInt(item.nominal || 0);
+            return sum + nominal;
+        }, 0);
         
-        // Perbarui variabel global dan tampilan
+        // ✅ Perbarui variabel global & tampilan
+        cart = dataCart; // Perbarui isi keranjang juga
         cartTotalValue = totalTerbaru;
         modalTotal.textContent = rupiah(totalTerbaru);
-        
+
+        console.log("✅ Total di Modal:", totalTerbaru); // Cek di konsol, pasti ada angkanya
+
     } catch (e) {
-        // Jika gagal ambil data, pakai data yang ada tapi tetap hitung ulang
+        console.error("Error hitung total:", e);
+        // ✅ Jika gagal, pakai data yang sudah ada di memori
         const totalCadangan = cart.reduce((sum, item) => sum + parseInt(item.nominal || 0), 0);
         cartTotalValue = totalCadangan;
         modalTotal.textContent = rupiah(totalCadangan);
