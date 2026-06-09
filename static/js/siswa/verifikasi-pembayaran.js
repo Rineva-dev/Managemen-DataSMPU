@@ -239,6 +239,17 @@ document.addEventListener(
         }
     }
 );
+// ======================================
+// OPEN VERIFIKASI PAGE
+// ======================================
+
+document
+.getElementById("open-verifikasi-page")
+?.addEventListener("click", function() {
+
+    window.location.href =
+        "/verifikasi-pembayaran";
+});
 
 // ======================================
 // INIT
