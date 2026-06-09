@@ -143,7 +143,7 @@ def tagihan_spp():
             lunas = d.execute("""
                 SELECT
                     bulan,
-                    EXTRACT(YEAR FROM tanggal)::int AS tahun
+                    tahun
                 FROM pembayaran
                 WHERE nisn = (
                     SELECT nisn FROM siswa WHERE id = %s

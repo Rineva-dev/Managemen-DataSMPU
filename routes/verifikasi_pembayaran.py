@@ -143,7 +143,7 @@ def approve_pembayaran():
 
                 bulan_text = item.get("bulan")
                 tahun = item.get("tahun")
-                nominal = item.get("nominal", trx["total"])
+                nominal = item.get("nominal") or 0
 
                 bulan = bulan_map.get(str(bulan_text).lower())
 
