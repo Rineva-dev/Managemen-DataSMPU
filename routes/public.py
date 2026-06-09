@@ -515,17 +515,16 @@ def upload_pembayaran():
         upload_folder = "/var/smpu-storage/bukti"
         os.makedirs(upload_folder, exist_ok=True)
 
-        filepath = os.path.join(upload_folder, filename)
-        file.save(filepath)
-
         # =========================
         # NAMA FILE
         # =========================
-        filename = secure_filename(file.filename)
+        original_name = secure_filename(file.filename)
 
-        filename = (
-            f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
-        )
+        filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{original_name}"
+
+        filepath = os.path.join(upload_folder, filename)
+
+        file.save(filepath)
 
         # =========================
         # SIMPAN DATABASE
