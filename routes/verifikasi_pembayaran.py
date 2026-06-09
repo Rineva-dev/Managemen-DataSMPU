@@ -1,4 +1,4 @@
-from flask import (Blueprint, render_template, jsonify)
+from flask import Blueprint, render_template, jsonify, request
 
 from utils.db import db
 
@@ -88,16 +88,16 @@ def verifikasi_pembayaran_list():
 @verifikasi_bp.route("/verifikasi-pembayaran/reject", methods=["POST"])
 def reject_pembayaran():
 
-    data = request.json
-    pembayaran_id = data.get("id")
-
-    if not pembayaran_id:
-        return jsonify({
-            "success": False,
-            "error": "ID tidak valid"
-        }), 400
-
     try:
+        data = request.get_json()
+        pembayaran_id = data.get("id")
+
+        if not pembayaran_id:
+            return jsonify({
+                "success": False,
+                "error": "ID tidak valid"
+            }), 400
+
         with db() as d:
 
             d.execute("""

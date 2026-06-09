@@ -224,8 +224,6 @@ document.addEventListener(
             const id = btnReject.dataset.id;
 
             rejectPembayaran(id);
-
-            return;
         }
     }
 );
@@ -249,7 +247,7 @@ async function rejectPembayaran(id) {
 
             alert("Pembayaran ditolak");
 
-            loadVerifikasiPembayaran(); // refresh tabel
+            loadVerifikasiPembayaran();
 
         } else {
 
