@@ -75,8 +75,9 @@ function renderTable(data) {
 
     tableBody.innerHTML = data.map((item, index) => {
 
-        let buktiUrl =
-            `/static/uploads/transfer/${item.bukti}`;
+        const buktiUrl = item.bukti
+            ? `/static/uploads/bukti/${item.bukti}`
+            : "#";
 
         return `
             <tr>
