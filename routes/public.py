@@ -720,8 +720,9 @@ def status_pembayaran():
                     total,
                     detail,
                     status,
-                    created_at as tanggal,
-                             kode_pembayaran, expired_at
+                    created_at,
+                    kode_pembayaran, 
+                    expired_at
                 FROM pembayaran_pending
                 WHERE siswa_id = %s
                 AND status IN (
@@ -737,12 +738,16 @@ def status_pembayaran():
 
         for r in rows:
 
-            created_at = r["created_at"]
-
-            if created_at:
-                tanggal = created_at.strftime("%d-%m-%Y %H:%M")
+            # Format tanggal dibuat
+            if r["created_at"]:
+                tanggal = r["created_at"].strftime("%d-%m-%Y %H:%M")
             else:
                 tanggal = "-"
+
+            # ✅ PERBAIKAN BAGIAN EXPIRED_AT (AMAN DARI ERROR)
+            expired_at_formatted = ""
+            if r["expired_at"] is not None: # Cek apakah isinya benar-benar ada
+                expired_at_formatted = r["expired_at"].strftime("%Y-%m-%d %H:%M:%S")
 
             result.append({
                 "id": r["id"],
@@ -751,8 +756,8 @@ def status_pembayaran():
                 "detail": r["detail"],
                 "status": r["status"],
                 "tanggal": tanggal,
-                "kode_pembayaran": r["kode_pembayaran"],
-                "expired_at": r["expired_at"].strftime("%Y-%m-%d %H:%M:%S") if r["expired_at"] else ""
+                "kode_pembayaran": r["kode_pembayaran"] if r["kode_pembayaran"] else "",
+                "expired_at": expired_at_formatted
             })
 
         return jsonify(result)
