@@ -170,6 +170,13 @@ def tagihan_spp():
                 AND (status = 'DITERIMA' OR status IS NULL)
             """, (siswa["nisn"],)).fetchall()
 
+            lunas_pending = d.execute("""
+                SELECT detail
+                FROM pembayaran_pending
+                WHERE siswa_id = %s
+                AND status = 'DITERIMA'
+            """, (siswa_id,)).fetchall()
+
             pending = d.execute("""
                 SELECT detail
                 FROM pembayaran_pending
@@ -192,6 +199,28 @@ def tagihan_spp():
 
             for c in cart_rows:
                 lunas_set.add((c["bulan"], c["tahun"]))
+
+            for p in lunas_pending:
+                try:
+                    details = json.loads(p["detail"] or "[]")
+
+                    for item in details:
+                        bulan_text = str(item.get("bulan", "")).lower()
+                        tahun = item.get("tahun")
+
+                        bulan_map = {
+                            "januari": 1, "februari": 2, "maret": 3, "april": 4,
+                            "mei": 5, "juni": 6, "juli": 7, "agustus": 8,
+                            "september": 9, "oktober": 10, "november": 11, "desember": 12
+                        }
+
+                        bulan = bulan_map.get(bulan_text)
+
+                        if bulan and tahun:
+                            lunas_set.add((bulan, tahun))
+
+                except:
+                    pass
 
             for p in pending:
                 detail = p["detail"] or ""
