@@ -138,17 +138,75 @@ def tagihan_spp():
                 else:
                     end = date(na.year, na.month, 1)
 
-            # ===== DATA LUNAS =====
+            # =========================
+            # DATA SUDAH DIBAYAR
+            # =========================
             lunas = d.execute("""
                 SELECT
                     bulan,
                     EXTRACT(YEAR FROM tanggal)::int AS tahun
                 FROM pembayaran
                 WHERE nisn = (
-                    SELECT nisn FROM siswa WHERE id = ?
+                    SELECT nisn FROM siswa WHERE id = %s
                 )
                 AND jenis = 'SPP'
             """, (siswa_id,)).fetchall()
+
+            # =========================
+            # DATA MASIH PENDING
+            # =========================
+            pending = d.execute("""
+                SELECT detail
+                FROM pembayaran_pending
+                WHERE siswa_id = %s
+                AND status IN (
+                    'MENUNGGU',
+                    'MENUNGGU VERIFIKASI',
+                    'PENDING'
+                )
+            """, (siswa_id,)).fetchall()
+
+            lunas_set = {
+                (r["bulan"], r["tahun"])
+                for r in lunas
+            }
+
+            # =========================
+            # AMBIL BULAN/TAHUN DARI DETAIL
+            # =========================
+            for p in pending:
+
+                detail = p["detail"] or ""
+
+                # contoh detail:
+                # "SPP Juli 2026"
+
+                parts = detail.split()
+
+                if len(parts) >= 3:
+
+                    bulan_text = parts[1].lower()
+                    tahun = int(parts[2])
+
+                    bulan_map = {
+                        "januari": 1,
+                        "februari": 2,
+                        "maret": 3,
+                        "april": 4,
+                        "mei": 5,
+                        "juni": 6,
+                        "juli": 7,
+                        "agustus": 8,
+                        "september": 9,
+                        "oktober": 10,
+                        "november": 11,
+                        "desember": 12
+                    }
+
+                    bulan = bulan_map.get(bulan_text)
+
+                    if bulan:
+                        lunas_set.add((bulan, tahun))
 
             lunas_set = {(r["bulan"], r["tahun"]) for r in lunas}
 
