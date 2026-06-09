@@ -408,6 +408,76 @@ def siswa_detail():
             "error": str(e)
         }), 500
     
+@public_bp.route("/upload-pembayaran", methods=["POST"])
+def upload_pembayaran():
+
+    siswa_id = request.form.get("siswa_id", type=int)
+    total = request.form.get("total", type=int)
+    metode = request.form.get("metode")
+    bukti = request.files.get("bukti")
+
+    if not bukti:
+        return jsonify({
+            "success": False,
+            "error": "Bukti transfer wajib"
+        }), 400
+
+    try:
+
+        filename = secure_filename(bukti.filename)
+
+        upload_dir = "static/uploads/bukti-transfer"
+        os.makedirs(upload_dir, exist_ok=True)
+
+        save_path = os.path.join(upload_dir, filename)
+
+        bukti.save(save_path)
+
+        with db() as d:
+
+            siswa = d.execute("""
+                SELECT nisn
+                FROM siswa
+                WHERE id = ?
+            """, (siswa_id,)).fetchone()
+
+            if not siswa:
+                return jsonify({
+                    "success": False,
+                    "error": "Siswa tidak ditemukan"
+                }), 404
+
+            d.execute("""
+                INSERT INTO pembayaran_pending (
+                    nisn,
+                    metode,
+                    total,
+                    status,
+                    bukti_transfer
+                )
+                VALUES (?, ?, ?, ?, ?)
+            """, (
+                siswa["nisn"],
+                metode,
+                total,
+                "MENUNGGU VERIFIKASI",
+                save_path
+            ))
+
+        return jsonify({
+            "success": True
+        })
+
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc()
+
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+    
 @public_bp.route("/submit-transfer", methods=["POST"])
 def submit_transfer():
 
@@ -472,37 +542,55 @@ def submit_transfer():
             "message": str(e)
         }), 500
     
-
 @public_bp.route("/status-pembayaran")
 def status_pembayaran():
 
-    siswa_id = request.args.get("siswa_id")
+    siswa_id = request.args.get("siswa_id", type=int)
 
-    with db() as d:
+    if not siswa_id:
+        return jsonify([])
 
-        rows = d.execute("""
-            SELECT
-                id,
-                metode,
-                total,
-                status,
-                created_at
+    try:
 
-            FROM pembayaran_public
+        with db() as d:
 
-            WHERE siswa_id = %s
-              AND status = 'MENUNGGU'
+            siswa = d.execute("""
+                SELECT nisn
+                FROM siswa
+                WHERE id = ?
+            """, (siswa_id,)).fetchone()
 
-            ORDER BY created_at DESC
-        """, (siswa_id,)).fetchall()
+            if not siswa:
+                return jsonify([])
 
-    return jsonify([
-        {
-            "id": r["id"],
-            "metode": r["metode"],
-            "total": r["total"],
-            "status": r["status"],
-            "tanggal": r["created_at"].strftime("%d-%m-%Y %H:%M")
-        }
-        for r in rows
-    ])
+            rows = d.execute("""
+                SELECT
+                    id,
+                    metode,
+                    total,
+                    status,
+                    created_at
+                FROM pembayaran_pending
+                WHERE nisn = ?
+                ORDER BY created_at DESC
+            """, (siswa["nisn"],)).fetchall()
+
+        return jsonify([
+            {
+                "id": r["id"],
+                "metode": r["metode"],
+                "total": r["total"],
+                "status": r["status"],
+                "tanggal": r["created_at"].strftime("%d-%m-%Y")
+            }
+            for r in rows
+        ])
+
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc()
+
+        return jsonify({
+            "error": str(e)
+        }), 500

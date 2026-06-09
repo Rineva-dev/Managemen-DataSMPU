@@ -397,11 +397,24 @@ document
     // =========================
     // SIMULASI DATA TRANSAKSI
     // =========================
-    const transaksi = {
-        tanggal: new Date().toLocaleDateString("id-ID"),
-        total: cartTotalValue,
-        status: "MENUNGGU VERIFIKASI"
-    };
+    const formData = new FormData();
+
+    formData.append("siswa_id", siswaId);
+    formData.append("total", cartTotalValue);
+    formData.append("metode", "Transfer Bank");
+    formData.append("bukti", file);
+
+    const res = await fetch("/public/upload-pembayaran", {
+        method: "POST",
+        body: formData
+    });
+
+    const result = await res.json();
+
+    if (!result.success) {
+        alert(result.error || "Gagal upload");
+        return;
+    }
 
     // =========================
     // TUTUP MODAL
