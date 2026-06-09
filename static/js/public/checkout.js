@@ -332,6 +332,21 @@ document
     transferModal.style.display = "none";
 });
 
+document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        document.querySelectorAll(".tab-btn")
+            .forEach(b => b.classList.remove("active"));
+
+        document.querySelectorAll(".tab-content")
+            .forEach(c => c.classList.remove("active"));
+
+        btn.classList.add("active");
+
+        const tab = btn.dataset.tab;
+        document.getElementById("tab-" + tab).classList.add("active");
+    });
+});
 
 // ===============================
 // PROFILE DROPDOWN TOGGLE

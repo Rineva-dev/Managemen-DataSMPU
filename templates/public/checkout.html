@@ -140,66 +140,128 @@
 
 </header>
 
-<div class="checkout-page">
+<div class="payment-tabs">
 
-    <div class="checkout-card">
+    <button class="tab-btn active" data-tab="cart">
+        Keranjang Saya
+    </button>
 
-        <div class="cart-header">
+    <button class="tab-btn" data-tab="status">
+        Status Pembayaran
+    </button>
 
-            <div>
+    <button class="tab-btn" data-tab="history">
+        Riwayat Pembayaran
+    </button>
 
-                <small>
-                    Keranjang Pembayaran
-                </small>
+</div>
 
-                <h3>
-                    Checkout
-                </h3>
+<div class="payment-container">
+    <div class="tab-content active" id="tab-cart">
+
+        <div class="checkout-card">
+
+            <div class="cart-header">
+
+                <div>
+
+                    <small>
+                        Keranjang Pembayaran
+                    </small>
+
+                    <h3>
+                        Checkout
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <div class="cart-empty">
+
+                <i data-lucide="shopping-cart"></i>
+
+                <p>
+                    Belum ada tagihan dipilih
+                </p>
+
+            </div>
+
+            <div class="cart-items">
+
+            </div>
+
+            <div class="cart-summary">
+
+                <div class="summary-row">
+
+                    <span>
+                        Total Pembayaran
+                    </span>
+
+                    <strong id="cart-total">
+                        Rp 0
+                    </strong>
+
+                </div>
+
+                <button class="btn-checkout">
+
+                    <i data-lucide="credit-card"></i>
+
+                    <span>
+                        Bayar Sekarang
+                    </span>
+
+                </button>
 
             </div>
 
         </div>
 
-        <div class="cart-empty">
+        <div class="tab-content" id="tab-status">
 
-            <i data-lucide="shopping-cart"></i>
+            <div class="checkout-card">
 
-            <p>
-                Belum ada tagihan dipilih
-            </p>
+                <div class="cart-header">
+                    <div>
+                        <small>Status Pembayaran</small>
+                        <h3>Transaksi</h3>
+                    </div>
+                </div>
 
-        </div>
-
-        <div class="cart-items">
-
-        </div>
-
-        <div class="cart-summary">
-
-            <div class="summary-row">
-
-                <span>
-                    Total Pembayaran
-                </span>
-
-                <strong id="cart-total">
-                    Rp 0
-                </strong>
+                <div id="status-list">
+                    <div class="cart-empty">
+                        <i data-lucide="clock"></i>
+                        <p>Belum ada transaksi</p>
+                    </div>
+                </div>
 
             </div>
 
-            <button class="btn-checkout">
-
-                <i data-lucide="credit-card"></i>
-
-                <span>
-                    Bayar Sekarang
-                </span>
-
-            </button>
-
         </div>
 
+        <div class="tab-content" id="tab-history">
+
+            <div class="checkout-card">
+
+                <div class="cart-header">
+                    <div>
+                        <small>Riwayat Pembayaran</small>
+                        <h3>Semua Transaksi</h3>
+                    </div>
+                </div>
+
+                <div id="history-list">
+                    <div class="cart-empty">
+                        <i data-lucide="history"></i>
+                        <p>Belum ada riwayat pembayaran</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
 </div>

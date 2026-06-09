@@ -1631,3 +1631,11 @@ body{
         padding: 18px;
     }
 }
+
+.tab-content{
+    display:none;
+}
+
+.tab-content.active{
+    display:block;
+}
