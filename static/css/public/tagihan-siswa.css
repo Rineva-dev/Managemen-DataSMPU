@@ -1009,7 +1009,7 @@ body{
 .checkout-card{
     background:white;
     border-radius:28px;
-    padding:28px;
+    padding:10px;
     box-shadow:var(--shadow);
 }
 
@@ -1883,4 +1883,63 @@ body{
     .summary-row strong{
         font-size:26px;
     }
+}
+
+/* =========================
+   STATUS ITEM
+========================= */
+
+.status-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:18px 0;
+
+    border-bottom:1px solid #eef2f7;
+}
+
+.status-left{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.status-title{
+    font-size:15px;
+    font-weight:700;
+}
+
+.status-date{
+    font-size:13px;
+    color:var(--muted);
+}
+
+.status-right{
+    text-align:right;
+}
+
+.status-price{
+    display:block;
+
+    font-size:18px;
+    font-weight:700;
+
+    margin-bottom:8px;
+}
+
+.status-badge{
+    display:inline-flex;
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:11px;
+    font-weight:700;
+}
+
+.status-badge.pending{
+    background:#fff7db;
+    color:#b45309;
 }

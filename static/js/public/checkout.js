@@ -377,3 +377,103 @@ if (btnProfile && profileDropdown) {
 
 loadBiodataSiswa();
 renderCart();
+
+// ===============================
+// SUBMIT TRANSFER
+// ===============================
+
+document
+.getElementById("submit-transfer")
+.addEventListener("click", () => {
+
+    const file =
+        document.getElementById("bukti-transfer").files[0];
+
+    if (!file) {
+        alert("Upload bukti transfer terlebih dahulu");
+        return;
+    }
+
+    // =========================
+    // SIMULASI DATA TRANSAKSI
+    // =========================
+    const transaksi = {
+        tanggal: new Date().toLocaleDateString("id-ID"),
+        total: cartTotalValue,
+        status: "MENUNGGU VERIFIKASI"
+    };
+
+    // =========================
+    // TUTUP MODAL
+    // =========================
+    transferModal.style.display = "none";
+
+    // =========================
+    // PINDAH KE TAB STATUS
+    // =========================
+    document.querySelectorAll(".tab-btn")
+        .forEach(btn => btn.classList.remove("active"));
+
+    document.querySelectorAll(".tab-content")
+        .forEach(tab => tab.classList.remove("active"));
+
+    document
+        .querySelector('[data-tab="status"]')
+        .classList.add("active");
+
+    document
+        .getElementById("tab-status")
+        .classList.add("active");
+
+    // =========================
+    // RENDER STATUS
+    // =========================
+    const statusList =
+        document.getElementById("status-list");
+
+    statusList.innerHTML = `
+        <div class="status-item">
+
+            <div class="status-left">
+
+                <strong class="status-title">
+                    Pembayaran Transfer Bank
+                </strong>
+
+                <small class="status-date">
+                    ${transaksi.tanggal}
+                </small>
+
+            </div>
+
+            <div class="status-right">
+
+                <strong class="status-price">
+                    ${rupiah(transaksi.total)}
+                </strong>
+
+                <div class="status-badge pending">
+                    MENUNGGU VERIFIKASI
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+    // =========================
+    // KOSONGKAN CART
+    // =========================
+    cart = [];
+
+    localStorage.removeItem("payment_cart");
+
+    renderCart();
+
+    // =========================
+    // RESET INPUT FILE
+    // =========================
+    document.getElementById("bukti-transfer").value = "";
+
+    lucide.createIcons();
+});
