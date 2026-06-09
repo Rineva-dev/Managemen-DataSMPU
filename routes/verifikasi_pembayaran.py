@@ -184,83 +184,24 @@ def approve_pembayaran():
     
 @verifikasi_bp.route("/verifikasi-pembayaran/reject", methods=["POST"])
 def reject_pembayaran():
-
     try:
-
         data = request.get_json()
         pembayaran_id = data.get("id")
 
         if not pembayaran_id:
-            return jsonify({
-                "success": False,
-                "error": "ID tidak valid"
-            }), 400
+            return jsonify({"success": False, "error": "ID tidak valid"}), 400
 
         with db() as d:
 
-            # ambil detail transaksi
-            trx = d.execute("""
-                SELECT detail
-                FROM pembayaran_pending
-                WHERE id = %s
-            """, (pembayaran_id,)).fetchone()
-
-            if not trx:
-                return jsonify({
-                    "success": False,
-                    "error": "Data tidak ditemukan"
-                }), 404
-
-            # ubah transaksi jadi ditolak
             d.execute("""
                 UPDATE pembayaran_pending
                 SET status = 'DITOLAK'
                 WHERE id = %s
             """, (pembayaran_id,))
 
-            # kembalikan item cart ke CART
-            import json
-
-            details = json.loads(
-                trx["detail"] or "[]"
-            )
-
-            for item in details:
-
-                cart_id = item.get("cart_id")
-
-                if cart_id:
-
-                    d.execute("""
-                        UPDATE cart_pembayaran
-                        SET status = 'CART'
-                        WHERE id = %s
-                    """, (cart_id,))
-            
-            row = d.execute("""
-                SELECT siswa_id
-                FROM pembayaran_pending
-                WHERE id = %s
-            """, (pembayaran_id,)).fetchone()
-
-            if row:
-                d.execute("""
-                    UPDATE cart_pembayaran
-                    SET status = 'CART'
-                    WHERE siswa_id = %s
-                    AND status = 'PENDING'
-                """, (row["siswa_id"],))
-
-        return jsonify({
-            "success": True
-        })
+        return jsonify({"success": True})
 
     except Exception as e:
-
         import traceback
         traceback.print_exc()
-
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
+        return jsonify({"success": False, "error": str(e)}), 500

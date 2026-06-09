@@ -578,14 +578,12 @@ def upload_pembayaran():
                     or item.get("id")
                 )
 
-                if not cart_id:
-                    continue
-
-                d.execute("""
-                    UPDATE cart_pembayaran
-                    SET status = 'PENDING'
-                    WHERE id = %s
-                """, (cart_id,))
+                if cart_id:
+                    d.execute("""
+                        UPDATE cart_pembayaran
+                        SET status = 'CHECKED_OUT'
+                        WHERE id = %s
+                    """, (cart_id,))
 
             d.execute("""
                 INSERT INTO pembayaran_pending (
@@ -594,16 +592,16 @@ def upload_pembayaran():
                     total,
                     detail,
                     bukti,
-                    status
+                    status,
+                    created_at
                 )
-                VALUES (%s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, 'MENUNGGU_VERIFIKASI', CURRENT_TIMESTAMP)
             """, (
                 siswa_id,
                 metode,
                 total,
                 detail,
-                filename,
-                "MENUNGGU VERIFIKASI"
+                filename
             ))
 
         return jsonify({
@@ -952,8 +950,9 @@ def delete_cart(cart_id):
         with db() as d:
 
             d.execute("""
-                DELETE FROM cart_pembayaran
-                WHERE id = %s
+                UPDATE cart_pembayaran
+                SET status = 'CHECKED_OUT'
+                WHERE id = ?
             """, (cart_id,))
 
         return jsonify({
@@ -968,3 +967,38 @@ def delete_cart(cart_id):
         return jsonify({
             "success": False
         }), 500
+    
+@public_bp.route("/retry-pembayaran", methods=["POST"])
+def retry_pembayaran():
+    data = request.json
+    pending_id = data.get("pending_id")
+
+    with db() as d:
+
+        trx = d.execute("""
+            SELECT siswa_id, detail
+            FROM pembayaran_pending
+            WHERE id = %s AND status = 'DITOLAK'
+        """, (pending_id,)).fetchone()
+
+        if not trx:
+            return jsonify({"error": "Invalid"}), 400
+
+        import json
+        details = json.loads(trx["detail"] or "[]")
+
+        # recreate cart dari rejected transaction
+        for item in details:
+            d.execute("""
+                INSERT INTO cart_pembayaran (
+                    siswa_id, jenis, bulan, tahun, nominal, status
+                ) VALUES (%s,%s,%s,%s,%s,'CART')
+            """, (
+                trx["siswa_id"],
+                "SPP",
+                item.get("bulan"),
+                item.get("tahun"),
+                item.get("nominal")
+            ))
+
+    return jsonify({"success": True})
