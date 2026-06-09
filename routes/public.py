@@ -167,6 +167,7 @@ def tagihan_spp():
                 FROM pembayaran
                 WHERE nisn = %s
                 AND jenis = 'SPP'
+                AND (status = 'DITERIMA' OR status IS NULL)
             """, (siswa["nisn"],)).fetchall()
 
             pending = d.execute("""

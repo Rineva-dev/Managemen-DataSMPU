@@ -262,13 +262,6 @@ async function loadTagihanSPP() {
 
             const tagihanId = `spp-${t.bulan}-${t.tahun}`;
 
-            const existsInCart =
-                cart.find(item => item.id === tagihanId);
-
-            if (existsInCart) {
-                return;
-            }
-
             const bulanNama = new Date(
                 t.tahun,
                 t.bulan - 1
