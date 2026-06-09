@@ -1,16 +1,12 @@
 // ======================================
 // ELEMENT
 // ======================================
-
 const tableBody =
     document.getElementById("verification-body");
 
 const searchInput =
     document.getElementById("search-verifikasi");
 
-// ======================================
-// STATE
-// ======================================
 let pembayaranList = [];
 
 // ======================================
