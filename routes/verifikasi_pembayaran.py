@@ -145,7 +145,15 @@ def approve_pembayaran():
                 tahun = item.get("tahun")
                 nominal = item.get("nominal") or 0
 
-                bulan = bulan_map.get(str(bulan_text).lower())
+                bulan = None
+
+                if isinstance(bulan_text, int):
+                    bulan = bulan_text
+                elif bulan_text:
+                    bulan = bulan_map.get(str(bulan_text).strip().lower())
+
+                if not bulan or not tahun:
+                    continue
 
                 d.execute("""
                     INSERT INTO pembayaran (
