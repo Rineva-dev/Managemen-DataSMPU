@@ -7,6 +7,8 @@ const tableBody =
 const searchInput =
     document.getElementById("search-verifikasi");
 
+const PAYMENT_BASE_URL = "https://payment.smpuhamzanwadi.sch.id";
+
 let pembayaranList = [];
 
 // ======================================
@@ -76,8 +78,7 @@ function renderTable(data) {
     tableBody.innerHTML = data.map((item, index) => {
 
         const buktiUrl = item.bukti
-            ? `${window.location.origin}/public/bukti/${item.bukti}`
-            : "#";
+            `${PAYMENT_BASE_URL}/public/bukti/${item.bukti}`;
 
         return `
             <tr>
