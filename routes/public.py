@@ -606,7 +606,7 @@ def upload_pembayaran():
                     status,
                     created_at
                 )
-                VALUES (%s, %s, %s, %s, %s, 'MENUNGGU VERIFIKASI', CURRENT TIMESTAMP)
+                VALUES (%s, %s, %s, %s, %s, 'MENUNGGU VERIFIKASI', CURRENT_TIMESTAMP)
             """, (
                 siswa_id,
                 metode,
