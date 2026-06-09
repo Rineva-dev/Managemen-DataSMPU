@@ -1840,7 +1840,7 @@ body{
     margin-top: 0 !important;
 }
 
-.status-badge.failed{
+.status-badge.rejected{
     background:#fee2e2;
     color:#991b1b;
     margin-top: 0 !important;

@@ -726,7 +726,7 @@ async function loadRiwayatPembayaran() {
 
                         </div>
 
-                        <div class="status-badge failed${
+                        <div class="status-badge ${
                             item.status === "DITOLAK"
                                 ? "rejected"
                                 : "success"
