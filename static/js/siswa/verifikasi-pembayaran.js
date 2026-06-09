@@ -11,13 +11,11 @@ const searchInput =
 // ======================================
 // STATE
 // ======================================
-
 let pembayaranList = [];
 
 // ======================================
 // FORMAT RUPIAH
 // ======================================
-
 function rupiah(nominal) {
 
     return "Rp" + Number(nominal)
@@ -27,7 +25,6 @@ function rupiah(nominal) {
 // ======================================
 // LOAD DATA
 // ======================================
-
 async function loadVerifikasiPembayaran() {
 
     try {
