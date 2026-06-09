@@ -1116,7 +1116,7 @@ def generate_pembayaran():
                 INSERT INTO pembayaran_pending (
                     siswa_id, metode, total, detail, status, 
                     kode_pembayaran, qr_image, expired_at, created_at
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
             """, (
                 siswa_id,
                 metode,
