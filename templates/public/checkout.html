@@ -267,6 +267,84 @@
 
 </div>
 
+<!-- ============================= -->
+<!-- MODAL TRANSFER BANK -->
+<!-- ============================= -->
+<div class="modal-overlay" id="transfer-modal">
+
+    <div class="transfer-modal">
+
+        <!-- HEADER -->
+        <div class="transfer-header">
+            <h3>Transfer Bank (BSI)</h3>
+            <button class="modal-close" id="close-transfer-modal">
+                &times;
+            </button>
+        </div>
+
+        <!-- INFO REKENING -->
+        <div class="transfer-info">
+
+            <div class="bank-row">
+                <span>Bank</span>
+                <strong>Bank Syariah Indonesia (BSI)</strong>
+            </div>
+
+            <div class="bank-row">
+                <span>No. Rekening</span>
+                <strong>
+                    09023283787
+                    <button class="copy-btn" data-copy="09023283787">
+                        Salin
+                    </button>
+                </strong>
+            </div>
+
+            <div class="bank-row">
+                <span>Atas Nama</span>
+                <strong>SMP Unggulan Hamzanwadi</strong>
+            </div>
+
+            <div class="bank-row total">
+                <span>Jumlah Transfer</span>
+                <strong id="transfer-total">Rp 0</strong>
+            </div>
+
+        </div>
+
+        <!-- INSTRUKSI -->
+        <div class="transfer-note">
+            <i data-lucide="info"></i>
+            <p>
+                Transfer sesuai jumlah di atas.
+                Setelah transfer, silakan upload bukti pembayaran
+                untuk kami verifikasi.
+            </p>
+        </div>
+
+        <!-- UPLOAD -->
+        <div class="transfer-upload">
+            <label for="bukti-transfer">
+                Upload Bukti Transfer
+            </label>
+            <input
+                type="file"
+                id="bukti-transfer"
+                accept="image/*">
+            <small>
+                JPG / PNG, max 2MB
+            </small>
+        </div>
+
+        <!-- ACTION -->
+        <button class="btn-submit-transfer" id="submit-transfer">
+            Kirim Bukti Pembayaran
+        </button>
+
+    </div>
+
+</div>
+
 <footer class="site-footer">
 
     <div class="footer-container">

@@ -308,6 +308,38 @@ document.getElementById("confirm-payment")
     // redirect / request backend
 });
 
+const paymentModal = document.getElementById("payment-modal");
+const transferModal = document.getElementById("transfer-modal");
+
+document.querySelector(".btn-checkout")
+.addEventListener("click", () => {
+    paymentModal.style.display = "flex";
+});
+
+// lanjutkan pembayaran
+document.getElementById("confirm-payment")
+.addEventListener("click", () => {
+
+    const method =
+        document.querySelector(
+            'input[name="payment_method"]:checked'
+        ).value;
+
+    paymentModal.style.display = "none";
+
+    if(method === "transfer"){
+        transferModal.style.display = "flex";
+    } else {
+        alert("Metode ini akan diaktifkan selanjutnya");
+    }
+});
+
+// close modal
+document.getElementById("close-transfer-modal")
+.addEventListener("click", () => {
+    transferModal.style.display = "none";
+});
+
 // ===============================
 // PROFILE DROPDOWN TOGGLE
 // ===============================

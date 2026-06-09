@@ -1466,3 +1466,168 @@ body{
     font-size: 16px;
     cursor: pointer;
 }
+
+/* ============================= */
+/* TRANSFER BANK MODAL */
+/* ============================= */
+
+.transfer-modal {
+    width: 100%;
+    max-width: 460px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+    animation: fadeUp .35s ease;
+}
+
+/* HEADER */
+.transfer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.transfer-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* INFO REKENING */
+.transfer-info {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.bank-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.bank-row span {
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.bank-row strong {
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* TOTAL */
+.bank-row.total {
+    margin-top: 6px;
+    padding-top: 12px;
+    border-top: 1px dashed #e5e7eb;
+}
+
+.bank-row.total strong {
+    font-size: 20px;
+    color: #16a34a;
+}
+
+/* COPY BUTTON */
+.copy-btn {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.copy-btn:hover {
+    background: #fff7db;
+    border-color: #ffb700;
+    color: #f59e0b;
+}
+
+/* NOTE */
+.transfer-note {
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #fff7db;
+    border: 1px solid #ffb700;
+    font-size: 13px;
+    color: #92400e;
+}
+
+.transfer-note svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* UPLOAD */
+.transfer-upload {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.transfer-upload label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.transfer-upload input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px dashed #cbd5e1;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.transfer-upload small {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* SUBMIT BUTTON */
+.btn-submit-transfer {
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background:
+        linear-gradient(
+            135deg,
+            #16a34a,
+            #22c55e
+        );
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.btn-submit-transfer:hover {
+    transform: translateY(-2px);
+}
+
+/* MOBILE */
+@media(max-width:480px) {
+    .transfer-modal {
+        margin: 0 14px;
+        padding: 18px;
+    }
+}
