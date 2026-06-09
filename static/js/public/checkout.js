@@ -406,10 +406,25 @@ document
 
     const res = await fetch("/public/upload-pembayaran", {
         method: "POST",
+        headers: {
+                "X-CSRFToken": csrfToken
+            },
         body: formData
     });
 
-    const result = await res.json();
+    const text = await res.text();
+
+    console.log("RESPONSE:");
+    console.log(text);
+
+    let result = {};
+
+    try {
+        result = JSON.parse(text);
+    } catch(e) {
+        alert("Response backend bukan JSON");
+        return;
+    }
 
     if (!result.success) {
         alert(result.error || "Gagal upload");
