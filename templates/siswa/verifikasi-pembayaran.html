@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        Verifikasi Pembayaran
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/siswa/verifikasi-pembayaran.css') }}">
+
+</head>
+
+<body>
+
+    <div class="verification-page">
+
+        <!-- HEADER -->
+        <div class="verification-header">
+
+            <div>
+
+                <h2>
+                    Verifikasi Pembayaran
+                </h2>
+
+                <p>
+                    Daftar pembayaran siswa yang menunggu verifikasi
+                </p>
+
+            </div>
+
+            <a
+                href="/admin/dashboard"
+                class="btn btn-secondary">
+
+                Kembali
+
+            </a>
+
+        </div>
+
+        <!-- FILTER -->
+        <div class="verification-filter">
+
+            <input
+                type="text"
+                id="search-verifikasi"
+                placeholder="Cari nama / NISN">
+
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-wrapper">
+
+            <table class="verification-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>No</th>
+
+                        <th>Tanggal</th>
+
+                        <th>Nama</th>
+
+                        <th>NISN</th>
+
+                        <th>Metode</th>
+
+                        <th>Total</th>
+
+                        <th>Status</th>
+
+                        <th>Bukti</th>
+
+                        <th>Aksi</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="verification-body">
+
+                    <!-- JS Render -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/siswa/verifikasi-pembayaran.js') }}"></script>
+
+</body>
+</html>

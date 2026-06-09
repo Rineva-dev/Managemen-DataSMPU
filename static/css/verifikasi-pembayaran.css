@@ -1,0 +1,98 @@
+/* ====================================
+VERIFIKASI PAGE
+==================================== */
+
+.verification-page{
+    padding:24px;
+}
+
+.verification-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+}
+
+.verification-header h2{
+    margin:0;
+}
+
+.verification-header p{
+    margin-top:6px;
+    color:#666;
+}
+
+.verification-filter{
+    margin-bottom:20px;
+}
+
+.verification-filter input{
+    width:300px;
+    padding:10px 14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+.verification-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.verification-table th,
+.verification-table td{
+    padding:14px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+}
+
+.verification-table th{
+    background:#fafafa;
+}
+
+.status-pending{
+    background:#fff3cd;
+    color:#856404;
+    padding:6px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.btn-approve{
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.btn-reject{
+    background:#dc2626;
+    color:white;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.notif-btn{
+    position:relative;
+}
+
+.notif-badge{
+    position:absolute;
+    top:-8px;
+    right:-8px;
+    min-width:20px;
+    height:20px;
+    padding:0 6px;
+    border-radius:999px;
+    background:red;
+    color:white;
+    font-size:11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}

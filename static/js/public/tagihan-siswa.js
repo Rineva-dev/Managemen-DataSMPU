@@ -80,47 +80,77 @@ function updateCartTotal() {
 // RENDER CART
 // ======================================
 function renderCart() {
-
-    localStorage.setItem(
-        "payment_cart",
-        JSON.stringify(cart)
-    );
-
     cartCount.textContent = cart.length;
 }
 
 // ======================================
 // ADD TO CART
 // ======================================
-function addToCart(data, cardElement) {
+async function addToCart(data, cardElement) {
 
-    const exists = cart.find(item => item.id === data.id);
+    try {
 
-    if (exists) {
+        const res = await fetch("/public/add-cart", {
+            method: "POST",
 
-        showToast("Tagihan sudah ada");
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
 
-        return;
+            body: JSON.stringify({
+                siswa_id: siswaId,
+                jenis: data.kategori,
+                nominal: data.nominal,
+                detail: data
+            })
+        });
+
+        const result = await res.json();
+
+        if (!result.success) {
+
+            showToast(result.error || "Gagal tambah cart");
+            return;
+        }
+
+        // reload cart dari backend
+        await loadCart();
+
+        // hilangkan card SPP
+        if (data.kategori === "SPP") {
+
+            cardElement.remove();
+            checkEmptyTagihan();
+        }
+
+        showToast("Ditambahkan ke keranjang");
+
+    } catch(err) {
+
+        console.error(err);
+        showToast("Terjadi kesalahan");
     }
+}
 
-    cart.push(data);
+async function loadCart() {
 
-    // =========================
-    // HILANGKAN CARD
-    // =========================
+    try {
 
-    if (
-        data.kategori === "SPP"
-    ) {
+        const res = await fetch(
+            `/public/cart?siswa_id=${siswaId}`
+        );
 
-        cardElement.remove();
+        const data = await res.json();
 
-        checkEmptyTagihan();
+        cart = data || [];
+
+        renderCart();
+
+    } catch(err) {
+
+        console.error(err);
     }
-
-    renderCart();
-
-    showToast("Ditambahkan ke keranjang");
 }
 
 // ======================================

@@ -12,6 +12,7 @@ from routes.mapel_routes import mapel_bp
 from routes.kelas_ampu import kelas_ampu_bp
 from routes.kkm_routes import kkm_bp
 from routes.public import public_bp
+from routes.verifikasi_pembayaran import verifikasi_bp
 
 ALL_BLUEPRINTS = [
     auth_bp,
@@ -27,5 +28,6 @@ ALL_BLUEPRINTS = [
     mapel_bp,
     kelas_ampu_bp,
     kkm_bp,
-    public_bp
+    public_bp,
+    verifikasi_bp
 ]

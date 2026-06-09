@@ -4,10 +4,35 @@
 
     <div class="filter-container pembayaran-filter-bar">
 
-        <!-- Tombol Tambah Pembayaran -->
-        <button id="add-pembayaran-btn" class="btn btn-add">
-            Pembayaran Siswa
-        </button>
+        <div class="pembayaran-action-group">
+
+            <!-- tombol input manual -->
+            <button id="add-pembayaran-btn"
+                class="btn btn-add">
+
+                Pembayaran Siswa
+
+            </button>
+
+            <!-- tombol verifikasi -->
+            <button id="btn-verifikasi-pembayaran"
+                class="btn btn-warning notif-btn">
+
+                <span>
+                    Verifikasi Pembayaran
+                </span>
+
+                <span id="notif-verifikasi-badge"
+                    class="notif-badge"
+                    style="display:none;">
+
+                    0
+
+                </span>
+
+            </button>
+
+        </div>
 
         <!-- Search siswa -->
         <div class="filter-search-group">

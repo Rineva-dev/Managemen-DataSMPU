@@ -2,8 +2,7 @@ from flask import Blueprint, render_template, request, abort, jsonify, current_a
 from datetime import datetime, date
 from utils.db import db
 from werkzeug.utils import secure_filename
-import os
-import uuid
+import os, json, uuid
 
 public_bp = Blueprint(
     "public",
@@ -475,7 +474,7 @@ def upload_pembayaran():
         total = request.form.get("total")
         metode = request.form.get("metode")
         detail = request.form.get("detail")
-
+        detail_json = json.loads(detail or "[]")
         file = request.files.get("bukti")
 
         if not siswa_id:
@@ -524,6 +523,23 @@ def upload_pembayaran():
         # SIMPAN DATABASE
         # =========================
         with db() as d:
+
+            # =========================
+            # UPDATE CART -> PENDING
+            # =========================
+
+            for item in detail_json:
+
+                cart_id = item.get("cart_id")
+
+                if not cart_id:
+                    continue
+
+                d.execute("""
+                    UPDATE cart_pembayaran
+                    SET status = 'PENDING'
+                    WHERE id = %s
+                """, (cart_id,))
 
             d.execute("""
                 INSERT INTO pembayaran_pending (
