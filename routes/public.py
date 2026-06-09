@@ -134,10 +134,16 @@ def tagihan_spp():
             # ===== HITUNG BATAS AKHIR =====
             end = date(today.year, today.month, 1)
 
+            from datetime import datetime
+
             tanggal_nonaktif = siswa["tanggal_nonaktif"]
 
             if tanggal_nonaktif:
-                na = tanggal_nonaktif
+                na = (
+                    tanggal_nonaktif
+                    if isinstance(tanggal_nonaktif, date)
+                    else datetime.strptime(tanggal_nonaktif, "%Y-%m-%d").date()
+                )
 
                 if na.day <= 10:
                     if na.month == 1:
@@ -356,7 +362,7 @@ def bayar_pembangunan():
         row = d.execute("""
             SELECT COALESCE(SUM(nominal),0) AS total
             FROM pembayaran
-            WHERE nisn=?
+            WHERE nisn=%s
               AND jenis LIKE 'PEMBANGUNAN%'
         """, (nisn,)).fetchone()
 
@@ -375,7 +381,7 @@ def bayar_pembangunan():
         sem1_row = d.execute("""
             SELECT COALESCE(SUM(nominal),0) AS total
             FROM pembayaran
-            WHERE nisn=?
+            WHERE nisn=%s
               AND jenis='PEMBANGUNAN_SEM1'
         """, (nisn,)).fetchone()
 
