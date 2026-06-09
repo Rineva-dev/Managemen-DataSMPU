@@ -1013,3 +1013,91 @@ def retry_pembayaran():
             ))
 
     return jsonify({"success": True})
+
+# ==============================================
+# RUTE BARU: GENERATE PEMBAYARAN VA / QRIS
+# ==============================================
+from datetime import datetime, timedelta
+import uuid
+
+@public_bp.route("/generate-pembayaran", methods=["POST"])
+def generate_pembayaran():
+    try:
+        siswa_id = request.form.get("siswa_id")
+        total = request.form.get("total")
+        metode = request.form.get("metode") # VA atau QRIS
+        detail = request.form.get("detail") # JSON keranjang
+
+        if not siswa_id or not total or not metode:
+            return jsonify({"success": False, "error": "Data tidak lengkap"}), 400
+
+        with db() as d:
+
+            # =========================
+            # 1. BUAT KODE & DATA
+            # =========================
+            kode_unik = ""
+            qr_image = ""
+            expired_at = datetime.now() + timedelta(hours=24) # Kadaluarsa 24 jam
+
+            # --- LOGIKA VA ---
+            if metode == "VA":
+                # Contoh format nomor VA (nanti ganti dengan API asli)
+                kode_unik = f"8882{siswa_id}{int(datetime.now().timestamp()) % 1000000}"
+            
+            # --- LOGIKA QRIS ---
+            elif metode == "QRIS":
+                # Contoh data QRIS (nanti ganti dengan API asli)
+                kode_unik = f"QR-{uuid.uuid4().hex[:12]}"
+                qr_image = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + kode_unik
+
+            else:
+                return jsonify({"success": False, "error": "Metode tidak dikenali"}), 400
+
+            # =========================
+            # 2. UBAH STATUS KERANJANG
+            # =========================
+            detail_json = json.loads(detail or "[]")
+            for item in detail_json:
+                cart_id = item.get("cart_id") or item.get("id")
+                if cart_id:
+                    d.execute("""
+                        UPDATE cart_pembayaran 
+                        SET status = 'CHECKED_OUT' 
+                        WHERE id = %s
+                    """, (cart_id,))
+
+            # =========================
+            # 3. SIMPAN KE DATABASE
+            # =========================
+            d.execute("""
+                INSERT INTO pembayaran_pending (
+                    siswa_id, metode, total, detail, status, 
+                    kode_pembayaran, expired_at, created_at
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
+            """, (
+                siswa_id,
+                metode,
+                total,
+                detail,
+                "MENUNGGU PEMBAYARAN",
+                kode_unik,
+                expired_at
+            ))
+
+        # =========================
+        # 4. KIRIM BALASAN KE JS
+        # =========================
+        return jsonify({
+            "success": True,
+            "data": {
+                "kode": kode_unik,
+                "qr_image": qr_image,
+                "expired": expired_at.strftime("%Y-%m-%d %H:%M:%S")
+            }
+        })
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": str(e)}), 500
