@@ -165,10 +165,26 @@ def tagihan_spp():
                 )
             """, (siswa_id,)).fetchall()
 
+            cart_rows = d.execute("""
+                SELECT
+                    bulan,
+                    tahun
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                AND jenis = 'SPP'
+                AND status = 'CART'
+            """, (siswa_id,)).fetchall()
+
             lunas_set = {
                 (r["bulan"], r["tahun"])
                 for r in lunas
             }
+
+            for c in cart_rows:
+                lunas_set.add((
+                    c["bulan"],
+                    c["tahun"]
+                ))
 
             # =========================
             # AMBIL BULAN/TAHUN DARI DETAIL
