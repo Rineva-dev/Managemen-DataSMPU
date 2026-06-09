@@ -554,15 +554,6 @@ def status_pembayaran():
 
         with db() as d:
 
-            siswa = d.execute("""
-                SELECT nisn
-                FROM siswa
-                WHERE id = ?
-            """, (siswa_id,)).fetchone()
-
-            if not siswa:
-                return jsonify([])
-
             rows = d.execute("""
                 SELECT
                     id,
@@ -571,20 +562,30 @@ def status_pembayaran():
                     status,
                     created_at
                 FROM pembayaran_pending
-                WHERE nisn = ?
+                WHERE siswa_id = %s
                 ORDER BY created_at DESC
-            """, (siswa["nisn"],)).fetchall()
+            """, (siswa_id,)).fetchall()
 
-        return jsonify([
-            {
+        result = []
+
+        for r in rows:
+
+            created_at = r["created_at"]
+
+            if created_at:
+                tanggal = created_at.strftime("%d-%m-%Y %H:%M")
+            else:
+                tanggal = "-"
+
+            result.append({
                 "id": r["id"],
                 "metode": r["metode"],
                 "total": r["total"],
                 "status": r["status"],
-                "tanggal": r["created_at"].strftime("%d-%m-%Y")
-            }
-            for r in rows
-        ])
+                "tanggal": tanggal
+            })
+
+        return jsonify(result)
 
     except Exception as e:
 
@@ -592,5 +593,6 @@ def status_pembayaran():
         traceback.print_exc()
 
         return jsonify({
+            "success": False,
             "error": str(e)
         }), 500
