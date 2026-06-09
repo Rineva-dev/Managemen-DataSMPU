@@ -716,11 +716,11 @@ async function loadRiwayatPembayaran() {
 
                         <div class="title-status">
 
-                            <strong>
+                            <strong class="history-title">
                                 ${item.metode}
                             </strong>
 
-                            <small>
+                            <small class="status-date">
                                 ${item.tanggal}
                             </small>
 
@@ -746,11 +746,11 @@ async function loadRiwayatPembayaran() {
 
                     <div class="status-footer">
 
-                        <strong>
+                        <strong class="footer-title">
                             Total
                         </strong>
 
-                        <strong>
+                        <strong class="history-price">
                             ${rupiah(item.total)}
                         </strong>
 
