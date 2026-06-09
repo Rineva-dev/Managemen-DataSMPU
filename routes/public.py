@@ -410,7 +410,7 @@ def siswa_detail():
     
 @public_bp.route("/upload-pembayaran", methods=["POST"])
 def upload_pembayaran():
-
+    
     try:
 
         siswa_id = request.form.get("siswa_id")
@@ -419,19 +419,22 @@ def upload_pembayaran():
 
         file = request.files.get("bukti")
 
-        if not siswa_id:
+        print("FORM:", request.form)
+        print("FILES:", request.files)
+
+        if siswa_id is None:
             return jsonify({
                 "success": False,
                 "error": "Siswa tidak ditemukan"
             }), 400
 
-        if not total:
+        if total is None:
             return jsonify({
                 "success": False,
                 "error": "Total pembayaran kosong"
             }), 400
 
-        if not file:
+        if file is None:
             return jsonify({
                 "success": False,
                 "error": "Bukti transfer wajib upload"
