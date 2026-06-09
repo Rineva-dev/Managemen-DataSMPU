@@ -1038,6 +1038,14 @@ def generate_pembayaran():
         metode = request.form.get("metode")
         detail = request.form.get("detail")
 
+        # ==============================================
+        # ✅ PERBAIKAN 1: UBAH TOTAL JADI ANGKA (WAJIB)
+        # ==============================================
+        try:
+            total = int(float(total))
+        except:
+            total = 0
+
         if not siswa_id or not total or not metode:
             return jsonify({"success": False, "error": "Data tidak lengkap"}), 400
 
@@ -1055,7 +1063,7 @@ def generate_pembayaran():
             # =========================
             kode_unik = ""
             qr_image = ""
-            expired_at = datetime.now() + timedelta(hours=24) # Kadaluarsa 24 jam
+            expired_at = datetime.now() + timedelta(hours=24)
 
             if metode == "VA":
                 kode_unik = f"8882{siswa_id}{int(datetime.now().timestamp()) % 1000000}"
@@ -1070,6 +1078,7 @@ def generate_pembayaran():
             # =========================
             # 2. UBAH STATUS KERANJANG
             # =========================
+            # ✅ Bagian ini sudah benar, biarkan saja
             detail_json = json.loads(detail or "[]")
             for item in detail_json:
                 cart_id = item.get("cart_id") or item.get("id")
