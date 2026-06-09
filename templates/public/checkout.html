@@ -157,52 +157,39 @@
 </div>
 
 <div class="payment-container">
+
+    <!-- ========================= -->
+    <!-- TAB : CART -->
+    <!-- ========================= -->
     <div class="tab-content active" id="tab-cart">
 
         <div class="checkout-card">
 
             <div class="cart-header">
-
                 <div>
-
-                    <small>
-                        Keranjang Pembayaran
-                    </small>
-
-                    <h3>
-                        Checkout
-                    </h3>
-
+                    <small>Keranjang Pembayaran</small>
+                    <h3>Checkout</h3>
                 </div>
-
             </div>
 
-            <div class="cart-empty">
-
+            <!-- EMPTY -->
+            <div class="cart-empty" id="cart-empty">
                 <i data-lucide="shopping-cart"></i>
-
-                <p>
-                    Belum ada tagihan dipilih
-                </p>
-
+                <p>Belum ada tagihan dipilih</p>
             </div>
 
-            <div class="cart-items">
+            <!-- ITEMS -->
+            <div class="cart-items"></div>
 
-            </div>
-
+            <!-- TOTAL -->
             <div class="cart-summary">
 
                 <div class="summary-row">
-
-                    <span>
-                        Total Pembayaran
-                    </span>
+                    <span>Total Pembayaran</span>
 
                     <strong id="cart-total">
                         Rp 0
                     </strong>
-
                 </div>
 
                 <button class="btn-checkout">
@@ -219,50 +206,72 @@
 
         </div>
 
-        <div class="tab-content" id="tab-status">
-
-            <div class="checkout-card">
-
-                <div class="cart-header">
-                    <div>
-                        <small>Status Pembayaran</small>
-                        <h3>Transaksi</h3>
-                    </div>
-                </div>
-
-                <div id="status-list">
-                    <div class="cart-empty">
-                        <i data-lucide="clock"></i>
-                        <p>Belum ada transaksi</p>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="tab-content" id="tab-history">
-
-            <div class="checkout-card">
-
-                <div class="cart-header">
-                    <div>
-                        <small>Riwayat Pembayaran</small>
-                        <h3>Semua Transaksi</h3>
-                    </div>
-                </div>
-
-                <div id="history-list">
-                    <div class="cart-empty">
-                        <i data-lucide="history"></i>
-                        <p>Belum ada riwayat pembayaran</p>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
     </div>
+
+    <!-- ========================= -->
+    <!-- TAB : STATUS -->
+    <!-- ========================= -->
+    <div class="tab-content" id="tab-status">
+
+        <div class="checkout-card">
+
+            <div class="cart-header">
+                <div>
+                    <small>Status Pembayaran</small>
+                    <h3>Transaksi</h3>
+                </div>
+            </div>
+
+            <div id="status-list">
+
+                <div class="cart-empty">
+
+                    <i data-lucide="clock-3"></i>
+
+                    <p>
+                        Belum Ada Transaksi Pembayaran
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- TAB : HISTORY -->
+    <!-- ========================= -->
+    <div class="tab-content" id="tab-history">
+
+        <div class="checkout-card">
+
+            <div class="cart-header">
+                <div>
+                    <small>Riwayat Pembayaran</small>
+                    <h3>Semua Riwayat</h3>
+                </div>
+            </div>
+
+            <div id="history-list">
+
+                <div class="cart-empty">
+
+                    <i data-lucide="receipt-text"></i>
+
+                    <p>
+                        Tidak Ada Riwayat Pembayaran
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 <!-- ============================= -->

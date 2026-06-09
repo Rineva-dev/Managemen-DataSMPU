@@ -4,7 +4,7 @@ const cartItems =
     document.querySelector(".cart-items");
 
 const cartEmpty =
-    document.querySelector(".cart-empty");
+    document.getElementById("cart-empty");
 
 const cartTotal =
     document.getElementById("cart-total");
