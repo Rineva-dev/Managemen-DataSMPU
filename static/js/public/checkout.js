@@ -912,6 +912,7 @@ function tutupModalVaQris() {
     const paymentDetailModal = document.getElementById("payment-detail-modal");
     paymentDetailModal.style.display = "none";
     if (countdownTimer) clearInterval(countdownTimer);
+    loadCart(); 
 }
 
 document.addEventListener("DOMContentLoaded", function() {
