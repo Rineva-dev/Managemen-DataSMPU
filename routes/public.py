@@ -545,7 +545,10 @@ def upload_pembayaran():
 
             for item in detail_json:
 
-                cart_id = item.get("cart_id")
+                cart_id = (
+                    item.get("cart_id")
+                    or item.get("id")
+                )
 
                 if not cart_id:
                     continue

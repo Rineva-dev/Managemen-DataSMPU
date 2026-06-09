@@ -575,7 +575,7 @@ async function loadStatusPembayaran() {
                     <div class="status-detail-item">
 
                         <span>
-                            -   ${d.nama}
+                            - ${formatNamaTagihan(d)}
                         </span>
 
                         <span>
@@ -688,7 +688,7 @@ async function loadRiwayatPembayaran() {
                     <div class="status-detail-item">
 
                         <span>
-                            - ${d.nama}
+                            - ${formatNamaTagihan(d)}
                         </span>
 
                         <span>
