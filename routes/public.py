@@ -103,6 +103,16 @@ def tagihan_spp():
     try:
         with db() as d:
 
+            tp = d.execute("""
+                SELECT tahun_pelajaran
+                FROM tahun_pelajaran
+                WHERE semester_mulai <= CURRENT_DATE
+                AND semester_akhir >= CURRENT_DATE
+                LIMIT 1
+            """).fetchone()
+
+            tahun_pelajaran_aktif = tp["tahun_pelajaran"] if tp else None
+
             siswa = d.execute("""
                 SELECT tahun_masuk, status, tanggal_nonaktif
                 FROM siswa
@@ -175,16 +185,12 @@ def tagihan_spp():
                 AND status = 'CART'
             """, (siswa_id,)).fetchall()
 
-            lunas_set = {
-                (r["bulan"], r["tahun"])
-                for r in lunas
-            }
+            lunas_set = set()
+            for r in lunas:
+                lunas_set.add((r["bulan"], tahun_pelajaran_aktif))
 
             for c in cart_rows:
-                lunas_set.add((
-                    c["bulan"],
-                    c["tahun"]
-                ))
+                lunas_set.add((c["bulan"], tahun_pelajaran_aktif))
 
             # =========================
             # AMBIL BULAN/TAHUN DARI DETAIL
@@ -231,6 +237,7 @@ def tagihan_spp():
                     tagihan.append({
                         "bulan": cur.month,
                         "tahun": cur.year,
+                        "tahun_pelajaran": tahun_pelajaran_aktif,  # 🔥 TAMBAHAN PENTING
                         "nominal": 400000,
                         "status": "BELUM"
                     })
