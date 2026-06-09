@@ -12,7 +12,7 @@ verifikasi_bp = Blueprint("verifikasi", __name__,)
 def verifikasi_pembayaran_page():
 
     render_template(
-        "index.html",
+        "dashboard.html",
         active_page="pembayaran_siswa",
         show_verifikasi_pembayaran=True
     )
