@@ -109,6 +109,24 @@ def approve_pembayaran():
                 return jsonify({"success": False, "error": "Data tidak ditemukan"}), 404
 
             nisn = trx["nisn"]
+            import json
+
+            details = json.loads(trx["detail"] or "[]")
+
+            bulan_map = {
+                "januari": 1,
+                "februari": 2,
+                "maret": 3,
+                "april": 4,
+                "mei": 5,
+                "juni": 6,
+                "juli": 7,
+                "agustus": 8,
+                "september": 9,
+                "oktober": 10,
+                "november": 11,
+                "desember": 12
+            }
 
             # update status
             d.execute("""
@@ -118,19 +136,34 @@ def approve_pembayaran():
             """, (pembayaran_id,))
 
             # insert pembayaran
-            d.execute("""
-                INSERT INTO pembayaran (
+            for item in details:
+
+                # contoh item dari detail:
+                # {"bulan": "Juli", "tahun": 2026, "nominal": 400000}
+
+                bulan_text = item.get("bulan")
+                tahun = item.get("tahun")
+                nominal = item.get("nominal", trx["total"])
+
+                bulan = bulan_map.get(str(bulan_text).lower())
+
+                d.execute("""
+                    INSERT INTO pembayaran (
+                        nisn,
+                        jenis,
+                        bulan,
+                        tahun,
+                        tanggal,
+                        nominal
+                    )
+                    VALUES (%s, %s, %s, %s, CURRENT_DATE, %s)
+                """, (
                     nisn,
-                    jenis,
-                    tanggal,
+                    "SPP",
+                    bulan,
+                    tahun,
                     nominal
-                )
-                VALUES (%s, %s, CURRENT_DATE, %s)
-            """, (
-                nisn,
-                trx["metode"] or "SPP",
-                trx["total"]
-            ))
+                ))
 
         return jsonify({"success": True})
 
