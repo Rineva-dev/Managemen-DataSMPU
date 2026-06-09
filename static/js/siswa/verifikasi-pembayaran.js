@@ -118,14 +118,11 @@ function renderTable(data) {
 
                 <td>
 
-                    <a
-                        href="${buktiUrl}"
-                        target="_blank"
-                        class="btn btn-secondary">
-
+                    <button
+                        class="btn btn-secondary btn-view-bukti"
+                        data-url="${buktiUrl}">
                         Lihat Bukti
-
-                    </a>
+                    </button>
 
                 </td>
 
@@ -261,6 +258,36 @@ async function rejectPembayaran(id) {
         alert("Terjadi kesalahan server");
     }
 }
+
+const modal = document.getElementById("bukti-modal");
+const modalImg = document.getElementById("bukti-image");
+const closeBtn = document.getElementById("close-bukti-modal");
+
+// open modal
+document.addEventListener("click", function (e) {
+
+    const btn = e.target.closest(".btn-view-bukti");
+    if (!btn) return;
+
+    const url = btn.dataset.url;
+
+    modalImg.src = url;
+    modal.style.display = "flex";
+});
+
+// close modal
+closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    modalImg.src = "";
+});
+
+// klik luar modal
+modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+        modal.style.display = "none";
+        modalImg.src = "";
+    }
+});
 
 // ======================================
 // INIT
