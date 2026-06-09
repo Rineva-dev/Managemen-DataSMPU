@@ -1097,11 +1097,6 @@ def generate_pembayaran():
             except:
                 return jsonify({"success": False, "error": "Data detail keranjang rusak"}), 400
 
-            for item in detail_json:
-                cart_id = item.get("cart_id") or item.get("id")
-                if cart_id:
-                    d.execute("UPDATE cart_pembayaran SET status = 'CHECKED_OUT' WHERE id = %s", (cart_id,))
-
             # =========================
             # 3. SIMPAN KE DATABASE
             # =========================
