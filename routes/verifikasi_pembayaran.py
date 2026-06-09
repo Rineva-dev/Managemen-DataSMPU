@@ -215,13 +215,48 @@ def reject_pembayaran():
 
         with db() as d:
 
+            trx = d.execute("""
+                SELECT siswa_id, detail
+                FROM pembayaran_pending
+                WHERE id = %s
+            """, (pembayaran_id,)).fetchone()
+
+            if not trx:
+                return jsonify({"success": False, "error": "Data tidak ditemukan"}), 404
+            
+            siswa_id = trx["siswa_id"]
+            import json
+            items = json.loads(trx["detail"] or "[]")
+
             d.execute("""
                 UPDATE pembayaran_pending
                 SET status = 'DITOLAK'
                 WHERE id = %s
             """, (pembayaran_id,))
 
-        return jsonify({"success": True})
+            for item in items:
+                jenis = item.get("jenis", "SPP")
+                bulan = item.get("bulan")
+                tahun = item.get("tahun")
+                nominal = item.get("nominal", 0)
+
+                sudah_ada = d.execute("""
+                    SELECT id FROM cart_pembayaran
+                    WHERE siswa_id = %s
+                      AND jenis = %s
+                      AND COALESCE(bulan, -1) = COALESCE(%s, -1)
+                      AND COALESCE(tahun, -1) = COALESCE(%s, -1)
+                      AND status = 'CART'
+                """, (siswa_id, jenis, bulan, tahun)).fetchone()
+
+                if not sudah_ada:
+                    d.execute("""
+                        INSERT INTO cart_pembayaran (
+                            siswa_id, jenis, bulan, tahun, nominal, status
+                        ) VALUES (%s, %s, %s, %s, %s, 'CART')
+                    """, (siswa_id, jenis, bulan, tahun, nominal))
+
+        return jsonify({"success": True, "message": "Pembayaran ditolak, tagihan dikembalikan ke keranjang."})
 
     except Exception as e:
         import traceback
