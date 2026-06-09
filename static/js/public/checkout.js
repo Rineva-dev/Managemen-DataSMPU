@@ -931,8 +931,6 @@ document.addEventListener("DOMContentLoaded", function() {
 // ==============================================
 // TAMBAHAN: PERBAIKAN STATUS & BUKA KEMBALI VA/QRIS
 // ==============================================
-
-// Fungsi ini akan kita panggil ulang untuk merender status dengan tombol baru
 async function loadStatusPembayaranDenganTombol() {
     const statusList = document.getElementById("status-list");
 
@@ -951,23 +949,45 @@ async function loadStatusPembayaranDenganTombol() {
             return;
         }
 
-        // === UBAH RENDER AGAR ADA TOMBOL "LIHAT KODE" KHUSUS VA/QRIS ===
+        // === RENDER ULANG DENGAN PERBAIKAN ===
         statusList.innerHTML = data.map(item => {
             let detailHtml = "";
-            try {
-                const details = JSON.parse(item.detail || "[]");
-                detailHtml = details.map(d => `
-                    <div class="status-detail-item">
-                        <span>- ${formatNamaTagihan(d)}</span>
-                        <span>${rupiah(d.nominal)}</span>
-                    </div>
-                `).join("");
-            } catch(e) { console.error(e); }
+            let adaDetail = false;
 
-            // === TAMPILKAN TOMBOL JIKA METODE VA / QRIS & MASIH BERLAKU ===
+            try {
+                // Cek apakah ada isi di dalam detail
+                const details = JSON.parse(item.detail || "[]");
+                
+                if (details.length > 0) {
+                    adaDetail = true;
+                    // Tampilkan setiap item tagihan
+                    detailHtml = details.map(d => `
+                        <div class="status-detail-item">
+                            <span>- ${formatNamaTagihan(d)}</span>
+                            <span>${rupiah(d.nominal)}</span>
+                        </div>
+                    `).join("");
+                } else {
+                    // Jika detail kosong (seperti data ID 7 kamu tadi)
+                    detailHtml = `
+                        <div class="status-detail-item text-kosong">
+                            <em>Tidak ada rincian tagihan</em>
+                        </div>
+                    `;
+                }
+
+            } catch (e) {
+                console.error("Gagal baca detail:", e);
+                detailHtml = `
+                    <div class="status-detail-item text-kosong">
+                        <em>Rincian tidak dapat dibaca</em>
+                    </div>
+                `;
+            }
+
+            // === TOMBOL LIHAT KODE (TETAP SAMA) ===
             let tombolAksi = "";
-            if( (item.metode === "VA" || item.metode === "QRIS") && item.status === "MENUNGGU PEMBAYARAN" ) {
-                // Simpan data kode & expired di tombol pakai atribut data-*
+            if( (item.metode === "VA" || item.metode === "QRIS" || item.metode === "BSI-VA") && item.status === "MENUNGGU PEMBAYARAN" ) {
                 tombolAksi = `
                     <button 
                         class="btn-lihat-kode" 
@@ -991,14 +1011,20 @@ async function loadStatusPembayaranDenganTombol() {
                             ${item.status}
                         </div>
                     </div>
+
                     <div class="status-detail">
+                        <p class="label-rincian">Rincian Tagihan:</p>
                         ${detailHtml}
                     </div>
+
                     <div class="status-footer">
                         <div>
                             ${tombolAksi}
                         </div>
-                        <strong class="status-price">${rupiah(item.total)}</strong>
+                        <div class="total-box">
+                            <span>Total Bayar:</span>
+                            <strong class="status-price">${rupiah(item.total)}</strong>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1006,8 +1032,8 @@ async function loadStatusPembayaranDenganTombol() {
 
         lucide.createIcons();
 
-    } catch(err) {
-        console.error(err);
+    } catch (err) {
+        console.error("Error load status:", err);
     }
 }
 
