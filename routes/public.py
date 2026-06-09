@@ -163,7 +163,9 @@ def tagihan_spp():
             # DATA SUDAH BAYAR
             # =========================
             lunas = d.execute("""
-                SELECT bulan, tahun
+                SELECT 
+                    CAST(bulan AS INTEGER) AS bulan,
+                    CAST(tahun AS INTEGER) AS tahun
                 FROM pembayaran
                 WHERE nisn = %s
                 AND jenis = 'SPP'
@@ -195,7 +197,9 @@ def tagihan_spp():
             lunas_set = set()
 
             for r in lunas:
-                lunas_set.add((r["bulan"], r["tahun"]))
+                if r["bulan"] is None or r["tahun"] is None:
+                    continue
+                lunas_set.add((int(r["bulan"]), int(r["tahun"])))
 
             for c in cart_rows:
                 lunas_set.add((c["bulan"], c["tahun"]))
