@@ -750,7 +750,9 @@ def status_pembayaran():
                 "total": r["total"],
                 "detail": r["detail"],
                 "status": r["status"],
-                "tanggal": tanggal
+                "tanggal": tanggal,
+                "kode_pembayaran": r["kode_pembayaran"],
+                "expired_at": r["expired_at"].strftime("%Y-%m-%d %H:%M:%S") if r["expired_at"] else ""
             })
 
         return jsonify(result)

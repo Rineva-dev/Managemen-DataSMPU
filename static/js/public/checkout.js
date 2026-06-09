@@ -903,7 +903,7 @@ function pindahKeTabStatus() {
     document.querySelector('[data-tab="status"]').classList.add("active");
     document.getElementById("tab-status").classList.add("active");
 
-    loadStatusPembayaran();
+    loadStatusPembayaranDenganTombol();
     loadRiwayatPembayaran();
     loadCart();
 }
@@ -1053,5 +1053,5 @@ document.addEventListener("click", function(e) {
 
 loadBiodataSiswa();
 loadCart();
-loadStatusPembayaran();
+loadStatusPembayaranDenganTombol();
 loadRiwayatPembayaran();
