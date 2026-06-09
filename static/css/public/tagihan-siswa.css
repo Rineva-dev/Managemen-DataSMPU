@@ -2191,3 +2191,27 @@ body{
         text-align: center;
     }
 }
+
+/* Tombol Lihat Kode */
+.btn-lihat-kode {
+    background: #165DFF;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.btn-lihat-kode:hover {
+    background: #0F48C9;
+}
+.status-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}

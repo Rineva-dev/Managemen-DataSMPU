@@ -715,17 +715,20 @@ def status_pembayaran():
             rows = d.execute("""
                 SELECT
                     id,
+                    siswa_id,
                     metode,
                     total,
                     detail,
                     status,
-                    created_at
+                    created_at as tanggal,
+                             kode_pembayaran, expired_at
                 FROM pembayaran_pending
                 WHERE siswa_id = %s
                 AND status IN (
                         'MENUNGGU',
                         'MENUNGGU VERIFIKASI',
-                        'PENDING'
+                        'PENDING',
+                        'MENUNGGU PEMBAYARAN'
                 )
                 ORDER BY created_at DESC
             """, (siswa_id,)).fetchall()

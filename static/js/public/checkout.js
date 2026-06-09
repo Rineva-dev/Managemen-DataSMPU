@@ -927,6 +927,130 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+// ==============================================
+// TAMBAHAN: PERBAIKAN STATUS & BUKA KEMBALI VA/QRIS
+// ==============================================
+
+// Fungsi ini akan kita panggil ulang untuk merender status dengan tombol baru
+async function loadStatusPembayaranDenganTombol() {
+    const statusList = document.getElementById("status-list");
+
+    try {
+        const res = await fetch(`/public/status-pembayaran?siswa_id=${siswaId}`);
+        const data = await res.json();
+
+        if (!data.length) {
+            statusList.innerHTML = `
+                <div class="cart-empty">
+                    <i data-lucide="clock-3"></i>
+                    <p>Belum Ada Transaksi Pembayaran</p>
+                </div>
+            `;
+            lucide.createIcons();
+            return;
+        }
+
+        // === UBAH RENDER AGAR ADA TOMBOL "LIHAT KODE" KHUSUS VA/QRIS ===
+        statusList.innerHTML = data.map(item => {
+            let detailHtml = "";
+            try {
+                const details = JSON.parse(item.detail || "[]");
+                detailHtml = details.map(d => `
+                    <div class="status-detail-item">
+                        <span>- ${formatNamaTagihan(d)}</span>
+                        <span>${rupiah(d.nominal)}</span>
+                    </div>
+                `).join("");
+            } catch(e) { console.error(e); }
+
+            // === TAMPILKAN TOMBOL JIKA METODE VA / QRIS & MASIH BERLAKU ===
+            let tombolAksi = "";
+            if( (item.metode === "VA" || item.metode === "QRIS") && item.status === "MENUNGGU PEMBAYARAN" ) {
+                // Simpan data kode & expired di tombol pakai atribut data-*
+                tombolAksi = `
+                    <button 
+                        class="btn-lihat-kode" 
+                        data-kode="${item.kode_pembayaran || ''}" 
+                        data-jenis="${item.metode}" 
+                        data-expired="${item.expired_at || ''}"
+                        data-qr="${item.qr_image || ''}">
+                        <i data-lucide="eye"></i> Lihat Kode Pembayaran
+                    </button>
+                `;
+            }
+
+            return `
+                <div class="status-item">
+                    <div class="status-header">
+                        <div class="title-status">
+                            <strong class="status-title">${item.metode}</strong>
+                            <small class="status-date">${item.tanggal}</small>
+                        </div>
+                        <div class="status-badge ${item.status === 'MENUNGGU PEMBAYARAN' ? 'pending' : 'verified'}">
+                            ${item.status}
+                        </div>
+                    </div>
+                    <div class="status-detail">
+                        ${detailHtml}
+                    </div>
+                    <div class="status-footer">
+                        <div>
+                            ${tombolAksi}
+                        </div>
+                        <strong class="status-price">${rupiah(item.total)}</strong>
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+        lucide.createIcons();
+
+    } catch(err) {
+        console.error(err);
+    }
+}
+
+// === FUNGSI: BUKA KEMBALI MODAL DARI TOMBOL STATUS ===
+document.addEventListener("click", function(e) {
+    const btn = e.target.closest(".btn-lihat-kode");
+    if(!btn) return;
+
+    const kode = btn.dataset.kode;
+    const jenis = btn.dataset.jenis;
+    const expired = btn.dataset.expired;
+    const qr = btn.dataset.qr;
+
+    const paymentDetailModal = document.getElementById("payment-detail-modal");
+    const vaContent = document.getElementById("va-content");
+    const qrisContent = document.getElementById("qris-content");
+    const detailTitle = document.getElementById("detail-title");
+
+    // Tampilkan modal
+    paymentDetailModal.style.display = "flex";
+    vaContent.style.display = "none";
+    qrisContent.style.display = "none";
+
+    if(jenis === "VA") {
+        detailTitle.innerText = 'Nomor Virtual Account';
+        document.getElementById('va-number').innerText = kode;
+        vaContent.style.display = "block";
+        // Mulai hitung mundur ulang
+        mulaiHitungMundur(expired, 'expired-time');
+
+        // Salin ulang
+        document.getElementById('copy-va').onclick = () => {
+            navigator.clipboard.writeText(kode);
+            alert('Nomor VA disalin!');
+        };
+
+    } else if(jenis === "QRIS") {
+        detailTitle.innerText = 'Kode QRIS';
+        document.getElementById('qris-image').src = qr;
+        qrisContent.style.display = "block";
+        mulaiHitungMundur(expired, 'qris-expired-time');
+    }
+});
+
 loadBiodataSiswa();
 loadCart();
 loadStatusPembayaran();
