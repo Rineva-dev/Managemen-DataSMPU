@@ -1069,6 +1069,7 @@ document.addEventListener("click", function(e) {
     const vaContent = document.getElementById("va-content");
     const qrisContent = document.getElementById("qris-content");
     const detailTitle = document.getElementById("detail-title");
+    const qrisImageEl = document.getElementById("qris-image")
 
     // Tampilkan modal
     paymentDetailModal.style.display = "flex";

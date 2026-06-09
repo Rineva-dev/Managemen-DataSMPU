@@ -722,6 +722,7 @@ def status_pembayaran():
                     status,
                     created_at,
                     kode_pembayaran, 
+                    qr_image,
                     expired_at
                 FROM pembayaran_pending
                 WHERE siswa_id = %s
@@ -757,6 +758,7 @@ def status_pembayaran():
                 "status": r["status"],
                 "tanggal": tanggal,
                 "kode_pembayaran": r["kode_pembayaran"] if r["kode_pembayaran"] else "",
+                "qr_image": r["qr_image"] if r["qr_image"] else "",
                 "expired_at": expired_at_formatted
             })
 
@@ -1113,7 +1115,7 @@ def generate_pembayaran():
             d.execute("""
                 INSERT INTO pembayaran_pending (
                     siswa_id, metode, total, detail, status, 
-                    kode_pembayaran, expired_at, created_at
+                    kode_pembayaran, qr_image, expired_at, created_at
                 ) VALUES (%s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
             """, (
                 siswa_id,
@@ -1122,6 +1124,7 @@ def generate_pembayaran():
                 detail,      # ✅ JSON asli lengkap
                 "MENUNGGU PEMBAYARAN",
                 kode_unik,
+                qr_image,
                 expired_at
             ))
 
