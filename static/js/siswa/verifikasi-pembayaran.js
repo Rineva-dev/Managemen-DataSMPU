@@ -76,7 +76,7 @@ function renderTable(data) {
     tableBody.innerHTML = data.map((item, index) => {
 
         let buktiUrl =
-            `/static/uploads/bukti/${item.bukti}`;
+            `/static/uploads/transfer/${item.bukti}`;
 
         return `
             <tr>
