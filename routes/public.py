@@ -128,7 +128,6 @@ def tagihan_spp():
             except:
                 return jsonify([])
 
-            # bulan pertama SPP
             start = date(tahun_masuk, 7, 1)
 
             # ===== HITUNG BATAS AKHIR =====
