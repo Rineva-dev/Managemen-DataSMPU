@@ -377,8 +377,8 @@ document
             .textContent = rupiah(cartTotalValue);
 
         transferModal.style.display = "flex";
-    } else {
-        alert("Metode ini akan diaktifkan selanjutnya");
+    } else if (method === "va" || method === "qris") {
+        prosesPembayaranOtomatis(method);
     }
 });
 
@@ -772,6 +772,160 @@ async function loadRiwayatPembayaran() {
         console.error(err);
     }
 }
+
+// ==============================================
+// ========== TAMBAHAN FITUR VA & QRIS =========
+// ==============================================
+
+let countdownTimer;
+
+// --- FUNGSI UTAMA: PROSES PEMBAYARAN OTOMATIS ---
+async function prosesPembayaranOtomatis(metode) {
+    // Ambil elemen modal
+    const paymentDetailModal = document.getElementById("payment-detail-modal");
+    const vaContent = document.getElementById("va-content");
+    const qrisContent = document.getElementById("qris-content");
+    const detailTitle = document.getElementById("detail-title");
+
+    // Tampilkan modal baru
+    paymentDetailModal.style.display = "flex";
+
+    // Sembunyikan konten VA & QRIS terlebih dahulu
+    vaContent.style.display = "none";
+    qrisContent.style.display = "none";
+
+    // Siapkan data yang dikirim ke Backend
+    const formData = new FormData();
+    formData.append("siswa_id", siswaId);
+    formData.append("total", cartTotalValue);
+    formData.append("metode", metode.toUpperCase()); // Kirim 'VA' atau 'QRIS'
+    formData.append(
+        "detail",
+        JSON.stringify(cart.map(item => ({
+            cart_id: item.id,
+            jenis: item.jenis,
+            bulan: item.bulan,
+            tahun: item.tahun,
+            nominal: item.nominal
+        })))
+    );
+
+    try {
+        // Panggil API Generate Pembayaran
+        const res = await fetch("/public/generate-pembayaran", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": csrfToken
+            },
+            body: formData
+        });
+
+        const result = await res.json();
+
+        if (!result.success) {
+            alert("Gagal membuat pembayaran: " + result.error);
+            paymentDetailModal.style.display = "none";
+            return;
+        }
+
+        const data = result.data;
+
+        // === TAMPILKAN DATA SESUAI JENIS ===
+        if (metode === 'va') {
+            // Tampilan VA
+            detailTitle.innerText = 'Nomor Virtual Account';
+            document.getElementById('va-number').innerText = data.kode;
+            vaContent.style.display = 'block';
+
+            // Fungsi Salin Nomor VA
+            document.getElementById('copy-va').onclick = () => {
+                navigator.clipboard.writeText(data.kode);
+                alert('Nomor VA berhasil disalin!');
+            };
+
+            // Mulai hitung mundur
+            mulaiHitungMundur(data.expired, 'expired-time');
+
+        } else if (metode === 'qris') {
+            // Tampilan QRIS
+            detailTitle.innerText = 'Kode QRIS';
+            document.getElementById('qris-image').src = data.qr_image;
+            qrisContent.style.display = 'block';
+
+            // Mulai hitung mundur
+            mulaiHitungMundur(data.expired, 'qris-expired-time');
+        }
+
+        // Pindah ke Tab Status Pembayaran
+        pindahKeTabStatus();
+
+    } catch (err) {
+        alert("Terjadi kesalahan koneksi, coba lagi.");
+        paymentDetailModal.style.display = "none";
+        console.error("Error:", err);
+    }
+}
+
+function mulaiHitungMundur(waktuKadaluarsa, elementId) {
+    let waktuAkhir = new Date(waktuKadaluarsa).getTime();
+
+    if (countdownTimer) clearInterval(countdownTimer);
+
+    countdownTimer = setInterval(() => {
+        let sekarang = new Date().getTime();
+        let selisih = waktuAkhir - sekarang;
+
+        if (selisih < 0) {
+            clearInterval(countdownTimer);
+            document.getElementById(elementId).innerText = "Waktu Habis";
+            alert("Waktu pembayaran telah habis! Silakan buat ulang transaksi.");
+            return;
+        }
+
+        let jam = Math.floor((selisih % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let menit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
+        let detik = Math.floor((selisih % (1000 * 60)) / 1000);
+
+        jam = String(jam).padStart(2, '0');
+        menit = String(menit).padStart(2, '0');
+        detik = String(detik).padStart(2, '0');
+
+        document.getElementById(elementId).innerText = `${jam}:${menit}:${detik}`;
+    }, 1000);
+}
+
+
+function pindahKeTabStatus() {
+
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+
+    document.querySelector('[data-tab="status"]').classList.add("active");
+    document.getElementById("tab-status").classList.add("active");
+
+    loadStatusPembayaran();
+    loadRiwayatPembayaran();
+    loadCart();
+}
+
+function tutupModalVaQris() {
+    const paymentDetailModal = document.getElementById("payment-detail-modal");
+    paymentDetailModal.style.display = "none";
+    if (countdownTimer) clearInterval(countdownTimer);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const btnCloseDetail = document.getElementById("close-detail-modal");
+    const btnBackToMethod = document.getElementById("back-to-method");
+
+    if (btnCloseDetail) btnCloseDetail.addEventListener("click", tutupModalVaQris);
+    if (btnBackToMethod) {
+        btnBackToMethod.addEventListener("click", () => {
+            tutupModalVaQris();
+            document.getElementById("payment-modal").style.display = "flex";
+        });
+    }
+});
 
 loadBiodataSiswa();
 loadCart();

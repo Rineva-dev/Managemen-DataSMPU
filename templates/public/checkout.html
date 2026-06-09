@@ -415,6 +415,68 @@
 
 </div>
 
+<!-- ============================= -->
+<!-- MODAL PEMBAYARAN VA / QRIS -->
+<!-- ============================= -->
+<div class="modal-overlay" id="payment-detail-modal">
+
+    <div class="payment-detail-modal">
+
+        <!-- HEADER -->
+        <div class="payment-detail-header">
+            <h3 id="detail-title">Nomor Virtual Account</h3>
+            <button class="modal-close" id="close-detail-modal">&times;</button>
+        </div>
+
+        <!-- KONTEN VA -->
+        <div class="payment-content" id="va-content" style="display: none;">
+            <p class="info-text">Silakan bayar menggunakan Virtual Account di bawah ini sebelum waktu habis:</p>
+            
+            <div class="code-box">
+                <span id="va-number">8808 1234 5678 9012</span>
+                <button class="copy-btn" id="copy-va">Salin</button>
+            </div>
+
+            <div class="countdown-box">
+                <i data-lucide="clock"></i>
+                <p>Batas Waktu: <strong id="expired-time">23:59:59</strong></p>
+            </div>
+
+            <div class="instruksi-box">
+                <h4>Cara Pembayaran:</h4>
+                <ol>
+                    <li>Buka Aplikasi / ATM Bank</li>
+                    <li>Pilih Menu Transfer ke Virtual Account</li>
+                    <li>Masukkan nomor di atas</li>
+                    <li>Konfirmasi jumlah pembayaran sesuai tagihan</li>
+                    <li>Selesai, status akan berubah otomatis</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- KONTEN QRIS -->
+        <div class="payment-content" id="qris-content" style="display: none;">
+            <p class="info-text">Scan kode QR di bawah ini menggunakan aplikasi M-Banking / E-Wallet:</p>
+            
+            <div class="qris-box">
+                <img id="qris-image" src="" alt="QRIS Code" />
+            </div>
+
+            <div class="countdown-box">
+                <i data-lucide="clock"></i>
+                <p>Batas Waktu Pembayaran: <strong id="qris-expired-time">23:59:59</strong></p>
+            </div>
+        </div>
+
+        <!-- TOMBOL KEMBALI -->
+        <button class="btn-back" id="back-to-method">
+            Ubah Metode Pembayaran
+        </button>
+
+    </div>
+
+</div>
+
 <footer class="site-footer">
 
     <div class="footer-container">
