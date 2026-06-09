@@ -76,7 +76,7 @@ function renderTable(data) {
     tableBody.innerHTML = data.map((item, index) => {
 
         const buktiUrl = item.bukti
-            ? `/static/uploads/bukti/${item.bukti}`
+            ? `${window.location.origin}/static/uploads/bukti/${item.bukti}`
             : "#";
 
         return `
