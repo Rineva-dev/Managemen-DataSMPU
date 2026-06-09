@@ -12,7 +12,7 @@ verifikasi_bp = Blueprint("verifikasi", __name__,)
 def verifikasi_pembayaran_page():
 
     return render_template(
-        "verifikasi-pembayaran.html"
+        "siswa/verifikasi-pembayaran.html"
     )
 
 @verifikasi_bp.route("/verifikasi-pembayaran/list")
