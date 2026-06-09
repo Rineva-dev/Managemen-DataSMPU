@@ -266,58 +266,43 @@ if (navKontak && footerKontak) {
 }
 
 // ==============================
-// PAYMENT MODAL
+// PAYMENT & TRANSFER MODAL
 // ==============================
 
-const paymentModal = document.getElementById("payment-modal");
-const btnCheckout = document.querySelector(".btn-checkout");
-const btnCloseModal = document.getElementById("close-payment-modal");
-const modalTotal = document.getElementById("modal-total");
+const paymentModal  = document.getElementById("payment-modal");
+const transferModal = document.getElementById("transfer-modal");
 
-// Buka modal
+const btnCheckout   = document.querySelector(".btn-checkout");
+const btnCloseModal = document.getElementById("close-payment-modal");
+const modalTotal    = document.getElementById("modal-total");
+
+// buka modal metode
 btnCheckout.addEventListener("click", () => {
     paymentModal.style.display = "flex";
-    modalTotal.textContent = document.getElementById("cart-total").textContent;
+    modalTotal.textContent =
+        document.getElementById("cart-total").textContent;
 });
 
-// Tutup modal
+// tutup modal metode
 btnCloseModal.addEventListener("click", () => {
     paymentModal.style.display = "none";
 });
 
-// Select method UI
+// pilih metode (UI)
 document.querySelectorAll(".payment-method").forEach(method => {
     method.addEventListener("click", () => {
-        document.querySelectorAll(".payment-method")
+        document
+            .querySelectorAll(".payment-method")
             .forEach(m => m.classList.remove("active"));
+
         method.classList.add("active");
         method.querySelector("input").checked = true;
     });
 });
 
-// Konfirmasi pembayaran
-document.getElementById("confirm-payment")
-.addEventListener("click", () => {
-
-    const selectedMethod =
-        document.querySelector('input[name="payment_method"]:checked').value;
-
-    console.log("Metode dipilih:", selectedMethod);
-
-    // next step:
-    // redirect / request backend
-});
-
-const paymentModal = document.getElementById("payment-modal");
-const transferModal = document.getElementById("transfer-modal");
-
-document.querySelector(".btn-checkout")
-.addEventListener("click", () => {
-    paymentModal.style.display = "flex";
-});
-
-// lanjutkan pembayaran
-document.getElementById("confirm-payment")
+// lanjut pembayaran
+document
+.getElementById("confirm-payment")
 .addEventListener("click", () => {
 
     const method =
@@ -327,18 +312,20 @@ document.getElementById("confirm-payment")
 
     paymentModal.style.display = "none";
 
-    if(method === "transfer"){
+    if (method === "transfer") {
         transferModal.style.display = "flex";
     } else {
         alert("Metode ini akan diaktifkan selanjutnya");
     }
 });
 
-// close modal
-document.getElementById("close-transfer-modal")
+// tutup modal transfer
+document
+.getElementById("close-transfer-modal")
 .addEventListener("click", () => {
     transferModal.style.display = "none";
 });
+
 
 // ===============================
 // PROFILE DROPDOWN TOGGLE
