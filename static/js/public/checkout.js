@@ -147,6 +147,7 @@ function renderCart() {
         cartEmpty.style.display = "flex";
 
         cartTotal.textContent = "Rp0";
+        cartTotalValue = 0;
 
         return;
     }
@@ -195,7 +196,7 @@ function renderCart() {
 
         cartItems.appendChild(div);
     });
-
+    cartTotalValue = total;
     cartTotal.textContent = rupiah(total);
 
     lucide.createIcons();
@@ -279,8 +280,7 @@ const modalTotal    = document.getElementById("modal-total");
 // buka modal metode
 btnCheckout.addEventListener("click", () => {
     paymentModal.style.display = "flex";
-    modalTotal.textContent =
-        document.getElementById("cart-total").textContent;
+    modalTotal.textContent = rupiah(cartTotalValue);
 });
 
 // tutup modal metode
