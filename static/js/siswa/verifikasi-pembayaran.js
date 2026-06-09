@@ -221,17 +221,47 @@ document.addEventListener(
 
         if (btnReject) {
 
-            const id =
-                btnReject.dataset.id;
+            const id = btnReject.dataset.id;
 
-            alert(
-                "Reject pembayaran ID " + id
-            );
+            rejectPembayaran(id);
 
             return;
         }
     }
 );
+
+async function rejectPembayaran(id) {
+
+    try {
+
+        const res = await fetch("/verifikasi-pembayaran/reject", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({ id })
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+
+            alert("Pembayaran ditolak");
+
+            loadVerifikasiPembayaran(); // refresh tabel
+
+        } else {
+
+            alert(result.error || "Gagal reject");
+        }
+
+    } catch (err) {
+
+        console.error(err);
+        alert("Terjadi kesalahan server");
+    }
+}
 
 // ======================================
 // INIT

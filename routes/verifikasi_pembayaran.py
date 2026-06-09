@@ -84,3 +84,38 @@ def verifikasi_pembayaran_list():
         traceback.print_exc()
 
         return jsonify([])
+    
+@verifikasi_bp.route("/verifikasi-pembayaran/reject", methods=["POST"])
+def reject_pembayaran():
+
+    data = request.json
+    pembayaran_id = data.get("id")
+
+    if not pembayaran_id:
+        return jsonify({
+            "success": False,
+            "error": "ID tidak valid"
+        }), 400
+
+    try:
+        with db() as d:
+
+            d.execute("""
+                UPDATE pembayaran_pending
+                SET status = 'DITOLAK'
+                WHERE id = %s
+            """, (pembayaran_id,))
+
+        return jsonify({
+            "success": True
+        })
+
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc()
+
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
