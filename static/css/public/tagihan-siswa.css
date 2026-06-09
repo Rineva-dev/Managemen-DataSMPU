@@ -113,6 +113,7 @@ body{
     color:var(--text);
     font-weight:600;
     transition:.2s;
+    text-wrap: nowrap;
 }
 
 .market-menu a:hover{
