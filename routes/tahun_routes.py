@@ -108,8 +108,17 @@ def get_tahun_pelajaran():
             "id": row["id"],
             "tahun_pelajaran": row["tahun_pelajaran"],
             "semester": row["semester"],
-            "semester_mulai": row["semester_mulai"],
-            "semester_akhir": row["semester_akhir"],
+            "semester_mulai": (
+                row["semester_mulai"].isoformat()
+                if hasattr(row["semester_mulai"], "isoformat")
+                else str(row["semester_mulai"])
+            ),
+
+            "semester_akhir": (
+                row["semester_akhir"].isoformat()
+                if hasattr(row["semester_akhir"], "isoformat")
+                else str(row["semester_akhir"])
+            ),
             "updated_at": row["updated_at"],
             "updated_by": row["updated_by"],
             "status": status
