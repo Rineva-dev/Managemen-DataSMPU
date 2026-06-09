@@ -25,7 +25,10 @@ def tambah_tahun_pelajaran():
     if not all([tahun_pelajaran, semester, semester_mulai, semester_akhir]):
         return jsonify({"error": "Semua field wajib diisi"}), 400
 
-    if semester_akhir < semester_mulai:
+    mulai = datetime.fromisoformat(semester_mulai).date()
+    akhir = datetime.fromisoformat(semester_akhir).date()
+
+    if akhir < mulai:
         return jsonify({"error": "Tanggal akhir tidak valid"}), 400
 
     with db() as d:
@@ -83,8 +86,15 @@ def get_tahun_pelajaran():
 
     for row in rows:
 
-        mulai = datetime.strptime(row["semester_mulai"], "%Y-%m-%d").date()
-        akhir = datetime.strptime(row["semester_akhir"], "%Y-%m-%d").date()
+        mulai = row["semester_mulai"]
+        akhir = row["semester_akhir"]
+
+        # kalau string → ubah ke date
+        if isinstance(mulai, str):
+            mulai = datetime.fromisoformat(mulai).date()
+
+        if isinstance(akhir, str):
+            akhir = datetime.fromisoformat(akhir).date()
 
         # 🔥 Hitung status otomatis
         if today < mulai:
@@ -124,8 +134,14 @@ def delete_tahun_pelajaran(id):
         if not row:
             return jsonify({"error": "Data tidak ditemukan"}), 404
 
-        mulai = datetime.strptime(row["semester_mulai"], "%Y-%m-%d").date()
-        akhir = datetime.strptime(row["semester_akhir"], "%Y-%m-%d").date()
+        mulai = row["semester_mulai"]
+        akhir = row["semester_akhir"]
+
+        if isinstance(mulai, str):
+            mulai = datetime.fromisoformat(mulai).date()
+
+        if isinstance(akhir, str):
+            akhir = datetime.fromisoformat(akhir).date()
 
         if mulai <= today <= akhir:
             return jsonify({
@@ -182,6 +198,12 @@ def update_tahun_pelajaran(id):
 
             old_mulai = old["semester_mulai"]
             old_akhir = old["semester_akhir"]
+
+            if isinstance(old_mulai, str):
+                old_mulai = datetime.fromisoformat(old_mulai).date()
+
+            if isinstance(old_akhir, str):
+                old_akhir = datetime.fromisoformat(old_akhir).date()
 
             # 🔥 Update data
             d.execute("""
