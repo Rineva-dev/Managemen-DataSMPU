@@ -26,7 +26,7 @@ async function loadVerifikasiPembayaran() {
     try {
 
         const res = await fetch(
-            "/admin/verifikasi-pembayaran/list"
+            "/verifikasi-pembayaran/list"
         );
 
         const data = await res.json();
