@@ -408,6 +408,11 @@ document
     formData.append("metode", "Transfer Bank");
     formData.append("bukti", file);
 
+    formData.append(
+        "detail",
+        JSON.stringify(cart)
+    );
+
     const res = await fetch("/public/upload-pembayaran", {
         method: "POST",
 
@@ -515,35 +520,75 @@ async function loadStatusPembayaran() {
             return;
         }
 
-        statusList.innerHTML = data.map(item => `
-            <div class="status-item">
+        statusList.innerHTML = data.map(item => {
 
-                <div class="status-left">
+            let detailHtml = "";
 
-                    <strong class="status-title">
-                        ${item.metode}
-                    </strong>
+            try {
 
-                    <small class="status-date">
-                        ${item.tanggal}
-                    </small>
+                const details =
+                    JSON.parse(item.detail || "[]");
 
-                </div>
+                detailHtml = details.map(d => `
+                    <div class="status-detail-item">
 
-                <div class="status-right">
+                        <span>
+                            - ${d.nama}
+                        </span>
 
-                    <strong class="status-price">
-                        ${rupiah(item.total)}
-                    </strong>
+                        <span>
+                            ${rupiah(d.nominal)}
+                        </span>
 
-                    <div class="status-badge pending">
-                        ${item.status}
+                    </div>
+                `).join("");
+
+            } catch(e) {
+
+                console.error(e);
+            }
+
+            return `
+                <div class="status-item">
+
+                    <div class="status-header">
+
+                        <div>
+
+                            <strong class="status-title">
+                                ${item.metode}
+                            </strong>
+
+                        </div>
+
+                        <div class="status-badge pending">
+                            ${item.status}
+                        </div>
+
+                    </div>
+
+                    <div class="status-detail">
+
+                        ${detailHtml}
+
+                    </div>
+
+                    <div class="status-footer">
+
+                        <small class="status-date">
+                            ${item.tanggal}
+                        </small>
+
+                        <strong class="status-price">
+                            Total ${rupiah(item.total)}
+                        </strong>
+
                     </div>
 
                 </div>
+            `;
 
-            </div>
-        `).join("");
+        }).join("");
 
         lucide.createIcons();
 
@@ -552,5 +597,4 @@ async function loadStatusPembayaran() {
         console.error(err);
     }
 }
-
 loadStatusPembayaran();

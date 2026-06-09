@@ -416,7 +416,7 @@ def upload_pembayaran():
         siswa_id = request.form.get("siswa_id")
         total = request.form.get("total")
         metode = request.form.get("metode")
-
+        detail = request.form.get("detail")
         file = request.files.get("bukti")
 
         print("FORM:", request.form)
@@ -474,6 +474,7 @@ def upload_pembayaran():
                     siswa_id,
                     metode,
                     total,
+                    detail,
                     bukti,
                     status
                 )
@@ -482,6 +483,7 @@ def upload_pembayaran():
                 siswa_id,
                 metode,
                 total,
+                detail,
                 filename,
                 "MENUNGGU VERIFIKASI"
             ))
@@ -581,6 +583,7 @@ def status_pembayaran():
                     id,
                     metode,
                     total,
+                    detail,
                     status,
                     created_at
                 FROM pembayaran_pending
@@ -603,6 +606,7 @@ def status_pembayaran():
                 "id": r["id"],
                 "metode": r["metode"],
                 "total": r["total"],
+                "detail": r["detail"],
                 "status": r["status"],
                 "tanggal": tanggal
             })

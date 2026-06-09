@@ -1648,12 +1648,10 @@ body{
 .payment-tabs{
     width:100%;
     max-width:900px;
-    margin:24px auto 0;
-    padding:0 20px;
+    margin:6px auto 0;
     display:flex;
     align-items:center;
     border-bottom:1px solid #e5e7eb;
-    background:#fff;
 }
 
 .tab-btn{
@@ -1771,19 +1769,11 @@ body{
 
 .status-item,
 .history-item{
-    background:#ffffff;
-
-    border:1px solid #eef2f7;
-    border-radius:18px;
-
     padding:18px 20px;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     margin-bottom:14px;
-
     transition:.2s;
 }
 
@@ -1889,16 +1879,6 @@ body{
    STATUS ITEM
 ========================= */
 
-.status-item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:18px 0;
-
-    border-bottom:1px solid #eef2f7;
-}
-
 .status-left{
     display:flex;
     flex-direction:column;
@@ -1942,4 +1922,31 @@ body{
 .status-badge.pending{
     background:#fff7db;
     color:#b45309;
+}
+
+.status-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.status-detail{
+    border-top:1px dashed #ddd;
+    border-bottom:1px dashed #ddd;
+    padding:12px 0;
+    margin:12px 0;
+}
+
+.status-detail-item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+    font-size:14px;
+}
+
+.status-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
