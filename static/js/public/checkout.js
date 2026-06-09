@@ -230,8 +230,9 @@ function renderCart() {
 
 function formatNamaTagihan(item) {
 
-    if (item.jenis === "SPP") {
+    const jenis = (item.jenis || "").toUpperCase();
 
+    if (jenis === "SPP") {
         const bulanNama = new Date(
             item.tahun,
             item.bulan - 1
@@ -242,11 +243,11 @@ function formatNamaTagihan(item) {
         return `SPP ${bulanNama} ${item.tahun}`;
     }
 
-    if (item.jenis.includes("PEMBANGUNAN")) {
+    if (jenis.includes("PEMBANGUNAN")) {
         return "Biaya Pembangunan";
     }
 
-    return item.jenis;
+    return item.jenis || "-";
 }
 
 document.addEventListener("click", async function(e) {
@@ -459,7 +460,13 @@ document
 
     formData.append(
         "detail",
-        JSON.stringify(cart)
+        JSON.stringify(cart.map(item => ({
+            cart_id: item.id,
+            jenis: item.jenis,
+            bulan: item.bulan,
+            tahun: item.tahun,
+            nominal: item.nominal
+        })))
     );
 
     const res = await fetch("/public/upload-pembayaran", {

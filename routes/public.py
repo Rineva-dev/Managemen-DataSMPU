@@ -886,7 +886,7 @@ def cart_list():
                     status
                 FROM cart_pembayaran
                 WHERE siswa_id = %s
-                  AND status IN ('CART', 'PENDING')
+                AND status = 'CART'
                 ORDER BY created_at DESC
             """, (siswa_id,)).fetchall()
 
