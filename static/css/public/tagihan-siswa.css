@@ -1923,13 +1923,6 @@ body{
     color:#b45309;
 }
 
-.status-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:12px;
-}
-
 .status-detail{
     border-top:1px dashed #ddd;
     border-bottom:1px dashed #ddd;
@@ -1942,12 +1935,6 @@ body{
     justify-content:space-between;
     margin-bottom:8px;
     font-size:14px;
-}
-
-.status-footer{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
 }
 
 .status-header{
@@ -1982,7 +1969,7 @@ body{
     justify-content:space-between;
     align-items:center;
     gap:16px;
-
+    padding: 0 0 0 10px;
     font-size:14px;
 }
 

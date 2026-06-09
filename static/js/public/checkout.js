@@ -533,7 +533,7 @@ async function loadStatusPembayaran() {
                     <div class="status-detail-item">
 
                         <span>
-                            - ${d.nama}
+                            -   ${d.nama}
                         </span>
 
                         <span>
@@ -553,11 +553,15 @@ async function loadStatusPembayaran() {
 
                     <div class="status-header">
 
-                        <div>
+                        <div class=title-status>
 
                             <strong class="status-title">
                                 ${item.metode}
                             </strong>
+
+                            <small class="status-date">
+                                ${item.tanggal}
+                            </small>
 
                         </div>
 
@@ -574,13 +578,11 @@ async function loadStatusPembayaran() {
                     </div>
 
                     <div class="status-footer">
-
-                        <small class="status-date">
-                            ${item.tanggal}
-                        </small>
-
+                        <strong class="footer-title">
+                            Total
+                        </strong>
                         <strong class="status-price">
-                            Total ${rupiah(item.total)}
+                            ${rupiah(item.total)}
                         </strong>
 
                     </div>
