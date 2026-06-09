@@ -44,7 +44,7 @@
                 Cek Tagihan
             </a>
 
-            <a href="#">
+            <a href="#kontak" class="nav-kontak">
                 Kontak
             </a>
 
@@ -200,6 +200,82 @@
     </div>
 
 </div>
+
+<footer class="site-footer">
+
+    <div class="footer-container">
+
+        <!-- BRAND -->
+        <div class="footer-col footer-brand">
+            <img
+                src="{{ url_for('static', filename='img/logo-header.png') }}"
+                alt="Logo Sekolah">
+
+            <p>
+                Portal Pembayaran Online resmi
+                SMP Unggulan Hamzanwadi untuk memudahkan
+                orang tua dan siswa dalam melakukan pembayaran
+                sekolah secara cepat dan aman.
+            </p>
+        </div>
+
+        <!-- ALAMAT -->
+        <div class="footer-col">
+            <h4>Alamat Sekolah</h4>
+            <ul>
+                <li class="alamat">
+                    <i data-lucide="map-pin"></i>
+                    Jln. Dokter Cipto Mangun Kusumo, Sawing
+                    Kel. Majidi Kec. Selong Kab. Lombok Timur,
+                    NTB.
+                </li>
+            </ul>
+        </div>
+
+        <!-- KONTAK -->
+        <div class="footer-col" id="kontak">
+            <h4>Kontak</h4>
+            <ul>
+                <li>
+                    <i data-lucide="mail"></i>
+                    smpu@hamzanwadi.ac.id
+                </li>
+                <li>
+                    <i data-lucide="phone"></i>
+                    +62 819-2983-0033
+                </li>
+            </ul>
+        </div>
+
+        <!-- SOSIAL MEDIA -->
+        <div class="footer-col">
+            <h4>Sosial Media</h4>
+            <div class="footer-social">
+                <a href="https://www.instagram.com/smpunggulan_hamzanwadi"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61573927836810"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <a href="https://youtube.com/@smpunggulanhamzanwadi?si=26sZ2CHj80TDufpB"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 SMP Unggulan Hamzanwadi. All rights reserved.
+    </div>
+
+</footer>
 
 <script src="https://unpkg.com/lucide@latest"></script>
 
