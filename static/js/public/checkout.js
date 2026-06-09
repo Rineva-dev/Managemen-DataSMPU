@@ -477,3 +477,74 @@ document
 
     lucide.createIcons();
 });
+
+async function loadStatusPembayaran() {
+
+    const statusList =
+        document.getElementById("status-list");
+
+    try {
+
+        const res = await fetch(
+            `/public/status-pembayaran?siswa_id=${siswaId}`
+        );
+
+        const data = await res.json();
+
+        if (!data.length) {
+
+            statusList.innerHTML = `
+                <div class="cart-empty">
+
+                    <i data-lucide="clock-3"></i>
+
+                    <p>
+                        Belum Ada Transaksi Pembayaran
+                    </p>
+
+                </div>
+            `;
+
+            lucide.createIcons();
+            return;
+        }
+
+        statusList.innerHTML = data.map(item => `
+            <div class="status-item">
+
+                <div class="status-left">
+
+                    <strong class="status-title">
+                        ${item.metode}
+                    </strong>
+
+                    <small class="status-date">
+                        ${item.tanggal}
+                    </small>
+
+                </div>
+
+                <div class="status-right">
+
+                    <strong class="status-price">
+                        ${rupiah(item.total)}
+                    </strong>
+
+                    <div class="status-badge pending">
+                        ${item.status}
+                    </div>
+
+                </div>
+
+            </div>
+        `).join("");
+
+        lucide.createIcons();
+
+    } catch(err) {
+
+        console.error(err);
+    }
+}
+
+loadStatusPembayaran();

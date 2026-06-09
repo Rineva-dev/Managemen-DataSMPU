@@ -1,6 +1,9 @@
 from flask import Blueprint, render_template, request, abort, jsonify
 from datetime import datetime, date
 from utils.db import db
+from werkzeug.utils import secure_filename
+import os
+import uuid
 
 public_bp = Blueprint(
     "public",
@@ -404,3 +407,102 @@ def siswa_detail():
         return jsonify({
             "error": str(e)
         }), 500
+    
+@public_bp.route("/submit-transfer", methods=["POST"])
+def submit_transfer():
+
+    siswa_id = request.form.get("siswa_id")
+    total = request.form.get("total")
+
+    file = request.files.get("bukti")
+
+    if not siswa_id or not total or not file:
+        return jsonify({
+            "success": False,
+            "message": "Data tidak lengkap"
+        }), 400
+
+    try:
+
+        filename = secure_filename(file.filename)
+
+        ext = filename.split(".")[-1]
+
+        unique_name = f"{uuid.uuid4()}.{ext}"
+
+        upload_path = os.path.join(
+            "static",
+            "uploads",
+            "transfer",
+            unique_name
+        )
+
+        file.save(upload_path)
+
+        with db() as d:
+
+            d.execute("""
+                INSERT INTO pembayaran_public (
+                    siswa_id,
+                    metode,
+                    total,
+                    status,
+                    bukti_transfer
+                )
+                VALUES (%s, %s, %s, %s, %s)
+            """, (
+                siswa_id,
+                "TRANSFER",
+                total,
+                "MENUNGGU",
+                unique_name
+            ))
+
+        return jsonify({
+            "success": True
+        })
+
+    except Exception as e:
+
+        import traceback
+        traceback.print_exc()
+
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        }), 500
+    
+
+@public_bp.route("/status-pembayaran")
+def status_pembayaran():
+
+    siswa_id = request.args.get("siswa_id")
+
+    with db() as d:
+
+        rows = d.execute("""
+            SELECT
+                id,
+                metode,
+                total,
+                status,
+                created_at
+
+            FROM pembayaran_public
+
+            WHERE siswa_id = %s
+              AND status = 'MENUNGGU'
+
+            ORDER BY created_at DESC
+        """, (siswa_id,)).fetchall()
+
+    return jsonify([
+        {
+            "id": r["id"],
+            "metode": r["metode"],
+            "total": r["total"],
+            "status": r["status"],
+            "tanggal": r["created_at"].strftime("%d-%m-%Y %H:%M")
+        }
+        for r in rows
+    ])
