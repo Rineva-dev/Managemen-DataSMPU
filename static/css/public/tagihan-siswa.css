@@ -2245,9 +2245,10 @@ button.btn-lihat-kode svg {
         height: 36px !important;
         border-radius: 0;
         background: none;
-        border: non;
+        border: none;
         padding: 0 !important;
         margin: 0 !important;
+        color: #ffffff
     }
 
     .icon-button i {
