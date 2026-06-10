@@ -923,35 +923,6 @@ body{
     opacity:1;
 }
 
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:1100px){
-
-    .market-layout{
-        grid-template-columns:1fr;
-    }
-
-    .cart-sidebar{
-        position:relative;
-        top:auto;
-    }
-}
-
-@media(max-width:768px){
-
-    .student-banner{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:20px;
-    }
-
-    .bill-grid{
-        grid-template-columns:1fr;
-    }
-}
-
 .checkout-page{
     padding:30px;
     display:flex;
