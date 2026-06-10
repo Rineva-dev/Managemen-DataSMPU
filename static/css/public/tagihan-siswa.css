@@ -2234,62 +2234,51 @@ button.btn-lihat-kode svg {
     display: block;
 }
 
-/* ==========================================
-   PERBAIKAN KHUSUS TAMPILAN HP (≤ 900px)
-   HANYA TAMPIL: Search, Notif, Cart
-========================================== */
 @media (max-width: 900px) {
 
     .market-layout {
         grid-template-columns: 1fr;
-        padding: 15px !important; /* Perkecil padding agar pas */
+        padding: 15px !important;
     }
 
     .market-header {
         width: 100%;
-        padding: 12px 16px !important; /* Padding lebih pas di HP */
+        padding: 12px 16px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
     }
 
-    /* --- SEMBUNYIKAN BAGIAN KIRI: LOGO & MENU --- */
     .market-left {
         display: none !important;
     }
 
-    /* --- ATUR BAGIAN KANAN: HANYA TAMPIL SEARCH, NOTIF, CART --- */
     .market-actions {
         display: flex !important;
         align-items: center !important;
-        justify-content: space-between !important;
+        justify-content: flex-end !important;
         gap: 10px !important;
-        width: 100% !important; /* Penuhi lebar layar */
+        width: 100% !important;
     }
 
-    /* Kolom Pencarian: Lebar fleksibel */
     .market-search {
-        flex: 1 !important; /* Ambil sisa ruang yang ada */
-        min-width: 120px !important;
-        max-width: none !important;
+        flex: 1 1 auto !important;
+        min-width: 100px !important;
+        max-width: 100% !important;
         width: auto !important;
         padding: 8px 12px !important;
         border-radius: 12px !important;
     }
 
-    /* Sembunyikan Profil & Nama Siswa */
-    .profile-wrapper {
-        display: none !important;
-    }
-
-    /* Ikon Notifikasi & Keranjang: Tampilkan & Rapikan */
     .icon-button {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        flex: 0 0 40px !important;
         width: 40px !important;
         height: 40px !important;
         border-radius: 10px !important;
         background: #fff !important;
         border: 1px solid #e5e7eb !important;
         padding: 0 !important;
+        margin: 0 !important;
     }
 
     .icon-button i {
@@ -2297,7 +2286,10 @@ button.btn-lihat-kode svg {
         height: 18px !important;
     }
 
-    /* Perbaikan Banner Siswa di HP */
+    .profile-wrapper {
+        display: none !important;
+    }
+
     .student-banner {
         flex-direction: column !important;
         align-items: flex-start !important;
@@ -2319,13 +2311,11 @@ button.btn-lihat-kode svg {
         justify-content: flex-start !important;
     }
 
-    /* Grid Tagihan jadi 1 kolom */
     .bill-grid {
         grid-template-columns: 1fr !important;
         gap: 15px !important;
     }
 
-    /* Filter jadi bisa gulir */
     .filter-row {
         overflow-x: auto !important;
         flex-wrap: nowrap !important;
@@ -2336,7 +2326,6 @@ button.btn-lihat-kode svg {
         flex-shrink: 0 !important;
     }
 
-    /* Perbaikan jarak footer */
     .footer-container {
         padding: 25px 20px !important;
         gap: 20px !important;
