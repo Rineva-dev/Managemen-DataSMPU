@@ -287,6 +287,27 @@ body{
     .footer-bottom {
         font-size: 10px;
     }
+
+    #siswa-nama {
+        font-size: 18px;
+    }
+
+    #siswa-nisn {
+        font-size: 14px;
+    }
+
+    #siswa-badge {
+        font-size: 14px;
+        padding: 6px 40px;
+        font-weight: 600;
+    }
+
+    .info-box {
+        border-radius: 6px;
+        padding: 8px 16px;
+        display: flex;
+        justify-content: space-between;
+    }
 }
 
 .btn-nav-outline{
@@ -807,6 +828,12 @@ body{
 
 .student-card{
     margin:20px 0 10px;
+    background: none;
+    border-radius: 0;
+    padding: 4px;
+    margin-bottom: 20px;
+    box-shadow: none;
+    border: 0;
 }
 
 .student-header{
