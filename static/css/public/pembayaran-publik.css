@@ -298,15 +298,21 @@ body{
 
     #siswa-badge {
         font-size: 14px;
-        padding: 6px 40px;
+        padding: 6px 20px;
         font-weight: 600;
+        border-radius: 50px;
     }
 
     .info-box {
-        border-radius: 6px;
-        padding: 8px 16px;
+        border-radius: 6px !important;
+        padding: 8px 20px !important;
         display: flex;
         justify-content: space-between;
+        align-items: center;
+    }
+
+    .info-box span {
+        margin-bottom: 0;
     }
 }
 
