@@ -664,6 +664,10 @@ body{
     object-fit: contain;
 }
 
+.hero-img img:hover{
+    transform: scale(1.02);
+}
+
 /* Khusus tampilan HP */
 @media (max-width: 900px) {
     .hero-img {
