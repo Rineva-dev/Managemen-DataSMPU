@@ -1106,7 +1106,7 @@ def generate_pembayaran():
                         UPDATE cart_pembayaran 
                         SET status = 'CHECKED_OUT' 
                         WHERE id = %s 
-                        AND status = 'CART' -- Hanya ubah yang masih CART
+                        AND status = 'CART'
                     """, (cart_id,))
 
             # =========================

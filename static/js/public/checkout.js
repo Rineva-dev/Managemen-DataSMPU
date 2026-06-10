@@ -825,9 +825,13 @@ async function prosesPembayaranOtomatis(metode) {
         const resCart = await fetch(`/public/get-cart?siswa_id=${siswaId}`);
         const dataCart = await resCart.json();
         
-        // ✅ Kembalikan status jadi CART dulu (karena mungkin sudah CHECKED_OUT sebelumnya)
-        // Kita anggap semua item yang ada di sini adalah item yang mau dibayar
-        cart = dataCart.filter(item => item.status === 'CART' || item.status === 'CHECKED_OUT'); 
+        cart = dataCart.filter(item => item.status === 'CART'); 
+
+        if (cart.length === 0) {
+            alert("Tidak ada tagihan baru yang bisa dibayar. Semua tagihan sudah diproses.");
+            paymentDetailModal.style.display = "none";
+            return;
+        }
         
         // Hitung ulang total
         cartTotalValue = cart.reduce((sum, item) => sum + parseInt(item.nominal || 0), 0);
