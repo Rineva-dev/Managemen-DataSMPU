@@ -1071,8 +1071,9 @@ def generate_pembayaran():
                 UPDATE pembayaran_pending 
                 SET status = 'DIBATALKAN' 
                 WHERE siswa_id = %s 
-                  AND status = 'MENUNGGU PEMBAYARAN'
-            """, (siswa_id,))
+                AND status = 'MENUNGGU PEMBAYARAN'
+                AND metode = %s  -- <--- TAMBAHKAN BARIS INI
+            """, (siswa_id, metode))
 
             # =========================
             # 1. BUAT KODE & DATA
@@ -1152,23 +1153,13 @@ def get_cart():
         return jsonify([])
     
     with db() as d:
-        # ✅ PERBAIKAN: Ambil data yang statusnya CART ATAU CHECKED_OUT
-        # Ini supaya saat ganti metode, data masih bisa dibaca
+        # ✅ HANYA ambil barang yang statusnya CART (belum dibayar)
         rows = d.execute("""
             SELECT id, jenis, bulan, tahun, nominal, status 
             FROM cart_pembayaran 
             WHERE siswa_id = %s 
-              AND status IN ('CART', 'CHECKED_OUT') 
+              AND status = 'CART'  -- <--- UBAH DI SINI, JANGAN AMBIL YANG CHECKED_OUT
             ORDER BY created_at DESC
         """, (siswa_id,)).fetchall()
         
-        # ✅ Hanya ambil item unik (hindari duplikat)
-        seen = set()
-        unique_rows = []
-        for r in rows:
-            key = (r["jenis"], r["bulan"], r["tahun"])
-            if key not in seen:
-                seen.add(key)
-                unique_rows.append(dict(r))
-        
-        return jsonify(unique_rows)
+        return jsonify([dict(r) for r in rows])

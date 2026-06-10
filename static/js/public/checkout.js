@@ -822,9 +822,10 @@ async function prosesPembayaranOtomatis(metode) {
     // ==============================================
     try {
         // Ambil data keranjang terbaru langsung dari server sebelum kirim
-        const resCart = await fetch(`/public/get-cart?siswa_id=${siswaId}`);
+        const resCart = await fetch(`/public/cart?siswa_id=${siswaId}`);
         const dataCart = await resCart.json();
-        
+
+        // ✅ HANYA ambil barang yang MASIH di keranjang (belum masuk pembayaran lain)
         cart = dataCart.filter(item => item.status === 'CART'); 
 
         if (cart.length === 0) {
