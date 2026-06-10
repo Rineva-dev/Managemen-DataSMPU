@@ -2221,7 +2221,7 @@ button.btn-lihat-kode svg {
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
-        gap: 10px !important;
+        gap: 2px !important;
         width: 100% !important;
     }
 
@@ -2235,16 +2235,17 @@ button.btn-lihat-kode svg {
     }
 
     .market-search svg {
-        height: 22px
+        min-height: 22px;
+        min-width: 22px;
     }
 
     .icon-button {
         flex: 0 0 40px !important;
-        width: 40px !important;
-        height: 40px !important;
-        border-radius: 10px !important;
-        background: #fff !important;
-        border: 1px solid #e5e7eb !important;
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 0;
+        background: none;
+        border: non;
         padding: 0 !important;
         margin: 0 !important;
     }
