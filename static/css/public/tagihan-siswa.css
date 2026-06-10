@@ -2307,11 +2307,16 @@ button.btn-lihat-kode svg {
         gap: 15px !important;
     }
 
+    .bill-card {
+        border-radius: 12px;
+    }
+
     .filter-row {
         overflow-x: auto !important;
         flex-wrap: nowrap !important;
         padding-bottom: 5px !important;
         gap: 4px;
+        margin-bottom: 10px;
     }
 
     .filter-chip {
@@ -2329,6 +2334,6 @@ button.btn-lihat-kode svg {
     }
 
     .student-info h2 {
-        font-size: 16px;
+        font-size: 20px;
     }
 }
