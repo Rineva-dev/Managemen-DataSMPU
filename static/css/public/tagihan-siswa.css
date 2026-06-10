@@ -2327,4 +2327,8 @@ button.btn-lihat-kode svg {
     .student-status {
         display: none;
     }
+
+    .student-info h2 {
+        font-size: 16px;
+    }
 }
