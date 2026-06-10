@@ -17,12 +17,15 @@
 
 <div class="container">
 
+    <div class="mobile-logo">
+        <img src="{{ url_for('static', filename='img/logo-header.png') }}" alt="Logo Sekolah">
+    </div>
+
     <!-- HEADER -->
     <header class="topbar">
         <div class="topbar-left">
             <img
-                src="{{ url_for('static', filename='img/logo-header.png') }}"
-                alt="Logo">
+                src="{{ url_for('static', filename='img/logo-header.png') }}" alt="Logo">
 
             <nav class="topbar-nav">
 
@@ -39,23 +42,32 @@
             </nav>
         </div>
 
+        <button class="menu-toggle" id="menuToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
         <div class="topbar-actions">
-
-            <a href="#"
-            class="btn-nav-outline">
-
-                Cek Tagihan
-
-            </a>
-
-            <a href="#"
-            class="btn-nav-primary">
-
-                Login
-
-            </a>
-
+            <a href="#" class="btn-nav-outline">Cek Tagihan</a>
+            <a href="#"class="btn-nav-primary">Login</a>
         </div>
+
+        <div class="topbar-menu" id="topbarMenu">
+            <button class="menu-close" id="menuClose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <nav class="topbar-nav">
+                <a href="https://smpuhamzanwadi.sch.id/" target="_blank" rel="noopener noreferrer">Beranda</a>
+                <a href="#kontak" class="nav-kontak">Kontak</a>
+            </nav>
+
+            <div class="topbar-actions">
+                <a href="#" class="btn-nav-outline">Cek Tagihan</a>
+                <a href="#" class="btn-nav-primary">Login</a>
+            </div>
+        </div>
+
+        <div class="menu-overlay" id="menuOverlay"></div>
 
     </header>
 

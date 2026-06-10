@@ -237,3 +237,25 @@ if (navKontak && footerKontak) {
         requestAnimationFrame(animation);
     });
 }
+
+const menuToggle = document.getElementById('menuToggle');
+const menuClose = document.getElementById('menuClose');
+const menuOverlay = document.getElementById('menuOverlay');
+const topbarMenu = document.getElementById('topbarMenu');
+
+// Buka Menu
+menuToggle.addEventListener('click', () => {
+    topbarMenu.classList.add('active');
+    menuOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Kunci layar
+});
+
+// Tutup Menu
+function closeMenu() {
+    topbarMenu.classList.remove('active');
+    menuOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto'; // Buka layar
+}
+
+menuClose.addEventListener('click', closeMenu);
+menuOverlay.addEventListener('click', closeMenu);
