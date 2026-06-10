@@ -549,20 +549,12 @@ body{
 }
 
 .filter-chip{
-    height:42px;
-
-    padding:0 18px;
-
+    padding: 8px 18px;
     border:none;
-
     border-radius:999px;
-
     background:white;
-
     border:1px solid #e5e7eb;
-
     cursor:pointer;
-
     font-weight:600;
 }
 
@@ -2320,6 +2312,7 @@ button.btn-lihat-kode svg {
         overflow-x: auto !important;
         flex-wrap: nowrap !important;
         padding-bottom: 5px !important;
+        gap: 4px;
     }
 
     .filter-chip {
