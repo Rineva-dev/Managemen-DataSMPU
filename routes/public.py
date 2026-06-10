@@ -973,8 +973,7 @@ def delete_cart(cart_id):
         with db() as d:
 
             d.execute("""
-                UPDATE cart_pembayaran
-                SET status = 'CHECKED_OUT'
+                DELETE FROM cart_pembayaran
                 WHERE id = ?
             """, (cart_id,))
 
@@ -988,7 +987,8 @@ def delete_cart(cart_id):
         traceback.print_exc()
 
         return jsonify({
-            "success": False
+            "success": False,
+            "error": str(e)
         }), 500
     
 @public_bp.route("/retry-pembayaran", methods=["POST"])
