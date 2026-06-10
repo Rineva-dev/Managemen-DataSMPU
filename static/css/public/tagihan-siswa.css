@@ -2290,10 +2290,14 @@ button.btn-lihat-kode svg {
         border-radius: 12px;
     }
 
+    .bill-card h3 {
+        font-size: 14px;
+    }
+
     .filter-row {
         overflow-x: auto !important;
         flex-wrap: nowrap !important;
-        padding-bottom: 5px !important;
+        padding-bottom: 10px !important;
         gap: 4px;
         margin-bottom: 10px;
     }
