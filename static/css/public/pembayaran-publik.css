@@ -336,7 +336,7 @@ body{
 ========================= */
 
 .btn-hero-search{
-    margin-top:28px;
+    margin-top:42px;
 
     display:inline-flex;
 
@@ -467,13 +467,14 @@ body{
     line-height:1.1;
     font-weight:800;
     color:#334155;
-    margin-bottom:6px;
+    margin-bottom:42px;
 }
 
 .hero p{
     font-size:17px;
     color:#64748b;
     max-width:100%;
+    line-height: 1.5;
 }
 
 /* RIGHT */
@@ -628,13 +629,6 @@ body{
         max-width: 220px; /* Ukuran gambar di HP */
         margin: 0 auto 20px; /* Tengah dan beri jarak bawah */
     }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:900px){
 
     .hero{
         padding:20px 0;
@@ -647,7 +641,7 @@ body{
 
     .hero-content{
         grid-template-columns:1fr;
-        gap: 10px;
+        gap: 42px;
     }
 
     .hero h1{
