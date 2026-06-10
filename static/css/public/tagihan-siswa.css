@@ -2254,8 +2254,12 @@ button.btn-lihat-kode svg {
     }
 
     .market-header {
-        display: block;
-        position: fixed;
+        width: 95%;
+    }
+
+    .actions-button {
+        display: flex;
+        gap: 10px;
     }
 
     .profile-wrapper,
