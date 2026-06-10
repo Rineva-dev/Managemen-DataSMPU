@@ -372,13 +372,9 @@ body{
 
     .topbar{
         height:auto;
-
         padding:18px;
-
         flex-direction:column;
-
-        align-items:flex-start;
-
+        align-items: end;
         gap:18px;
     }
 
