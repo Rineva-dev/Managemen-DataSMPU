@@ -305,14 +305,14 @@ body{
 
     .info-box {
         border-radius: 6px !important;
-        padding: 8px 20px !important;
+        padding: 10px 20px !important;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
     .info-box span {
-        margin-bottom: 0;
+        margin-bottom: 0 !important;
     }
 }
 
