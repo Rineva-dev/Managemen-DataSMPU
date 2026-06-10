@@ -2210,7 +2210,7 @@ button.btn-lihat-kode svg {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        background: #f59e0b;
+        background: #ffb300;
     }
 
     .market-left {
@@ -2232,6 +2232,10 @@ button.btn-lihat-kode svg {
         width: auto !important;
         padding: 8px 12px !important;
         border-radius: 12px !important;
+    }
+
+    .market-search svg {
+        height: 10px
     }
 
     .icon-button {
