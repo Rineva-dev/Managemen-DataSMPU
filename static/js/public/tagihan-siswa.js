@@ -303,7 +303,7 @@ async function loadTagihanSPP() {
 
                     <div class="bill-meta-item">
 
-                        <i data-lucide="calendar"></i>
+                        <i data-lucide="calendar-days"></i>
 
                         <span>
                             Tahun Ajaran
