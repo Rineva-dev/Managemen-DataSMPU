@@ -695,24 +695,21 @@ body{
 
 .card{
     background:var(--card);
-
     border-radius:20px;
-
     padding:24px;
-
     margin-bottom:20px;
-
     box-shadow:var(--shadow);
 }
 
 .card h2,
 .card h3{
-    margin-bottom:12px;
+    margin-bottom:10px;
 }
 
 .subtitle{
     color:var(--muted);
     margin-bottom:18px;
+    line-height: 1.3;
 }
 
 /* =========================
