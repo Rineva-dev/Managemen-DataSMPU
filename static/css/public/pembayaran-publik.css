@@ -315,12 +315,17 @@ body{
         margin-bottom: 0 !important;
     }
 
-    .info-box svg {
-        height: 10px;
+    .info-box-left svg {
+        height: 18px;
+        display:flex;
+    }
+
+    .info-box-left {
+        gap: 10px;
     }
 }
 
-.info-box svg {
+.info-box-left svg {
     display: none;
 }
 
