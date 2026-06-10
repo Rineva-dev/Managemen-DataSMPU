@@ -227,6 +227,13 @@ body{
         padding: 12px 0;
         width: 100%;
         border-bottom: 1px solid #f3f4f6;
+        display: flex;
+        gap: 10px
+    }
+
+    .topbar-nav a svg {
+        width: 16px;
+        height: auto;
     }
 
     /* Tombol di Sidebar */
