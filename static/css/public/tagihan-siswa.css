@@ -2213,6 +2213,7 @@ button.btn-lihat-kode svg {
         background: #ffb300;
     }
 
+    .student-banner,
     .market-left {
         display: none !important;
     }
