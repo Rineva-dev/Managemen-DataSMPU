@@ -305,7 +305,7 @@ body{
 
     .info-box {
         border-radius: 6px !important;
-        padding: 10px 20px !important;
+        padding: 10px 20px 10px 14px !important;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -321,7 +321,8 @@ body{
     }
 
     .info-box-left {
-        gap: 10px;
+        gap: 8px;
+        display: flex;
     }
 }
 
@@ -1226,6 +1227,7 @@ body{
 
     .student-info{
         grid-template-columns:1fr;
+        gap: 6px;
     }
 
     .cicilan-grid{
