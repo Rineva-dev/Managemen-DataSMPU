@@ -2323,5 +2323,8 @@ button.btn-lihat-kode svg {
         gap: 20px !important;
     }
 
-
+    .student-meta,
+    .student-status {
+        display: none;
+    }
 }
