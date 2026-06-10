@@ -314,6 +314,14 @@ body{
     .info-box span {
         margin-bottom: 0 !important;
     }
+
+    .info-box svg {
+        height: 10px;
+    }
+}
+
+.info-box svg {
+    display: none;
 }
 
 .btn-nav-outline{
