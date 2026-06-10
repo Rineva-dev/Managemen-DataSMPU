@@ -129,20 +129,14 @@ body{
    ✅ KHUSUS TAMPILAN HP (MAKSIMAL LEBAR 900px)
 ========================================== */
 @media (max-width: 900px) {
-
-    .container {
-        padding: 15px !important;
-        padding-top: 20px !important;
-    }
-
     /* 1. LOGO DI KONTEN: TAMPIL DI HP SAJA */
     .mobile-logo {
         display: flex;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     .mobile-logo img {
-        height: 32px;
+        height: 42px;
     }
 
     /* 2. HEADER: UBAH JADI IKON GARIS TIGA SAJA */
@@ -268,12 +262,17 @@ body{
         visibility: visible;
     }
 
-    /* Beri jarak atas agar konten tidak tertutup ikon menu */
     .container {
-        padding-top: 60px !important;
+        padding-top: 40px 0 0 !important;
+    }
+
+    .hero-chip {
+        font-weight: 600;
+        padding: 6px 16px;
+        height: 0;
+        font-size: 12px;
     }
 }
-
 
 .btn-nav-outline{
     padding: 10px 18px;
@@ -385,10 +384,6 @@ body{
         gap:20px;
     }
 
-    .topbar-actions{
-        width:100%;
-    }
-
     .btn-nav-outline,
     .btn-nav-primary{
         flex:1;
@@ -461,7 +456,7 @@ body{
     line-height:1.1;
     font-weight:800;
     color:#334155;
-    margin-bottom:20px;
+    margin-bottom:6px;
 }
 
 .hero p{
@@ -607,24 +602,78 @@ body{
 @media(max-width:900px){
 
     .hero{
-        padding:32px 24px;
-        border-radius:24px;
+        padding:30px 24px 20px;
+        margin-bottom: 0;
     }
 
     .hero-content{
         grid-template-columns:1fr;
+        gap: 10px;
     }
 
     .hero h1{
-        font-size:42px;
+        font-size:28px;
     }
 
     .hero h2{
         font-size:28px;
+        margin-bottom: 12px;
     }
 
     .hero-preview{
         margin-top:10px;
+        border-radius: 20px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .btn-hero-search {
+        padding: 12px 22px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+
+    .btn-hero-search svg {
+        height: 20px;
+        width: auto;
+    }
+
+    .btn-hero-search:hover {
+        transform:translateY(-1px);
+    }
+
+    #cari-siswa {
+        margin: 0 20px;
+        border-radius: 10px;
+    }
+
+    .btn-primary svg {
+        height: 20px;
+        width: auto;
+    }
+
+    .btn-primary {
+        font-size: 14px;
+        font-weight: 500;
+        padding: 12px 20px;
+        border-radius: 10px;
+    }
+
+    #search-siswa {
+        font-size: 14px;
+        border-radius: 10px;
+        padding: 14px 18px;
+        height: 0;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .card h2 {
+        margin-bottom: 4px;
     }
 }
 
@@ -1085,19 +1134,6 @@ body{
 ========================= */
 
 @media(max-width:768px){
-
-    .container{
-        padding:14px;
-    }
-
-    .hero{
-        padding:28px;
-    }
-
-    .hero h1{
-        font-size:26px;
-    }
-
     .student-header{
         flex-direction:column;
         align-items:flex-start;
