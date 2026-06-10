@@ -316,8 +316,8 @@ body{
     }
 
     .info-box-left svg {
-        height: 18px;
-        display:flex;
+        height: 18px !important;
+        display: flex !important;
     }
 
     .info-box-left {
