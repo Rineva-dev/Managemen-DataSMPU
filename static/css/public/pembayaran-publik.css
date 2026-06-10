@@ -228,7 +228,8 @@ body{
         width: 100%;
         border-bottom: 1px solid #f3f4f6;
         display: flex;
-        gap: 10px
+        gap: 10px;
+        align-items: center;
     }
 
     .topbar-nav a svg {
