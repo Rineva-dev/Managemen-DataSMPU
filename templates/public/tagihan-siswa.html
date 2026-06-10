@@ -67,85 +67,88 @@
 
         </div>
 
-        <button class="icon-button">
+        <div class="actions-button">
 
-            <i data-lucide="bell"></i>
+            <button class="icon-button">
 
-            <span class="icon-badge">
-                2
-            </span>
+                <i data-lucide="bell"></i>
 
-        </button>
-
-        <!-- CART -->
-        <a href="/public/checkout?siswa_id={{ siswa_id }}" class="icon-button cart-button">
-
-            <i data-lucide="shopping-cart"></i>
-
-            <span class="icon-badge cart-count">
-                0
-            </span>
-
-        </a>
-
-        <!-- PROFILE -->
-        <div class="profile-wrapper">
-            <button class="profile-button" id="profile-btn">
-
-                <i data-lucide="user"></i>
-
-                <span id="nama-siswa-header">
-                    ...
+                <span class="icon-badge">
+                    2
                 </span>
 
             </button>
 
-            <div class="profile-dropdown" id="profile-dropdown">
+            <!-- CART -->
+            <a href="/public/checkout?siswa_id={{ siswa_id }}" class="icon-button cart-button">
 
-                <div class="profile-card">
+                <i data-lucide="shopping-cart"></i>
 
-                    <!-- HEADER -->
-                    <div class="profile-header">
-                        <div class="profile-avatar">
-                            <i data-lucide="user"></i>
+                <span class="icon-badge cart-count">
+                    0
+                </span>
+
+            </a>
+
+            <!-- PROFILE -->
+            <div class="profile-wrapper">
+                <button class="profile-button" id="profile-btn">
+
+                    <i data-lucide="user"></i>
+
+                    <span id="nama-siswa-header">
+                        ...
+                    </span>
+
+                </button>
+
+                <div class="profile-dropdown" id="profile-dropdown">
+
+                    <div class="profile-card">
+
+                        <!-- HEADER -->
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i data-lucide="user"></i>
+                            </div>
+
+                            <div class="profile-header-info">
+                                <h4 id="profile-nama">-</h4>
+                                <small id="profile-nisn">NISN -</small>
+                            </div>
                         </div>
 
-                        <div class="profile-header-info">
-                            <h4 id="profile-nama">-</h4>
-                            <small id="profile-nisn">NISN -</small>
+                        <!-- INFO -->
+                        <div class="profile-info-grid">
+                            <div class="info-item">
+                                <span>Kelas</span>
+                                <strong id="profile-kelas">-</strong>
+                            </div>
+                            <div class="info-item">
+                                <span>Status</span>
+                                <strong id="profile-status" class="aktif">-</strong>
+                            </div>
+                            <div class="info-item full ttl">
+                                <span>TTL</span>
+                                <strong id="profile-ttl">-</strong>
+                            </div>
+                            <div class="info-item full">
+                                <span>Orang Tua</span>
+                                <strong id="profile-orangtua">-</strong>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- INFO -->
-                    <div class="profile-info-grid">
-                        <div class="info-item">
-                            <span>Kelas</span>
-                            <strong id="profile-kelas">-</strong>
+                        <!-- FOOTER -->
+                        <div class="profile-address">
+                            <i data-lucide="map-pin"></i>
+                            <p id="profile-alamat">-</p>
                         </div>
-                        <div class="info-item">
-                            <span>Status</span>
-                            <strong id="profile-status" class="aktif">-</strong>
-                        </div>
-                        <div class="info-item full ttl">
-                            <span>TTL</span>
-                            <strong id="profile-ttl">-</strong>
-                        </div>
-                        <div class="info-item full">
-                            <span>Orang Tua</span>
-                            <strong id="profile-orangtua">-</strong>
-                        </div>
-                    </div>
 
-                    <!-- FOOTER -->
-                    <div class="profile-address">
-                        <i data-lucide="map-pin"></i>
-                        <p id="profile-alamat">-</p>
                     </div>
 
                 </div>
 
             </div>
-
         </div>
 
     </div>
