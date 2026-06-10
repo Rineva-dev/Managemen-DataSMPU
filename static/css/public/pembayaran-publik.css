@@ -607,6 +607,30 @@ body{
 }
 
 /* =========================
+   STYLE GAMBAR SISWA
+========================= */
+.hero-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.hero-img img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Khusus tampilan HP */
+@media (max-width: 900px) {
+    .hero-img {
+        max-width: 220px; /* Ukuran gambar di HP */
+        margin: 0 auto 20px; /* Tengah dan beri jarak bawah */
+    }
+}
+
+/* =========================
    MOBILE
 ========================= */
 
