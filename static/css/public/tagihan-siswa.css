@@ -2197,6 +2197,58 @@ button.btn-lihat-kode svg {
     display: block;
 }
 
+/* ===============================
+   BOTTOM NAVIGATION (MOBILE)
+================================= */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    display: none;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 9999;
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #6b7280;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.bottom-nav-item i {
+    width: 22px;
+    height: 22px;
+}
+
+.bottom-nav-item.active,
+.bottom-nav-item:hover {
+    color: #2563eb;
+}
+
+/* AKTIF (opsional efek garis) */
+.bottom-nav-item.active::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: #2563eb;
+    border-radius: 50%;
+    margin-top: 2px;
+}
+
 @media (max-width: 900px) {
 
     .market-layout {
@@ -2319,5 +2371,13 @@ button.btn-lihat-kode svg {
 
     .student-info h2 {
         font-size: 20px;
+    }
+
+    .bottom-nav {
+        display: flex;
+    }
+
+    body {
+        padding-bottom: 70px;
     }
 }

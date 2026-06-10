@@ -910,6 +910,15 @@ if (navKontak && footerKontak) {
     });
 }
 
+const bottomProfileBtn = document.getElementById("bottom-profile-btn");
+const profileBtn = document.getElementById("profile-btn");
+
+if (bottomProfileBtn && profileBtn) {
+    bottomProfileBtn.addEventListener("click", () => {
+        profileBtn.click();
+    });
+}
+
 // ======================================
 // INIT
 // ======================================
