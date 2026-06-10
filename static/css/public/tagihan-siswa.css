@@ -2247,3 +2247,14 @@ button.btn-lihat-kode svg {
     display: block;
 }
 
+@media (max-width: 900px) {
+    .market-layout {
+        grid-template-columns: 1fr;
+        padding: 20px;
+
+    }
+
+    .market-left {
+        display: none;
+    }
+}
