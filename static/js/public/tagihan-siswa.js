@@ -43,7 +43,7 @@ let cart = JSON.parse(
 
 function rupiah(nominal) {
 
-    return "Rp" + Number(nominal)
+    return "Rp" + " " + Number(nominal)
         .toLocaleString("id-ID");
 }
 
@@ -547,7 +547,7 @@ document.addEventListener("input", function(e) {
     }
 
     input.value =
-        "Rp " +
+        "Rp " + " " 
         Number(value).toLocaleString("id-ID");
 });
 
