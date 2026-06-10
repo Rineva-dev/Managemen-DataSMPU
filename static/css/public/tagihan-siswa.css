@@ -2290,8 +2290,7 @@ button.btn-lihat-kode svg {
     }
 
     .student-avatar {
-        width: 50px !important;
-        height: 50px !important;
+        display: none;
     }
 
     .student-avatar svg {
@@ -2323,4 +2322,6 @@ button.btn-lihat-kode svg {
         padding: 25px 20px !important;
         gap: 20px !important;
     }
+
+
 }
