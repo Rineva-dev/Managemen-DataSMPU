@@ -25,277 +25,279 @@
        id="siswa-id"
        value="{{ siswa_id }}">
 
-<!-- =========================
-     HEADER
-========================= -->
+<div class="container">
+    <!-- =========================
+        HEADER
+    ========================= -->
 
-<header class="market-header">
+    <header class="market-header">
 
-    <!-- LEFT -->
-    <div class="market-left">
+        <!-- LEFT -->
+        <div class="market-left">
 
-        <a href="/public/pembayaran" class="market-logo">
-            <img src="{{ url_for('static', filename='img/logo-header.png') }}" alt="Logo">
-        </a>
-
-        <nav class="market-menu">
-
-            <a href="/">Beranda</a>
-
-            <a href="/public/payment">
-                Pembayaran
+            <a href="/public/pembayaran" class="market-logo">
+                <img src="{{ url_for('static', filename='img/logo-header.png') }}" alt="Logo">
             </a>
 
-            <a href="#kontak" class="nav-kontak">
-                Kontak
-            </a>
+            <nav class="market-menu">
 
-        </nav>
+                <a href="/">Beranda</a>
 
-    </div>
+                <a href="/public/payment">
+                    Pembayaran
+                </a>
 
-    <!-- RIGHT -->
-    <div class="market-actions">
+                <a href="#kontak" class="nav-kontak">
+                    Kontak
+                </a>
 
-        <div class="market-search">
-
-            <i data-lucide="search"></i>
-
-            <input
-                type="text"
-                placeholder="Cari tagihan...">
+            </nav>
 
         </div>
 
-        <div class="actions-button">
+        <!-- RIGHT -->
+        <div class="market-actions">
 
-            <button class="icon-button">
+            <div class="market-search">
 
-                <i data-lucide="bell"></i>
+                <i data-lucide="search"></i>
 
-                <span class="icon-badge">
-                    2
-                </span>
+                <input
+                    type="text"
+                    placeholder="Cari tagihan...">
 
-            </button>
+            </div>
 
-            <!-- CART -->
-            <a href="/public/checkout?siswa_id={{ siswa_id }}" class="icon-button cart-button">
+            <div class="actions-button">
 
-                <i data-lucide="shopping-cart"></i>
+                <button class="icon-button">
 
-                <span class="icon-badge cart-count">
-                    0
-                </span>
+                    <i data-lucide="bell"></i>
 
-            </a>
-
-            <!-- PROFILE -->
-            <div class="profile-wrapper">
-                <button class="profile-button" id="profile-btn">
-
-                    <i data-lucide="user"></i>
-
-                    <span id="nama-siswa-header">
-                        ...
+                    <span class="icon-badge">
+                        2
                     </span>
 
                 </button>
 
-                <div class="profile-dropdown" id="profile-dropdown">
+                <!-- CART -->
+                <a href="/public/checkout?siswa_id={{ siswa_id }}" class="icon-button cart-button">
 
-                    <div class="profile-card">
+                    <i data-lucide="shopping-cart"></i>
 
-                        <!-- HEADER -->
-                        <div class="profile-header">
-                            <div class="profile-avatar">
-                                <i data-lucide="user"></i>
+                    <span class="icon-badge cart-count">
+                        0
+                    </span>
+
+                </a>
+
+                <!-- PROFILE -->
+                <div class="profile-wrapper">
+                    <button class="profile-button" id="profile-btn">
+
+                        <i data-lucide="user"></i>
+
+                        <span id="nama-siswa-header">
+                            ...
+                        </span>
+
+                    </button>
+
+                    <div class="profile-dropdown" id="profile-dropdown">
+
+                        <div class="profile-card">
+
+                            <!-- HEADER -->
+                            <div class="profile-header">
+                                <div class="profile-avatar">
+                                    <i data-lucide="user"></i>
+                                </div>
+
+                                <div class="profile-header-info">
+                                    <h4 id="profile-nama">-</h4>
+                                    <small id="profile-nisn">NISN -</small>
+                                </div>
                             </div>
 
-                            <div class="profile-header-info">
-                                <h4 id="profile-nama">-</h4>
-                                <small id="profile-nisn">NISN -</small>
+                            <!-- INFO -->
+                            <div class="profile-info-grid">
+                                <div class="info-item">
+                                    <span>Kelas</span>
+                                    <strong id="profile-kelas">-</strong>
+                                </div>
+                                <div class="info-item">
+                                    <span>Status</span>
+                                    <strong id="profile-status" class="aktif">-</strong>
+                                </div>
+                                <div class="info-item full ttl">
+                                    <span>TTL</span>
+                                    <strong id="profile-ttl">-</strong>
+                                </div>
+                                <div class="info-item full">
+                                    <span>Orang Tua</span>
+                                    <strong id="profile-orangtua">-</strong>
+                                </div>
                             </div>
+
+                            <!-- FOOTER -->
+                            <div class="profile-address">
+                                <i data-lucide="map-pin"></i>
+                                <p id="profile-alamat">-</p>
+                            </div>
+
                         </div>
 
-                        <!-- INFO -->
-                        <div class="profile-info-grid">
-                            <div class="info-item">
-                                <span>Kelas</span>
-                                <strong id="profile-kelas">-</strong>
-                            </div>
-                            <div class="info-item">
-                                <span>Status</span>
-                                <strong id="profile-status" class="aktif">-</strong>
-                            </div>
-                            <div class="info-item full ttl">
-                                <span>TTL</span>
-                                <strong id="profile-ttl">-</strong>
-                            </div>
-                            <div class="info-item full">
-                                <span>Orang Tua</span>
-                                <strong id="profile-orangtua">-</strong>
-                            </div>
-                        </div>
+                    </div>
 
-                        <!-- FOOTER -->
-                        <div class="profile-address">
-                            <i data-lucide="map-pin"></i>
-                            <p id="profile-alamat">-</p>
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- =========================
+        MAIN
+    ========================= -->
+
+    <div class="market-layout">
+
+        <!-- =========================
+            CONTENT
+        ========================= -->
+
+        <main class="market-content">
+
+            <!-- =========================
+                STUDENT BANNER
+            ========================= -->
+
+            <section class="student-banner">
+
+                <div class="student-left">
+
+                    <div class="student-avatar">
+
+                        <i data-lucide="graduation-cap"></i>
+
+                    </div>
+
+                    <div class="student-info">
+
+                        <small>Data Siswa</small>
+
+                        <h2 id="siswa-nama">
+                            -
+                        </h2>
+
+                        <div class="student-meta">
+
+                            <span id="siswa-nisn">
+                                NISN -
+                            </span>
+
+                            <span id="siswa-kelas">
+                                Kelas -
+                            </span>
+
+                            <span id="siswa-rombel">
+                                Rombel -
+                            </span>
+
                         </div>
 
                     </div>
 
                 </div>
 
-            </div>
-        </div>
+                <div
+                    class="student-status"
+                    id="siswa-status">
+
+                    <span class="status-dot"></span>
+
+                    -
+
+                </div>
+
+            </section>
+
+            <!-- =========================
+                FILTER
+            ========================= -->
+
+            <section class="filter-row">
+                <button
+                    class="filter-chip active"
+                    data-filter="all">
+
+                    Semua
+
+                </button>
+
+                <button
+                    class="filter-chip"
+                    data-filter="spp">
+
+                    SPP
+
+                </button>
+
+                <button
+                    class="filter-chip"
+                    data-filter="pembangunan">
+
+                    Pembangunan
+
+                </button>
+
+                <button
+                    class="filter-chip"
+                    data-filter="ekstrakurikuler">
+
+                    Ekstrakurikuler
+
+                </button>
+
+                <button
+                    class="filter-chip"
+                    data-filter="seragam">
+
+                    Seragam
+
+                </button>
+
+            </section>
+
+            <!-- =========================
+                BILL GRID
+            ========================= -->
+
+            <section class="bill-grid"
+                    id="bill-grid">
+
+                <!-- DIISI VIA JS -->
+
+            </section>
+
+        </main>
 
     </div>
 
-</header>
-
-<!-- =========================
-     MAIN
-========================= -->
-
-<div class="market-layout">
-
     <!-- =========================
-         CONTENT
+        TOAST
     ========================= -->
 
-    <main class="market-content">
+    <div class="toast-notification"
+        id="toast">
 
-        <!-- =========================
-             STUDENT BANNER
-        ========================= -->
+        <i data-lucide="check-circle"></i>
 
-        <section class="student-banner">
+        <span>
+            Tagihan ditambahkan ke keranjang
+        </span>
 
-            <div class="student-left">
-
-                <div class="student-avatar">
-
-                    <i data-lucide="graduation-cap"></i>
-
-                </div>
-
-                <div class="student-info">
-
-                    <small>Data Siswa</small>
-
-                    <h2 id="siswa-nama">
-                        -
-                    </h2>
-
-                    <div class="student-meta">
-
-                        <span id="siswa-nisn">
-                            NISN -
-                        </span>
-
-                        <span id="siswa-kelas">
-                            Kelas -
-                        </span>
-
-                        <span id="siswa-rombel">
-                            Rombel -
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div
-                class="student-status"
-                id="siswa-status">
-
-                <span class="status-dot"></span>
-
-                -
-
-            </div>
-
-        </section>
-
-        <!-- =========================
-             FILTER
-        ========================= -->
-
-        <section class="filter-row">
-            <button
-                class="filter-chip active"
-                data-filter="all">
-
-                Semua
-
-            </button>
-
-            <button
-                class="filter-chip"
-                data-filter="spp">
-
-                SPP
-
-            </button>
-
-            <button
-                class="filter-chip"
-                data-filter="pembangunan">
-
-                Pembangunan
-
-            </button>
-
-            <button
-                class="filter-chip"
-                data-filter="ekstrakurikuler">
-
-                Ekstrakurikuler
-
-            </button>
-
-            <button
-                class="filter-chip"
-                data-filter="seragam">
-
-                Seragam
-
-            </button>
-
-        </section>
-
-        <!-- =========================
-             BILL GRID
-        ========================= -->
-
-        <section class="bill-grid"
-                id="bill-grid">
-
-            <!-- DIISI VIA JS -->
-
-        </section>
-
-    </main>
-
-</div>
-
-<!-- =========================
-     TOAST
-========================= -->
-
-<div class="toast-notification"
-     id="toast">
-
-    <i data-lucide="check-circle"></i>
-
-    <span>
-        Tagihan ditambahkan ke keranjang
-    </span>
-
+    </div>
 </div>
 
 <footer class="site-footer">
