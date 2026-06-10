@@ -2272,6 +2272,7 @@ button.btn-lihat-kode svg {
 
     .market-search {
         width: 100%;
+        border-radius: 6px;
     }
 
     .icon-button {
