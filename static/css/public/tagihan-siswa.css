@@ -602,16 +602,6 @@ body{
     flex-direction:column;
 }
 
-.bill-card p{
-    color:var(--muted);
-
-    line-height:1.7;
-
-    margin-bottom:22px;
-
-    flex:1;
-}
-
 
 .bill-card:hover{
     transform:translateY(-4px);
@@ -661,10 +651,10 @@ body{
 
 .bill-card p{
     color:var(--muted);
-
+    flex:1;
     line-height:1.7;
-
     margin-bottom:22px;
+    font-size: 14px;
 }
 
 .bill-meta{
@@ -722,8 +712,7 @@ body{
 }
 
 .btn-add-cart{
-    height:46px;
-    padding:0 18px;
+    padding: 12px 18px;
     border:none;
     border-radius:14px;
     background:
@@ -735,9 +724,14 @@ body{
     color:white;
     display:flex;
     align-items:center;
-    gap:8px;
-    font-weight:700;
+    gap:2px;
+    font-weight:600;
     cursor:pointer;
+}
+
+.btn-add-pembangunan svg,
+.btn-add-cart svg {
+    height: 18px;
 }
 
 .empty-tagihan{
@@ -787,11 +781,10 @@ body{
 
 .btn-add-pembangunan {
     flex-shrink: 0;
-    height: 44px;
     min-width: 110px;
-    padding: 0 16px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: 14px;
     background:
         linear-gradient(
             135deg,
@@ -802,7 +795,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 2px;
     font-weight: 600;
     cursor: pointer;
 }
