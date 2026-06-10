@@ -2238,6 +2238,12 @@ button.btn-lihat-kode svg {
     color: #ffb300;
 }
 
+/* AKTIF (opsional efek garis) */
+.bottom-nav-item.active::after {
+    background: #ffb300;
+
+}
+
 @media (max-width: 900px) {
 
     .market-layout {
