@@ -263,7 +263,7 @@ body{
     }
 
     .container {
-        padding-top: 40px 22px 0 !important;
+        padding: 40px 22px 0 !important;
     }
 
     .hero-chip {
