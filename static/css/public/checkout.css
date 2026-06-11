@@ -23,6 +23,10 @@
 
     .left-header span {
         white-space: nowrap;
+        font-size: 16px;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .market-back {
