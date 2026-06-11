@@ -2181,45 +2181,101 @@ button.btn-lihat-kode svg {
 }
 
 /* ===============================
-   BOTTOM NAVIGATION (MOBILE)
+   BOTTOM NAVIGATION - GAYA SHOPEE
 ================================= */
 .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+    height: 65px; /* Tinggi dasar nav */
     background: #ffffff;
-    display: none; /* Awalnya sembunyi */
+    display: none;
     justify-content: space-around;
     align-items: center;
-    z-index: 99999; /* Saya naikkan z-index biar paling atas */
-    padding: 8px 0;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 99999;
+    padding: 0 8px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .bottom-nav-item {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
-    font-size: 10px;
-    color: #6b7280;
     text-decoration: none;
-    background: none;
+    color: #757575;
+    font-size: 11px;
+    position: relative;
+    transition: all 0.2s ease;
+    background: transparent;
     border: none;
     cursor: pointer;
 }
 
+/* Ikon biasa */
 .bottom-nav-item i,
 .bottom-nav-item svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 4px;
+    stroke-width: 1.8;
 }
 
-.bottom-nav-item:hover,
-.bottom-nav-item.active {
-    color: #ffb300;
+/* Teks biasa */
+.bottom-nav-item span {
+    line-height: 1;
+}
+
+/* ==============================================
+   ✅ ITEM TENGAH - TAGIHAN (BUNDAR & BESAR)
+============================================== */
+.bottom-nav-item.nav-center {
+    position: relative;
+    top: -18px; /* Naik ke atas biar menonjol */
+}
+
+/* Bentuk Lingkaran Warna Utama */
+.bottom-nav-item.nav-center::before {
+    content: '';
+    position: absolute;
+    width: 55px; /* Ukuran lingkaran */
+    height: 55px;
+    background: linear-gradient(135deg, #ffb700, #ffc62a); /* Warna sesuai tema kamu */
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(255, 183, 0, 0.3); /* Bayangan warna emas */
+    z-index: -1;
+}
+
+/* Ikon di tengah: Dibesarkan & warna putih */
+.bottom-nav-item.nav-center i,
+.bottom-nav-item.nav-center svg {
+    width: 26px;
+    height: 26px;
+    color: #ffffff !important;
+    margin-bottom: 6px;
+    stroke-width: 2;
+}
+
+/* Teks di tengah */
+.bottom-nav-item.nav-center span {
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+/* ==============================================
+   STATUS AKTIF (SELAIN TENGAH)
+============================================== */
+.bottom-nav-item.active:not(.nav-center) {
+    color: #ffb700; /* Warna aktif sesuai tema */
+}
+
+.bottom-nav-item.active:not(.nav-center) i,
+.bottom-nav-item.active:not(.nav-center) svg {
+    color: #ffb700;
+    stroke-width: 2;
 }
 
 @media (max-width: 900px) {

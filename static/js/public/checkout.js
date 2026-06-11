@@ -1194,15 +1194,11 @@ function gantiNavBerdasarkanTab(tabAktif) {
     }
 }
 
-// ======================================
-// TAB CONTROLLER CHECKOUT (AMAN)
-// ======================================
 document.addEventListener("DOMContentLoaded", () => {
 
     const params = new URLSearchParams(window.location.search);
     const tabFromUrl = params.get("tab");
 
-    // Simpan tab ke session (biar reload aman)
     if (tabFromUrl) {
         sessionStorage.setItem("checkout_tab", tabFromUrl);
     }
@@ -1212,7 +1208,6 @@ document.addEventListener("DOMContentLoaded", () => {
         sessionStorage.getItem("checkout_tab") ||
         "cart";
 
-    // Reset semua tab
     document.querySelectorAll(".tab-btn").forEach(btn =>
         btn.classList.remove("active")
     );
@@ -1221,7 +1216,6 @@ document.addEventListener("DOMContentLoaded", () => {
         tab.classList.remove("active")
     );
 
-    // Aktifkan target
     const btn = document.querySelector(
         `.tab-btn[data-tab="${activeTab}"]`
     );
@@ -1231,8 +1225,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btn) btn.classList.add("active");
     if (content) content.classList.add("active");
-    
-    // ✅ Panggil nav saat awal load
+
     gantiNavBerdasarkanTab(activeTab);
 
 });
