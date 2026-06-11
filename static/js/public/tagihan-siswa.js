@@ -854,8 +854,6 @@ const semuaNav = document.querySelectorAll(".bottom-nav-item");
 const bottomProfileBtn = document.getElementById("bottom-profile-btn");
 const bottomProfileBtnCheckout = document.getElementById("bottom-profile-btn-checkout");
 const profileBtn = document.getElementById("profile-btn");
-const profilePage = document.getElementById("profilePage");
-const profileDropdown = document.getElementById("profile-dropdown");
 
 // Fungsi seragam: LANGSUNG BUKA MOBILE, DROPDOWN DIABAIKAN
 function aturAktifDanBukaProfil(elTombol) {
@@ -911,7 +909,6 @@ semuaNav.forEach(navItem => {
 // ==============================================
 // FUNGSI HALAMAN PROFIL MOBILE
 // ==============================================
-const profilePage = document.getElementById("profilePage");
 const btnOpenProfile = document.getElementById("bottom-profile-btn");
 const btnCloseProfile = document.getElementById("closeProfileBtn");
 
