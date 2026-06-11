@@ -29,6 +29,12 @@
         text-overflow: ellipsis;
     }
 
+    .left-header svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+    }
+
     .market-back {
         text-decoration: none;
     }
