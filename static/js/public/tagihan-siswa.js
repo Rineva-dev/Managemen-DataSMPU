@@ -2,6 +2,7 @@ const asal = document.referrer;
 const domain = window.location.origin;
 const halamanAsalBoleh = [`${domain}/public/payment`];
 const sudahMasukSebelumnya = sessionStorage.getItem("akses_tagihan_diizinkan");
+const lokasiSekarang = window.location.href;
 
 const dariHalamanBenar = halamanAsalBoleh.some(link => asal.includes(link));
 
@@ -9,7 +10,7 @@ if (dariHalamanBenar) {
     sessionStorage.setItem("akses_tagihan_diizinkan", "YA");
 }
 
-if (!dariHalamanBenar && !sudahMasukSebelumnya && !asal) {
+if (!dariHalamanBenar && !sudahMasukSebelumnya && !asal && !lokasiSekarang.includes("/public/payment")) {
     window.location.href = "/public/payment";
 }
 
@@ -536,9 +537,6 @@ document.addEventListener("click", function(e) {
     input.value = "";
 });
 
-// ======================================
-// ADD BUTTON DYNAMIC
-// ======================================
 document.addEventListener("click", function(e) {
 
     const btn = e.target.closest(".btn-add-cart");
@@ -557,10 +555,6 @@ document.addEventListener("click", function(e) {
         nominal: parseInt(btn.dataset.nominal)
     }, card);
 });
-
-// ======================================
-// SEARCH
-// ======================================
 
 const searchInput =
     document.querySelector(".market-search input");
@@ -588,10 +582,6 @@ searchInput.addEventListener("input", function() {
     });
 });
 
-// ======================================
-// FILTER TAGIHAN
-// ======================================
-
 document.addEventListener("click", function(e) {
 
     const chip =
@@ -599,7 +589,6 @@ document.addEventListener("click", function(e) {
 
     if (!chip) return;
 
-    // aktifkan chip terpilih
     document
         .querySelectorAll(".filter-chip")
         .forEach(btn => {
@@ -634,9 +623,6 @@ document.addEventListener("click", function(e) {
     checkEmptyTagihan(filter);
 });
 
-// ======================================
-// FORMAT TANGGAL (YYYY-MM-DD → DD-MM-YYYY)
-// ======================================
 function formatTanggal(isoDate, separator = "-") {
 
     if (!isoDate) return "-";
@@ -650,9 +636,6 @@ function formatTanggal(isoDate, separator = "-") {
     return `${day}${separator}${month}${separator}${year}`;
 }
 
-// ======================================
-// PROFILE STATUS HELPER (DROPDOWN ONLY)
-// ======================================
 function setProfileStatus(statusRaw) {
 
     const el =
@@ -683,10 +666,6 @@ function setProfileStatus(statusRaw) {
     el.className = cls;
 }
 
-// ======================================
-// LOAD BIODATA SISWA
-// ======================================
-
 async function loadBiodataSiswa() {
 
     try {
@@ -700,10 +679,6 @@ async function loadBiodataSiswa() {
         }
 
         const siswa = await res.json();
-
-        // =========================
-        // PROFILE DROPDOWN DATA
-        // =========================
 
         document.getElementById(
             "profile-nama"
@@ -832,7 +807,6 @@ if (navKontak && footerKontak) {
             const timeElapsed = currentTime - start;
             const progress = Math.min(timeElapsed / duration, 1);
 
-            // easing lembut
             const ease = 1 - Math.pow(1 - progress, 3);
 
             window.scrollTo(
@@ -849,21 +823,15 @@ if (navKontak && footerKontak) {
     });
 }
 
-// ✅ PERBAIKAN: Tangani KEDUA tombol profil sekaligus
 const semuaNav = document.querySelectorAll(".bottom-nav-item");
 const bottomProfileBtn = document.getElementById("bottom-profile-btn");
 const bottomProfileBtnCheckout = document.getElementById("bottom-profile-btn-checkout");
 const profileBtn = document.getElementById("profile-btn");
 
-// Fungsi seragam: LANGSUNG BUKA MOBILE, DROPDOWN DIABAIKAN
 function aturAktifDanBukaProfil(elTombol) {
     semuaNav.forEach(n => n.classList.remove("active"));
     elTombol.classList.add("active");
 
-    // ❌ Hapus kode buka dropdown di sini
-    // if (profileBtn) profileBtn.click();
-
-    // ✅ LANGSUNG BUKA HALAMAN PROFIL MOBILE
     if (profilePage) {
         document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
         document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
@@ -884,7 +852,6 @@ function aturAktifDanBukaProfil(elTombol) {
     }
 }
 
-// Pasang event ke kedua tombol
 if (bottomProfileBtn) {
     bottomProfileBtn.addEventListener("click", function() {
         aturAktifDanBukaProfil(this);
@@ -896,7 +863,6 @@ if (bottomProfileBtnCheckout) {
     });
 }
 
-// ✅ TAMBAHAN: Supaya link lain juga aktif saat diklik
 semuaNav.forEach(navItem => {
     if (navItem.tagName === "A") {
         navItem.addEventListener("click", function() {
@@ -906,39 +872,31 @@ semuaNav.forEach(navItem => {
     }
 });
 
-// ==============================================
-// FUNGSI HALAMAN PROFIL MOBILE
-// ==============================================
 const btnOpenProfile = document.getElementById("bottom-profile-btn");
 const btnCloseProfile = document.getElementById("closeProfileBtn");
 
-// BUKA HALAMAN PROFIL
 btnOpenProfile.addEventListener("click", () => {
-    // Isi data ke halaman profil (ambil dari data yang sudah ada)
     document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
     document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
     document.getElementById("profile-page-kelas").textContent = document.getElementById("profile-kelas").textContent;
     document.getElementById("profile-page-rombel").textContent = document.getElementById("siswa-rombel").textContent || "-";
     document.getElementById("profile-page-ttl").textContent = document.getElementById("profile-ttl").textContent;
     document.getElementById("profile-page-orangtua").textContent = document.getElementById("profile-orangtua").textContent;
-    
-    // Status
+
     const statusText = document.getElementById("profile-status").textContent;
     const statusClass = document.getElementById("profile-status").className;
     const statusEl = document.getElementById("profile-page-status");
     statusEl.textContent = statusText;
     statusEl.className = "status-badge-mobile " + statusClass;
 
-    // Tampilkan halaman
     profilePage.classList.add("active");
-    document.body.style.overflow = "hidden"; // Kunci layar belakang
+    document.body.style.overflow = "hidden";
     lucide.createIcons();
 });
 
-// TUTUP HALAMAN PROFIL
 btnCloseProfile.addEventListener("click", () => {
     profilePage.classList.remove("active");
-    document.body.style.overflow = "auto"; // Buka kembali layar
+    document.body.style.overflow = "auto";
 });
 
 document.addEventListener("click", function(e) {
@@ -948,7 +906,6 @@ document.addEventListener("click", function(e) {
     }
 });
 
-// ✅ SIMPAN MENU YANG DIKLIK
 semuaNav.forEach(navItem => {
     navItem.addEventListener("click", function() {
         semuaNav.forEach(n => n.classList.remove("active"));
@@ -958,11 +915,9 @@ semuaNav.forEach(navItem => {
     });
 });
 
-// ✅ FUNGSI ISI DATA PROFIL (DITULIS 1 KALI SAJA)
 function isiDataDanBukaProfil() {
     if (!profilePage) return;
 
-    // Isi data (sudah pasti ada karena dipanggil setelah loadBiodataSiswa)
     document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
     document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
     document.getElementById("profile-page-kelas").textContent = document.getElementById("profile-kelas").textContent;
@@ -976,30 +931,23 @@ function isiDataDanBukaProfil() {
     statusEl.textContent = statusText;
     statusEl.className = "status-badge-mobile " + statusClass;
 
-    // Tampilkan halaman
     profilePage.classList.add("active");
     document.body.style.overflow = "hidden";
     lucide.createIcons();
 }
 
-// ✅ FUNGSI UTAMA: URUTANNYA SUDAH BENAR
 async function init() {
     renderCart();
-    await loadBiodataSiswa(); // 1. Ambil data DULU
+    await loadBiodataSiswa();
     await loadTagihanSPP();
     await loadTagihanPembangunan();
     checkEmptyTagihan("all");
 
-    // 2. Baru cek apakah terakhir buka menu "Siswa"
     const menuTersimpan = sessionStorage.getItem("menu_aktif");
     if (menuTersimpan === "Siswa") {
         semuaNav.forEach(n => n.classList.remove("active"));
         bottomProfileBtn?.classList.add("active");
-
-        // Tutup dropdown atas
         profileDropdown?.classList.remove("show");
-
-        // Isi & buka profil (DATA SUDAH ADA, TIDAK ADA TANDA - LAGI)
         isiDataDanBukaProfil();
     }
 }
