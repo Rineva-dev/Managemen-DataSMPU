@@ -2212,7 +2212,7 @@ button.btn-lihat-kode svg {
     justify-content: space-around;
     align-items: center;
     z-index: 9999;
-    padding: 10px 0;
+    padding: 6px 0;
 }
 
 .bottom-nav-item {
@@ -2238,11 +2238,12 @@ button.btn-lihat-kode svg {
     color: #ffb300;
 }
 
-/* AKTIF (opsional efek garis) */
-.bottom-nav-item.active::after {
-    background: #ffb300;
+.bottom-nav-item.active {
     color: #ffb300;
+}
 
+.bottom-nav-item.active svg {
+    stroke: #ffb300;
 }
 
 @media (max-width: 900px) {
