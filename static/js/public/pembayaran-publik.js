@@ -137,12 +137,11 @@ document.getElementById("btn-cari")
         return;
     }
 
-    const siswaId =
-        document.getElementById("selected-siswa-id").value;
+    const siswaId = document.getElementById("selected-siswa-id").value;
 
-    // redirect ke halaman tagihan siswa
-    window.location.href =
-        `/public/tagihan-siswa?siswa_id=${siswaId}`;
+    sessionStorage.setItem("boleh_buka_tagihan", "YA");
+
+    window.location.href =`/public/tagihan-siswa?siswa_id=${siswaId}`;
 });
 
 // ======================================

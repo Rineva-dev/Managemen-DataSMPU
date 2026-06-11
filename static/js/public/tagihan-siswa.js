@@ -852,9 +852,13 @@ if (bottomProfileBtn && profileBtn) {
     });
 }
 
-// ======================================
-// INIT
-// ======================================
+document.addEventListener("click", function(e) {
+    const btnKeCheckout = e.target.closest('a[href*="/public/checkout"]');
+    if (btnKeCheckout) {
+        sessionStorage.setItem("boleh_buka_checkout", "YA");
+    }
+});
+
 async function init() {
     renderCart();
     await loadBiodataSiswa();
