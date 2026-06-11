@@ -849,26 +849,42 @@ if (navKontak && footerKontak) {
     });
 }
 
+// ✅ PERBAIKAN: Tangani KEDUA tombol profil sekaligus
+const semuaNav = document.querySelectorAll(".bottom-nav-item");
 const bottomProfileBtn = document.getElementById("bottom-profile-btn");
+const bottomProfileBtnCheckout = document.getElementById("bottom-profile-btn-checkout");
 const profileBtn = document.getElementById("profile-btn");
 
-if (bottomProfileBtn && profileBtn) {
-    bottomProfileBtn.addEventListener("click", () => {
-        profileBtn.click();
+// Fungsi seragam untuk kedua tombol
+function aturAktifDanBukaProfil(elTombol) {
+    // Hapus active di SEMUA menu
+    semuaNav.forEach(n => n.classList.remove("active"));
+    // Tambah active ke tombol yang diklik
+    elTombol.classList.add("active");
+    // Buka dropdown profil
+    if (profileBtn) profileBtn.click();
+}
+
+// Pasang event ke kedua tombol
+if (bottomProfileBtn) {
+    bottomProfileBtn.addEventListener("click", function() {
+        aturAktifDanBukaProfil(this);
+    });
+}
+if (bottomProfileBtnCheckout) {
+    bottomProfileBtnCheckout.addEventListener("click", function() {
+        aturAktifDanBukaProfil(this);
     });
 }
 
-const btnSiswaNav = document.getElementById("bottom-profile-btn-checkout");
-const semuaNav = document.querySelectorAll(".bottom-nav-item");
-
-// Klik tombol Siswa
-btnSiswaNav?.addEventListener("click", function() {
-    // Hapus active semua
-    semuaNav.forEach(n => n.classList.remove("active"));
-    // Tambah active ke ini
-    this.classList.add("active");
-    // Panggil buka profil
-    profileBtn.click();
+// ✅ TAMBAHAN: Supaya link lain juga aktif saat diklik
+semuaNav.forEach(navItem => {
+    if (navItem.tagName === "A") {
+        navItem.addEventListener("click", function() {
+            semuaNav.forEach(n => n.classList.remove("active"));
+            this.classList.add("active");
+        });
+    }
 });
 
 // ==============================================
