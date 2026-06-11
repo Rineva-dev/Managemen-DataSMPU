@@ -583,6 +583,31 @@
 
 </nav>
 
+<!-- =========================
+     BOTTOM NAV: RIWAYAT (SAMA SEPERTI HALAMAN TAGIHAN)
+========================= -->
+<nav class="bottom-nav" id="bottom-nav-riwayat" style="display: none;">
+    <a href="/public/payment" class="bottom-nav-item">
+        <i data-lucide="home"></i>
+        <span>Beranda</span>
+    </a>
+
+    <a href="/public/tagihan-siswa?siswa_id={{ siswa_id }}" class="bottom-nav-item">
+        <i data-lucide="banknote"></i>
+        <span>Tagihan</span>
+    </a>
+
+    <a href="/public/checkout?siswa_id={{ siswa_id }}&tab=history" class="bottom-nav-item active">
+        <i data-lucide="clipboard-clock"></i>
+        <span>Riwayat</span>
+    </a>
+
+    <button class="bottom-nav-item" id="bottom-profile-btn-checkout">
+        <i data-lucide="user"></i>
+        <span>Siswa</span>
+    </button>
+</nav>
+
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <script>

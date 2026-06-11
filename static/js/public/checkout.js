@@ -1195,6 +1195,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// ==============================================
+// ✅ FITUR: GANTI BOTTOM NAV BERDASARKAN TAB AKTIF
+// ==============================================
+document.addEventListener("DOMContentLoaded", () => {
+    const navCheckout = document.getElementById("bottom-nav-checkout");
+    const navRiwayat = document.getElementById("bottom-nav-riwayat");
+    const tabButtons = document.querySelectorAll(".tab-btn");
+
+    // Fungsi ganti navigasi
+    function gantiNavBerdasarkanTab(tabAktif) {
+        if (tabAktif === "history") {
+            // Tampilkan nav Riwayat, sembunyikan nav Keranjang
+            navCheckout.style.display = "none";
+            navRiwayat.style.display = "flex";
+        } else {
+            // Tampilkan nav Keranjang/Status, sembunyikan nav Riwayat
+            navCheckout.style.display = "flex";
+            navRiwayat.style.display = "none";
+        }
+    }
+
+    // 1. Cek jika masuk lewat link langsung (dari halaman tagihan)
+    const urlParams = new URLSearchParams(window.location.search);
+    const bukaTab = urlParams.get("tab");
+
+    if (bukaTab) {
+        // Hapus active semua
+        tabButtons.forEach(btn => btn.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+        // Aktifkan tab tujuan
+        const tombolTarget = document.querySelector(`.tab-btn[data-tab="${bukaTab}"]`);
+        const kontenTarget = document.getElementById(`tab-${bukaTab}`);
+
+        if (tombolTarget && kontenTarget) {
+            tombolTarget.classList.add("active");
+            kontenTarget.classList.add("active");
+            gantiNavBerdasarkanTab(bukaTab);
+            window.scrollTo({ top: 0 });
+        }
+    } else {
+        // Default: tab keranjang, pakai nav checkout
+        gantiNavBerdasarkanTab("cart");
+    }
+
+    // 2. Ganti nav saat KLIK tab
+    tabButtons.forEach(btn => {
+        btn.addEventListener("click", function() {
+            const tab = this.dataset.tab;
+            gantiNavBerdasarkanTab(tab);
+        });
+    });
+
+    // 3. Ikon Lucide di nav baru
+    lucide.createIcons();
+});
+
 loadBiodataSiswa();
 loadCart();
 loadStatusPembayaranDenganTombol();
