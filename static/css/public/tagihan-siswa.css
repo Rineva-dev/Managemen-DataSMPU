@@ -2260,6 +2260,7 @@ button.btn-lihat-kode svg {
         align-items: center !important;
         justify-content: space-between !important;
         background: #ffb300;
+        border-bottom: none;
     }
 
     .student-banner,
