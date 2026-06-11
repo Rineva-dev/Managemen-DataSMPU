@@ -40,6 +40,13 @@ function rupiah(nominal) {
         .toLocaleString("id-ID");
 }
 
+const btnBottomPay = document.querySelector(".bottom-pay-btn");
+if (btnBottomPay && btnCheckout) {
+    btnBottomPay.addEventListener("click", function () {
+        btnCheckout.click(); // Panggil fungsi yang sama dengan tombol desktop
+    });
+}
+
 async function loadBiodataSiswa() {
 
     if (!siswaId) return;
