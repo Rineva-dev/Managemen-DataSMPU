@@ -2354,7 +2354,7 @@ button.btn-lihat-kode svg {
         font-size: 20px;
     }
 
-    .bottom-nav {
+    .bottom-nav.is-active {
         display: flex;
     }
 
