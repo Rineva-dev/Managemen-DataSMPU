@@ -8,7 +8,6 @@ const dariHalamanBoleh = halamanBolehAsal.some(link => asal.includes(link));
 const adalahRefresh = window.performance?.navigation?.type === 1;
 
 if (!dariHalamanBoleh && !asal && !adalahRefresh) {
-    alert("⚠️ Akses ditolak! Halaman ini hanya bisa dibuka lewat menu aplikasi.");
     window.location.href = "/public/payment";
 }
 
