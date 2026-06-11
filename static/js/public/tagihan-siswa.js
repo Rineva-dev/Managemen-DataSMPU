@@ -858,6 +858,19 @@ if (bottomProfileBtn && profileBtn) {
     });
 }
 
+const btnSiswaNav = document.getElementById("bottom-profile-btn-checkout");
+const semuaNav = document.querySelectorAll(".bottom-nav-item");
+
+// Klik tombol Siswa
+btnSiswaNav?.addEventListener("click", function() {
+    // Hapus active semua
+    semuaNav.forEach(n => n.classList.remove("active"));
+    // Tambah active ke ini
+    this.classList.add("active");
+    // Panggil buka profil
+    profileBtn.click();
+});
+
 // ==============================================
 // FUNGSI HALAMAN PROFIL MOBILE
 // ==============================================
