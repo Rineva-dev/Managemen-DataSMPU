@@ -1169,11 +1169,22 @@ function gantiNavBerdasarkanTab(tabAktif) {
     
     const navBayar = document.getElementById("bottom-nav-checkout");
     const navRiwayat = document.getElementById("bottom-nav-riwayat");
+    const headerTitle = document.getElementById("header-title"); // ⬅️ AMBIL ELEMEN JUDUL
 
-    if (!navBayar || !navRiwayat) return;
+    if (!navBayar || !navRiwayat || !headerTitle) return;
 
     const dariMenuRiwayat = sessionStorage.getItem("dari_halaman_payment") === "YA";
     const tabSekarang = tabAktif || "cart";
+
+    if (tabSekarang === "cart") {
+        headerTitle.textContent = "Keranjang Saya";
+    } 
+    else if (tabSekarang === "status") {
+        headerTitle.textContent = "Status Transaksi";
+    } 
+    else if (tabSekarang === "history") {
+        headerTitle.textContent = "Riwayat Transaksi";
+    }
 
     if (dariMenuRiwayat) {
         navBayar.style.setProperty('display', 'none', 'important');
