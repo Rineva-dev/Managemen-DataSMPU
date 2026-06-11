@@ -2207,12 +2207,12 @@ button.btn-lihat-kode svg {
     left: 0;
     right: 0;
     background: #ffffff;
-    border-top: 1px solid #e5e7eb;
     display: none;
     justify-content: space-around;
     align-items: center;
     z-index: 9999;
     padding: 6px 0;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 22%);
 }
 
 .bottom-nav-item {
