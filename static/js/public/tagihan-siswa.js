@@ -930,7 +930,33 @@ document.addEventListener("click", function(e) {
     }
 });
 
+// ✅ SIMPAN & MULIHKAN MENU AKTIF SAAT RELOAD
+// Simpan menu yang diklik ke penyimpanan
+semuaNav.forEach(navItem => {
+    navItem.addEventListener("click", function() {
+        semuaNav.forEach(n => n.classList.remove("active"));
+        this.classList.add("active");
+        // Simpan ID atau teks menu aktif
+        sessionStorage.setItem("menu_aktif", this.id || this.querySelector('span')?.textContent.trim());
+    });
+});
 
+// Saat halaman dimuat ulang, pulihkan posisi
+const menuTersimpan = sessionStorage.getItem("menu_aktif");
+if (menuTersimpan) {
+    semuaNav.forEach(n => n.classList.remove("active"));
+    let targetMenu;
+    // Cari berdasarkan ID
+    targetMenu = document.getElementById(menuTersimpan);
+    // Kalau tidak ketemu ID, cari berdasarkan teks
+    if (!targetMenu) {
+        semuaNav.forEach(n => {
+            const teks = n.querySelector('span')?.textContent.trim();
+            if (teks === menuTersimpan) targetMenu = n;
+        });
+    }
+    if (targetMenu) targetMenu.classList.add("active");
+}
 
 async function init() {
     renderCart();
