@@ -463,18 +463,9 @@ document
 });
 
 document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-
-        document.querySelectorAll(".tab-btn")
-            .forEach(b => b.classList.remove("active"));
-
-        document.querySelectorAll(".tab-content")
-            .forEach(c => c.classList.remove("active"));
-
-        btn.classList.add("active");
-
-        const tab = btn.dataset.tab;
-        document.getElementById("tab-" + tab).classList.add("active");
+    btn.addEventListener("click", function () {
+        const tab = this.dataset.tab;
+        gantiNavBerdasarkanTab(tab); // Panggil fungsi ganti
     });
 });
 
@@ -1169,24 +1160,15 @@ if (btnBottomPay && btnCheckout) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
     const urlParams = new URLSearchParams(window.location.search);
     const bukaTab = urlParams.get("tab");
 
-    if (bukaTab === "history") {
-
-        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
-        document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
-
-        const tombolRiwayat = document.querySelector('.tab-btn[data-tab="history"]');
-        const kontenRiwayat = document.getElementById("tab-history");
-
-        if (tombolRiwayat && kontenRiwayat) {
-            tombolRiwayat.classList.add("active");
-            kontenRiwayat.classList.add("active");
-
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
+    if (bukaTab) {
+        // Jika ada parameter tab, ikuti parameter
+        gantiNavBerdasarkanTab(bukaTab);
+    } else {
+        // Jika tidak ada, PAKAI NAV KERANJANG (Total + Bayar)
+        gantiNavBerdasarkanTab("cart");
     }
 });
 
@@ -1196,12 +1178,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabButtons = document.querySelectorAll(".tab-btn");
 
     function gantiNavBerdasarkanTab(tabAktif) {
+        const navCheckout = document.getElementById("bottom-nav-checkout");
+        const navRiwayat = document.getElementById("bottom-nav-riwayat");
+
         if (tabAktif === "history") {
             navCheckout.style.display = "none";
             navRiwayat.style.display = "flex";
         } else {
-            navCheckout.style.display = "flex";
-            navRiwayat.style.display = "none";
+            navCheckout.style.display = "flex"; // Tampilkan Total + Bayar
+            navRiwayat.style.display = "none";  // Sembunyikan menu
         }
     }
 
