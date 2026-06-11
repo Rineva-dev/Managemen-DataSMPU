@@ -2193,7 +2193,7 @@ button.btn-lihat-kode svg {
     justify-content: space-around;
     align-items: center;
     z-index: 99999;
-    padding:6px;
+    padding: 6px;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
 }
 
@@ -2222,7 +2222,7 @@ button.btn-lihat-kode svg {
     stroke-width: 1.8;
 }
 
-/* Teks biasa (untuk yang lain) */
+/* Teks biasa */
 .bottom-nav-item span {
     line-height: 1;
 }
@@ -2232,14 +2232,14 @@ button.btn-lihat-kode svg {
 ============================================== */
 .bottom-nav-item.nav-center {
     position: relative;
-    top: -16px; /* Naik sedikit, pas */
+    top: -16px;
 }
 
 /* Lingkaran */
 .bottom-nav-item.nav-center::before {
     content: '';
     position: absolute;
-    width: 58px; /* Sedikit lebih besar biar pas isinya */
+    width: 58px;
     height: 58px;
     background: linear-gradient(135deg, #ffb700, #ffc62a);
     border-radius: 50%;
@@ -2257,25 +2257,33 @@ button.btn-lihat-kode svg {
     stroke-width: 2;
 }
 
-/* ✅ HILANGKAN TULISAN TAGIHAN */
+/* Hilangkan tulisan Tagihan */
 .bottom-nav-item.nav-center span {
     display: none;
 }
 
 /* ==============================================
-   STATUS AKTIF (SELAIN TENGAH)
+   ✅ STATUS AKTIF - SEMUA MENU (TERMASUK SISWA)
 ============================================== */
-.bottom-nav-item.active:not(.nav-center) {
+/* Link biasa aktif */
+.bottom-nav-item.active:not(.nav-center):not(button) {
     color: #ffb700;
 }
-
-.bottom-nav-item.active:not(.nav-center) i,
-.bottom-nav-item.active:not(.nav-center) svg {
+.bottom-nav-item.active:not(.nav-center):not(button) i,
+.bottom-nav-item.active:not(.nav-center):not(button) svg {
     color: #ffb700;
     stroke-width: 2;
 }
 
-
+/* ✅ KHUSUS TOMBOL SISWA (BUTTON) AKTIF */
+.bottom-nav-item.active#bottom-profile-btn {
+    color: #ffb700 !important;
+}
+.bottom-nav-item.active#bottom-profile-btn i,
+.bottom-nav-item.active#bottom-profile-btn svg {
+    color: #ffb700 !important;
+    stroke-width: 2;
+}
 
 @media (max-width: 900px) {
 
