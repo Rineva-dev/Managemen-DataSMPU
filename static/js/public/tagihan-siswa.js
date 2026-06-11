@@ -854,15 +854,36 @@ const semuaNav = document.querySelectorAll(".bottom-nav-item");
 const bottomProfileBtn = document.getElementById("bottom-profile-btn");
 const bottomProfileBtnCheckout = document.getElementById("bottom-profile-btn-checkout");
 const profileBtn = document.getElementById("profile-btn");
+const profilePage = document.getElementById("profilePage");
+const profileDropdown = document.getElementById("profile-dropdown");
 
-// Fungsi seragam untuk kedua tombol
+// Fungsi seragam: LANGSUNG BUKA MOBILE, DROPDOWN DIABAIKAN
 function aturAktifDanBukaProfil(elTombol) {
-    // Hapus active di SEMUA menu
     semuaNav.forEach(n => n.classList.remove("active"));
-    // Tambah active ke tombol yang diklik
     elTombol.classList.add("active");
-    // Buka dropdown profil
-    if (profileBtn) profileBtn.click();
+
+    // ❌ Hapus kode buka dropdown di sini
+    // if (profileBtn) profileBtn.click();
+
+    // ✅ LANGSUNG BUKA HALAMAN PROFIL MOBILE
+    if (profilePage) {
+        document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
+        document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
+        document.getElementById("profile-page-kelas").textContent = document.getElementById("profile-kelas").textContent;
+        document.getElementById("profile-page-rombel").textContent = document.getElementById("siswa-rombel").textContent || "-";
+        document.getElementById("profile-page-ttl").textContent = document.getElementById("profile-ttl").textContent;
+        document.getElementById("profile-page-orangtua").textContent = document.getElementById("profile-orangtua").textContent;
+        
+        const statusText = document.getElementById("profile-status").textContent;
+        const statusClass = document.getElementById("profile-status").className;
+        const statusEl = document.getElementById("profile-page-status");
+        statusEl.textContent = statusText;
+        statusEl.className = "status-badge-mobile " + statusClass;
+
+        profilePage.classList.add("active");
+        document.body.style.overflow = "hidden";
+        lucide.createIcons();
+    }
 }
 
 // Pasang event ke kedua tombol
@@ -935,8 +956,6 @@ semuaNav.forEach(navItem => {
     navItem.addEventListener("click", function() {
         semuaNav.forEach(n => n.classList.remove("active"));
         this.classList.add("active");
-        
-        // Simpan menu apa yang diklik
         const namaMenu = this.querySelector('span')?.textContent.trim();
         sessionStorage.setItem("menu_aktif", namaMenu);
     });
@@ -945,18 +964,35 @@ semuaNav.forEach(navItem => {
 // SAAT HALAMAN DIMUAT / RELOAD
 const menuTersimpan = sessionStorage.getItem("menu_aktif");
 if (menuTersimpan) {
-    // Tandai nav yang aktif
     semuaNav.forEach(n => {
         const teks = n.querySelector('span')?.textContent.trim();
         if (teks === menuTersimpan) {
             n.classList.add("active");
 
-            // ✅ BUKA KEMBALI ISINYA SESUAI MENU
             if (menuTersimpan === "Siswa") {
-                // Buka kembali profil/dropdown
-                if (profileBtn) profileBtn.click();
-            }
+                // ✅ TUTUP PAKSA DROPDOWN AGAR TIDAK MUNCUL
+                profileDropdown?.classList.remove("show");
 
+                // ✅ BUKA HALAMAN MOBILE SAJA
+                if (profilePage) {
+                    document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
+                    document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
+                    document.getElementById("profile-page-kelas").textContent = document.getElementById("profile-kelas").textContent;
+                    document.getElementById("profile-page-rombel").textContent = document.getElementById("siswa-rombel").textContent || "-";
+                    document.getElementById("profile-page-ttl").textContent = document.getElementById("profile-ttl").textContent;
+                    document.getElementById("profile-page-orangtua").textContent = document.getElementById("profile-orangtua").textContent;
+                    
+                    const statusText = document.getElementById("profile-status").textContent;
+                    const statusClass = document.getElementById("profile-status").className;
+                    const statusEl = document.getElementById("profile-page-status");
+                    statusEl.textContent = statusText;
+                    statusEl.className = "status-badge-mobile " + statusClass;
+
+                    profilePage.classList.add("active");
+                    document.body.style.overflow = "hidden";
+                    lucide.createIcons();
+                }
+            }
         } else {
             n.classList.remove("active");
         }
