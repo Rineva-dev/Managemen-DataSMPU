@@ -2222,11 +2222,6 @@ button.btn-lihat-kode svg {
     color: #ffb300;
 }
 
-.bottom-nav-item.active svg {
-    stroke: #ffb300;
-    fill: #ffb300;
-}
-
 @media (max-width: 900px) {
 
     .market-layout {
@@ -2364,8 +2359,6 @@ button.btn-lihat-kode svg {
 /* ==============================================
 ✅ STYLE HALAMAN PROFIL MOBILE (GAYA SHOPEE)
 ============================================== */
-
-/* TUTUP DI DESKTOP */
 @media (min-width: 769px) {
     .profile-page-mobile {
         display: none !important;
