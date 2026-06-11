@@ -958,11 +958,11 @@ semuaNav.forEach(navItem => {
     });
 });
 
-// ✅ FUNGSI ISI DATA PROFIL (DITULIS 1 KALI SAJA)
+// ✅ FUNGSI ISI DATA PROFIL
 function isiDataDanBukaProfil() {
     if (!profilePage) return;
 
-    // Isi data (sudah pasti ada karena dipanggil setelah loadBiodataSiswa)
+    // Isi data
     document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
     document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
     document.getElementById("profile-page-kelas").textContent = document.getElementById("profile-kelas").textContent;
@@ -976,21 +976,21 @@ function isiDataDanBukaProfil() {
     statusEl.textContent = statusText;
     statusEl.className = "status-badge-mobile " + statusClass;
 
-    // Tampilkan halaman
+    // ✅ TANPA ANIMASI: langsung tampilkan
     profilePage.classList.add("active");
     document.body.style.overflow = "hidden";
     lucide.createIcons();
 }
 
-// ✅ FUNGSI UTAMA: URUTANNYA SUDAH BENAR
+// ✅ FUNGSI UTAMA: URUTAN TEPAT
 async function init() {
     renderCart();
-    await loadBiodataSiswa(); // 1. Ambil data DULU
+    await loadBiodataSiswa(); // Ambil data DULU
     await loadTagihanSPP();
     await loadTagihanPembangunan();
     checkEmptyTagihan("all");
 
-    // 2. Baru cek apakah terakhir buka menu "Siswa"
+    // ✅ CEK MENU TERAKHIR: JIKA SISWA, LANGSUNG TAMPILKAN
     const menuTersimpan = sessionStorage.getItem("menu_aktif");
     if (menuTersimpan === "Siswa") {
         semuaNav.forEach(n => n.classList.remove("active"));
@@ -999,9 +999,10 @@ async function init() {
         // Tutup dropdown atas
         profileDropdown?.classList.remove("show");
 
-        // Isi & buka profil (DATA SUDAH ADA, TIDAK ADA TANDA - LAGI)
+        // ✅ LANGSUNG BUKA PROFIL, TIDAK LEWAT MENU TAGIHAN
         isiDataDanBukaProfil();
     }
 }
 
+// ✅ JALANKAN
 init();
