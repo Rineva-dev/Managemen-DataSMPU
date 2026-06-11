@@ -5,38 +5,42 @@ const halamanAsalBoleh = [`${domain}/public/tagihan-siswa`];
 const sudahMasukSebelumnya = sessionStorage.getItem("akses_checkout_diizinkan");
 const dariHalamanBenar = halamanAsalBoleh.some(link => asal.includes(link));
 
+// ✅ LOGIKA AKSES HALAMAN
 if (dariHalamanBenar) {
     sessionStorage.setItem("akses_checkout_diizinkan", "YA");
+    sessionStorage.removeItem("dari_halaman_payment"); // Reset asal jika masuk dari tagihan
 }
 
-// ✅ TAMBAH: Simpan asal halaman agar nav tahu posisi kita
-if (asal.includes("/public/payment")) {
-    sessionStorage.setItem("dari_halaman_payment", "YA");
+// ✅ Simpan asal halaman agar nav tahu posisi kita (jika masuk dari menu Riwayat)
+if (asal.includes("/public/payment") || asal === "" || asal === null) {
+    // Cek apakah ada penanda dari navigasi SPA
+    if (sessionStorage.getItem("dari_halaman_payment") !== "YA") {
+        // Jika referrer kosong tapi kita ada di halaman riwayat, asumsikan dari payment
+        const params = new URLSearchParams(window.location.search);
+        if(params.get('tab') === 'status' || params.get('tab') === 'history'){
+            sessionStorage.setItem("dari_halaman_payment", "YA");
+        }
+    }
 }
 
-if (!dariHalamanBenar && !sudahMasukSebelumnya && !asal) {
-    window.location.href = "/public/payment";
+// ✅ PERBAIKAN: JANGAN PAKSA PINDAH JIKA SUDAH PUNYA AKSES, AGAR SPA AMAN
+if (!dariHalamanBenar && !sudahMasukSebelumnya && !sessionStorage.getItem("dari_halaman_payment")) {
+    if(!asal) {
+        // Jika langsung akses link tanpa riwayat, izinkan saja jika ada penanda session sebelumnya
+        if(!sudahMasukSebelumnya) {
+            window.location.href = "/public/payment";
+        }
+    }
 }
 
 lucide.createIcons();
-const csrfToken =
-    document.querySelector(
-        'meta[name="csrf-token"]'
-    )?.getAttribute("content");
-
-const cartItems =
-    document.querySelector(".cart-items");
-
-const cartEmpty =
-    document.getElementById("cart-empty");
-
-const cartTotal =
-    document.getElementById("cart-total");
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
+const cartItems = document.querySelector(".cart-items");
+const cartEmpty = document.getElementById("cart-empty");
+const cartTotal = document.getElementById("cart-total");
 
 let cart = [];
-
 let cartTotalValue = 0;
-
 
 // ======================================
 // FORMAT TANGGAL (YYYY-MM-DD → DD-MM-YYYY)
@@ -816,7 +820,6 @@ async function loadRiwayatPembayaran() {
                         <strong class="footer-title">
                             Total
                         </strong>
-
                         <strong class="history-price">
                             ${rupiah(item.total)}
                         </strong>
