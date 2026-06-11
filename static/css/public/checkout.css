@@ -102,7 +102,7 @@
     display: none;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 16px;
+    padding: 6px;
     z-index: 9999;
     box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.12);
 }
