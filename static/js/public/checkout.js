@@ -1168,6 +1168,33 @@ if (btnBottomPay && btnCheckout) {
     });
 }
 
+// ==============================================
+// ✅ FITUR: LANGSUNG BUKA TAB RIWAYAT JIKA ADA PARAMETER
+// ==============================================
+document.addEventListener("DOMContentLoaded", () => {
+    // Ambil parameter dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const bukaTab = urlParams.get("tab");
+
+    if (bukaTab === "history") {
+        // Hapus kelas active dari semua tab & konten
+        document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+
+        // Aktifkan tombol dan konten Riwayat
+        const tombolRiwayat = document.querySelector('.tab-btn[data-tab="history"]');
+        const kontenRiwayat = document.getElementById("tab-history");
+
+        if (tombolRiwayat && kontenRiwayat) {
+            tombolRiwayat.classList.add("active");
+            kontenRiwayat.classList.add("active");
+            
+            // Scroll ke atas biar langsung kelihatan judulnya
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    }
+});
+
 loadBiodataSiswa();
 loadCart();
 loadStatusPembayaranDenganTombol();
