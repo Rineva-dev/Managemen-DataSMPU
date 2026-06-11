@@ -62,40 +62,23 @@ function showToast(message = "Berhasil") {
     }, 2500);
 }
 
-// ======================================
-// UPDATE TOTAL
-// ======================================
-
 function updateCartTotal() {
-
     let total = 0;
-
     cart.forEach(item => {
         total += item.nominal;
     });
-
     cartTotal.textContent = rupiah(total);
-
     cartCount.textContent = cart.length;
 }
 
-// ======================================
-// RENDER CART
-// ======================================
 function renderCart() {
     cartCount.textContent = cart.length;
 }
 
-// ======================================
-// ADD TO CART
-// ======================================
 async function addToCart(data, cardElement) {
-
     try {
-
         const res = await fetch("/public/add-cart", {
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRFToken": csrfToken
@@ -124,11 +107,8 @@ async function addToCart(data, cardElement) {
             showToast(result.error || "Gagal tambah cart");
             return;
         }
-
-        // reload cart dari backend
         await loadCart();
 
-        // hilangkan card SPP
         if (data.kategori === "SPP") {
 
             cardElement.remove();
@@ -164,32 +144,15 @@ async function loadCart() {
     }
 }
 
-// ======================================
-// REMOVE CART
-// ======================================
 document.addEventListener("click", function(e) {
-
     const btnRemove = e.target.closest(".btn-remove");
 
     if (!btnRemove) return;
 
     const index = btnRemove.dataset.index;
-
-    // =========================
-    // AMBIL DATA ITEM
-    // =========================
-
     const removedItem = cart[index];
 
-    // =========================
-    // HAPUS DARI CART
-    // =========================
-
     cart.splice(index, 1);
-
-    // =========================
-    // RESET BUTTON CARD
-    // =========================
 
     lucide.createIcons();
 
@@ -197,10 +160,6 @@ document.addEventListener("click", function(e) {
 
     showToast("Tagihan dihapus");
 });
-
-// ======================================
-// PROFILE DROPDOWN
-// ======================================
 
 profileButton?.addEventListener(
     "click",
@@ -231,10 +190,6 @@ profileDropdown?.addEventListener(
         e.stopPropagation();
     }
 );
-
-// ======================================
-// LOAD TAGIHAN SPP
-// ======================================
 
 async function loadTagihanSPP() {
 
@@ -547,7 +502,7 @@ document.addEventListener("input", function(e) {
     }
 
     input.value =
-        "Rp " + " " 
+        "Rp " +
         Number(value).toLocaleString("id-ID");
 });
 
