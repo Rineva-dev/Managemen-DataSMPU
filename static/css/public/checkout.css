@@ -21,6 +21,10 @@
         flex: 1;
     }
 
+    .left-header span {
+        white-space: nowrap;
+    }
+
     .market-back {
         text-decoration: none;
     }
