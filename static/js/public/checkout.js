@@ -1168,64 +1168,50 @@ if (btnBottomPay && btnCheckout) {
     });
 }
 
-// ==============================================
-// ✅ FITUR: LANGSUNG BUKA TAB RIWAYAT JIKA ADA PARAMETER
-// ==============================================
 document.addEventListener("DOMContentLoaded", () => {
-    // Ambil parameter dari URL
+
     const urlParams = new URLSearchParams(window.location.search);
     const bukaTab = urlParams.get("tab");
 
     if (bukaTab === "history") {
-        // Hapus kelas active dari semua tab & konten
+
         document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
         document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
 
-        // Aktifkan tombol dan konten Riwayat
         const tombolRiwayat = document.querySelector('.tab-btn[data-tab="history"]');
         const kontenRiwayat = document.getElementById("tab-history");
 
         if (tombolRiwayat && kontenRiwayat) {
             tombolRiwayat.classList.add("active");
             kontenRiwayat.classList.add("active");
-            
-            // Scroll ke atas biar langsung kelihatan judulnya
+
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
     }
 });
 
-// ==============================================
-// ✅ FITUR: GANTI BOTTOM NAV BERDASARKAN TAB AKTIF
-// ==============================================
 document.addEventListener("DOMContentLoaded", () => {
     const navCheckout = document.getElementById("bottom-nav-checkout");
     const navRiwayat = document.getElementById("bottom-nav-riwayat");
     const tabButtons = document.querySelectorAll(".tab-btn");
 
-    // Fungsi ganti navigasi
     function gantiNavBerdasarkanTab(tabAktif) {
         if (tabAktif === "history") {
-            // Tampilkan nav Riwayat, sembunyikan nav Keranjang
             navCheckout.style.display = "none";
             navRiwayat.style.display = "flex";
         } else {
-            // Tampilkan nav Keranjang/Status, sembunyikan nav Riwayat
             navCheckout.style.display = "flex";
             navRiwayat.style.display = "none";
         }
     }
 
-    // 1. Cek jika masuk lewat link langsung (dari halaman tagihan)
     const urlParams = new URLSearchParams(window.location.search);
     const bukaTab = urlParams.get("tab");
 
     if (bukaTab) {
-        // Hapus active semua
         tabButtons.forEach(btn => btn.classList.remove("active"));
         document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
 
-        // Aktifkan tab tujuan
         const tombolTarget = document.querySelector(`.tab-btn[data-tab="${bukaTab}"]`);
         const kontenTarget = document.getElementById(`tab-${bukaTab}`);
 
@@ -1236,11 +1222,9 @@ document.addEventListener("DOMContentLoaded", () => {
             window.scrollTo({ top: 0 });
         }
     } else {
-        // Default: tab keranjang, pakai nav checkout
         gantiNavBerdasarkanTab("cart");
     }
 
-    // 2. Ganti nav saat KLIK tab
     tabButtons.forEach(btn => {
         btn.addEventListener("click", function() {
             const tab = this.dataset.tab;
@@ -1248,7 +1232,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 3. Ikon Lucide di nav baru
     lucide.createIcons();
 });
 
