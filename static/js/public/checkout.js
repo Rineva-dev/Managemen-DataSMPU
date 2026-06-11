@@ -1166,40 +1166,37 @@ if (btnBottomPay && btnCheckout) {
     });
 }
 
-// ✅ FUNGSI PENGATURAN NAV BAWAH - DIPERBAIKI SESUAI KEBUTUHAN
+// ✅ KODE PERBAIKAN (KUNCI MASALAH ADA DI SINI)
 function gantiNavBerdasarkanTab(tabAktif) {
     if (window.innerWidth > 900) return;
     
-    const navBayar = document.getElementById("bottom-nav-checkout");
-    const navRiwayat = document.getElementById("bottom-nav-riwayat");
+    const navBayar = document.getElementById("bottom-nav-checkout"); // Ini yang ada Total & Bayar
+    const navRiwayat = document.getElementById("bottom-nav-riwayat"); // Ini nav riwayat
 
-    if (!navBayar || !navRiwayat) {
-        console.log("Elemen nav tidak ditemukan");
-        return;
+    if (!navBayar || !navRiwayat) return;
+
+    // 🔒 ATURAN UTAMA: CEK DARI MANA KITA DATANG
+    const dariMenuRiwayat = sessionStorage.getItem("dari_halaman_payment") === "YA";
+
+    // 1. JIKA MASUK DARI MENU RIWAYAT / HALAMAN UTAMA PAYMENT
+    if (dariMenuRiwayat) {
+        // ✅ DISINI KUNCINYA: PAKSA SEMBUNYIKAN NAV BAYAR, TIDAK PEDULI TAB APA
+        navBayar.style.setProperty('display', 'none', 'important');
+        navRiwayat.style.setProperty('display', 'flex', 'important');
+        return; // ❗ PENTING: Berhenti di sini, jangan jalanin kode bawah
     }
 
-    // ✅ CEK: Apakah kita datang dari halaman Payment (halaman utama) saat klik tombol Riwayat?
-    const dariPayment = sessionStorage.getItem("dari_halaman_payment") === "YA";
-
-    // Reset: Sembunyikan SEMUA nav dulu dengan PAKSA (!important)
+    // 2. JIKA MASUK DARI TAGIHAN SISWA (Logika Biasa)
     navBayar.style.setProperty('display', 'none', 'important');
     navRiwayat.style.setProperty('display', 'none', 'important');
 
-    // LOGIKA UTAMA:
-    if (dariPayment) {
-        // ✅ ATURAN UTAMA: Jika masuk dari tombol Riwayat di halaman Payment,
-        // APAPUN tab yang aktif, TAMPILKAN NAV RIWAYAT saja
-        navRiwayat.style.setProperty('display', 'flex', 'important');
-    } else {
-        // Logika biasa jika masuk dari halaman lain (Tagihan Siswa)
-        if (tabAktif === "cart") {
-            if (cart.length > 0) {
-                navBayar.style.setProperty('display', 'flex', 'important');
-            }
-        } 
-        else if (tabAktif === "status" || tabAktif === "history") {
-            navRiwayat.style.setProperty('display', 'flex', 'important');
+    if (tabAktif === "cart") {
+        if (cart.length > 0) {
+            navBayar.style.setProperty('display', 'flex', 'important');
         }
+    } 
+    else if (tabAktif === "status" || tabAktif === "history") {
+        navRiwayat.style.setProperty('display', 'flex', 'important');
     }
 }
 
@@ -1299,55 +1296,6 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
         gantiNavBerdasarkanTab(tab);
     });
 });
-
-// ===============================
-// TAB SWITCH HANDLER
-// ===============================
-
-const tabButtons = document.querySelectorAll(".tab-btn");
-const tabContents = document.querySelectorAll(".tab-content");
-
-tabButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-
-        const tab = btn.dataset.tab;
-
-        // aktifkan tombol
-        tabButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        // aktifkan konten
-        tabContents.forEach(c => c.classList.remove("active"));
-        document.getElementById(`tab-${tab}`).classList.add("active");
-
-        // 🔥 UPDATE BOTTOM NAV
-        gantiNavBerdasarkanTab(tab);
-    });
-});
-
-// ===============================
-// INIT TAB FROM URL
-// ===============================
-
-const params = new URLSearchParams(window.location.search);
-const tabFromUrl = params.get("tab") || "cart";
-
-// trigger tab
-const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabFromUrl}"]`);
-if (targetBtn) {
-    targetBtn.click();
-} else {
-    gantiNavBerdasarkanTab("cart");
-}
-
-const bottomPayBtn = document.querySelector(".bottom-pay-btn");
-const mainPayBtn   = document.querySelector(".btn-checkout");
-
-if (bottomPayBtn && mainPayBtn) {
-    bottomPayBtn.addEventListener("click", () => {
-        mainPayBtn.click();
-    });
-}
 
 loadBiodataSiswa();
 loadCart();
