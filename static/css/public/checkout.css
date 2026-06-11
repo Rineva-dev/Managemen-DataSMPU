@@ -52,6 +52,8 @@
         background: none;
         box-shadow: none;
         padding: 0;
+        border: none;
+        border-radius: none;
     }
 
     .cart-summary,
@@ -82,12 +84,11 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 64px;
     background: #ffffff;
     display: none;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 10px 16px;
     z-index: 9999;
     box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.12);
 }
