@@ -68,6 +68,11 @@
     body {
         padding-bottom: 80px;
     }
+
+    .cart-group-header h4 { font-size: 14px; }
+    .cart-item-left p, .cart-item-right span { font-size: 13px; }
+    .cart-group-footer span { font-size: 13px; }
+    .cart-group-footer strong { font-size: 14px; }
     
 }
 
@@ -133,4 +138,92 @@
 
 .bottom-pay-btn:active {
     transform: scale(0.97);
+}
+
+/* ==============================================
+✅ TAMBAHAN STYLE KERANJANG KELOMPOK
+============================================== */
+.cart-group-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.cart-group-header {
+    background: #f5f7fa;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-group-header h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cart-group-body {
+    padding: 0 15px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item-left p {
+    margin: 0;
+    font-size: 14px;
+    color: #444;
+}
+
+.cart-item-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cart-item-right span {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 3px;
+}
+
+.cart-group-footer {
+    background: #f5f7fa;
+    padding: 12px 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+}
+
+.cart-group-footer span {
+    font-size: 14px;
+    color: #555;
+}
+
+.cart-group-footer strong {
+    font-size: 15px;
+    color: #198754;
 }

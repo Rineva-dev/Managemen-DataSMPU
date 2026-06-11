@@ -164,66 +164,101 @@ async function loadCart() {
     }
 }
 
-function renderCart() {
+// ✅ TAMBAH: Fungsi pengelompokan tagihan
+function kelompokkanTagihan(items) {
+    const kelompok = {
+        SPP: [],
+        PEMBANGUNAN: [],
+        LAINNYA: []
+    };
 
+    items.forEach(item => {
+        const jenis = (item.jenis || "").toUpperCase();
+        if (jenis === "SPP") {
+            kelompok.SPP.push(item);
+        } else if (jenis.includes("PEMBANGUNAN")) {
+            kelompok.PEMBANGUNAN.push(item);
+        } else {
+            kelompok.LAINNYA.push(item);
+        }
+    });
+
+    // Hapus kelompok yang kosong
+    Object.keys(kelompok).forEach(key => {
+        if (kelompok[key].length === 0) delete kelompok[key];
+    });
+
+    return kelompok;
+}
+
+// ✅ UBAH: Isi fungsi renderCart menjadi seperti ini
+function renderCart() {
     cartItems.innerHTML = "";
 
     if (cart.length === 0) {
-
         cartEmpty.style.display = "flex";
-
         cartTotal.textContent = "Rp0";
         cartTotalValue = 0;
-
         return;
     }
 
     cartEmpty.style.display = "none";
 
-    let total = 0;
+    const dataKelompok = kelompokkanTagihan(cart);
+    let totalKeseluruhan = 0;
 
-    cart.forEach((item, index) => {
+    // Loop setiap kelompok (SPP, Pembangunan, dll)
+    Object.keys(dataKelompok).forEach(namaKelompok => {
+        const daftarItem = dataKelompok[namaKelompok];
+        let totalPerKelompok = daftarItem.reduce((sum, item) => sum + item.nominal, 0);
+        totalKeseluruhan += totalPerKelompok;
 
-        total += item.nominal;
+        // Ubah nama tampilan
+        let judulKelompok = namaKelompok === "SPP" ? "SPP Sekolah" : 
+                            namaKelompok === "PEMBANGUNAN" ? "Biaya Pembangunan" : 
+                            "Biaya Lainnya";
 
-        const div = document.createElement("div");
-
-        div.className = "cart-item";
-
-        div.innerHTML = `
-            <div class="cart-item-left">
-
-                <div>
-
-                    <p>
-                        ${formatNamaTagihan(item)}
-                    </p>
-
+        // Buat daftar rincian
+        let rincianHtml = "";
+        daftarItem.forEach(item => {
+            rincianHtml += `
+            <div class="cart-item">
+                <div class="cart-item-left">
+                    <p>${formatNamaTagihan(item)}</p>
                 </div>
-
+                <div class="cart-item-right">
+                    <span>${rupiah(item.nominal)}</span>
+                    <button class="btn-remove" data-id="${item.id}">
+                        <i data-lucide="trash-2"></i>
+                    </button>
+                </div>
             </div>
+            `;
+        });
 
-            <div class="cart-item-right">
-
-                <p>
-                    ${rupiah(item.nominal)}
-                </p>
-
-                <button
-                    class="btn-remove"
-                    data-id="${item.id}">
-
-                    <i data-lucide="trash-2"></i>
-
-                </button>
-
+        // Render 1 Kartu per Kelompok
+        const div = document.createElement("div");
+        div.className = "cart-group-card";
+        div.innerHTML = `
+            <div class="cart-group-header">
+                <h4><i data-lucide="book-open"></i> ${judulKelompok}</h4>
+            </div>
+            <div class="cart-group-body">${rincianHtml}</div>
+            <div class="cart-group-footer">
+                <span>Total ${judulKelompok}</span>
+                <strong>${rupiah(totalPerKelompok)}</strong>
             </div>
         `;
 
         cartItems.appendChild(div);
     });
-    cartTotalValue = total;
-    cartTotal.textContent = rupiah(total);
+
+    // Update Total Akhir
+    cartTotalValue = totalKeseluruhan;
+    cartTotal.textContent = rupiah(totalKeseluruhan);
+    if(document.getElementById("cart-total-bottom")){
+        document.getElementById("cart-total-bottom").textContent = rupiah(totalKeseluruhan);
+    }
 
     lucide.createIcons();
 }
