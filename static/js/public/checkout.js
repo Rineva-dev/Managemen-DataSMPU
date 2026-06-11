@@ -207,18 +207,15 @@ function renderCart() {
     const dataKelompok = kelompokkanTagihan(cart);
     let totalKeseluruhan = 0;
 
-    // Loop setiap kelompok (SPP, Pembangunan, dll)
     Object.keys(dataKelompok).forEach(namaKelompok => {
         const daftarItem = dataKelompok[namaKelompok];
         let totalPerKelompok = daftarItem.reduce((sum, item) => sum + item.nominal, 0);
         totalKeseluruhan += totalPerKelompok;
 
-        // Ubah nama tampilan
         let judulKelompok = namaKelompok === "SPP" ? "SPP Sekolah" : 
                             namaKelompok === "PEMBANGUNAN" ? "Biaya Pembangunan" : 
                             "Biaya Lainnya";
 
-        // Buat daftar rincian
         let rincianHtml = "";
         daftarItem.forEach(item => {
             rincianHtml += `
@@ -236,7 +233,6 @@ function renderCart() {
             `;
         });
 
-        // Render 1 Kartu per Kelompok
         const div = document.createElement("div");
         div.className = "cart-group-card";
         div.innerHTML = `
