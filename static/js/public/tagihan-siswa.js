@@ -858,12 +858,50 @@ if (bottomProfileBtn && profileBtn) {
     });
 }
 
+// ==============================================
+✅ FUNGSI HALAMAN PROFIL MOBILE
+// ==============================================
+const profilePage = document.getElementById("profilePage");
+const btnOpenProfile = document.getElementById("bottom-profile-btn");
+const btnCloseProfile = document.getElementById("closeProfileBtn");
+
+// BUKA HALAMAN PROFIL
+btnOpenProfile.addEventListener("click", () => {
+    // Isi data ke halaman profil (ambil dari data yang sudah ada)
+    document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
+    document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
+    document.getElementById("profile-page-kelas").textContent = document.getElementById("profile-kelas").textContent;
+    document.getElementById("profile-page-rombel").textContent = document.getElementById("siswa-rombel").textContent || "-";
+    document.getElementById("profile-page-ttl").textContent = document.getElementById("profile-ttl").textContent;
+    document.getElementById("profile-page-orangtua").textContent = document.getElementById("profile-orangtua").textContent;
+    
+    // Status
+    const statusText = document.getElementById("profile-status").textContent;
+    const statusClass = document.getElementById("profile-status").className;
+    const statusEl = document.getElementById("profile-page-status");
+    statusEl.textContent = statusText;
+    statusEl.className = "status-badge-mobile " + statusClass;
+
+    // Tampilkan halaman
+    profilePage.classList.add("active");
+    document.body.style.overflow = "hidden"; // Kunci layar belakang
+    lucide.createIcons();
+});
+
+// TUTUP HALAMAN PROFIL
+btnCloseProfile.addEventListener("click", () => {
+    profilePage.classList.remove("active");
+    document.body.style.overflow = "auto"; // Buka kembali layar
+});
+
 document.addEventListener("click", function(e) {
     const btnKeCheckout = e.target.closest('a[href*="/public/checkout"]');
     if (btnKeCheckout) {
         sessionStorage.setItem("boleh_buka_checkout", "YA");
     }
 });
+
+
 
 async function init() {
     renderCart();
@@ -874,3 +912,4 @@ async function init() {
 }
 
 init();
+
