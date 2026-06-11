@@ -14,11 +14,11 @@
 
     .left-header {
         display: flex !important;
-        flex-direction: row;
-        gap: 30px;
-        margin-left: 10px;
         align-items: center;
-        width: 450px;
+        gap: 12px;
+        margin-left: 10px;
+        width: auto;
+        flex: 1;
     }
 
     .market-back {
