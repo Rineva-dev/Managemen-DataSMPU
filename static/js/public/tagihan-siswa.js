@@ -930,32 +930,38 @@ document.addEventListener("click", function(e) {
     }
 });
 
-// ✅ SIMPAN & MULIHKAN MENU AKTIF SAAT RELOAD
-// Simpan menu yang diklik ke penyimpanan
+// ✅ SIMPAN & MULIHKAN MENU AKTIF + ISI HALAMAN SAAT RELOAD
 semuaNav.forEach(navItem => {
     navItem.addEventListener("click", function() {
         semuaNav.forEach(n => n.classList.remove("active"));
         this.classList.add("active");
-        // Simpan ID atau teks menu aktif
-        sessionStorage.setItem("menu_aktif", this.id || this.querySelector('span')?.textContent.trim());
+        
+        // Simpan menu apa yang diklik
+        const namaMenu = this.querySelector('span')?.textContent.trim();
+        sessionStorage.setItem("menu_aktif", namaMenu);
     });
 });
 
-// Saat halaman dimuat ulang, pulihkan posisi
+// SAAT HALAMAN DIMUAT / RELOAD
 const menuTersimpan = sessionStorage.getItem("menu_aktif");
 if (menuTersimpan) {
-    semuaNav.forEach(n => n.classList.remove("active"));
-    let targetMenu;
-    // Cari berdasarkan ID
-    targetMenu = document.getElementById(menuTersimpan);
-    // Kalau tidak ketemu ID, cari berdasarkan teks
-    if (!targetMenu) {
-        semuaNav.forEach(n => {
-            const teks = n.querySelector('span')?.textContent.trim();
-            if (teks === menuTersimpan) targetMenu = n;
-        });
-    }
-    if (targetMenu) targetMenu.classList.add("active");
+    // Tandai nav yang aktif
+    semuaNav.forEach(n => {
+        const teks = n.querySelector('span')?.textContent.trim();
+        if (teks === menuTersimpan) {
+            n.classList.add("active");
+
+            // ✅ BUKA KEMBALI ISINYA SESUAI MENU
+            if (menuTersimpan === "Siswa") {
+                // Buka kembali profil/dropdown
+                if (profileBtn) profileBtn.click();
+            }
+            // Tambahkan ini kalau menu lain juga isinya beda
+            // else if (menuTersimpan === "Riwayat") { ... }
+        } else {
+            n.classList.remove("active");
+        }
+    });
 }
 
 async function init() {
