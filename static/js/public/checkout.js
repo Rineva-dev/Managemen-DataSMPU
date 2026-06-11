@@ -3,35 +3,28 @@ const domain = window.location.origin;
 const halamanAsalBoleh = [`${domain}/public/tagihan-siswa`];
 
 const sudahMasukSebelumnya = sessionStorage.getItem("akses_checkout_diizinkan");
-const dariHalamanBenar = halamanAsalBoleh.some(link => asal.includes(link));
+const dariHalamanTagihan = halamanAsalBoleh.some(link => asal.includes(link));
 
-if (asal.includes("/public/payment") || asal === "" || asal === null) {
-    // 🔒 PERKUAT: PAKSA TANDAI SELALU JIKA DARI HALAMAN UTAMA / PAYMENT
+if (dariHalamanTagihan) {
+    sessionStorage.setItem("akses_checkout_diizinkan", "YA");
+    sessionStorage.removeItem("dari_halaman_payment");
+} 
+else if (asal.includes("/public/payment") || asal === "" || asal === null) {
     sessionStorage.setItem("dari_halaman_payment", "YA");
 }
 
-// ✅ TAMBAH: CEK LANGSUNG DARI URL, JIKA TAB NYA RIWAYAT/STATUS, TANDAI LANGSUNG
 const paramsAwal = new URLSearchParams(window.location.search);
-if(paramsAwal.get('tab') === 'status' || paramsAwal.get('tab') === 'history'){
+const tabDiUrl = paramsAwal.get('tab');
+if (tabDiUrl === 'status' || tabDiUrl === 'history') {
     sessionStorage.setItem("dari_halaman_payment", "YA");
 }
 
-// ✅ Simpan asal halaman agar nav tahu posisi kita (jika masuk dari menu Riwayat)
-if (asal.includes("/public/payment") || asal === "" || asal === null) {
-    // Cek apakah ada penanda dari navigasi SPA
-    if (sessionStorage.getItem("dari_halaman_payment") !== "YA") {
-        // Jika referrer kosong tapi kita ada di halaman riwayat, asumsikan dari payment
-        const params = new URLSearchParams(window.location.search);
-        if(params.get('tab') === 'status' || params.get('tab') === 'history'){
-            sessionStorage.setItem("dari_halaman_payment", "YA");
-        }
-    }
+if (tabDiUrl === 'cart') {
+    sessionStorage.removeItem("dari_halaman_payment");
 }
 
-// ✅ PERBAIKAN: JANGAN PAKSA PINDAH JIKA SUDAH PUNYA AKSES, AGAR SPA AMAN
-if (!dariHalamanBenar && !sudahMasukSebelumnya && !sessionStorage.getItem("dari_halaman_payment")) {
+if (!dariHalamanTagihan && !sudahMasukSebelumnya && !sessionStorage.getItem("dari_halaman_payment")) {
     if(!asal) {
-        // Jika langsung akses link tanpa riwayat, izinkan saja jika ada penanda session sebelumnya
         if(!sudahMasukSebelumnya) {
             window.location.href = "/public/payment";
         }
@@ -1174,33 +1167,30 @@ if (btnBottomPay && btnCheckout) {
 function gantiNavBerdasarkanTab(tabAktif) {
     if (window.innerWidth > 900) return;
     
-    const navBayar = document.getElementById("bottom-nav-checkout"); // Ini yang ada Total & Bayar
-    const navRiwayat = document.getElementById("bottom-nav-riwayat"); // Ini nav riwayat
+    const navBayar = document.getElementById("bottom-nav-checkout");
+    const navRiwayat = document.getElementById("bottom-nav-riwayat");
 
     if (!navBayar || !navRiwayat) return;
 
-    // 🔒 ATURAN UTAMA: CEK DARI MANA KITA DATANG + CEK TAB AKTIF
     const dariMenuRiwayat = sessionStorage.getItem("dari_halaman_payment") === "YA";
     const tabSekarang = tabAktif || "cart";
 
-    // ==============================================
-    // 🔒 KUNCI UTAMA:
-    // JIKA DARI MENU RIWAYAT ATAU SEDANG DI TAB STATUS/HISTORY → SELALU SEMBUNYIKAN BAYAR
-    // ==============================================
-    if (dariMenuRiwayat || tabSekarang === "status" || tabSekarang === "history") {
-        navBayar.style.setProperty('display', 'none', 'important'); // PAKSA HILANG
+    if (dariMenuRiwayat) {
+        navBayar.style.setProperty('display', 'none', 'important');
         navRiwayat.style.setProperty('display', 'flex', 'important');
-        return; // ❗ BERHENTI DI SINI, TIDAK ADA KODE DI BAWAH YANG DIJALANKAN
+        return;
     }
 
-    // ==============================================
-    // JIKA MASUK DARI TAGIHAN SISWA & DI TAB KERANJANG → TAMPILKAN JIKA ADA ISI
-    // ==============================================
     navBayar.style.setProperty('display', 'none', 'important');
     navRiwayat.style.setProperty('display', 'none', 'important');
 
-    if (tabSekarang === "cart" && cart.length > 0) {
-        navBayar.style.setProperty('display', 'flex', 'important');
+    if (tabSekarang === "cart") {
+        if (cart.length > 0) {
+            navBayar.style.setProperty('display', 'flex', 'important');
+        }
+    } 
+    else if (tabSekarang === "status" || tabSekarang === "history") {
+        navRiwayat.style.setProperty('display', 'flex', 'important');
     }
 }
 
