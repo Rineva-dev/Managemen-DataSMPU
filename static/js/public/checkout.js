@@ -1,8 +1,15 @@
-if (!sessionStorage.getItem("boleh_buka_checkout")) {
-    alert("⚠️ Akses ditolak! Halaman ini harus dibuka lewat keranjang pembayaran.");
-    window.location.href = "/public/tagihan-siswa?siswa_id=" + (document.getElementById("siswa-id")?.value || "");
-} else {
-    sessionStorage.removeItem("boleh_buka_checkout");
+const asal = document.referrer;
+const domainAman = window.location.origin;
+const halamanBolehAsal = [
+    `${domainAman}/public/tagihan-siswa`
+];
+
+const dariHalamanBoleh = halamanBolehAsal.some(link => asal.includes(link));
+const adalahRefresh = window.performance?.navigation?.type === 1;
+
+if (!dariHalamanBoleh && !asal && !adalahRefresh) {
+    alert("⚠️ Akses ditolak! Halaman ini hanya bisa dibuka lewat keranjang.");
+    window.location.href = "/public/payment";
 }
 
 lucide.createIcons();
