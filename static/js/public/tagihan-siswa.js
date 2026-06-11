@@ -958,11 +958,11 @@ semuaNav.forEach(navItem => {
     });
 });
 
-// ✅ FUNGSI ISI DATA PROFIL & TAMPILKAN LANGSUNG
+// ✅ FUNGSI ISI DATA PROFIL (DITULIS 1 KALI SAJA)
 function isiDataDanBukaProfil() {
     if (!profilePage) return;
 
-    // Isi data
+    // Isi data (sudah pasti ada karena dipanggil setelah loadBiodataSiswa)
     document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
     document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
     document.getElementById("profile-page-kelas").textContent = document.getElementById("profile-kelas").textContent;
@@ -976,30 +976,21 @@ function isiDataDanBukaProfil() {
     statusEl.textContent = statusText;
     statusEl.className = "status-badge-mobile " + statusClass;
 
-    // ✅ LANGSUNG TAMPIL, TANPA ANIMASI GESEK
-    profilePage.style.transition = "none"; // Matikan animasi sejenak
+    // Tampilkan halaman
     profilePage.classList.add("active");
     document.body.style.overflow = "hidden";
     lucide.createIcons();
-
-    // Kembalikan pengaturan transisi untuk klik tombol nanti
-    setTimeout(() => {
-        profilePage.style.transition = "";
-    }, 100);
 }
 
-// ✅ FUNGSI UTAMA: URUTAN TEPAT & SEMBUNYIKAN MENU TAGIHAN DULU
+// ✅ FUNGSI UTAMA: URUTANNYA SUDAH BENAR
 async function init() {
-    // ✅ SEMBUNYIKAN MENU TAGIHAN DARI AWAL, TIDAK MUNCUL SEJENAK
-    billGrid.style.visibility = "hidden";
-
     renderCart();
-    await loadBiodataSiswa(); // Ambil data DULU
+    await loadBiodataSiswa(); // 1. Ambil data DULU
     await loadTagihanSPP();
     await loadTagihanPembangunan();
     checkEmptyTagihan("all");
 
-    // ✅ CEK MENU TERAKHIR: JIKA SISWA, LANGSUNG TAMPILKAN
+    // 2. Baru cek apakah terakhir buka menu "Siswa"
     const menuTersimpan = sessionStorage.getItem("menu_aktif");
     if (menuTersimpan === "Siswa") {
         semuaNav.forEach(n => n.classList.remove("active"));
@@ -1008,13 +999,9 @@ async function init() {
         // Tutup dropdown atas
         profileDropdown?.classList.remove("show");
 
-        // ✅ LANGSUNG BUKA PROFIL, TIDAK LEWAT MENU TAGIHAN
+        // Isi & buka profil (DATA SUDAH ADA, TIDAK ADA TANDA - LAGI)
         isiDataDanBukaProfil();
-    } else {
-        // Jika bukan menu siswa, baru tampilkan tagihan
-        billGrid.style.visibility = "visible";
     }
 }
 
-// ✅ JALANKAN
 init();
