@@ -11,4 +11,20 @@
     .icon-button {
         color: #ffb300;
     }
+
+    .left-header {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+        margin-left: 10px;
+        align-items: center;
+    }
+
+    .market-action {
+        max-width: auto;
+    }
+}
+
+.left-header {
+    display: none;
 }
