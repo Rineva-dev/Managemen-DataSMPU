@@ -73,6 +73,15 @@
     .cart-item-left p, .cart-item-right span { font-size: 13px; }
     .cart-group-footer span { font-size: 13px; }
     .cart-group-footer strong { font-size: 14px; }
+
+    .payment-total {
+        flex-direction: column;
+    }
+
+    #modal-total {
+        font-size: 20px;
+        color: #198754;
+    }
     
 }
 
