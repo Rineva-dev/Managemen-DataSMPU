@@ -61,10 +61,6 @@
         display: none;
     }
 
-    .bottom-nav {
-        display: flex !important;
-    }
-
     body {
         padding-bottom: 60px;
     }
@@ -239,10 +235,4 @@
 .cart-group-footer strong {
     font-size: 15px;
     color: #198754;
-}
-
-@media (min-width: 901px) {
-    .bottom-nav {
-        display: none !important;
-    }
 }

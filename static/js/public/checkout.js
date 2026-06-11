@@ -1158,35 +1158,32 @@ if (btnBottomPay && btnCheckout) {
     });
 }
 
-// ✅ FUNGSI PENGATURAN NAV BAWAH - DIPERBAIKI SEUTUHNYA
+// ✅ FUNGSI PENGATURAN NAV BAWAH - FINAL FIX
 function gantiNavBerdasarkanTab(tabAktif) {
     if (window.innerWidth > 900) return;
     
-    // ✅ AMBIL KEDUA ELEMEN BERDASARKAN ID (SESUAI HTML KAMU)
     const navBayar = document.getElementById("bottom-nav-checkout");
     const navRiwayat = document.getElementById("bottom-nav-riwayat");
 
-    // Cek dulu apakah elemen ada
     if (!navBayar || !navRiwayat) {
         console.log("Elemen nav tidak ditemukan");
         return;
     }
 
-    // Reset semua dulu → Sembunyikan keduanya
-    navBayar.style.display = "none";
-    navRiwayat.style.display = "none";
+    // Reset: Sembunyikan SEMUA nav dulu dengan PAKSA (!important)
+    navBayar.style.setProperty('display', 'none', 'important');
+    navRiwayat.style.setProperty('display', 'none', 'important');
 
-    // LOGIKA BENAR:
-    // KETIKA KLIK KERANJANG (cart) → TAMPILKAN NAV BAYAR
+    // LOGIKA:
     if (tabAktif === "cart") {
-        // Tampilkan hanya jika ada isi keranjang
+        // TAMPILKAN NAV BAYAR JIKA ADA ISI
         if (cart.length > 0) {
-            navBayar.style.display = "flex"; // ✅ MUNCUL TOMBOL BAYAR
+            navBayar.style.setProperty('display', 'flex', 'important');
         }
-    }
-    // KETIKA KLIK STATUS ATAU RIWAYAT → TAMPILKAN NAV RIWAYAT
+    } 
     else if (tabAktif === "status" || tabAktif === "history") {
-        navRiwayat.style.display = "flex"; // ✅ MUNCUL MENU NAVIGASI
+        // TAMPILKAN NAV RIWAYAT
+        navRiwayat.style.setProperty('display', 'flex', 'important');
     }
 }
 
