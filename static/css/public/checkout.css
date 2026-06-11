@@ -41,11 +41,17 @@
     }
 
     .payment-tabs {
-        font-display: none;
+        display: none;
     }
 
     .payment-container {
         margin: 10px 0;
+    }
+
+    .checkout-card {
+        background: none;
+        box-shadow: none;
+        padding: 0;
     }
     
 }
