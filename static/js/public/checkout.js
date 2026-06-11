@@ -1160,51 +1160,39 @@ if (btnBottomPay && btnCheckout) {
 }
 
 function gantiNavBerdasarkanTab(tabAktif) {
-    const navCheckout = document.getElementById("bottom-nav-checkout");
+    const navBayar = document.getElementById("bottom-nav-checkout");
     const navRiwayat = document.getElementById("bottom-nav-riwayat");
 
+    if (!navBayar || !navRiwayat) return;
+
     if (tabAktif === "history") {
-        navCheckout.style.display = "none";
+        navBayar.style.display = "none";
         navRiwayat.style.display = "flex";
     } else {
-        navCheckout.style.display = "flex"; // Tampilkan Total + Bayar
-        navRiwayat.style.display = "none";  // Sembunyikan menu
+        navBayar.style.display = "flex";
+        navRiwayat.style.display = "none";
     }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const navCheckout = document.getElementById("bottom-nav-checkout");
-    const navRiwayat = document.getElementById("bottom-nav-riwayat");
     const tabButtons = document.querySelectorAll(".tab-btn");
-
     const urlParams = new URLSearchParams(window.location.search);
-    const bukaTab = urlParams.get("tab");
+    const tabDariUrl = urlParams.get("tab");
 
-    if (bukaTab) {
-        tabButtons.forEach(btn => btn.classList.remove("active"));
-        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-
-        const tombolTarget = document.querySelector(`.tab-btn[data-tab="${bukaTab}"]`);
-        const kontenTarget = document.getElementById(`tab-${bukaTab}`);
-
-        if (tombolTarget && kontenTarget) {
-            tombolTarget.classList.add("active");
-            kontenTarget.classList.add("active");
-            gantiNavBerdasarkanTab(bukaTab);
-            window.scrollTo({ top: 0 });
-        }
+    // Atur tampilan awal saat halaman dibuka
+    if (tabDariUrl) {
+        gantiNavBerdasarkanTab(tabDariUrl);
     } else {
-        gantiNavBerdasarkanTab("cart");
+        gantiNavBerdasarkanTab("cart"); // Default ke keranjang
     }
 
+    // Pasang event klik ke tab
     tabButtons.forEach(btn => {
         btn.addEventListener("click", function() {
             const tab = this.dataset.tab;
             gantiNavBerdasarkanTab(tab);
         });
     });
-
-    lucide.createIcons();
 });
 
 loadBiodataSiswa();
