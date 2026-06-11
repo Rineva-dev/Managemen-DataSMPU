@@ -75,8 +75,12 @@
     .cart-group-footer strong { font-size: 14px; }
 
     #modal-total {
-        font-size: 20px;
+        font-size: 16px;
         color: #198754;
+    }
+
+    .payment-total span {
+        font-size: 14px;
     }
     
 }
