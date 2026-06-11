@@ -1163,25 +1163,20 @@ if (btnBottomPay && btnCheckout) {
 }
 
 function gantiNavBerdasarkanTab(tabAktif) {
-    if (window.innerWidth > 900) return;
-    
     const navBayar = document.getElementById("bottom-nav-checkout");
     const navRiwayat = document.getElementById("bottom-nav-riwayat");
     const headerTitle = document.getElementById("header-title");
 
-    if (!navBayar || !navRiwayat || !headerTitle) return;
-
-    // ✅ PERBAIKAN UTAMA: UBAH JUDUL SESUAI TAB, TIDAK BERUBAH SENDIRI
-    if (tabAktif === "cart") {
-        headerTitle.textContent = "Keranjang Saya";
-    } 
-    else if (tabAktif === "status") {
-        headerTitle.textContent = "Status Transaksi";
-    } 
-    else if (tabAktif === "history") {
-        headerTitle.textContent = "Riwayat Transaksi";
+    // ✅ UBAH JUDUL DULU, PASTIKAN BERUBAH
+    if (headerTitle) {
+        if (tabAktif === "cart") headerTitle.textContent = "Keranjang Saya";
+        else if (tabAktif === "status") headerTitle.textContent = "Status Transaksi";
+        else if (tabAktif === "history") headerTitle.textContent = "Riwayat Transaksi";
     }
 
+    if (window.innerWidth > 900) return;
+    if (!navBayar || !navRiwayat) return;
+    
     const dariMenuRiwayat = sessionStorage.getItem("dari_halaman_payment") === "YA";
     const tabSekarang = tabAktif || "cart";
 
