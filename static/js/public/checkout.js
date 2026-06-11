@@ -36,7 +36,7 @@ function formatTanggal(isoDate, separator = "-") {
 
 function rupiah(nominal) {
 
-    return "Rp" + Number(nominal)
+    return "Rp" + " " + Number(nominal)
         .toLocaleString("id-ID");
 }
 
@@ -197,7 +197,7 @@ function renderCart() {
 
     if (cart.length === 0) {
         cartEmpty.style.display = "flex";
-        cartTotal.textContent = "Rp0";
+        cartTotal.textContent = "Rp 0";
         cartTotalValue = 0;
         return;
     }
