@@ -176,7 +176,7 @@ async function loadCart() {
         cart = await res.json();
 
         renderCart();
-        gantiNavBerdasarkanTab("cart");
+        // gantiNavBerdasarkanTab("cart");
 
     } catch(err) {
 
@@ -1176,7 +1176,7 @@ function gantiNavBerdasarkanTab(tabAktif) {
 
     if (window.innerWidth > 900) return;
     if (!navBayar || !navRiwayat) return;
-    
+
     const dariMenuRiwayat = sessionStorage.getItem("dari_halaman_payment") === "YA";
     const tabSekarang = tabAktif || "cart";
 
