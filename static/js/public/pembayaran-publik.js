@@ -1,3 +1,16 @@
+document.addEventListener("click", function(e) {
+
+    const linkCekTagihan = e.target.closest('a[href*="/public/tagihan-siswa"]');
+    if (linkCekTagihan) {
+        sessionStorage.setItem("boleh_buka_tagihan", "YA");
+    }
+
+    const linkCheckout = e.target.closest('a[href*="/public/checkout"]');
+    if (linkCheckout) {
+        sessionStorage.setItem("boleh_buka_checkout", "YA");
+    }
+});
+
 const input = document.getElementById("search-siswa");
 const hasil = document.getElementById("hasil-siswa");
 

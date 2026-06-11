@@ -1,14 +1,9 @@
-document.addEventListener("click", function(e) {
-    const btnCekTagihan = e.target.closest('a[href*="tagihan-siswa"]');
-    if (btnCekTagihan) {
-        sessionStorage.setItem("boleh_buka_tagihan", "YA");
-    }
-
-    const btnKeCheckout = e.target.closest('a[href*="checkout"]');
-    if (btnKeCheckout) {
-        sessionStorage.setItem("boleh_buka_checkout", "YA");
-    }
-});
+if (!sessionStorage.getItem("boleh_buka_checkout")) {
+    alert("⚠️ Akses ditolak! Halaman ini harus dibuka lewat keranjang pembayaran.");
+    window.location.href = "/public/tagihan-siswa?siswa_id=" + (document.getElementById("siswa-id")?.value || "");
+} else {
+    sessionStorage.removeItem("boleh_buka_checkout");
+}
 
 lucide.createIcons();
 const csrfToken =

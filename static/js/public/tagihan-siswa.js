@@ -1,10 +1,12 @@
+// ✅ CEK AKSES: HALAMAN CEK TAGIHAN
 if (!sessionStorage.getItem("boleh_buka_tagihan")) {
-    alert("⚠️ Akses ditolak! Halaman ini harus dibuka lewat menu aplikasi.");
-    window.location.href = "/public/payment";
+    alert("⚠️ Akses ditolak! Harus dibuka lewat menu aplikasi.");
+    window.location.href = "/public/payment"; // Kembali ke halaman utama
 } else {
-
+    // Hapus izin setelah masuk, supaya tidak bisa dibuka ulang lewat URL
     sessionStorage.removeItem("boleh_buka_tagihan");
 }
+
 lucide.createIcons();
 const csrfToken = document
     .querySelector('meta[name="csrf-token"]')
