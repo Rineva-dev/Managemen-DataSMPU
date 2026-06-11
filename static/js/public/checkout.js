@@ -1159,36 +1159,23 @@ if (btnBottomPay && btnCheckout) {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const bukaTab = urlParams.get("tab");
+function gantiNavBerdasarkanTab(tabAktif) {
+    const navCheckout = document.getElementById("bottom-nav-checkout");
+    const navRiwayat = document.getElementById("bottom-nav-riwayat");
 
-    if (bukaTab) {
-        // Jika ada parameter tab, ikuti parameter
-        gantiNavBerdasarkanTab(bukaTab);
+    if (tabAktif === "history") {
+        navCheckout.style.display = "none";
+        navRiwayat.style.display = "flex";
     } else {
-        // Jika tidak ada, PAKAI NAV KERANJANG (Total + Bayar)
-        gantiNavBerdasarkanTab("cart");
+        navCheckout.style.display = "flex"; // Tampilkan Total + Bayar
+        navRiwayat.style.display = "none";  // Sembunyikan menu
     }
-});
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const navCheckout = document.getElementById("bottom-nav-checkout");
     const navRiwayat = document.getElementById("bottom-nav-riwayat");
     const tabButtons = document.querySelectorAll(".tab-btn");
-
-    function gantiNavBerdasarkanTab(tabAktif) {
-        const navCheckout = document.getElementById("bottom-nav-checkout");
-        const navRiwayat = document.getElementById("bottom-nav-riwayat");
-
-        if (tabAktif === "history") {
-            navCheckout.style.display = "none";
-            navRiwayat.style.display = "flex";
-        } else {
-            navCheckout.style.display = "flex"; // Tampilkan Total + Bayar
-            navRiwayat.style.display = "none";  // Sembunyikan menu
-        }
-    }
 
     const urlParams = new URLSearchParams(window.location.search);
     const bukaTab = urlParams.get("tab");
