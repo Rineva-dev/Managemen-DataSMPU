@@ -33,10 +33,19 @@
         width: 25px;
         height: 25px;
         display: block;
+        color: rgb(0, 0, 0);
     }
 
     .market-back {
         text-decoration: none;
+    }
+
+    .payment-tabs {
+        font-display: none;
+    }
+
+    .payment-container {
+        margin: 10px 0;
     }
     
 }
