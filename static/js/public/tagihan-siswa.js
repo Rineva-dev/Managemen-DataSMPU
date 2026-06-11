@@ -1,19 +1,15 @@
 const asal = document.referrer;
 const domain = window.location.origin;
-const halamanAsalBoleh = [`${domain}/public/payment`]; // Hanya dari halaman utama
-
-// Cek apakah kita sudah pernah masuk ke sini di sesi ini?
+const halamanAsalBoleh = [`${domain}/public/payment`];
 const sudahMasukSebelumnya = sessionStorage.getItem("akses_tagihan_diizinkan");
 
 const dariHalamanBenar = halamanAsalBoleh.some(link => asal.includes(link));
 
 if (dariHalamanBenar) {
-    // Kalau masuk lewat jalan benar, beri tanda izin selamanya selama tab tidak ditutup
     sessionStorage.setItem("akses_tagihan_diizinkan", "YA");
 }
 
 if (!dariHalamanBenar && !sudahMasukSebelumnya && !asal) {
-    alert("⚠️ Akses ditolak! Halaman ini hanya bisa dibuka lewat menu aplikasi.");
     window.location.href = "/public/payment";
 }
 

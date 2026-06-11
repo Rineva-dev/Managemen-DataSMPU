@@ -1,33 +1,15 @@
-// ✅ ATURAN AKHIR:
-// ✅ Boleh: Masuk lewat tombol, F5, Klik URL lalu Enter (tanpa ubah)
-// ❌ Tidak Boleh: Ketik manual, Share link, Buka di tempat lain
-
 const asal = document.referrer;
 const domain = window.location.origin;
-const halamanAsalBoleh = [`${domain}/public/tagihan-siswa`]; // Hanya dari halaman tagihan
+const halamanAsalBoleh = [`${domain}/public/tagihan-siswa`];
 
-// Cek apakah kita sudah pernah masuk ke sini di sesi ini?
 const sudahMasukSebelumnya = sessionStorage.getItem("akses_checkout_diizinkan");
-
-// ==============================================
-// SYARAT DIPERBOLEHKAN:
-// 1. Datang dari halaman tagihan ATAU
-// 2. Sudah pernah masuk sebelumnya (di tab ini) ATAU
-// 3. Sedang muat ulang (F5 / Enter di URL)
-// ==============================================
 const dariHalamanBenar = halamanAsalBoleh.some(link => asal.includes(link));
 
 if (dariHalamanBenar) {
-    // Kalau masuk lewat jalan benar, beri tanda izin selamanya selama tab tidak ditutup
     sessionStorage.setItem("akses_checkout_diizinkan", "YA");
 }
 
-// KONDISI TOLAK:
-// - Kalau TIDAK datang dari halaman benar
-// - DAN belum pernah masuk sebelumnya
-// - DAN asalnya kosong (artinya dibuka baru / diketik / share link)
 if (!dariHalamanBenar && !sudahMasukSebelumnya && !asal) {
-    alert("⚠️ Akses ditolak! Halaman ini hanya bisa dibuka lewat keranjang pembayaran.");
     window.location.href = "/public/payment";
 }
 
