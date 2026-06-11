@@ -3,4 +3,12 @@
     .profile-wrapper {
         display: none;
     }
+
+    .market-header {
+        background: #ffff;
+    }
+
+    .icon-button {
+        color: #ffb300;
+    }
 }
