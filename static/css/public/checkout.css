@@ -20,6 +20,10 @@
         align-items: center;
         width: 450px;
     }
+
+    .market-back {
+        text-decoration: none;
+    }
     
 }
 
