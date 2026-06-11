@@ -2285,6 +2285,13 @@ button.btn-lihat-kode svg {
     stroke-width: 2;
 }
 
+.bottom-nav-item.active {
+    color: #ffb700 !important;
+}
+.bottom-nav-item.active i {
+    color: #ffb700 !important;
+}
+
 @media (max-width: 900px) {
 
     .market-layout {
