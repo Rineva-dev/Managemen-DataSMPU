@@ -176,6 +176,7 @@ async function loadCart() {
         cart = await res.json();
 
         renderCart();
+        gantiNavBerdasarkanTab("cart");
 
     } catch(err) {
 
@@ -1271,7 +1272,9 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
     });
 });
 
-loadBiodataSiswa();
-loadCart();
-loadStatusPembayaranDenganTombol();
-loadRiwayatPembayaran();
+(async function() {
+    loadBiodataSiswa();
+    await loadCart();
+    loadStatusPembayaranDenganTombol();
+    loadRiwayatPembayaran();
+})();
