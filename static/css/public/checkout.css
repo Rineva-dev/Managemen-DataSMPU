@@ -64,7 +64,7 @@
     }
 
     body {
-        padding-bottom: 70px;
+        padding-bottom: 80px;
     }
     
 }
@@ -73,49 +73,63 @@
     display: none;
 }
 
+/* ============================= */
+/* BOTTOM NAV – CHECKOUT MOBILE */
+/* ============================= */
 
 .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+    height: 64px;
     background: #ffffff;
     display: none;
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
     z-index: 9999;
-    padding: 6px 0;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.104);
-        padding: 5px 10px;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.12);
 }
 
-.bottom-nav-item {
+/* TOTAL */
+.bottom-summary {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    font-size: 10px;
+    line-height: 1.1;
+}
+
+.summary-label {
+    font-size: 12px;
     color: #6b7280;
-    text-decoration: none;
-    background: none;
+}
+
+#cart-total-bottom {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111827;
+}
+
+/* BUTTON */
+.bottom-pay-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffb300;
+    color: #000;
     border: none;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
 }
 
-.bottom-nav-item i {
-    width: 22px;
-    height: 22px;
+.bottom-pay-btn svg {
+    width: 18px;
+    height: 18px;
 }
 
-.bottom-nav-item:hover {
-    color: #ffb300;
-}
-
-.bottom-nav-item.active {
-    color: #ffb300;
-}
-
-.bottom-nav-item.active svg {
-    stroke: #ffb300;
+.bottom-pay-btn:active {
+    transform: scale(0.97);
 }
