@@ -956,8 +956,7 @@ if (menuTersimpan) {
                 // Buka kembali profil/dropdown
                 if (profileBtn) profileBtn.click();
             }
-            // Tambahkan ini kalau menu lain juga isinya beda
-            // else if (menuTersimpan === "Riwayat") { ... }
+
         } else {
             n.classList.remove("active");
         }
