@@ -591,7 +591,12 @@
         <span>Beranda</span>
     </a>
 
-    <a href="/public/tagihan-siswa?siswa_id={{ siswa_id }}" class="bottom-nav-item">
+    <a href="/public/checkout?siswa_id={{ siswa_id }}&tab=status" class="bottom-nav-item">
+        <i data-lucide="info"></i>
+        <span>Status</span>
+    </a>
+
+    <a href="/public/tagihan-siswa?siswa_id={{ siswa_id }}" class="bottom-nav-item nav-center active">
         <i data-lucide="banknote"></i>
         <span>Tagihan</span>
     </a>
@@ -601,7 +606,7 @@
         <span>Riwayat</span>
     </a>
 
-    <button class="bottom-nav-item" id="bottom-profile-btn-checkout">
+    <button class="bottom-nav-item" id="bottom-profile-btn">
         <i data-lucide="user"></i>
         <span>Siswa</span>
     </button>
