@@ -462,13 +462,6 @@ document
     transferModal.style.display = "none";
 });
 
-document.querySelectorAll(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", function () {
-        const tab = this.dataset.tab;
-        gantiNavBerdasarkanTab(tab); // Panggil fungsi ganti
-    });
-});
-
 // ===============================
 // PROFILE DROPDOWN TOGGLE
 // ===============================
@@ -1275,33 +1268,6 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
         document.getElementById(`tab-${tab}`)?.classList.add("active");
     });
 });
-
-// ===============================
-// BOTTOM NAV CONTROLLER
-// ===============================
-
-const bottomNavCheckout = document.getElementById("bottom-nav-checkout");
-const bottomNavRiwayat  = document.getElementById("bottom-nav-riwayat");
-
-function hideAllBottomNav() {
-    if (bottomNavCheckout) bottomNavCheckout.style.display = "none";
-    if (bottomNavRiwayat) bottomNavRiwayat.style.display = "none";
-}
-
-function updateBottomNavByTab(tabName) {
-    hideAllBottomNav();
-
-    // hanya mobile
-    if (window.innerWidth > 768) return;
-
-    if (tabName === "cart") {
-        if (bottomNavCheckout) bottomNavCheckout.style.display = "flex";
-    }
-
-    if (tabName === "history") {
-        if (bottomNavRiwayat) bottomNavRiwayat.style.display = "flex";
-    }
-}
 
 // ===============================
 // TAB SWITCH HANDLER
