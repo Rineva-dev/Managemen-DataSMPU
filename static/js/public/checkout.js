@@ -1207,6 +1207,75 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// ======================================
+// TAB CONTROLLER CHECKOUT (AMAN)
+// ======================================
+document.addEventListener("DOMContentLoaded", () => {
+
+    const params = new URLSearchParams(window.location.search);
+    const tabFromUrl = params.get("tab");
+
+    // Simpan tab ke session (biar reload aman)
+    if (tabFromUrl) {
+        sessionStorage.setItem("checkout_tab", tabFromUrl);
+    }
+
+    const activeTab =
+        tabFromUrl ||
+        sessionStorage.getItem("checkout_tab") ||
+        "cart";
+
+    // Reset semua tab
+    document.querySelectorAll(".tab-btn").forEach(btn =>
+        btn.classList.remove("active")
+    );
+
+    document.querySelectorAll(".tab-content").forEach(tab =>
+        tab.classList.remove("active")
+    );
+
+    // Aktifkan target
+    const btn = document.querySelector(
+        `.tab-btn[data-tab="${activeTab}"]`
+    );
+    const content = document.getElementById(
+        `tab-${activeTab}`
+    );
+
+    if (btn) btn.classList.add("active");
+    if (content) content.classList.add("active");
+
+});
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        const tab = btn.dataset.tab;
+
+        sessionStorage.setItem("checkout_tab", tab);
+
+        const params = new URLSearchParams(window.location.search);
+        params.set("tab", tab);
+
+        window.history.replaceState(
+            null,
+            "",
+            `${window.location.pathname}?${params.toString()}`
+        );
+
+        // aktifkan manual (tanpa reload)
+        document.querySelectorAll(".tab-btn").forEach(b =>
+            b.classList.remove("active")
+        );
+        document.querySelectorAll(".tab-content").forEach(t =>
+            t.classList.remove("active")
+        );
+
+        btn.classList.add("active");
+        document.getElementById(`tab-${tab}`)?.classList.add("active");
+    });
+});
+
 loadBiodataSiswa();
 loadCart();
 loadStatusPembayaranDenganTombol();
