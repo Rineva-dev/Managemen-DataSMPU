@@ -958,7 +958,7 @@ semuaNav.forEach(navItem => {
     });
 });
 
-// ✅ FUNGSI ISI DATA PROFIL
+// ✅ FUNGSI ISI DATA PROFIL & TAMPILKAN LANGSUNG
 function isiDataDanBukaProfil() {
     if (!profilePage) return;
 
@@ -976,14 +976,23 @@ function isiDataDanBukaProfil() {
     statusEl.textContent = statusText;
     statusEl.className = "status-badge-mobile " + statusClass;
 
-    // ✅ TANPA ANIMASI: langsung tampilkan
+    // ✅ LANGSUNG TAMPIL, TANPA ANIMASI GESEK
+    profilePage.style.transition = "none"; // Matikan animasi sejenak
     profilePage.classList.add("active");
     document.body.style.overflow = "hidden";
     lucide.createIcons();
+
+    // Kembalikan pengaturan transisi untuk klik tombol nanti
+    setTimeout(() => {
+        profilePage.style.transition = "";
+    }, 100);
 }
 
-// ✅ FUNGSI UTAMA: URUTAN TEPAT
+// ✅ FUNGSI UTAMA: URUTAN TEPAT & SEMBUNYIKAN MENU TAGIHAN DULU
 async function init() {
+    // ✅ SEMBUNYIKAN MENU TAGIHAN DARI AWAL, TIDAK MUNCUL SEJENAK
+    billGrid.style.visibility = "hidden";
+
     renderCart();
     await loadBiodataSiswa(); // Ambil data DULU
     await loadTagihanSPP();
@@ -1001,6 +1010,9 @@ async function init() {
 
         // ✅ LANGSUNG BUKA PROFIL, TIDAK LEWAT MENU TAGIHAN
         isiDataDanBukaProfil();
+    } else {
+        // Jika bukan menu siswa, baru tampilkan tagihan
+        billGrid.style.visibility = "visible";
     }
 }
 
