@@ -2188,13 +2188,12 @@ button.btn-lihat-kode svg {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 65px;
     background: #ffffff;
     display: none;
     justify-content: space-around;
     align-items: center;
     z-index: 99999;
-    padding: 0 8px;
+    padding:6px;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
 }
 
@@ -2254,7 +2253,7 @@ button.btn-lihat-kode svg {
     width: 28px;
     height: 28px;
     color: #ffffff !important;
-    margin-bottom: 0; /* Hilangkan jarak bawah karena gak ada teks */
+    margin-bottom: 0;
     stroke-width: 2;
 }
 
