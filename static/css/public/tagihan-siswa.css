@@ -2212,7 +2212,7 @@ button.btn-lihat-kode svg {
     align-items: center;
     z-index: 9999;
     padding: 6px 0;
-    box-shadow: 0 10px 30px rgb(0 0 0 / 22%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.104);
 }
 
 .bottom-nav-item {
