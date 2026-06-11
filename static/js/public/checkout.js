@@ -1,3 +1,15 @@
+document.addEventListener("click", function(e) {
+    const btnCekTagihan = e.target.closest('a[href*="tagihan-siswa"]');
+    if (btnCekTagihan) {
+        sessionStorage.setItem("boleh_buka_tagihan", "YA");
+    }
+
+    const btnKeCheckout = e.target.closest('a[href*="checkout"]');
+    if (btnKeCheckout) {
+        sessionStorage.setItem("boleh_buka_checkout", "YA");
+    }
+});
+
 lucide.createIcons();
 const csrfToken =
     document.querySelector(

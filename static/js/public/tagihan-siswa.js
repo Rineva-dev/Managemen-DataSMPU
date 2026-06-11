@@ -1,55 +1,31 @@
-// ======================================
-// LUCIDE
-// ======================================
+if (!sessionStorage.getItem("boleh_buka_tagihan")) {
+    alert("⚠️ Akses ditolak! Halaman ini harus dibuka lewat menu aplikasi.");
+    window.location.href = "/public/payment";
+} else {
 
+    sessionStorage.removeItem("boleh_buka_tagihan");
+}
 lucide.createIcons();
 const csrfToken = document
     .querySelector('meta[name="csrf-token"]')
     ?.getAttribute("content");
 
-// ======================================
-// ELEMENT
-// ======================================
-
-const siswaId =
-    document.getElementById("siswa-id").value;
-
-const billGrid =
-    document.getElementById("bill-grid");
-
-const cartCount =
-    document.querySelector(".cart-count");
-
-const toast =
-    document.getElementById("toast");
-
-const profileButton =
-    document.querySelector(".profile-button");
-
-const profileDropdown =
-    document.getElementById("profile-dropdown");
-
-// ======================================
-// STATE
-// ======================================
+const siswaId = document.getElementById("siswa-id").value;
+const billGrid = document.getElementById("bill-grid");
+const cartCount = document.querySelector(".cart-count");
+const toast = document.getElementById("toast");
+const profileButton = document.querySelector(".profile-button");
+const profileDropdown = document.getElementById("profile-dropdown");
 
 let cart = JSON.parse(
     localStorage.getItem("payment_cart") || "[]"
 );
-
-// ======================================
-// FORMAT
-// ======================================
 
 function rupiah(nominal) {
 
     return "Rp" + " " + Number(nominal)
         .toLocaleString("id-ID");
 }
-
-// ======================================
-// TOAST
-// ======================================
 
 function showToast(message = "Berhasil") {
 
