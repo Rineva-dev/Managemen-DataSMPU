@@ -176,9 +176,6 @@ async function loadCart() {
         cart = await res.json();
 
         renderCart();
-        
-        // ✅ Panggil nav ulang setelah cart load
-        gantiNavBerdasarkanTab("cart");
 
     } catch(err) {
 
@@ -1169,22 +1166,23 @@ function gantiNavBerdasarkanTab(tabAktif) {
     
     const navBayar = document.getElementById("bottom-nav-checkout");
     const navRiwayat = document.getElementById("bottom-nav-riwayat");
-    const headerTitle = document.getElementById("header-title"); // ⬅️ AMBIL ELEMEN JUDUL
+    const headerTitle = document.getElementById("header-title");
 
     if (!navBayar || !navRiwayat || !headerTitle) return;
 
-    const dariMenuRiwayat = sessionStorage.getItem("dari_halaman_payment") === "YA";
-    const tabSekarang = tabAktif || "cart";
-
-    if (tabSekarang === "cart") {
+    // ✅ PERBAIKAN UTAMA: UBAH JUDUL SESUAI TAB, TIDAK BERUBAH SENDIRI
+    if (tabAktif === "cart") {
         headerTitle.textContent = "Keranjang Saya";
     } 
-    else if (tabSekarang === "status") {
+    else if (tabAktif === "status") {
         headerTitle.textContent = "Status Transaksi";
     } 
-    else if (tabSekarang === "history") {
+    else if (tabAktif === "history") {
         headerTitle.textContent = "Riwayat Transaksi";
     }
+
+    const dariMenuRiwayat = sessionStorage.getItem("dari_halaman_payment") === "YA";
+    const tabSekarang = tabAktif || "cart";
 
     if (dariMenuRiwayat) {
         navBayar.style.setProperty('display', 'none', 'important');
