@@ -1,0 +1,6 @@
+@media (max-width: 900px) {
+    .market-search,
+    .profile-wrapper {
+        display: none;
+    }
+}
