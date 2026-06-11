@@ -923,15 +923,10 @@ if (bottomProfileBtn && profileBtn) {
 // INIT
 // ======================================
 async function init() {
-
     renderCart();
-
     await loadBiodataSiswa();
-
     await loadTagihanSPP();
-
     await loadTagihanPembangunan();
-
     checkEmptyTagihan("all");
 }
 
