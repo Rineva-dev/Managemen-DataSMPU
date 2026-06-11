@@ -40,13 +40,6 @@ function rupiah(nominal) {
         .toLocaleString("id-ID");
 }
 
-const btnBottomPay = document.querySelector(".bottom-pay-btn");
-if (btnBottomPay && btnCheckout) {
-    btnBottomPay.addEventListener("click", function () {
-        btnCheckout.click(); // Panggil fungsi yang sama dengan tombol desktop
-    });
-}
-
 async function loadBiodataSiswa() {
 
     if (!siswaId) return;
@@ -888,19 +881,14 @@ async function prosesPembayaranOtomatis(metode) {
         return;
     }
 
-    // ✅ Cek ulang setelah data dimuat ulang
     if (!cart || cart.length === 0 || cartTotalValue <= 0) {
         alert("Keranjang pembayaran kosong atau total tidak valid!");
         paymentDetailModal.style.display = "none";
         return;
     }
 
-    // ==============================================
-    // ✅ KIRIM DATA KE SERVER
-    // ==============================================
-    const formData = new FormData();
     formData.append("siswa_id", siswaId);
-    formData.append("total", cartTotalValue.toString()); // Pastikan jadi teks angka
+    formData.append("total", cartTotalValue.toString());
     formData.append("metode", metode.toUpperCase());
     formData.append(
         "detail",
@@ -1020,9 +1008,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// ==============================================
-// TAMBAHAN: PERBAIKAN STATUS & BUKA KEMBALI VA/QRIS
-// ==============================================
 async function loadStatusPembayaranDenganTombol() {
     const statusList = document.getElementById("status-list");
 
@@ -1041,18 +1026,17 @@ async function loadStatusPembayaranDenganTombol() {
             return;
         }
 
-        // === RENDER ULANG DENGAN PERBAIKAN ===
         statusList.innerHTML = data.map(item => {
             let detailHtml = "";
             let adaDetail = false;
 
             try {
-                // Cek apakah ada isi di dalam detail
+
                 const details = JSON.parse(item.detail || "[]");
                 
                 if (details.length > 0) {
                     adaDetail = true;
-                    // Tampilkan setiap item tagihan
+
                     detailHtml = details.map(d => `
                         <div class="status-detail-item">
                             <span>- ${formatNamaTagihan(d)}</span>
@@ -1060,7 +1044,7 @@ async function loadStatusPembayaranDenganTombol() {
                         </div>
                     `).join("");
                 } else {
-                    // Jika detail kosong (seperti data ID 7 kamu tadi)
+
                     detailHtml = `
                         <div class="status-detail-item text-kosong">
                             <em>Tidak ada rincian tagihan</em>
@@ -1077,7 +1061,6 @@ async function loadStatusPembayaranDenganTombol() {
                 `;
             }
 
-            // === TOMBOL LIHAT KODE (TETAP SAMA) ===
             let tombolAksi = "";
             if( (item.metode === "VA" || item.metode === "QRIS" || item.metode === "BSI-VA") && item.status === "MENUNGGU PEMBAYARAN" ) {
                 tombolAksi = `
@@ -1129,7 +1112,6 @@ async function loadStatusPembayaranDenganTombol() {
     }
 }
 
-// === FUNGSI: BUKA KEMBALI MODAL DARI TOMBOL STATUS ===
 document.addEventListener("click", function(e) {
     const btn = e.target.closest(".btn-lihat-kode");
     if(!btn) return;
@@ -1145,7 +1127,6 @@ document.addEventListener("click", function(e) {
     const detailTitle = document.getElementById("detail-title");
     const qrisImageEl = document.getElementById("qris-image")
 
-    // Tampilkan modal
     paymentDetailModal.style.display = "flex";
     vaContent.style.display = "none";
     qrisContent.style.display = "none";
@@ -1154,10 +1135,8 @@ document.addEventListener("click", function(e) {
         detailTitle.innerText = 'Nomor Virtual Account';
         document.getElementById('va-number').innerText = kode;
         vaContent.style.display = "block";
-        // Mulai hitung mundur ulang
         mulaiHitungMundur(expired, 'expired-time');
 
-        // Salin ulang
         document.getElementById('copy-va').onclick = () => {
             navigator.clipboard.writeText(kode);
             alert('Nomor VA disalin!');
@@ -1170,6 +1149,13 @@ document.addEventListener("click", function(e) {
         mulaiHitungMundur(expired, 'qris-expired-time');
     }
 });
+
+const btnBottomPay = document.querySelector(".bottom-pay-btn");
+if (btnBottomPay && btnCheckout) {
+    btnBottomPay.addEventListener("click", function () {
+        btnCheckout.click();
+    });
+}
 
 loadBiodataSiswa();
 loadCart();
