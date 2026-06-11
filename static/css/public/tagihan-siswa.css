@@ -2188,7 +2188,7 @@ button.btn-lihat-kode svg {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 65px; /* Tinggi dasar nav */
+    height: 65px;
     background: #ffffff;
     display: none;
     justify-content: space-around;
@@ -2223,53 +2223,51 @@ button.btn-lihat-kode svg {
     stroke-width: 1.8;
 }
 
-/* Teks biasa */
+/* Teks biasa (untuk yang lain) */
 .bottom-nav-item span {
     line-height: 1;
 }
 
 /* ==============================================
-   ✅ ITEM TENGAH - TAGIHAN (BUNDAR & BESAR)
+   ✅ ITEM TENGAH - TAGIHAN (TANPA TULISAN)
 ============================================== */
 .bottom-nav-item.nav-center {
     position: relative;
-    top: -18px; /* Naik ke atas biar menonjol */
+    top: -16px; /* Naik sedikit, pas */
 }
 
-/* Bentuk Lingkaran Warna Utama */
+/* Lingkaran */
 .bottom-nav-item.nav-center::before {
     content: '';
     position: absolute;
-    width: 55px; /* Ukuran lingkaran */
-    height: 55px;
-    background: linear-gradient(135deg, #ffb700, #ffc62a); /* Warna sesuai tema kamu */
+    width: 58px; /* Sedikit lebih besar biar pas isinya */
+    height: 58px;
+    background: linear-gradient(135deg, #ffb700, #ffc62a);
     border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(255, 183, 0, 0.3); /* Bayangan warna emas */
+    box-shadow: 0 4px 12px rgba(255, 183, 0, 0.3);
     z-index: -1;
 }
 
-/* Ikon di tengah: Dibesarkan & warna putih */
+/* Ikon tengah: Besar & Putih */
 .bottom-nav-item.nav-center i,
 .bottom-nav-item.nav-center svg {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     color: #ffffff !important;
-    margin-bottom: 6px;
+    margin-bottom: 0; /* Hilangkan jarak bawah karena gak ada teks */
     stroke-width: 2;
 }
 
-/* Teks di tengah */
+/* ✅ HILANGKAN TULISAN TAGIHAN */
 .bottom-nav-item.nav-center span {
-    color: #1f2937;
-    font-weight: 600;
-    font-size: 12px;
+    display: none;
 }
 
 /* ==============================================
    STATUS AKTIF (SELAIN TENGAH)
 ============================================== */
 .bottom-nav-item.active:not(.nav-center) {
-    color: #ffb700; /* Warna aktif sesuai tema */
+    color: #ffb700;
 }
 
 .bottom-nav-item.active:not(.nav-center) i,
@@ -2277,6 +2275,8 @@ button.btn-lihat-kode svg {
     color: #ffb700;
     stroke-width: 2;
 }
+
+
 
 @media (max-width: 900px) {
 
