@@ -1276,6 +1276,82 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
     });
 });
 
+// ===============================
+// BOTTOM NAV CONTROLLER
+// ===============================
+
+const bottomNavCheckout = document.getElementById("bottom-nav-checkout");
+const bottomNavRiwayat  = document.getElementById("bottom-nav-riwayat");
+
+function hideAllBottomNav() {
+    if (bottomNavCheckout) bottomNavCheckout.style.display = "none";
+    if (bottomNavRiwayat) bottomNavRiwayat.style.display = "none";
+}
+
+function updateBottomNavByTab(tabName) {
+    hideAllBottomNav();
+
+    // hanya mobile
+    if (window.innerWidth > 768) return;
+
+    if (tabName === "cart") {
+        if (bottomNavCheckout) bottomNavCheckout.style.display = "flex";
+    }
+
+    if (tabName === "history") {
+        if (bottomNavRiwayat) bottomNavRiwayat.style.display = "flex";
+    }
+}
+
+// ===============================
+// TAB SWITCH HANDLER
+// ===============================
+
+const tabButtons = document.querySelectorAll(".tab-btn");
+const tabContents = document.querySelectorAll(".tab-content");
+
+tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+
+        const tab = btn.dataset.tab;
+
+        // aktifkan tombol
+        tabButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        // aktifkan konten
+        tabContents.forEach(c => c.classList.remove("active"));
+        document.getElementById(`tab-${tab}`).classList.add("active");
+
+        // 🔥 UPDATE BOTTOM NAV
+        updateBottomNavByTab(tab);
+    });
+});
+
+// ===============================
+// INIT TAB FROM URL
+// ===============================
+
+const params = new URLSearchParams(window.location.search);
+const tabFromUrl = params.get("tab") || "cart";
+
+// trigger tab
+const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabFromUrl}"]`);
+if (targetBtn) {
+    targetBtn.click();
+} else {
+    updateBottomNavByTab("cart");
+}
+
+const bottomPayBtn = document.querySelector(".bottom-pay-btn");
+const mainPayBtn   = document.querySelector(".btn-checkout");
+
+if (bottomPayBtn && mainPayBtn) {
+    bottomPayBtn.addEventListener("click", () => {
+        mainPayBtn.click();
+    });
+}
+
 loadBiodataSiswa();
 loadCart();
 loadStatusPembayaranDenganTombol();
