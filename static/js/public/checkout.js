@@ -5,10 +5,15 @@ const halamanAsalBoleh = [`${domain}/public/tagihan-siswa`];
 const sudahMasukSebelumnya = sessionStorage.getItem("akses_checkout_diizinkan");
 const dariHalamanBenar = halamanAsalBoleh.some(link => asal.includes(link));
 
-// ✅ LOGIKA AKSES HALAMAN
-if (dariHalamanBenar) {
-    sessionStorage.setItem("akses_checkout_diizinkan", "YA");
-    sessionStorage.removeItem("dari_halaman_payment"); // Reset asal jika masuk dari tagihan
+if (asal.includes("/public/payment") || asal === "" || asal === null) {
+    // 🔒 PERKUAT: PAKSA TANDAI SELALU JIKA DARI HALAMAN UTAMA / PAYMENT
+    sessionStorage.setItem("dari_halaman_payment", "YA");
+}
+
+// ✅ TAMBAH: CEK LANGSUNG DARI URL, JIKA TAB NYA RIWAYAT/STATUS, TANDAI LANGSUNG
+const paramsAwal = new URLSearchParams(window.location.search);
+if(paramsAwal.get('tab') === 'status' || paramsAwal.get('tab') === 'history'){
+    sessionStorage.setItem("dari_halaman_payment", "YA");
 }
 
 // ✅ Simpan asal halaman agar nav tahu posisi kita (jika masuk dari menu Riwayat)
@@ -1166,7 +1171,6 @@ if (btnBottomPay && btnCheckout) {
     });
 }
 
-// ✅ KODE PERBAIKAN (KUNCI MASALAH ADA DI SINI)
 function gantiNavBerdasarkanTab(tabAktif) {
     if (window.innerWidth > 900) return;
     
@@ -1175,52 +1179,30 @@ function gantiNavBerdasarkanTab(tabAktif) {
 
     if (!navBayar || !navRiwayat) return;
 
-    // 🔒 ATURAN UTAMA: CEK DARI MANA KITA DATANG
+    // 🔒 ATURAN UTAMA: CEK DARI MANA KITA DATANG + CEK TAB AKTIF
     const dariMenuRiwayat = sessionStorage.getItem("dari_halaman_payment") === "YA";
+    const tabSekarang = tabAktif || "cart";
 
-    // 1. JIKA MASUK DARI MENU RIWAYAT / HALAMAN UTAMA PAYMENT
-    if (dariMenuRiwayat) {
-        // ✅ DISINI KUNCINYA: PAKSA SEMBUNYIKAN NAV BAYAR, TIDAK PEDULI TAB APA
-        navBayar.style.setProperty('display', 'none', 'important');
+    // ==============================================
+    // 🔒 KUNCI UTAMA:
+    // JIKA DARI MENU RIWAYAT ATAU SEDANG DI TAB STATUS/HISTORY → SELALU SEMBUNYIKAN BAYAR
+    // ==============================================
+    if (dariMenuRiwayat || tabSekarang === "status" || tabSekarang === "history") {
+        navBayar.style.setProperty('display', 'none', 'important'); // PAKSA HILANG
         navRiwayat.style.setProperty('display', 'flex', 'important');
-        return; // ❗ PENTING: Berhenti di sini, jangan jalanin kode bawah
+        return; // ❗ BERHENTI DI SINI, TIDAK ADA KODE DI BAWAH YANG DIJALANKAN
     }
 
-    // 2. JIKA MASUK DARI TAGIHAN SISWA (Logika Biasa)
+    // ==============================================
+    // JIKA MASUK DARI TAGIHAN SISWA & DI TAB KERANJANG → TAMPILKAN JIKA ADA ISI
+    // ==============================================
     navBayar.style.setProperty('display', 'none', 'important');
     navRiwayat.style.setProperty('display', 'none', 'important');
 
-    if (tabAktif === "cart") {
-        if (cart.length > 0) {
-            navBayar.style.setProperty('display', 'flex', 'important');
-        }
-    } 
-    else if (tabAktif === "status" || tabAktif === "history") {
-        navRiwayat.style.setProperty('display', 'flex', 'important');
+    if (tabSekarang === "cart" && cart.length > 0) {
+        navBayar.style.setProperty('display', 'flex', 'important');
     }
 }
-
-// ✅ URUTAN DIATUR ULANG AGAR TIDAK BENTROK
-document.addEventListener("DOMContentLoaded", () => {
-    const tabButtons = document.querySelectorAll(".tab-btn");
-    const urlParams = new URLSearchParams(window.location.search);
-    const tabDariUrl = urlParams.get("tab");
-
-    // Set awal saat buka halaman
-    if (tabDariUrl) {
-        gantiNavBerdasarkanTab(tabDariUrl);
-    } else {
-        gantiNavBerdasarkanTab("cart"); // Default ke Keranjang
-    }
-
-    // Pasang event klik ke tab
-    tabButtons.forEach(btn => {
-        btn.addEventListener("click", function() {
-            const tab = this.dataset.tab;
-            gantiNavBerdasarkanTab(tab);
-        });
-    });
-});
 
 // ======================================
 // TAB CONTROLLER CHECKOUT (AMAN)
