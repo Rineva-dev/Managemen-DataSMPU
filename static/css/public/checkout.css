@@ -82,6 +82,10 @@
     .payment-total span {
         font-size: 14px;
     }
+
+    .payment-total {
+        align-items: center;
+    }
     
 }
 
