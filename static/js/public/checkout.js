@@ -1165,10 +1165,18 @@ function gantiNavBerdasarkanTab(tabAktif) {
 
     if (!navBayar || !navRiwayat) return;
 
-    if (tabAktif === "history") {
+    // Tab "cart" = Keranjang → TAMPILKAN NAV TOTAL + BAYAR
+    if (tabAktif === "cart") {
+        navBayar.style.display = "flex";
+        navRiwayat.style.display = "none";
+    }
+    // Tab "history" atau "status" → SEMBUNYIKAN NAV BAYAR, TAMPILKAN NAV RIWAYAT
+    else if (tabAktif === "history" || tabAktif === "status") {
         navBayar.style.display = "none";
         navRiwayat.style.display = "flex";
-    } else {
+    }
+    // Default ke keranjang
+    else {
         navBayar.style.display = "flex";
         navRiwayat.style.display = "none";
     }
