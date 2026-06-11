@@ -1154,6 +1154,7 @@ if (btnBottomPay && btnCheckout) {
 
 // ✅ FUNGSI PENGATURAN NAV BAWAH - DIPERBAIKI TOTAL
 function gantiNavBerdasarkanTab(tabAktif) {
+    if (window.innerWidth > 900) return;
     const navBayar = document.getElementById("bottom-nav-checkout");
     const navRiwayat = document.getElementById("bottom-nav-riwayat");
 
@@ -1290,7 +1291,7 @@ tabButtons.forEach(btn => {
         document.getElementById(`tab-${tab}`).classList.add("active");
 
         // 🔥 UPDATE BOTTOM NAV
-        updateBottomNavByTab(tab);
+        gantiNavBerdasarkanTab(tab);
     });
 });
 
