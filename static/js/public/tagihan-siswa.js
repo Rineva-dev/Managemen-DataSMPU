@@ -970,25 +970,30 @@ if (menuTersimpan) {
                 // ✅ TUTUP PAKSA DROPDOWN AGAR TIDAK MUNCUL
                 profileDropdown?.classList.remove("show");
 
-                // ✅ BUKA HALAMAN MOBILE SAJA
-                if (profilePage) {
-                    document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
-                    document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
-                    document.getElementById("profile-page-kelas").textContent = document.getElementById("profile-kelas").textContent;
-                    document.getElementById("profile-page-rombel").textContent = document.getElementById("siswa-rombel").textContent || "-";
-                    document.getElementById("profile-page-ttl").textContent = document.getElementById("profile-ttl").textContent;
-                    document.getElementById("profile-page-orangtua").textContent = document.getElementById("profile-orangtua").textContent;
-                    
-                    const statusText = document.getElementById("profile-status").textContent;
-                    const statusClass = document.getElementById("profile-status").className;
-                    const statusEl = document.getElementById("profile-page-status");
-                    statusEl.textContent = statusText;
-                    statusEl.className = "status-badge-mobile " + statusClass;
+                // ✅ TUNGGU DATA DIMUAT BARU ISI & BUKA
+                const isiDanBukaProfil = () => {
+                    if (profilePage) {
+                        document.getElementById("profile-page-nama").textContent = document.getElementById("profile-nama").textContent;
+                        document.getElementById("profile-page-nisn").textContent = document.getElementById("profile-nisn").textContent;
+                        document.getElementById("profile-page-kelas").textContent = document.getElementById("profile-kelas").textContent;
+                        document.getElementById("profile-page-rombel").textContent = document.getElementById("siswa-rombel").textContent || "-";
+                        document.getElementById("profile-page-ttl").textContent = document.getElementById("profile-ttl").textContent;
+                        document.getElementById("profile-page-orangtua").textContent = document.getElementById("profile-orangtua").textContent;
+                        
+                        const statusText = document.getElementById("profile-status").textContent;
+                        const statusClass = document.getElementById("profile-status").className;
+                        const statusEl = document.getElementById("profile-page-status");
+                        statusEl.textContent = statusText;
+                        statusEl.className = "status-badge-mobile " + statusClass;
 
-                    profilePage.classList.add("active");
-                    document.body.style.overflow = "hidden";
-                    lucide.createIcons();
-                }
+                        profilePage.classList.add("active");
+                        document.body.style.overflow = "hidden";
+                        lucide.createIcons();
+                    }
+                };
+
+                // Panggil setelah init selesai, atau beri jeda aman
+                setTimeout(isiDanBukaProfil, 100);
             }
         } else {
             n.classList.remove("active");
