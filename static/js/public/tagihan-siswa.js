@@ -859,7 +859,7 @@ if (bottomProfileBtn && profileBtn) {
 }
 
 // ==============================================
-✅ FUNGSI HALAMAN PROFIL MOBILE
+// FUNGSI HALAMAN PROFIL MOBILE
 // ==============================================
 const profilePage = document.getElementById("profilePage");
 const btnOpenProfile = document.getElementById("bottom-profile-btn");
