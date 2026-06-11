@@ -169,6 +169,9 @@ async function loadCart() {
         cart = await res.json();
 
         renderCart();
+        
+        // ✅ Panggil nav ulang setelah cart load
+        gantiNavBerdasarkanTab("cart");
 
     } catch(err) {
 
@@ -214,6 +217,11 @@ function renderCart() {
         cartEmpty.style.display = "flex";
         cartTotal.textContent = "Rp 0";
         cartTotalValue = 0;
+        
+        // Sembunyikan nav kalau kosong
+        if(document.querySelector('.bottom-nav')) {
+            document.querySelector('.bottom-nav').style.display = "none";
+        }
         return;
     }
 
@@ -1155,39 +1163,32 @@ if (btnBottomPay && btnCheckout) {
     });
 }
 
-// ✅ FUNGSI PENGATURAN NAV BAWAH - DIPERBAIKI AGAR AKTIF SESUAI TAB
+// ✅ FUNGSI PENGATURAN NAV BAWAH - DIPERBAIKI SESUAI CSS KAMU
 function gantiNavBerdasarkanTab(tabAktif) {
     if (window.innerWidth > 900) return;
-    const navBayar = document.getElementById("bottom-nav-checkout");
-    const navRiwayat = document.getElementById("bottom-nav-riwayat");
+    
+    // ✅ UBAH: Ambil elemen sesuai class .bottom-nav (bukan ID)
+    const bottomNav = document.querySelector(".bottom-nav");
 
     // Cek dulu apakah elemen ada
-    if (!navBayar || !navRiwayat) {
-        console.log("Elemen nav tidak ditemukan");
+    if (!bottomNav) {
+        console.log("Elemen bottom-nav tidak ditemukan");
         return;
     }
 
-    // Reset semua dulu
-    navBayar.style.display = "none";
-    navRiwayat.style.display = "none";
-
-    // Hapus class active di semua menu nav riwayat
-    navRiwayat.querySelectorAll('.bottom-nav-item').forEach(el => el.classList.remove('active'));
-
-    // LOGIKA BENAR:
-    // KETIKA KLIK KERANJANG (cart) → TAMPILKAN NAV BAYAR + TOTAL
+    // LOGIKA:
+    // KETIKA KLIK KERANJANG (cart) → TAMPILKAN NAV
     if (tabAktif === "cart") {
-        navBayar.style.display = "flex";
-    }
-    // KETIKA KLIK STATUS ATAU RIWAYAT → TAMPILKAN NAV RIWAYAT
-    else if (tabAktif === "status" || tabAktif === "history") {
-        navRiwayat.style.display = "flex";
-
-        // ✅ KHUSUS DI RIWAYAT, BERI CLASS ACTIVE
-        if(tabAktif === "history"){
-            const menuRiwayat = navRiwayat.querySelector('a[href*="history"]');
-            if(menuRiwayat) menuRiwayat.classList.add('active');
+        // Tampilkan hanya jika ada isi keranjang
+        if (cart.length > 0) {
+            bottomNav.style.display = "flex";
+        } else {
+            bottomNav.style.display = "none";
         }
+    }
+    // KETIKA KLIK STATUS ATAU RIWAYAT → SEMBUNYIKAN NAV
+    else if (tabAktif === "status" || tabAktif === "history") {
+        bottomNav.style.display = "none";
     }
 }
 
@@ -1250,6 +1251,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btn) btn.classList.add("active");
     if (content) content.classList.add("active");
+    
+    // ✅ Panggil nav saat awal load
+    gantiNavBerdasarkanTab(activeTab);
 
 });
 
