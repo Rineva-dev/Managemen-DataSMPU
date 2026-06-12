@@ -166,28 +166,19 @@ const siswaId =
     document.getElementById("siswa-id")?.value;
 
 async function loadCart() {
-
     try {
-
-        const res = await fetch(
-            `/public/cart?siswa_id=${siswaId}`
-        );
-
+        const res = await fetch(`/public/cart?siswa_id=${siswaId}`);
         cart = await res.json();
-
         renderCart();
-        // gantiNavBerdasarkanTab("cart");
+
+        const tabSekarang = new URLSearchParams(window.location.search).get('tab') || 'cart';
+        gantiNavBerdasarkanTab(tabSekarang);
 
     } catch(err) {
-
-        console.error(
-            "Gagal load cart",
-            err
-        );
+        console.error("Gagal load cart", err);
     }
 }
 
-// ✅ TAMBAH: Fungsi pengelompokan tagihan
 function kelompokkanTagihan(items) {
     const kelompok = {
         SPP: [],
