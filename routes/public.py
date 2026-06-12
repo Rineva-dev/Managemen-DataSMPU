@@ -319,12 +319,12 @@ def tagihan_pembangunan():
             # ==================================================
             # 1. UANG YANG SUDAH DITERIMA ADMIN
             # ==================================================
-            # Perbaikan query: tanda kurung dan logika AND/OR sudah benar
+            # DIPERBAIKI: Hanya pakai %s, tidak ada tanda ?
             terima_sem1 = d.execute("""
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM pembayaran
                 WHERE nisn = %s
-                  AND (jenis ILIKE '%SEMESTER 1%' OR jenis ILIKE '%SEM1%' OR jenis ILIKE '%PEMBANGUNAN_1%')
+                  AND (jenis ILIKE '%%SEMESTER 1%%' OR jenis ILIKE '%%SEM1%%' OR jenis ILIKE '%%PEMBANGUNAN_1%%')
                   AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"] or 0
 
@@ -332,7 +332,7 @@ def tagihan_pembangunan():
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM pembayaran
                 WHERE nisn = %s
-                  AND (jenis ILIKE '%SEMESTER 2%' OR jenis ILIKE '%SEM2%' OR jenis ILIKE '%PEMBANGUNAN_2%')
+                  AND (jenis ILIKE '%%SEMESTER 2%%' OR jenis ILIKE '%%SEM2%%' OR jenis ILIKE '%%PEMBANGUNAN_2%%')
                   AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"] or 0
 
@@ -343,7 +343,7 @@ def tagihan_pembangunan():
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM cart_pembayaran
                 WHERE siswa_id = %s
-                  AND (jenis ILIKE '%SEM1%' OR jenis ILIKE '%SEMESTER 1%')
+                  AND (jenis ILIKE '%%SEM1%%' OR jenis ILIKE '%%SEMESTER 1%%')
                   AND status = 'CART'
             """, (siswa_id,)).fetchone()["total"] or 0
 
@@ -351,7 +351,7 @@ def tagihan_pembangunan():
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM cart_pembayaran
                 WHERE siswa_id = %s
-                  AND (jenis ILIKE '%SEM2%' OR jenis ILIKE '%SEMESTER 2%')
+                  AND (jenis ILIKE '%%SEM2%%' OR jenis ILIKE '%%SEMESTER 2%%')
                   AND status = 'CART'
             """, (siswa_id,)).fetchone()["total"] or 0
 
@@ -365,7 +365,7 @@ def tagihan_pembangunan():
                     FROM pembayaran_pending
                     WHERE siswa_id = %s
                       AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
-                      AND (detail ILIKE '%SEM1%' OR detail ILIKE '%SEMESTER 1%')
+                      AND (detail ILIKE '%%SEM1%%' OR detail ILIKE '%%SEMESTER 1%%')
                 """, (siswa_id,)).fetchone()
                 pending_sem1 = p1["total"] or 0
             except Exception:
@@ -378,7 +378,7 @@ def tagihan_pembangunan():
                     FROM pembayaran_pending
                     WHERE siswa_id = %s
                       AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
-                      AND (detail ILIKE '%SEM2%' OR detail ILIKE '%SEMESTER 2%')
+                      AND (detail ILIKE '%%SEM2%%' OR detail ILIKE '%%SEMESTER 2%%')
                 """, (siswa_id,)).fetchone()
                 pending_sem2 = p2["total"] or 0
             except Exception:
@@ -404,7 +404,7 @@ def tagihan_pembangunan():
             sisa_sem2 = max(0, 2000000 - (terima_sem2 + cart_sem2 + pending_sem2))
 
         # ==================================================
-        # STRUKTUR JSON SESUAI KEINGINAN & DIBUTUHKAN JS
+        # STRUKTUR JSON SESUAI KEINGINAN
         # ==================================================
         return jsonify({
             "total": 5000000,
