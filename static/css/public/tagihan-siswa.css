@@ -2294,7 +2294,6 @@ button.btn-lihat-kode svg {
 
 .bottom-nav-item.active,
 .bottom-nav-item.active * {
-    color: #ffb700 !important;
     fill: #ffb700 !important;
 }
 .bottom-nav-item.active i,
@@ -2303,12 +2302,6 @@ button.btn-lihat-kode svg {
     stroke: #ffb700 !important;
 }
 
-/* Khusus tombol tengah (Tagihan) tetap putih */
-.bottom-nav-item.nav-center.active i,
-.bottom-nav-item.nav-center.active svg {
-    color: #ffffff !important;
-    stroke: #ffffff !important;
-}
 
 @media (max-width: 900px) {
 
