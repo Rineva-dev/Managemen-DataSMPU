@@ -102,7 +102,7 @@
     display: none;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 18px;
+    padding: 6px;
     z-index: 9999;
     box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.12);
 }
@@ -112,6 +112,7 @@
     display: flex;
     flex-direction: column;
     line-height: 1.1;
+    margin-left: 10px;
 }
 
 .summary-label {
@@ -138,6 +139,7 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    margin-right: 10px;
 }
 
 .bottom-pay-btn svg {
