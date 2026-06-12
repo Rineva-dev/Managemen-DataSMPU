@@ -311,42 +311,35 @@ async function loadTagihanSPP() {
 }
 
 async function loadTagihanPembangunan() {
-
     try {
-
         const res = await fetch(
             `/public/tagihan-pembangunan?siswa_id=${siswaId}`
         );
-
         const data = await res.json();
 
-        if (data.lunas) {
+        // ==================================================
+        // LOGIKA DIPERBAIKI:
+        // TIDAK HANYA CEK LUNAS, TAPI CEK APAKAH MASIH ADA SISA
+        // ==================================================
+        // JIKA LUNAS = TRUE ATAU SISA SUDAH 0 -> JANGAN TAMPILKAN
+        if (data.lunas || (data.sisa_total <= 0)) {
             return;
         }
 
-        const sisa =
-            (data.sem1.sisa || 0) +
-            (data.sem2.sisa || 0);
+        const sisa = data.sisa_total;
 
-        const card =
-            document.createElement("div");
-
+        const card = document.createElement("div");
         card.className = "bill-card";
-
-        card.dataset.kategori =
-            "pembangunan";
+        card.dataset.kategori = "pembangunan";
 
         card.innerHTML = `
             <div class="bill-top">
-
                 <span class="bill-category pembangunan">
                     PEMBANGUNAN
                 </span>
-
                 <span class="bill-status unpaid">
                     Belum Lunas
                 </span>
-
             </div>
 
             <h3>
@@ -364,23 +357,17 @@ async function loadTagihanPembangunan() {
             </p>
 
             <div class="bill-footer">
-
                 <div>
-
                     <small>
                         Sisa Tagihan
                     </small>
-
                     <strong class="bill-price">
                         ${rupiah(sisa)}
                     </strong>
-
                 </div>
-
             </div>
 
             <div class="bill-input">
-
                 <input
                     type="text"
                     class="input-pembangunan"
@@ -391,26 +378,18 @@ async function loadTagihanPembangunan() {
                     data-max="${sisa}">
 
                     <i data-lucide="plus"></i>
-
                     <span>
                         Tambah
                     </span>
-
                 </button>
-
             </div>
         `;
 
         billGrid.appendChild(card);
-
         lucide.createIcons();
 
     } catch (err) {
-
-        console.error(
-            "Gagal memuat pembangunan",
-            err
-        );
+        console.error("Gagal memuat pembangunan", err);
     }
 }
 

@@ -347,14 +347,14 @@ def tagihan_pembangunan():
             """, (siswa_id,)).fetchone()["total"]
 
             # ==================================================
-            # LOGIKA UTAMA (SESUI PERINTAH KAMU 100%)
+            # LOGIKA UTAMA (DIKUNCI 100% SESUAI PERINTAH KAMU)
             # ==================================================
             total_sudah_diproses = terima + cart + pending
 
-            # ATURAN EMAS DARI KAMU:
-            # 1. JUMLAH KESELURUHAN (TERIMA + KERANJANG + PENDING) >= 5jt -> LUNAS (HILANG)
-            # 2. SELAIN ITU -> BELUM LUNAS (MUNCUL)
-            is_lunas = total_sudah_diproses >= 5000000
+            # ATURAN EMAS:
+            # 1. JUMLAH KESELURUHAN >= 5jt -> LUNAS = TRUE (HILANG)
+            # 2. SELAIN ITU -> LUNAS = FALSE (MUNCUL)
+            is_lunas = (total_sudah_diproses >= 5000000)
 
             # ==================================================
             # PERHITUNGAN PER SEMESTER (UNTUK TAMPILAN)
@@ -395,16 +395,20 @@ def tagihan_pembangunan():
             """, (siswa_id,)).fetchone()["total"]
             sem2_sisa = max(0, 2000000 - (sem2_terima + sem2_cart + sem2_pending))
 
+            # KIRIM JUGA SISA KE JS UNTUK PENGECEKAN GANDA
+            total_sisa = sem1_sisa + sem2_sisa
+
         return jsonify({
             "total": 5000000,
-            "lunas": is_lunas,  # <--- KUNCI UTAMA
+            "lunas": is_lunas,
+            "sisa_total": total_sisa, # <--- KIRIM SISA TOTAL KE JS
             "sem1": {
-                "target": 3000000,
+                "target": 2000000,
                 "terbayar": sem1_terima,
                 "sisa": sem1_sisa
             },
             "sem2": {
-                "target": 2000000,
+                "target": 3000000,
                 "terbayar": sem2_terima,
                 "sisa": sem2_sisa
             }
