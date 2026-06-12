@@ -353,7 +353,7 @@ def tagihan_pembangunan():
             total_cart = row_cart["total"]
 
             # ======================
-            # PERHITUNGAN PER SEMESTER (DIPERBAIKI)
+            # PERHITUNGAN PER SEMESTER (DIPERBAIKI AGAR TIDAK SALAH HITUNG)
             # ======================
             
             # --- SEMESTER 1 ---
@@ -381,7 +381,6 @@ def tagihan_pembangunan():
                   AND status = 'CART'
             """, (siswa_id,)).fetchone()["total"]
 
-            # Total yang sudah ada urusannya (Terima + Pending + Keranjang)
             sem1_total_ada = sem1_terima + sem1_pending + sem1_cart
             sem1_sisa = max(0, 3000000 - sem1_total_ada)
 
@@ -414,19 +413,24 @@ def tagihan_pembangunan():
             sem2_sisa = max(0, 2000000 - sem2_total_ada)
 
             # ======================
-            # LOGIKA UTAMA (SESUI KEMAUAN KAMU)
+            # LOGIKA UTAMA YANG DIPERBAIKI
             # ======================
-            # TOTAL KESELURUHAN YANG SUDAH DIPROSES (TERIMA + PENDING + KERANJANG)
+            # 1. Total yang sudah diproses (Uang masuk + Keranjang + Pending)
             total_semua_diproses = total_terbayar + total_pending + total_cart
 
-            # STATUS LUNAS:
-            # LUNAS = JUMLAH KESELURUHAN (TERIMA + PENDING + KERANJANG) SUDAH 5JT
-            # INI SESUAI LOGIKA AWAL KAMU YANG BENAR: KALO UDAH DI KERANJANG 3JT + UDAH BAYAR 2JT = LUNAS -> HILANG
-            is_lunas = total_semua_diproses >= 5000000
+            # 2. Cek apakah MASIH ADA SISA TAGIHAN di manapun (Sem1 atau Sem2)
+            # INI KUNCI UTAMA: Kalau ada sisa di salah satu saja, berarti BELUM LUNAS
+            masih_ada_sisa = (sem1_sisa > 0) or (sem2_sisa > 0)
+
+            # 3. STATUS LUNAS SESUAI KEMAUAN KAMU:
+            # - Jika total yang sudah diurus (Diterima + Keranjang + Pending) SUDAH 5jt → LUNAS (HILANG)
+            # - ATAU jika benar-benar sudah lunas semua di database → LUNAS (HILANG)
+            is_lunas = (total_semua_diproses >= 5000000) or (not masih_ada_sisa)
 
         return jsonify({
             "total": 5000000,
-            "lunas": is_lunas,  # <--- KUNCI LOGIKA AWAL KAMU DIKEMBALIKAN
+            "lunas": is_lunas,  # <--- LOGIKA BARU YANG BENAR
+            "masih_ada_sisa": masih_ada_sisa, # Tambahan info untuk pengecekan
             "sem1": {
                 "target": 3000000,
                 "terbayar": sem1_terima,
