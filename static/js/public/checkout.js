@@ -1158,7 +1158,11 @@ function gantiNavBerdasarkanTab(tabAktif) {
     const navRiwayat = document.getElementById("bottom-nav-riwayat");
     const headerTitle = document.getElementById("header-title");
 
-    // ✅ UBAH JUDUL DULU, PASTIKAN BERUBAH
+    // Ambil elemen item status & riwayat di nav bawah
+    const navStatusItem = document.getElementById("nav-status");
+    const navHistoryItem = document.getElementById("nav-history");
+
+    // ✅ UBAH JUDUL HEADER
     if (headerTitle) {
         if (tabAktif === "cart") headerTitle.textContent = "Keranjang Saya";
         else if (tabAktif === "status") headerTitle.textContent = "Status Transaksi";
@@ -1174,19 +1178,30 @@ function gantiNavBerdasarkanTab(tabAktif) {
     if (dariMenuRiwayat) {
         navBayar.style.setProperty('display', 'none', 'important');
         navRiwayat.style.setProperty('display', 'flex', 'important');
-        return;
+    } else {
+        navBayar.style.setProperty('display', 'none', 'important');
+        navRiwayat.style.setProperty('display', 'none', 'important');
+
+        if (tabSekarang === "cart") {
+            if (cart.length > 0) {
+                navBayar.style.setProperty('display', 'flex', 'important');
+            }
+        } 
+        else if (tabSekarang === "status" || tabSekarang === "history") {
+            navRiwayat.style.setProperty('display', 'flex', 'important');
+        }
     }
 
-    navBayar.style.setProperty('display', 'none', 'important');
-    navRiwayat.style.setProperty('display', 'none', 'important');
+    // ✅ BAGIAN BARU: ATUR CLASS ACTIVE PADA NAV BAWAH
+    // Hapus active dari keduanya dulu
+    if (navStatusItem) navStatusItem.classList.remove("active");
+    if (navHistoryItem) navHistoryItem.classList.remove("active");
 
-    if (tabSekarang === "cart") {
-        if (cart.length > 0) {
-            navBayar.style.setProperty('display', 'flex', 'important');
-        }
-    } 
-    else if (tabSekarang === "status" || tabSekarang === "history") {
-        navRiwayat.style.setProperty('display', 'flex', 'important');
+    // Tambah active sesuai tab aktif
+    if (tabSekarang === "status") {
+        if (navStatusItem) navStatusItem.classList.add("active");
+    } else if (tabSekarang === "history") {
+        if (navHistoryItem) navHistoryItem.classList.add("active");
     }
 }
 
