@@ -317,21 +317,19 @@ def tagihan_pembangunan():
             nisn = siswa["nisn"]
 
             # ======================
-            # TOTAL SUDAH DIBAYAR (HANYA YANG SUDAH DISETUJUI / DITERIMA)
+            # 1. UANG YANG SUDAH DITERIMA ADMIN (Status DITERIMA)
             # ======================
-            row = d.execute("""
+            row_terima = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM pembayaran
                 WHERE nisn = %s
                   AND jenis LIKE 'PEMBANGUNAN%%'
                   AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()
-
-            total_terbayar = row["total"]
+            total_terbayar = row_terima["total"]
 
             # ======================
-            # CEK JUGA YANG MASIH DALAM PROSES / PENDING / DI KERANJANG
-            # TAMBAHAN PENTING: Supaya saat ada di keranjang, sisa langsung berkurang
+            # 2. UANG YANG SEDANG DIPROSES / VERIFIKASI
             # ======================
             row_pending = d.execute("""
                 SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
@@ -342,6 +340,9 @@ def tagihan_pembangunan():
             """, (siswa_id,)).fetchone()
             total_pending = row_pending["total"]
 
+            # ======================
+            # 3. UANG YANG MASIH ADA DI KERANJANG
+            # ======================
             row_cart = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM cart_pembayaran
@@ -351,13 +352,12 @@ def tagihan_pembangunan():
             """, (siswa_id,)).fetchone()
             total_cart = row_cart["total"]
 
-            # Total yang sudah diproses / sedang diproses
-            total_diproses = total_terbayar + total_pending + total_cart
-
             # ======================
-            # SEMESTER 1
+            # PERHITUNGAN PER SEMESTER (DIPERBAIKI)
             # ======================
-            sem1 = d.execute("""
+            
+            # --- SEMESTER 1 ---
+            sem1_terima = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM pembayaran
                 WHERE nisn = %s
@@ -365,7 +365,6 @@ def tagihan_pembangunan():
                   AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"]
 
-            # Tambahkan yang pending & cart untuk sem 1
             sem1_pending = d.execute("""
                 SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
                 FROM pembayaran_pending
@@ -382,12 +381,12 @@ def tagihan_pembangunan():
                   AND status = 'CART'
             """, (siswa_id,)).fetchone()["total"]
 
-            sem1_total_diproses = sem1 + sem1_pending + sem1_cart
+            # Total yang sudah ada urusannya (Terima + Pending + Keranjang)
+            sem1_total_ada = sem1_terima + sem1_pending + sem1_cart
+            sem1_sisa = max(0, 3000000 - sem1_total_ada)
 
-            # ======================
-            # SEMESTER 2
-            # ======================
-            sem2 = d.execute("""
+            # --- SEMESTER 2 ---
+            sem2_terima = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM pembayaran
                 WHERE nisn = %s
@@ -411,20 +410,32 @@ def tagihan_pembangunan():
                   AND status = 'CART'
             """, (siswa_id,)).fetchone()["total"]
 
-            sem2_total_diproses = sem2 + sem2_pending + sem2_cart
+            sem2_total_ada = sem2_terima + sem2_pending + sem2_cart
+            sem2_sisa = max(0, 2000000 - sem2_total_ada)
+
+            # ======================
+            # LOGIKA UTAMA (SESUI KEMAUAN KAMU)
+            # ======================
+            # TOTAL KESELURUHAN YANG SUDAH DIPROSES (TERIMA + PENDING + KERANJANG)
+            total_semua_diproses = total_terbayar + total_pending + total_cart
+
+            # STATUS LUNAS:
+            # LUNAS = JUMLAH KESELURUHAN (TERIMA + PENDING + KERANJANG) SUDAH 5JT
+            # INI SESUAI LOGIKA AWAL KAMU YANG BENAR: KALO UDAH DI KERANJANG 3JT + UDAH BAYAR 2JT = LUNAS -> HILANG
+            is_lunas = total_semua_diproses >= 5000000
 
         return jsonify({
             "total": 5000000,
-            "lunas": total_diproses >= 5000000,
+            "lunas": is_lunas,  # <--- KUNCI LOGIKA AWAL KAMU DIKEMBALIKAN
             "sem1": {
                 "target": 3000000,
-                "terbayar": sem1,
-                "sisa": max(0, 3000000 - sem1_total_diproses)
+                "terbayar": sem1_terima,
+                "sisa": sem1_sisa
             },
             "sem2": {
                 "target": 2000000,
-                "terbayar": sem2,
-                "sisa": max(0, 2000000 - sem2_total_diproses)
+                "terbayar": sem2_terima,
+                "sisa": sem2_sisa
             }
         })
 
