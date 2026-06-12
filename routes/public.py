@@ -316,121 +316,88 @@ def tagihan_pembangunan():
 
             nisn = siswa["nisn"]
 
-            # ======================
-            # 1. UANG YANG SUDAH DITERIMA ADMIN (Status DITERIMA)
-            # ======================
-            row_terima = d.execute("""
+            # ==================================================
+            # AMBIL DATA MENTAH
+            # ==================================================
+            # 1. Uang yang SUDAH DITERIMA / DISETUJUI ADMIN
+            terima = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM pembayaran
                 WHERE nisn = %s
                   AND jenis LIKE 'PEMBANGUNAN%%'
                   AND (status = 'DITERIMA' OR status IS NULL)
-            """, (nisn,)).fetchone()
-            total_terbayar = row_terima["total"]
+            """, (nisn,)).fetchone()["total"]
 
-            # ======================
-            # 2. UANG YANG SEDANG DIPROSES / VERIFIKASI
-            # ======================
-            row_pending = d.execute("""
+            # 2. Uang yang MASIH DI KERANJANG
+            cart = d.execute("""
+                SELECT COALESCE(SUM(nominal),0) AS total
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                  AND jenis LIKE 'PEMBANGUNAN%%'
+                  AND status = 'CART'
+            """, (siswa_id,)).fetchone()["total"]
+
+            # 3. Uang yang SEDANG DIPROSES / VERIFIKASI
+            pending = d.execute("""
                 SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
                 FROM pembayaran_pending
                 WHERE siswa_id = %s
                   AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
                   AND detail LIKE '%PEMBANGUNAN%'
-            """, (siswa_id,)).fetchone()
-            total_pending = row_pending["total"]
+            """, (siswa_id,)).fetchone()["total"]
 
-            # ======================
-            # 3. UANG YANG MASIH ADA DI KERANJANG
-            # ======================
-            row_cart = d.execute("""
-                SELECT COALESCE(SUM(nominal),0) AS total
-                FROM cart_pembayaran
-                WHERE siswa_id = %s
-                  AND jenis LIKE 'PEMBANGUNAN%%'
-                  AND status = 'CART'
-            """, (siswa_id,)).fetchone()
-            total_cart = row_cart["total"]
+            # ==================================================
+            # LOGIKA UTAMA (SESUI PERINTAH KAMU 100%)
+            # ==================================================
+            total_sudah_diproses = terima + cart + pending
 
-            # ======================
-            # PERHITUNGAN PER SEMESTER (DIPERBAIKI AGAR TIDAK SALAH HITUNG)
-            # ======================
-            
-            # --- SEMESTER 1 ---
+            # ATURAN EMAS DARI KAMU:
+            # 1. JUMLAH KESELURUHAN (TERIMA + KERANJANG + PENDING) >= 5jt -> LUNAS (HILANG)
+            # 2. SELAIN ITU -> BELUM LUNAS (MUNCUL)
+            is_lunas = total_sudah_diproses >= 5000000
+
+            # ==================================================
+            # PERHITUNGAN PER SEMESTER (UNTUK TAMPILAN)
+            # ==================================================
+            # SEMESTER 1 (Target 3jt)
             sem1_terima = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM pembayaran
-                WHERE nisn = %s
-                  AND jenis = 'PEMBANGUNAN_SEM1'
-                  AND (status = 'DITERIMA' OR status IS NULL)
+                WHERE nisn = %s AND jenis = 'PEMBANGUNAN_SEM1' AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"]
-
-            sem1_pending = d.execute("""
-                SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
-                FROM pembayaran_pending
-                WHERE siswa_id = %s
-                  AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
-                  AND detail LIKE '%PEMBANGUNAN_SEM1%'
-            """, (siswa_id,)).fetchone()["total"]
-
             sem1_cart = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM cart_pembayaran
-                WHERE siswa_id = %s
-                  AND jenis = 'PEMBANGUNAN_SEM1'
-                  AND status = 'CART'
+                WHERE siswa_id = %s AND jenis = 'PEMBANGUNAN_SEM1' AND status = 'CART'
             """, (siswa_id,)).fetchone()["total"]
+            sem1_pending = d.execute("""
+                SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
+                FROM pembayaran_pending
+                WHERE siswa_id = %s AND detail LIKE '%PEMBANGUNAN_SEM1%' AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
+            """, (siswa_id,)).fetchone()["total"]
+            sem1_sisa = max(0, 3000000 - (sem1_terima + sem1_cart + sem1_pending))
 
-            sem1_total_ada = sem1_terima + sem1_pending + sem1_cart
-            sem1_sisa = max(0, 3000000 - sem1_total_ada)
-
-            # --- SEMESTER 2 ---
+            # SEMESTER 2 (Target 2jt)
             sem2_terima = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM pembayaran
-                WHERE nisn = %s
-                  AND jenis = 'PEMBANGUNAN_SEM2'
-                  AND (status = 'DITERIMA' OR status IS NULL)
+                WHERE nisn = %s AND jenis = 'PEMBANGUNAN_SEM2' AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"]
-
-            sem2_pending = d.execute("""
-                SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
-                FROM pembayaran_pending
-                WHERE siswa_id = %s
-                  AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
-                  AND detail LIKE '%PEMBANGUNAN_SEM2%'
-            """, (siswa_id,)).fetchone()["total"]
-
             sem2_cart = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM cart_pembayaran
-                WHERE siswa_id = %s
-                  AND jenis = 'PEMBANGUNAN_SEM2'
-                  AND status = 'CART'
+                WHERE siswa_id = %s AND jenis = 'PEMBANGUNAN_SEM2' AND status = 'CART'
             """, (siswa_id,)).fetchone()["total"]
-
-            sem2_total_ada = sem2_terima + sem2_pending + sem2_cart
-            sem2_sisa = max(0, 2000000 - sem2_total_ada)
-
-            # ======================
-            # LOGIKA UTAMA YANG DIPERBAIKI
-            # ======================
-            # 1. Total yang sudah diproses (Uang masuk + Keranjang + Pending)
-            total_semua_diproses = total_terbayar + total_pending + total_cart
-
-            # 2. Cek apakah MASIH ADA SISA TAGIHAN di manapun (Sem1 atau Sem2)
-            # INI KUNCI UTAMA: Kalau ada sisa di salah satu saja, berarti BELUM LUNAS
-            masih_ada_sisa = (sem1_sisa > 0) or (sem2_sisa > 0)
-
-            # 3. STATUS LUNAS SESUAI KEMAUAN KAMU:
-            # - Jika total yang sudah diurus (Diterima + Keranjang + Pending) SUDAH 5jt → LUNAS (HILANG)
-            # - ATAU jika benar-benar sudah lunas semua di database → LUNAS (HILANG)
-            is_lunas = (total_semua_diproses >= 5000000) or (not masih_ada_sisa)
+            sem2_pending = d.execute("""
+                SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
+                FROM pembayaran_pending
+                WHERE siswa_id = %s AND detail LIKE '%PEMBANGUNAN_SEM2%' AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
+            """, (siswa_id,)).fetchone()["total"]
+            sem2_sisa = max(0, 2000000 - (sem2_terima + sem2_cart + sem2_pending))
 
         return jsonify({
             "total": 5000000,
-            "lunas": is_lunas,  # <--- LOGIKA BARU YANG BENAR
-            "masih_ada_sisa": masih_ada_sisa, # Tambahan info untuk pengecekan
+            "lunas": is_lunas,  # <--- KUNCI UTAMA
             "sem1": {
                 "target": 3000000,
                 "terbayar": sem1_terima,
