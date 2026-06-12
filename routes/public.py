@@ -317,16 +317,42 @@ def tagihan_pembangunan():
             nisn = siswa["nisn"]
 
             # ======================
-            # TOTAL SUDAH DIBAYAR
+            # TOTAL SUDAH DIBAYAR (HANYA YANG SUDAH DISETUJUI / DITERIMA)
             # ======================
             row = d.execute("""
                 SELECT COALESCE(SUM(nominal),0) AS total
                 FROM pembayaran
                 WHERE nisn = %s
                   AND jenis LIKE 'PEMBANGUNAN%%'
+                  AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()
 
             total_terbayar = row["total"]
+
+            # ======================
+            # CEK JUGA YANG MASIH DALAM PROSES / PENDING / DI KERANJANG
+            # TAMBAHAN PENTING: Supaya saat ada di keranjang, sisa langsung berkurang
+            # ======================
+            row_pending = d.execute("""
+                SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
+                FROM pembayaran_pending
+                WHERE siswa_id = %s
+                  AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
+                  AND detail LIKE '%PEMBANGUNAN%'
+            """, (siswa_id,)).fetchone()
+            total_pending = row_pending["total"]
+
+            row_cart = d.execute("""
+                SELECT COALESCE(SUM(nominal),0) AS total
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                  AND jenis LIKE 'PEMBANGUNAN%%'
+                  AND status = 'CART'
+            """, (siswa_id,)).fetchone()
+            total_cart = row_cart["total"]
+
+            # Total yang sudah diproses / sedang diproses
+            total_diproses = total_terbayar + total_pending + total_cart
 
             # ======================
             # SEMESTER 1
@@ -336,7 +362,27 @@ def tagihan_pembangunan():
                 FROM pembayaran
                 WHERE nisn = %s
                   AND jenis = 'PEMBANGUNAN_SEM1'
+                  AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"]
+
+            # Tambahkan yang pending & cart untuk sem 1
+            sem1_pending = d.execute("""
+                SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
+                FROM pembayaran_pending
+                WHERE siswa_id = %s
+                  AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
+                  AND detail LIKE '%PEMBANGUNAN_SEM1%'
+            """, (siswa_id,)).fetchone()["total"]
+
+            sem1_cart = d.execute("""
+                SELECT COALESCE(SUM(nominal),0) AS total
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                  AND jenis = 'PEMBANGUNAN_SEM1'
+                  AND status = 'CART'
+            """, (siswa_id,)).fetchone()["total"]
+
+            sem1_total_diproses = sem1 + sem1_pending + sem1_cart
 
             # ======================
             # SEMESTER 2
@@ -346,20 +392,39 @@ def tagihan_pembangunan():
                 FROM pembayaran
                 WHERE nisn = %s
                   AND jenis = 'PEMBANGUNAN_SEM2'
+                  AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"]
+
+            sem2_pending = d.execute("""
+                SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0) AS total
+                FROM pembayaran_pending
+                WHERE siswa_id = %s
+                  AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
+                  AND detail LIKE '%PEMBANGUNAN_SEM2%'
+            """, (siswa_id,)).fetchone()["total"]
+
+            sem2_cart = d.execute("""
+                SELECT COALESCE(SUM(nominal),0) AS total
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                  AND jenis = 'PEMBANGUNAN_SEM2'
+                  AND status = 'CART'
+            """, (siswa_id,)).fetchone()["total"]
+
+            sem2_total_diproses = sem2 + sem2_pending + sem2_cart
 
         return jsonify({
             "total": 5000000,
-            "lunas": total_terbayar >= 5000000,
+            "lunas": total_diproses >= 5000000,
             "sem1": {
                 "target": 3000000,
                 "terbayar": sem1,
-                "sisa": max(0, 3000000 - sem1)
+                "sisa": max(0, 3000000 - sem1_total_diproses)
             },
             "sem2": {
                 "target": 2000000,
                 "terbayar": sem2,
-                "sisa": max(0, 2000000 - sem2)
+                "sisa": max(0, 2000000 - sem2_total_diproses)
             }
         })
 
