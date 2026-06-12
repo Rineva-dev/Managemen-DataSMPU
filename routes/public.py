@@ -317,14 +317,14 @@ def tagihan_pembangunan():
             nisn = siswa["nisn"]
 
             # ==================================================
-            # 1. UANG YANG SUDAH DITERIMA ADMIN (Pembacaan DIPERLELUAS)
+            # 1. UANG YANG SUDAH DITERIMA ADMIN
             # ==================================================
-            # Menggunakan ILIKE = Tidak peka huruf besar/kecil, asal ada kata kuncinya terbaca
+            # Perbaikan query: tanda kurung dan logika AND/OR sudah benar
             terima_sem1 = d.execute("""
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM pembayaran
                 WHERE nisn = %s
-                  AND jenis ILIKE '%SEMESTER 1%' OR jenis ILIKE '%SEM1%' OR jenis ILIKE '%PEMBANGUNAN%1%'
+                  AND (jenis ILIKE '%SEMESTER 1%' OR jenis ILIKE '%SEM1%' OR jenis ILIKE '%PEMBANGUNAN_1%')
                   AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"] or 0
 
@@ -332,12 +332,9 @@ def tagihan_pembangunan():
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM pembayaran
                 WHERE nisn = %s
-                  AND jenis ILIKE '%SEMESTER 2%' OR jenis ILIKE '%SEM2%' OR jenis ILIKE '%PEMBANGUNAN%2%'
+                  AND (jenis ILIKE '%SEMESTER 2%' OR jenis ILIKE '%SEM2%' OR jenis ILIKE '%PEMBANGUNAN_2%')
                   AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"] or 0
-
-            # Total keseluruhan yang sudah diterima
-            terima_total = int(terima_sem1) + int(terima_sem2)
 
             # ==================================================
             # 2. UANG DI KERANJANG
@@ -371,7 +368,8 @@ def tagihan_pembangunan():
                       AND (detail ILIKE '%SEM1%' OR detail ILIKE '%SEMESTER 1%')
                 """, (siswa_id,)).fetchone()
                 pending_sem1 = p1["total"] or 0
-            except: pass
+            except Exception:
+                pending_sem1 = 0
 
             pending_sem2 = 0
             try:
@@ -383,12 +381,13 @@ def tagihan_pembangunan():
                       AND (detail ILIKE '%SEM2%' OR detail ILIKE '%SEMESTER 2%')
                 """, (siswa_id,)).fetchone()
                 pending_sem2 = p2["total"] or 0
-            except: pass
+            except Exception:
+                pending_sem2 = 0
 
             # ==================================================
-            # HITUNG AKHIR & FORMAT TAMPILAN SESUAI PERMINTAANMU
+            # HITUNG ANGKA AKHIR
             # ==================================================
-            # Pastikan semua angka
+            # Pastikan semua berupa integer
             terima_sem1 = int(terima_sem1)
             terima_sem2 = int(terima_sem2)
             cart_sem1 = int(cart_sem1)
@@ -396,33 +395,30 @@ def tagihan_pembangunan():
             pending_sem1 = int(pending_sem1)
             pending_sem2 = int(pending_sem2)
 
-            # Hitung total per semester
-            total_sem1 = terima_sem1 + cart_sem1 + pending_sem1
-            total_sem2 = terima_sem2 + cart_sem2 + pending_sem2
-            total_semua = total_sem1 + total_sem2
+            # Total keseluruhan untuk cek lunas/tidak
+            total_keseluruhan = terima_sem1 + terima_sem2 + cart_sem1 + cart_sem2 + pending_sem1 + pending_sem2
+            is_lunas = (total_keseluruhan >= 5000000)
 
-            # Sisa tagihan
-            sisa_sem1 = max(0, 3000000 - total_sem1)
-            sisa_sem2 = max(0, 2000000 - total_sem2)
-            sisa_total = sisa_sem1 + sisa_sem2
+            # Sisa tagihan per semester
+            sisa_sem1 = max(0, 3000000 - (terima_sem1 + cart_sem1 + pending_sem1))
+            sisa_sem2 = max(0, 2000000 - (terima_sem2 + cart_sem2 + pending_sem2))
 
-            # Lunas jika sisa total 0
-            is_lunas = (sisa_total <= 0)
-
+        # ==================================================
+        # STRUKTUR JSON SESUAI KEINGINAN & DIBUTUHKAN JS
+        # ==================================================
         return jsonify({
             "total": 5000000,
             "lunas": is_lunas,
             "sem1": {
                 "target": 3000000,
-                "terbayar": terima_sem1,  # <--- YANG TAMPIL: HANYA YANG SUDAH DITERIMA ADMIN
+                "terbayar": terima_sem1,  # <--- YANG TAMPIL: Hanya yang diterima admin
                 "sisa": sisa_sem1
             },
             "sem2": {
                 "target": 2000000,
-                "terbayar": terima_sem2,  # <--- YANG TAMPIL: HANYA YANG SUDAH DITERIMA ADMIN
+                "terbayar": terima_sem2,  # <--- YANG TAMPIL: Hanya yang diterima admin
                 "sisa": sisa_sem2
-            },
-            "sisa_tagihan": sisa_total  # <--- SISA AKHIR YANG AKAN TAMPIL
+            }
         })
 
     except Exception as e:
