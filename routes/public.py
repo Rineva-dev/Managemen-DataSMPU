@@ -317,128 +317,112 @@ def tagihan_pembangunan():
             nisn = siswa["nisn"]
 
             # ==================================================
-            # 1. UANG YANG SUDAH DITERIMA / DISETUJUI ADMIN
+            # 1. UANG YANG SUDAH DITERIMA ADMIN (Pembacaan DIPERLELUAS)
             # ==================================================
-            terima = d.execute("""
+            # Menggunakan ILIKE = Tidak peka huruf besar/kecil, asal ada kata kuncinya terbaca
+            terima_sem1 = d.execute("""
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM pembayaran
                 WHERE nisn = %s
-                  AND jenis LIKE 'PEMBANGUNAN%%'
+                  AND jenis ILIKE '%SEMESTER 1%' OR jenis ILIKE '%SEM1%' OR jenis ILIKE '%PEMBANGUNAN%1%'
                   AND (status = 'DITERIMA' OR status IS NULL)
             """, (nisn,)).fetchone()["total"] or 0
 
+            terima_sem2 = d.execute("""
+                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
+                FROM pembayaran
+                WHERE nisn = %s
+                  AND jenis ILIKE '%SEMESTER 2%' OR jenis ILIKE '%SEM2%' OR jenis ILIKE '%PEMBANGUNAN%2%'
+                  AND (status = 'DITERIMA' OR status IS NULL)
+            """, (nisn,)).fetchone()["total"] or 0
+
+            # Total keseluruhan yang sudah diterima
+            terima_total = int(terima_sem1) + int(terima_sem2)
+
             # ==================================================
-            # 2. UANG YANG MASIH DI KERANJANG
+            # 2. UANG DI KERANJANG
             # ==================================================
-            cart = d.execute("""
+            cart_sem1 = d.execute("""
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM cart_pembayaran
                 WHERE siswa_id = %s
-                  AND jenis LIKE 'PEMBANGUNAN%%'
+                  AND (jenis ILIKE '%SEM1%' OR jenis ILIKE '%SEMESTER 1%')
+                  AND status = 'CART'
+            """, (siswa_id,)).fetchone()["total"] or 0
+
+            cart_sem2 = d.execute("""
+                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                  AND (jenis ILIKE '%SEM2%' OR jenis ILIKE '%SEMESTER 2%')
                   AND status = 'CART'
             """, (siswa_id,)).fetchone()["total"] or 0
 
             # ==================================================
-            # 3. UANG YANG SEDANG DIPROSES / VERIFIKASI
+            # 3. UANG SEDANG DIPROSES / VERIFIKASI
             # ==================================================
-            # Perbaikan di sini: Gunakan pengecekan yang lebih aman agar tidak error saat kosong
-            pending = 0
+            pending_sem1 = 0
             try:
-                pending_res = d.execute("""
+                p1 = d.execute("""
                     SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0)::BIGINT AS total
                     FROM pembayaran_pending
                     WHERE siswa_id = %s
                       AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
-                      AND detail ILIKE '%PEMBANGUNAN%'
+                      AND (detail ILIKE '%SEM1%' OR detail ILIKE '%SEMESTER 1%')
                 """, (siswa_id,)).fetchone()
-                pending = pending_res["total"] or 0
-            except:
-                pending = 0
+                pending_sem1 = p1["total"] or 0
+            except: pass
 
-            # ==================================================
-            # LOGIKA UTAMA (DIKUNCI 100% - TIDAK AKAN SALAH LAGI)
-            # ==================================================
-            # Pastikan semua berupa ANGKA, kalau kosong = 0
-            terima = int(terima)
-            cart = int(cart)
-            pending = int(pending)
-
-            total_semua = terima + cart + pending
-
-            # ATURAN:
-            # - Jika total >= 5jt -> LUNAS = True (HILANG)
-            # - Selain itu -> LUNAS = False (MUNCUL)
-            # DIPERMUDAH: KALAU BELUM 5JT, PASTI MUNCUL
-            is_lunas = (total_semua >= 5000000)
-
-            # ==================================================
-            # PERHITUNGAN PER SEMESTER (UNTUK TAMPILAN)
-            # ==================================================
-            # SEMESTER 1 (Target 3jt)
-            sem1_terima = d.execute("""
-                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
-                FROM pembayaran
-                WHERE nisn = %s AND jenis = 'PEMBANGUNAN_SEM1' AND (status = 'DITERIMA' OR status IS NULL)
-            """, (nisn,)).fetchone()["total"] or 0
-            
-            sem1_cart = d.execute("""
-                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
-                FROM cart_pembayaran
-                WHERE siswa_id = %s AND jenis = 'PEMBANGUNAN_SEM1' AND status = 'CART'
-            """, (siswa_id,)).fetchone()["total"] or 0
-
-            sem1_pending = 0
+            pending_sem2 = 0
             try:
-                sem1_pend_res = d.execute("""
+                p2 = d.execute("""
                     SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0)::BIGINT AS total
                     FROM pembayaran_pending
-                    WHERE siswa_id = %s AND detail ILIKE '%PEMBANGUNAN_SEM1%' AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
+                    WHERE siswa_id = %s
+                      AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
+                      AND (detail ILIKE '%SEM2%' OR detail ILIKE '%SEMESTER 2%')
                 """, (siswa_id,)).fetchone()
-                sem1_pending = sem1_pend_res["total"] or 0
-            except:
-                sem1_pending = 0
+                pending_sem2 = p2["total"] or 0
+            except: pass
 
-            sem1_sisa = max(0, 3000000 - (int(sem1_terima) + int(sem1_cart) + int(sem1_pending)))
+            # ==================================================
+            # HITUNG AKHIR & FORMAT TAMPILAN SESUAI PERMINTAANMU
+            # ==================================================
+            # Pastikan semua angka
+            terima_sem1 = int(terima_sem1)
+            terima_sem2 = int(terima_sem2)
+            cart_sem1 = int(cart_sem1)
+            cart_sem2 = int(cart_sem2)
+            pending_sem1 = int(pending_sem1)
+            pending_sem2 = int(pending_sem2)
 
-            # SEMESTER 2 (Target 2jt)
-            sem2_terima = d.execute("""
-                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
-                FROM pembayaran
-                WHERE nisn = %s AND jenis = 'PEMBANGUNAN_SEM2' AND (status = 'DITERIMA' OR status IS NULL)
-            """, (nisn,)).fetchone()["total"] or 0
+            # Hitung total per semester
+            total_sem1 = terima_sem1 + cart_sem1 + pending_sem1
+            total_sem2 = terima_sem2 + cart_sem2 + pending_sem2
+            total_semua = total_sem1 + total_sem2
 
-            sem2_cart = d.execute("""
-                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
-                FROM cart_pembayaran
-                WHERE siswa_id = %s AND jenis = 'PEMBANGUNAN_SEM2' AND status = 'CART'
-            """, (siswa_id,)).fetchone()["total"] or 0
+            # Sisa tagihan
+            sisa_sem1 = max(0, 3000000 - total_sem1)
+            sisa_sem2 = max(0, 2000000 - total_sem2)
+            sisa_total = sisa_sem1 + sisa_sem2
 
-            sem2_pending = 0
-            try:
-                sem2_pend_res = d.execute("""
-                    SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0)::BIGINT AS total
-                    FROM pembayaran_pending
-                    WHERE siswa_id = %s AND detail ILIKE '%PEMBANGUNAN_SEM2%' AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
-                """, (siswa_id,)).fetchone()
-                sem2_pending = sem2_pend_res["total"] or 0
-            except:
-                sem2_pending = 0
-
-            sem2_sisa = max(0, 2000000 - (int(sem2_terima) + int(sem2_cart) + int(sem2_pending)))
+            # Lunas jika sisa total 0
+            is_lunas = (sisa_total <= 0)
 
         return jsonify({
             "total": 5000000,
-            "lunas": is_lunas,  # <--- KUNCI UTAMA
+            "lunas": is_lunas,
             "sem1": {
                 "target": 3000000,
-                "terbayar": int(sem1_terima),
-                "sisa": sem1_sisa
+                "terbayar": terima_sem1,  # <--- YANG TAMPIL: HANYA YANG SUDAH DITERIMA ADMIN
+                "sisa": sisa_sem1
             },
             "sem2": {
                 "target": 2000000,
-                "terbayar": int(sem2_terima),
-                "sisa": sem2_sisa
-            }
+                "terbayar": terima_sem2,  # <--- YANG TAMPIL: HANYA YANG SUDAH DITERIMA ADMIN
+                "sisa": sisa_sem2
+            },
+            "sisa_tagihan": sisa_total  # <--- SISA AKHIR YANG AKAN TAMPIL
         })
 
     except Exception as e:
