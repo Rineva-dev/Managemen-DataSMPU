@@ -356,11 +356,11 @@ async function loadTagihanPembangunan() {
             <p>
                 Semester 1:
                 ${rupiah(data.sem1.terbayar)}
-                / 3.000.000
+                / ${rupiah(data.sem1.target)}
                 <br>
                 Semester 2:
                 ${rupiah(data.sem2.terbayar)}
-                / 2.000.000
+                / ${rupiah(data.sem2.target)}
             </p>
 
             <div class="bill-footer">
