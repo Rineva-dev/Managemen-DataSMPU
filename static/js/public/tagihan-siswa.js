@@ -311,106 +311,62 @@ async function loadTagihanSPP() {
 }
 
 async function loadTagihanPembangunan() {
-
     try {
-
-        const res = await fetch(
-            `/public/tagihan-pembangunan?siswa_id=${siswaId}`
-        );
-
+        const res = await fetch(`/public/tagihan-pembangunan?siswa_id=${siswaId}`);
         const data = await res.json();
 
+        console.log("DATA DARI SERVER:", data); 
+
         if (data.lunas) {
+            console.log("Status LUNAS, kartu tidak ditampilkan");
             return;
         }
 
-        const sisa =
-            (data.sem1.sisa || 0) +
-            (data.sem2.sisa || 0);
+        const sem1_terbayar = data.sem1?.terbayar || 0;
+        const sem1_target   = data.sem1?.target || 3000000;
+        const sem2_terbayar = data.sem2?.terbayar || 0;
+        const sem2_target   = data.sem2?.target || 2000000;
+        const sisa          = (data.sem1?.sisa || 0) + (data.sem2?.sisa || 0);
 
-        const card =
-            document.createElement("div");
-
+        const card = document.createElement("div");
         card.className = "bill-card";
-
-        card.dataset.kategori =
-            "pembangunan";
+        card.dataset.kategori = "pembangunan";
 
         card.innerHTML = `
             <div class="bill-top">
-
-                <span class="bill-category pembangunan">
-                    PEMBANGUNAN
-                </span>
-
-                <span class="bill-status unpaid">
-                    Belum Lunas
-                </span>
-
+                <span class="bill-category pembangunan">PEMBANGUNAN</span>
+                <span class="bill-status unpaid">Belum Lunas</span>
             </div>
 
-            <h3>
-                Biaya Pembangunan
-            </h3>
+            <h3>Biaya Pembangunan</h3>
 
             <p>
-                Semester 1:
-                ${rupiah(data.sem1.terbayar)}
-                / ${rupiah(data.sem1.target)}
+                Semester 1: ${rupiah(sem1_terbayar)} / ${rupiah(sem1_target)}
                 <br>
-                Semester 2:
-                ${rupiah(data.sem2.terbayar)}
-                / ${rupiah(data.sem2.target)}
+                Semester 2: ${rupiah(sem2_terbayar)} / ${rupiah(sem2_target)}
             </p>
 
             <div class="bill-footer">
-
                 <div>
-
-                    <small>
-                        Sisa Tagihan
-                    </small>
-
-                    <strong class="bill-price">
-                        ${rupiah(sisa)}
-                    </strong>
-
+                    <small>Sisa Tagihan</small>
+                    <strong class="bill-price">${rupiah(sisa)}</strong>
                 </div>
-
             </div>
 
             <div class="bill-input">
-
-                <input
-                    type="text"
-                    class="input-pembangunan"
-                    placeholder="Contoh: Rp 5.000.000">
-
-                <button
-                    class="btn-add-pembangunan"
-                    data-max="${sisa}">
-
+                <input type="text" class="input-pembangunan" placeholder="Contoh: Rp 5.000.000">
+                <button class="btn-add-pembangunan" data-max="${sisa}">
                     <i data-lucide="plus"></i>
-
-                    <span>
-                        Tambah
-                    </span>
-
+                    <span>Tambah</span>
                 </button>
-
             </div>
         `;
 
         billGrid.appendChild(card);
-
         lucide.createIcons();
 
     } catch (err) {
-
-        console.error(
-            "Gagal memuat pembangunan",
-            err
-        );
+        console.error("Gagal memuat pembangunan:", err);
     }
 }
 

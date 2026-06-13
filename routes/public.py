@@ -304,29 +304,50 @@ def tagihan_pembangunan():
     try:
         with db() as d:
 
-            # 👇 BACA DATA LANGSUNG DARI TABEL cart_pembayaran
-            # Ambil total yang sudah dibayar/dimasukkan untuk jenis PEMBANGUNAN
-            total_terbayar = d.execute("""
+            # ==============================================
+            # BACA NILAI DI KERANJANG & PEMBAYARAN SEBENARNYA
+            # ==============================================
+            # Ambil total nominal yang ada di keranjang (status: CHECKED_OUT = ada di keranjang)
+            nilai_dikeranjang = d.execute("""
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM cart_pembayaran
                 WHERE siswa_id = %s
                   AND jenis = 'PEMBANGUNAN'
-                  AND status IN ('CHECKED_OUT', 'DITERIMA')
+                  AND status = 'CHECKED_OUT'
             """, (siswa_id,)).fetchone()["total"] or 0
 
-            # Target tetap sama seperti sebelumnya
+            # Ambil total yang SUDAH DIBERESKAN / DIKONFIRMASI (status: LUNAS/DITERIMA)
+            nilai_sudah_bayar = d.execute("""
+                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
+                FROM cart_pembayaran
+                WHERE siswa_id = %s
+                  AND jenis = 'PEMBANGUNAN'
+                  AND status IN ('LUNAS', 'DITERIMA')
+            """, (siswa_id,)).fetchone()["total"] or 0
+
+            # TOTAL KESELURUHAN YANG DIHITUNG SEBAGAI SUDAH DIBAYAR
+            # (Nilai di keranjang + Nilai yang sudah selesai dibayar)
+            total_terbayar = nilai_dikeranjang + nilai_sudah_bayar
+
+            # ==============================================
+            # PENGATURAN NILAI TAGIHAN
+            # ==============================================
             target_sem1 = 3000000
             target_sem2 = 2000000
-            total_target = target_sem1 + target_sem2
+            total_target = target_sem1 + target_sem2 # 5.000.000
 
-            # Hitung pembagian ke semester (karena di tabel cuma satu nama)
+            # ==============================================
+            # PEMBAGIAN KE SEMESTER 1 & 2
             # Logika: Isi dulu Sem 1 sampai penuh, sisa masuk ke Sem 2
+            # ==============================================
             terima_sem1 = min(total_terbayar, target_sem1)
             terima_sem2 = max(0, total_terbayar - target_sem1)
 
             sisa_sem1 = max(0, target_sem1 - terima_sem1)
             sisa_sem2 = max(0, target_sem2 - terima_sem2)
+            sisa_total = sisa_sem1 + sisa_sem2
 
+            # Cek apakah lunas (jika total terbayar >= 5jt)
             is_lunas = (total_terbayar >= total_target)
 
             return jsonify({
@@ -341,6 +362,10 @@ def tagihan_pembangunan():
                     "target": target_sem2,
                     "terbayar": terima_sem2,
                     "sisa": sisa_sem2
+                },
+                "info_tambahan": { # Info ini cuma buat pengecekan
+                    "di_keranjang": nilai_dikeranjang,
+                    "sudah_dibayar": nilai_sudah_bayar
                 }
             })
 
