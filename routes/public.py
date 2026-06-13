@@ -297,7 +297,6 @@ def tagihan_spp():
     
 @public_bp.route("/tagihan-pembangunan")
 def tagihan_pembangunan():
-
     siswa_id = request.args.get("siswa_id", type=int)
     if not siswa_id:
         return jsonify({})
@@ -305,121 +304,45 @@ def tagihan_pembangunan():
     try:
         with db() as d:
 
-            siswa = d.execute("""
-                SELECT nisn
-                FROM siswa
-                WHERE id = %s
-            """, (siswa_id,)).fetchone()
-
-            if not siswa:
-                return jsonify({})
-
-            nisn = siswa["nisn"]
-
-            # ==================================================
-            # 1. UANG YANG SUDAH DITERIMA ADMIN
-            # ==================================================
-            # DIPERBAIKI: Hanya pakai %s, tidak ada tanda ?
-            terima_sem1 = d.execute("""
-                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
-                FROM pembayaran
-                WHERE nisn = %s
-                  AND (jenis ILIKE '%%SEMESTER 1%%' OR jenis ILIKE '%%SEM1%%' OR jenis ILIKE '%%PEMBANGUNAN_1%%')
-                  AND (status = 'DITERIMA' OR status IS NULL)
-            """, (nisn,)).fetchone()["total"] or 0
-
-            terima_sem2 = d.execute("""
-                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
-                FROM pembayaran
-                WHERE nisn = %s
-                  AND (jenis ILIKE '%%SEMESTER 2%%' OR jenis ILIKE '%%SEM2%%' OR jenis ILIKE '%%PEMBANGUNAN_2%%')
-                  AND (status = 'DITERIMA' OR status IS NULL)
-            """, (nisn,)).fetchone()["total"] or 0
-
-            # ==================================================
-            # 2. UANG DI KERANJANG
-            # ==================================================
-            cart_sem1 = d.execute("""
+            # 👇 BACA DATA LANGSUNG DARI TABEL cart_pembayaran
+            # Ambil total yang sudah dibayar/dimasukkan untuk jenis PEMBANGUNAN
+            total_terbayar = d.execute("""
                 SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
                 FROM cart_pembayaran
                 WHERE siswa_id = %s
-                  AND (jenis ILIKE '%%SEM1%%' OR jenis ILIKE '%%SEMESTER 1%%')
-                  AND status = 'CART'
+                  AND jenis = 'PEMBANGUNAN'
+                  AND status IN ('CHECKED_OUT', 'DITERIMA')
             """, (siswa_id,)).fetchone()["total"] or 0
 
-            cart_sem2 = d.execute("""
-                SELECT COALESCE(SUM(nominal), 0)::BIGINT AS total
-                FROM cart_pembayaran
-                WHERE siswa_id = %s
-                  AND (jenis ILIKE '%%SEM2%%' OR jenis ILIKE '%%SEMESTER 2%%')
-                  AND status = 'CART'
-            """, (siswa_id,)).fetchone()["total"] or 0
+            # Target tetap sama seperti sebelumnya
+            target_sem1 = 3000000
+            target_sem2 = 2000000
+            total_target = target_sem1 + target_sem2
 
-            # ==================================================
-            # 3. UANG SEDANG DIPROSES / VERIFIKASI
-            # ==================================================
-            pending_sem1 = 0
-            try:
-                p1 = d.execute("""
-                    SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0)::BIGINT AS total
-                    FROM pembayaran_pending
-                    WHERE siswa_id = %s
-                      AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
-                      AND (detail ILIKE '%%SEM1%%' OR detail ILIKE '%%SEMESTER 1%%')
-                """, (siswa_id,)).fetchone()
-                pending_sem1 = p1["total"] or 0
-            except Exception:
-                pending_sem1 = 0
+            # Hitung pembagian ke semester (karena di tabel cuma satu nama)
+            # Logika: Isi dulu Sem 1 sampai penuh, sisa masuk ke Sem 2
+            terima_sem1 = min(total_terbayar, target_sem1)
+            terima_sem2 = max(0, total_terbayar - target_sem1)
 
-            pending_sem2 = 0
-            try:
-                p2 = d.execute("""
-                    SELECT COALESCE(SUM(CAST(detail::json->>'nominal' AS INTEGER)), 0)::BIGINT AS total
-                    FROM pembayaran_pending
-                    WHERE siswa_id = %s
-                      AND status IN ('MENUNGGU','MENUNGGU VERIFIKASI','PENDING','MENUNGGU PEMBAYARAN')
-                      AND (detail ILIKE '%%SEM2%%' OR detail ILIKE '%%SEMESTER 2%%')
-                """, (siswa_id,)).fetchone()
-                pending_sem2 = p2["total"] or 0
-            except Exception:
-                pending_sem2 = 0
+            sisa_sem1 = max(0, target_sem1 - terima_sem1)
+            sisa_sem2 = max(0, target_sem2 - terima_sem2)
 
-            # ==================================================
-            # HITUNG ANGKA AKHIR
-            # ==================================================
-            # Pastikan semua berupa integer
-            terima_sem1 = int(terima_sem1)
-            terima_sem2 = int(terima_sem2)
-            cart_sem1 = int(cart_sem1)
-            cart_sem2 = int(cart_sem2)
-            pending_sem1 = int(pending_sem1)
-            pending_sem2 = int(pending_sem2)
+            is_lunas = (total_terbayar >= total_target)
 
-            # Total keseluruhan untuk cek lunas/tidak
-            total_keseluruhan = terima_sem1 + terima_sem2 + cart_sem1 + cart_sem2 + pending_sem1 + pending_sem2
-            is_lunas = (total_keseluruhan >= 5000000)
-
-            # Sisa tagihan per semester
-            sisa_sem1 = max(0, 3000000 - (terima_sem1 + cart_sem1 + pending_sem1))
-            sisa_sem2 = max(0, 2000000 - (terima_sem2 + cart_sem2 + pending_sem2))
-
-        # ==================================================
-        # STRUKTUR JSON SESUAI KEINGINAN
-        # ==================================================
-        return jsonify({
-            "total": 5000000,
-            "lunas": is_lunas,
-            "sem1": {
-                "target": 3000000,
-                "terbayar": terima_sem1,  # <--- YANG TAMPIL: Hanya yang diterima admin
-                "sisa": sisa_sem1
-            },
-            "sem2": {
-                "target": 2000000,
-                "terbayar": terima_sem2,  # <--- YANG TAMPIL: Hanya yang diterima admin
-                "sisa": sisa_sem2
-            }
-        })
+            return jsonify({
+                "total": total_target,
+                "lunas": is_lunas,
+                "sem1": {
+                    "target": target_sem1,
+                    "terbayar": terima_sem1,
+                    "sisa": sisa_sem1
+                },
+                "sem2": {
+                    "target": target_sem2,
+                    "terbayar": terima_sem2,
+                    "sisa": sisa_sem2
+                }
+            })
 
     except Exception as e:
         import traceback
