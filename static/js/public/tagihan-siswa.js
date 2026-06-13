@@ -323,9 +323,9 @@ async function loadTagihanPembangunan() {
         }
 
         const sem1_terbayar = data.sem1?.terbayar || 0;
-        const sem1_target   = data.sem1?.target || 3000000;
+        const sem1_target   = data.sem1?.target || 2000000;
         const sem2_terbayar = data.sem2?.terbayar || 0;
-        const sem2_target   = data.sem2?.target || 2000000;
+        const sem2_target   = data.sem2?.target || 3000000;
         const sisa          = (data.sem1?.sisa || 0) + (data.sem2?.sisa || 0);
 
         const card = document.createElement("div");
