@@ -185,16 +185,15 @@ def tagihan_spp():
                 return jsonify([])
 
             # ==============================================
-            # 4. TENTUKAN BATAS AKHIR TAGIHAN (PERBAIKAN UTAMA)
+            # 4. TENTUKAN BATAS AKHIR TAGIHAN ✅ PERBAIKAN UTAMA
             # ==============================================
-            # SEBELUMNYA: Dipotong tanggal 1 bulan ini → Data hilang
-            # SEKARANG: Ambil sampai tanggal AKHIR BULAN INI, atau akhir semester
-            # Cari tanggal akhir semester yang sedang berjalan
-            tanggal_akhir = today # Diambil sampai hari ini / akhir bulan ini
+            # Kita ambil sampai tanggal 1 bulan ini SAJA
+            # Artinya: Sampai 1 Juni 2026 (agar data Juli 2025 - Juni 2026 semua masuk)
+            tanggal_akhir = date(today.year, today.month, 1)
 
             # Ambil batas paling akhir dari data tahun pelajaran
             akhir_data_terakhir = daftar_tp[-1]["akhir"]
-            tanggal_akhir = min(tanggal_akhir, akhir_data_terakhir)
+            tanggal_akhir = min(tanggal_akhir, date(akhir_data_terakhir.year, akhir_data_terakhir.month, 1))
 
             # ==============================================
             # 5. STOP JIKA SISWA NONAKTIF / LULUS
@@ -204,7 +203,7 @@ def tagihan_spp():
                 try:
                     tgl_nonaktif_str = str(tanggal_nonaktif).split("T")[0]
                     tgl_nonaktif = datetime.strptime(tgl_nonaktif_str, "%Y-%m-%d").date()
-                    tanggal_akhir = min(tanggal_akhir, tgl_nonaktif)
+                    tanggal_akhir = min(tanggal_akhir, date(tgl_nonaktif.year, tgl_nonaktif.month, 1))
                 except:
                     pass
 
@@ -263,10 +262,10 @@ def tagihan_spp():
                 return "-"
 
             # ==============================================
-            # 8. GENERATE TAGIHAN
+            # 8. GENERATE TAGIHAN ✅ PERBAIKAN UTAMA
             # ==============================================
             tagihan = []
-            # Mulai dari tanggal 1 di bulan tanggal_mulai
+            # Mulai dari tanggal 1 di bulan tanggal_mulai (Juli 2025)
             cur = date(tanggal_mulai.year, tanggal_mulai.month, 1)
 
             while cur <= tanggal_akhir:
