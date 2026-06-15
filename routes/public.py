@@ -121,11 +121,19 @@ def tagihan_spp():
             if not siswa:
                 return jsonify([])
 
-            tahun_masuk_siswa = siswa["tahun_masuk"]
+            tahun_masuk_siswa = siswa["tahun_masuk"] # CONTOH: 2026
             status_siswa = siswa["status"]
 
             # ==============================================
-            # 2. AMBIL SEMUA TAHUN PELAJARAN
+            # 2. ATURAN UTAMA: TENTUKAN TANGGAL MULAI
+            # ==============================================
+            # ✅ PERUBAHAN PENTING:
+            # Tagihan SPP MULAI dari BULAN JULI TAHUN MASUK SISWA
+            # Tidak peduli tahun berapa sekarang, patokannya adalah tahun masuknya
+            start = date(tahun_masuk_siswa, 7, 1) 
+
+            # ==============================================
+            # 3. AMBIL TAHUN PELAJARAN (HANYA UNTUK LABEL TAMPILAN)
             # ==============================================
             tp_all = d.execute("""
                 SELECT tahun_pelajaran, semester_mulai, semester_akhir
@@ -137,24 +145,7 @@ def tagihan_spp():
                 return jsonify([])
 
             # ==============================================
-            # 3. TENTUKAN TANGGAL MULAI TAGIHAN (ATURAN UTAMA)
-            # ==============================================
-            # LOGIKA:
-            # - Jika SISWA BARU atau MASUK TAHUN INI (2026): Mulai dari JULI TAHUN INI
-            # - Jika SISWA LAMA: Mulai dari awal tahun ajaran (data paling awal di sistem)
-
-            tahun_sekarang = 2026 # Bisa ganti otomatis: datetime.now().year
-            is_siswa_baru = (status_siswa == 'BARU' or tahun_masuk_siswa == tahun_sekarang)
-
-            if is_siswa_baru:
-                # ✅ KHUSUS SISWA BARU: MULAI DARI BULAN JULI TAHUN MASUK
-                start = date(tahun_sekarang, 7, 1)
-            else:
-                # ✅ SISWA LAMA: MULAI DARI DATA AWAL SISTEM (seperti aturan lama)
-                start = tp_all[0]["semester_mulai"]
-
-            # ==============================================
-            # 4. TENTUKAN TANGGAL AKHIR TAGIHAN
+            # 4. TENTUKAN TANGGAL AKHIR (SAMPAI BULAN SEKARANG)
             # ==============================================
             last_tp_end = tp_all[-1]["semester_akhir"]
             end = date(today.year, today.month, 1)
@@ -184,7 +175,7 @@ def tagihan_spp():
             # 6. DATA SUDAH BAYAR (HANYA YANG SUDAH DITERIMA / LUNAS)
             # ==============================================
             # ✅ SESUAI KESEPAKATAN: HANYA HITUNG YANG STATUSNYA DITERIMA / LUNAS
-            # Data di keranjang (CHECKED_OUT) TIDAK DIHITUNG BERKURANG
+            # Data di keranjang TIDAK mengurangi tagihan
 
             lunas = d.execute("""
                 SELECT 
@@ -203,10 +194,6 @@ def tagihan_spp():
                   AND status IN ('DITERIMA', 'LUNAS')
             """, (siswa_id,)).fetchall()
 
-            # ❌ HAPUS / KOMEN BAGIAN INI SUPAYA DI KERANJANG TIDAK MENGURANGI TAGIHAN
-            # cart_rows = d.execute(""" ... """)
-            # cart_proses = d.execute(""" ... """)
-
             lunas_set = set()
 
             for r in lunas:
@@ -214,10 +201,7 @@ def tagihan_spp():
                     continue
                 lunas_set.add((int(r["bulan"]), int(r["tahun"])))
 
-            # ❌ Data dari keranjang tidak dimasukkan ke daftar lunas
-            # for c in cart_rows: ...
-            # for c in cart_proses: ...
-
+            # Baca data lunas dari riwayat pembayaran
             for p in lunas_pending:
                 try:
                     details = json.loads(p["detail"] or "[]")
@@ -260,10 +244,10 @@ def tagihan_spp():
                 return "-"
 
             # ==============================================
-            # 8. GENERATE TAGIHAN SESUAI TANGGAL MULAI
+            # 8. GENERATE TAGIHAN (DIMULAI DARI JULI TAHUN MASUK)
             # ==============================================
             tagihan = []
-            cur = start # <--- MULAI DARI TANGGAL YANG SUDAH DIATUR DI ATAS
+            cur = start # <--- MULAI DARI JULI TAHUN MASUK SISWA
 
             while cur <= end:
 
