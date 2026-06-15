@@ -121,12 +121,11 @@ def tagihan_spp():
             if not siswa:
                 return jsonify([])
 
-            tahun_masuk_siswa = siswa["tahun_masuk"] # Contoh: 2025, 2026
+            tahun_masuk_siswa = siswa["tahun_masuk"]
 
             # ==============================================
-            # 2. AMBIL DATA TAHUN PELAJARAN & PERBAIKI FORMAT
+            # 2. AMBIL DATA TAHUN PELAJARAN LENGKAP
             # ==============================================
-            # Ambil SEMUA data, termasuk kolom SEMESTER (1 atau 2)
             tp_all = d.execute("""
                 SELECT tahun_pelajaran, semester, semester_mulai, semester_akhir
                 FROM tahun_pelajaran
@@ -136,103 +135,79 @@ def tagihan_spp():
             if not tp_all:
                 return jsonify([])
 
-            daftar_tp = []
-            for tp in tp_all:
-                try:
-                    # Pastikan format tahun pelajaran "YYYY/YYYY"
-                    if "/" not in str(tp["tahun_pelajaran"]):
-                        continue
-
-                    tahun_awal_tp = int(tp["tahun_pelajaran"].split("/")[0])
-
-                    # 🔥 PERBAIKAN UTAMA: Konversi tanggal dari format ISO atau DATE
-                    sm_val = tp["semester_mulai"]
-                    sa_val = tp["semester_akhir"]
-
-                    # Proses SEMESTER MULAI
-                    if isinstance(sm_val, str):
-                        if "T" in sm_val: # Format ISO: 2025-07-01T00:00:00
-                            sm = datetime.fromisoformat(sm_val).date()
-                        else: # Format biasa: 2025-07-01
-                            sm = datetime.strptime(sm_val, "%Y-%m-%d").date()
-                    else:
-                        sm = sm_val # Sudah tipe DATE
-
-                    # Proses SEMESTER AKHIR
-                    if isinstance(sa_val, str):
-                        if "T" in sa_val:
-                            sa = datetime.fromisoformat(sa_val).date()
-                        else:
-                            sa = datetime.strptime(sa_val, "%Y-%m-%d").date()
-                    else:
-                        sa = sa_val
-
-                    daftar_tp.append({
-                        "tahun_awal": tahun_awal_tp,
-                        "semester": tp["semester"],
-                        "tahun_pelajaran": tp["tahun_pelajaran"],
-                        "semester_mulai": sm,
-                        "semester_akhir": sa
-                    })
-                except Exception as e:
-                    continue # Lewati jika data rusak
-
-            if not daftar_tp:
-                return jsonify([])
-
             # ==============================================
             # 3. CARI TANGGAL MULAI: SEMESTER 1 TAHUN MASUK
             # ==============================================
-            # ✅ ATURAN EMAS:
-            # Cari data yang:
-            # - tahun_awal == tahun_masuk_siswa
-            # - semester == 1  <--- KUNCI UTAMA: Ambil SEMESTER 1 saja
+            # LOGIKA PENTING:
+            # Siswa masuk 2025 → Cari TP "2025/2026" & Semester 1 → Ambil tanggal mulai
+            # Siswa masuk 2026 → Cari TP "2026/2027" & Semester 1 → Ambil tanggal mulai
             tanggal_mulai = None
-            for tp in daftar_tp:
-                if tp["tahun_awal"] == tahun_masuk_siswa and tp["semester"] == 1:
-                    tanggal_mulai = tp["semester_mulai"]
-                    break
 
-            # Jika tidak ketemu (cadangan), ambil data terdekat
-            if not tanggal_mulai:
-                for tp in daftar_tp:
-                    if tp["tahun_awal"] > tahun_masuk_siswa and tp["semester"] == 1:
-                        tanggal_mulai = tp["semester_mulai"]
+            for tp in tp_all:
+                try:
+                    # Ambil angka awal dari nama TP
+                    nama_tp = str(tp["tahun_pelajaran"])
+                    if "/" not in nama_tp:
+                        continue
+                    
+                    tahun_awal_tp = int(nama_tp.split("/")[0])
+                    semester_tp = tp["semester"]
+
+                    # Cocokkan Tahun Masuk + Semester 1
+                    if tahun_awal_tp == tahun_masuk_siswa and semester_tp == 1:
+                        # Ubah format tanggal aman
+                        tgl_str = str(tp["semester_mulai"])
+                        if "T" in tgl_str:
+                            tgl_str = tgl_str.split("T")[0] # Ambil bagian tanggal saja
+                        tanggal_mulai = datetime.strptime(tgl_str, "%Y-%m-%d").date()
                         break
+                except:
+                    continue
 
+            # Jika tidak ketemu data pas, ambil data pertama yang ada (Cadangan aman)
             if not tanggal_mulai:
-                return jsonify([])
+                try:
+                    tgl_str = str(tp_all[0]["semester_mulai"])
+                    if "T" in tgl_str:
+                        tgl_str = tgl_str.split("T")[0]
+                    tanggal_mulai = datetime.strptime(tgl_str, "%Y-%m-%d").date()
+                except:
+                    return jsonify([])
 
             # ==============================================
             # 4. TENTUKAN TANGGAL AKHIR
             # ==============================================
             tanggal_akhir = date(today.year, today.month, 1)
             # Ambil akhir dari data terakhir
-            akhir_terakhir = daftar_tp[-1]["semester_akhir"]
-            tanggal_akhir = min(tanggal_akhir, date(akhir_terakhir.year, akhir_terakhir.month, 1))
+            try:
+                tgl_akhir_str = str(tp_all[-1]["semester_akhir"])
+                if "T" in tgl_akhir_str:
+                    tgl_akhir_str = tgl_akhir_str.split("T")[0]
+                akhir_terakhir = datetime.strptime(tgl_akhir_str, "%Y-%m-%d").date()
+                tanggal_akhir = min(tanggal_akhir, date(akhir_terakhir.year, akhir_terakhir.month, 1))
+            except:
+                pass
 
             # ==============================================
-            # 5. STOP JIKA NONAKTIF / LULUS
+            # 5. STOP TAGIHAN JIKA NONAKTIF / LULUS
             # ==============================================
             tanggal_nonaktif = siswa["tanggal_nonaktif"]
             if tanggal_nonaktif:
-                if isinstance(tanggal_nonaktif, str):
-                    try:
-                        if "T" in tanggal_nonaktif:
-                            tanggal_nonaktif = datetime.fromisoformat(tanggal_nonaktif).date()
-                        else:
-                            tanggal_nonaktif = datetime.strptime(tanggal_nonaktif, "%Y-%m-%d").date()
-                    except:
-                        tanggal_nonaktif = None
+                try:
+                    tgl_nonaktif_str = str(tanggal_nonaktif)
+                    if "T" in tgl_nonaktif_str:
+                        tgl_nonaktif_str = tgl_nonaktif_str.split("T")[0]
+                    tgl_nonaktif = datetime.strptime(tgl_nonaktif_str, "%Y-%m-%d").date()
 
-                if tanggal_nonaktif:
-                    if tanggal_nonaktif.day <= 10:
-                        if tanggal_nonaktif.month == 1:
-                            tanggal_akhir = min(tanggal_akhir, date(tanggal_nonaktif.year - 1, 12, 1))
+                    if tgl_nonaktif.day <= 10:
+                        if tgl_nonaktif.month == 1:
+                            tanggal_akhir = min(tanggal_akhir, date(tgl_nonaktif.year - 1, 12, 1))
                         else:
-                            tanggal_akhir = min(tanggal_akhir, date(tanggal_nonaktif.year, tanggal_nonaktif.month - 1, 1))
+                            tanggal_akhir = min(tanggal_akhir, date(tgl_nonaktif.year, tgl_nonaktif.month - 1, 1))
                     else:
-                        tanggal_akhir = min(tanggal_akhir, date(tanggal_nonaktif.year, tanggal_nonaktif.month, 1))
+                        tanggal_akhir = min(tanggal_akhir, date(tgl_nonaktif.year, tgl_nonaktif.month, 1))
+                except:
+                    pass
 
             # ==============================================
             # 6. DATA SUDAH DIBAYAR
@@ -257,57 +232,52 @@ def tagihan_spp():
             lunas_set = set()
 
             for r in lunas:
-                if r["bulan"] is not None and r["tahun"] is not None:
-                    lunas_set.add((int(r["bulan"]), int(r["tahun"])))
+                if r["bulan"] and r["tahun"]:
+                    try:
+                        lunas_set.add((int(r["bulan"]), int(r["tahun"])))
+                    except:
+                        pass
 
-            # Baca data lunas format JSON
+            # Baca data lunas dari JSON
             for p in lunas_pending:
                 try:
                     details = json.loads(p["detail"] or "[]")
-                    for item in details:
-                        bulan_text = str(item.get("bulan", "")).lower()
-                        tahun = item.get("tahun")
-                        bulan_map = {
-                            "januari":1,"februari":2,"maret":3,"april":4,"mei":5,"juni":6,
-                            "juli":7,"agustus":8,"september":9,"oktober":10,"november":11,"desember":12
-                        }
-                        bulan = bulan_map.get(bulan_text)
-                        if bulan and tahun:
-                            lunas_set.add((bulan, int(tahun)))
-                except: pass
-
-            # Baca data lunas format teks
-            for p in lunas_pending:
-                detail = p["detail"] or ""
-                parts = detail.split()
-                if len(parts) >= 3:
-                    bulan_text = parts[1].lower()
                     bulan_map = {
                         "januari":1,"februari":2,"maret":3,"april":4,"mei":5,"juni":6,
                         "juli":7,"agustus":8,"september":9,"oktober":10,"november":11,"desember":12
                     }
-                    bulan = bulan_map.get(bulan_text)
-                    tahun = parts[2]
-                    if bulan and str(tahun).isdigit():
-                        lunas_set.add((bulan, int(tahun)))
+                    for item in details:
+                        b_text = str(item.get("bulan", "")).lower()
+                        t = item.get("tahun")
+                        if b_text in bulan_map and t:
+                            lunas_set.add((bulan_map[b_text], int(t)))
+                except:
+                    pass
 
             # ==============================================
             # 7. FUNGSI CARI TAHUN PELAJARAN
             # ==============================================
             def get_tp(d):
-                for tp in daftar_tp:
-                    if tp["semester_mulai"] <= d <= tp["semester_akhir"]:
-                        return tp["tahun_pelajaran"]
+                for tp in tp_all:
+                    try:
+                        nama_tp = str(tp["tahun_pelajaran"])
+                        tgl_mulai_str = str(tp["semester_mulai"]).split("T")[0]
+                        tgl_akhir_str = str(tp["semester_akhir"]).split("T")[0]
+                        sm = datetime.strptime(tgl_mulai_str, "%Y-%m-%d").date()
+                        sa = datetime.strptime(tgl_akhir_str, "%Y-%m-%d").date()
+                        if sm <= d <= sa:
+                            return nama_tp
+                    except:
+                        continue
                 return "-"
 
             # ==============================================
             # 8. GENERATE TAGIHAN
             # ==============================================
             tagihan = []
-            cur = tanggal_mulai # MULAI DARI SEMESTER 1 TAHUN MASUK
+            cur = tanggal_mulai
 
             while cur <= tanggal_akhir:
-
                 if (cur.month, cur.year) not in lunas_set:
                     tagihan.append({
                         "bulan": cur.month,
@@ -317,7 +287,7 @@ def tagihan_spp():
                         "status": "BELUM"
                     })
 
-                # Lanjut bulan berikutnya
+                # Pindah bulan
                 if cur.month == 12:
                     cur = date(cur.year + 1, 1, 1)
                 else:
