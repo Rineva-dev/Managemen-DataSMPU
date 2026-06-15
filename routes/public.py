@@ -187,13 +187,13 @@ def tagihan_spp():
             # ==============================================
             # 4. TENTUKAN BATAS AKHIR TAGIHAN ✅ PERBAIKAN UTAMA
             # ==============================================
-            # Kita ambil sampai tanggal 1 bulan ini SAJA
-            # Artinya: Sampai 1 Juni 2026 (agar data Juli 2025 - Juni 2026 semua masuk)
-            tanggal_akhir = date(today.year, today.month, 1)
+            # SEBELUMNYA: tanggal_akhir = date(today.year, today.month, 1) -> Salah
+            # SEKARANG: Ambil sampai tanggal HARI INI / AKHIR SEMESTER
+            tanggal_akhir = today 
 
             # Ambil batas paling akhir dari data tahun pelajaran
             akhir_data_terakhir = daftar_tp[-1]["akhir"]
-            tanggal_akhir = min(tanggal_akhir, date(akhir_data_terakhir.year, akhir_data_terakhir.month, 1))
+            tanggal_akhir = min(tanggal_akhir, akhir_data_terakhir)
 
             # ==============================================
             # 5. STOP JIKA SISWA NONAKTIF / LULUS
@@ -203,7 +203,7 @@ def tagihan_spp():
                 try:
                     tgl_nonaktif_str = str(tanggal_nonaktif).split("T")[0]
                     tgl_nonaktif = datetime.strptime(tgl_nonaktif_str, "%Y-%m-%d").date()
-                    tanggal_akhir = min(tanggal_akhir, date(tgl_nonaktif.year, tgl_nonaktif.month, 1))
+                    tanggal_akhir = min(tanggal_akhir, tgl_nonaktif)
                 except:
                     pass
 
