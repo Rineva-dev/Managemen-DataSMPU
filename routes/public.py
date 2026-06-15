@@ -110,7 +110,7 @@ def tagihan_spp():
         with db() as d:
 
             # ==============================================
-            # 1. AMBIL DATA SISWA: TAHUN MASUK & STATUS
+            # 1. AMBIL DATA SISWA
             # ==============================================
             siswa = d.execute("""
                 SELECT tahun_masuk, status, tanggal_nonaktif, nisn
@@ -121,19 +121,11 @@ def tagihan_spp():
             if not siswa:
                 return jsonify([])
 
-            tahun_masuk_siswa = siswa["tahun_masuk"] # CONTOH: 2026
+            tahun_masuk_siswa = siswa["tahun_masuk"] # Contoh: 2025, 2026, 2027
             status_siswa = siswa["status"]
 
             # ==============================================
-            # 2. ATURAN UTAMA: TENTUKAN TANGGAL MULAI
-            # ==============================================
-            # ✅ PERUBAHAN PENTING:
-            # Tagihan SPP MULAI dari BULAN JULI TAHUN MASUK SISWA
-            # Tidak peduli tahun berapa sekarang, patokannya adalah tahun masuknya
-            start = date(tahun_masuk_siswa, 7, 1) 
-
-            # ==============================================
-            # 3. AMBIL TAHUN PELAJARAN (HANYA UNTUK LABEL TAMPILAN)
+            # 2. AMBIL SEMUA DATA TAHUN PELAJARAN DARI DATABASE
             # ==============================================
             tp_all = d.execute("""
                 SELECT tahun_pelajaran, semester_mulai, semester_akhir
@@ -145,14 +137,46 @@ def tagihan_spp():
                 return jsonify([])
 
             # ==============================================
-            # 4. TENTUKAN TANGGAL AKHIR (SAMPAI BULAN SEKARANG)
+            # 3. LOGIKA UTAMA: CARI TANGGAL MULAI TAGIHAN
             # ==============================================
+            # ✅ PERUBAHAN PENTING SESUAI MAKSUD KAMU:
+            # Kita cari di tabel tahun_pelajaran, mana yang TAHUN AWALNYA
+            # sama dengan TAHUN MASUK siswa. Lalu ambil tanggal SEMESTER_MULAINYA.
+            #
+            # Contoh:
+            # Siswa masuk 2025 -> Cari TP "2025/2026" -> Ambil tanggal mulai-nya
+            # Siswa masuk 2026 -> Cari TP "2026/2027" -> Ambil tanggal mulai-nya
+            # Tidak peduli bulan apa (Juni, Juli, Agustus, dll), ikut data di database.
+
+            start = None
+            for tp in tp_all:
+                # Ambil angka tahun awal dari format "YYYY/YYYY"
+                tahun_awal_tp = int(tp["tahun_pelajaran"].split("/")[0])
+                
+                if tahun_awal_tp == tahun_masuk_siswa:
+                    start = tp["semester_mulai"] # <--- DI SINI AMBIL TANGGAL ASLINYA
+                    break
+
+            # Jika TAHUN MASUK tidak ditemukan di daftar TP (misal data belum ada),
+            # maka kita pakai data paling awal yang ada di sistem sebagai cadangan.
+            if not start:
+                start = tp_all[0]["semester_mulai"]
+
+            # ==============================================
+            # 4. TENTUKAN TANGGAL AKHIR TAGIHAN
+            # ==============================================
+            # Tagihan berjalan sampai bulan ini / sampai akhir tahun ajaran terakhir
             last_tp_end = tp_all[-1]["semester_akhir"]
             end = date(today.year, today.month, 1)
 
             if last_tp_end:
-                last_end = date(last_tp_end.year, last_tp_end.month, 1)
-                end = min(end, last_end)
+                # Pastikan format date
+                if isinstance(last_tp_end, str):
+                    last_end_date = datetime.strptime(last_tp_end, "%Y-%m-%d").date()
+                else:
+                    last_end_date = last_tp_end
+                
+                end = min(end, date(last_end_date.year, last_end_date.month, 1))
 
             # ==============================================
             # 5. STOP TAGIHAN JIKA SISWA NONAKTIF / LULUS
@@ -174,9 +198,6 @@ def tagihan_spp():
             # ==============================================
             # 6. DATA SUDAH BAYAR (HANYA YANG SUDAH DITERIMA / LUNAS)
             # ==============================================
-            # ✅ SESUAI KESEPAKATAN: HANYA HITUNG YANG STATUSNYA DITERIMA / LUNAS
-            # Data di keranjang TIDAK mengurangi tagihan
-
             lunas = d.execute("""
                 SELECT 
                     CAST(bulan AS INTEGER) AS bulan,
@@ -235,19 +256,30 @@ def tagihan_spp():
                         lunas_set.add((bulan, tahun))
 
             # ==============================================
-            # 7. HELPER: CEK TAHUN PELAJARAN
+            # 7. FUNGSI CARI TAHUN PELAJARAN
             # ==============================================
             def get_tp(d):
                 for tp in tp_all:
-                    if tp["semester_mulai"] <= d <= tp["semester_akhir"]:
+                    # Konversi ke date jika tipe datanya string
+                    sm = tp["semester_mulai"]
+                    sa = tp["semester_akhir"]
+                    if isinstance(sm, str): sm = datetime.strptime(sm, "%Y-%m-%d").date()
+                    if isinstance(sa, str): sa = datetime.strptime(sa, "%Y-%m-%d").date()
+
+                    if sm <= d <= sa:
                         return tp["tahun_pelajaran"]
                 return "-"
 
             # ==============================================
-            # 8. GENERATE TAGIHAN (DIMULAI DARI JULI TAHUN MASUK)
+            # 8. GENERATE TAGIHAN
             # ==============================================
             tagihan = []
-            cur = start # <--- MULAI DARI JULI TAHUN MASUK SISWA
+            
+            # Pastikan start berupa tanggal
+            if isinstance(start, str):
+                cur = datetime.strptime(start, "%Y-%m-%d").date()
+            else:
+                cur = start
 
             while cur <= end:
 
@@ -257,10 +289,11 @@ def tagihan_spp():
                         "bulan": cur.month,
                         "tahun": cur.year,
                         "tahun_pelajaran": get_tp(cur),
-                        "nominal": 400000, # SESUAIKAN NOMINAL SPP KAMU
+                        "nominal": 400000, # SESUAIKAN NOMINAL
                         "status": "BELUM"
                     })
 
+                # Pindah ke bulan berikutnya
                 if cur.month == 12:
                     cur = date(cur.year + 1, 1, 1)
                 else:
