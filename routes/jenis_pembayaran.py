@@ -24,7 +24,7 @@ def index():
     cur.close()
 
     return render_template(
-        "admin/keuangan/jenis_pembayaran.html",
+        "dashboard.html",
         jenis_pembayaran=pembayaran,
         active_page="jenis_pembayaran"
     )

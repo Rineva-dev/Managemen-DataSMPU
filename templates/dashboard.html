@@ -92,6 +92,10 @@
 
 {% endif %}
 
+{% if active_page == "jenis_pembayaran" %}
+    {% include "keuangan/jenis-pembayaran.html" %}
+{% endif %}
+
 {% if active_page == "setting_pembayaran" %}
     {% include "keuangan/setting-pembayaran.html" %}
 {% endif %}
