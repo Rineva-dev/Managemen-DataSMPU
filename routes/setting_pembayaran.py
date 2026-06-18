@@ -4,7 +4,7 @@ from utils.db import db
 setting_pembayaran_bp = Blueprint(
     "setting_pembayaran",
     __name__,
-    url_prefix="/keuangan/setting-pembayaran"
+    url_prefix="/setting-pembayaran"
 )
 
 @setting_pembayaran_bp.route("/")
