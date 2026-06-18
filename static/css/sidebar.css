@@ -267,6 +267,7 @@
     transition: max-height 0.3s ease;
 }
 
+html.keuangan-open #keuangan-submenu,
 html.sekolah-open #sekolah-submenu {
     max-height: 500px;
 }
@@ -288,7 +289,12 @@ html.sekolah-open #sekolah-submenu {
     transition: transform 0.3s ease;
 }
 
-html.sekolah-open .menu-toggle::after {
+html.sekolah-open .menu-toggle[data-target="sekolah"]::after {
+    content: "▾";
+}
+
+/* KEUANGAN */
+html.keuangan-open .menu-toggle[data-target="keuangan"]::after {
     content: "▾";
 }
 
@@ -326,14 +332,6 @@ html.sekolah-open .menu-toggle::after {
 #sidebar-overlay.active {
     opacity: 1;
     pointer-events: auto;
-}
-
-html.keuangan-open #keuangan-submenu {
-    max-height: 500px;
-}
-
-html.keuangan-open .menu-toggle[data-target="keuangan"]::after {
-    content: "▾";
 }
 
 /* =========================
