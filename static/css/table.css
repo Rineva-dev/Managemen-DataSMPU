@@ -1,3 +1,4 @@
+.table-jenis-pembayaran,
 .table-set-pembayaran,
 .table-mapel-kelas,
 #mapel-table,
@@ -36,6 +37,7 @@
     border-bottom: 1px solid #f1f1f1;
 }
 
+.table-jenis-pembayaran thead th,
 .table-set-pembayaran thead th,
 #mapel-table thead th,
 #pembayaran-table thead th,
@@ -57,6 +59,7 @@
     text-align: center !important;
 }
 
+.table-jenis-pembayaran tbody td,
 .table-set-pembayaran tbody td,
 #mapel-table tbody td,
 #pembayaran-table tbody td,
@@ -73,6 +76,7 @@
     border-bottom: 1px solid #f1f1f1;
 }
 
+.table-jenis-pembayaran tbody tr:hover,
 .table-set-pembayaran tbody tr:hover,
 #mapel-table tbody tr:hover,
 .siswa-table tbody tr:hover,
@@ -86,6 +90,8 @@
 }
 
 /* Kolom tetap stabil */
+.table-jenis-pembayaran th:nth-child(1),
+.table-jenis-pembayaran td:nth-child(1),
 .table-set-pembayaran th:nth-child(1),
 .table-set-pembayaran td:nth-child(1),
 .table-mapel-kelas th:nth-child(1),
