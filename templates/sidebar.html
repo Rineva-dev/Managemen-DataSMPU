@@ -109,11 +109,35 @@
         {% endif %}
 
         {% if role in ['admin', 'bendahara'] %}
-        <a href="/pembayaran-siswa"
-            class="{% if active_page == 'pembayaran_siswa' %}active{% endif %}">
-            <i data-lucide="credit-card"></i>
-            Pembayaran Siswa
-        </a>
+        <div class="menu-group">
+            <a href="javascript:void(0)" class="menu-toggle">
+                <i data-lucide="wallet"></i>
+                Keuangan
+            </a>
+
+            <div class="submenu">
+
+                <a href="/setting-spp"
+                class="{% if active_page == 'setting_spp' %}active{% endif %}">
+                    <i data-lucide="settings"></i>
+                    Setting Pembayaran
+                </a>
+
+                <a href="/pembayaran-siswa"
+                class="{% if active_page == 'pembayaran_siswa' %}active{% endif %}">
+                    <i data-lucide="credit-card"></i>
+                    Pembayaran Siswa
+                </a>
+
+                <!-- OPSIONAL KE DEPAN -->
+                <!--
+                <a href="/laporan-keuangan">
+                    <i data-lucide="file-text"></i>
+                    Laporan Keuangan
+                </a>
+                -->
+            </div>
+        </div>
         {% endif %}
     </div>
 
