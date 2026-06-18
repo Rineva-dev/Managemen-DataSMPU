@@ -1,13 +1,6 @@
 /* ===============================
    SETTING PEMBAYARAN SISWA
 ================================ */
-
-#setting-pembayaran-content {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* ===== CARD UTAMA ===== */
 #setting-pembayaran-content .card {
     background: #ffffff;
     border-radius: 14px;
