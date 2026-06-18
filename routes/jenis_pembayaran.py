@@ -7,11 +7,14 @@ jenis_pembayaran_bp = Blueprint(
 )
 
 
+# =========================
 # HALAMAN
+# =========================
 @jenis_pembayaran_bp.route("/jenis-pembayaran")
 def index():
 
-    cur = db.connection.cursor()
+    conn = db()              # <-- panggil function
+    cur = conn.cursor()
 
     cur.execute("""
         SELECT id, nama, keterangan
@@ -22,6 +25,7 @@ def index():
     pembayaran = cur.fetchall()
 
     cur.close()
+    conn.close()
 
     return render_template(
         "dashboard.html",
@@ -30,7 +34,9 @@ def index():
     )
 
 
+# =========================
 # SIMPAN
+# =========================
 @jenis_pembayaran_bp.route(
     "/save-jenis-pembayaran",
     methods=["POST"]
@@ -40,17 +46,19 @@ def save():
     nama = request.form["nama"]
     keterangan = request.form.get("keterangan")
 
-    cur = db.connection.cursor()
+    conn = db()
+    cur = conn.cursor()
 
     cur.execute("""
         INSERT INTO jenis_pembayaran
         (nama, keterangan)
-        VALUES (%s, %s)
+        VALUES (?, ?)
     """, (nama, keterangan))
 
-    db.connection.commit()
+    conn.commit()
 
     cur.close()
+    conn.close()
 
     return redirect(
         url_for("jenis_pembayaran.index")
