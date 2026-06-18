@@ -151,7 +151,7 @@ def tagihan_spp():
             # ==============================================
             # 3. BATAS AKHIR = BULAN SEKARANG
             # ==============================================
-            tanggal_akhir = bulan_sekarang
+            tanggal_akhir = max(bulan_sekarang, tanggal_mulai)
 
             # ==============================================
             # 4. STOP JIKA NONAKTIF
