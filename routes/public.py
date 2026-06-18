@@ -143,13 +143,19 @@ def tagihan_spp():
             # ==============================================
             # 4. BATAS AKHIR
             # ==============================================
-            tanggal_akhir = today # Sampai hari ini
+            tanggal_akhir = date(today.year, today.month, 1)
 
             # Ambil akhir data terakhir
             if tp_all:
                 akhir_str = str(tp_all[-1]["semester_akhir"]).split("T")[0]
                 akhir_terakhir = datetime.strptime(akhir_str, "%Y-%m-%d").date()
                 tanggal_akhir = min(tanggal_akhir, akhir_terakhir)
+
+            # ==============================================
+            # 4.1 PENGAMAN ABSOLUT
+            # ==============================================
+            if tanggal_akhir < tanggal_mulai:
+                tanggal_akhir = tanggal_mulai
 
             # ==============================================
             # 5. STOP JIKA NONAKTIF
