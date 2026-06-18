@@ -13,6 +13,7 @@
     <table class="table mt-3">
         <thead>
             <tr>
+                <th>No</th>
                 <th>Nama Pembayaran</th>
                 <th>Kode</th>
                 <th>Nominal</th>
@@ -24,6 +25,7 @@
         <tbody>
             {% for p in pembayaran %}
             <tr>
+                <td>{{ loop.index }}</td>
                 <td>{{ p.nama }}</td>
                 <td>{{ p.kode }}</td>
                 <td>Rp {{ "{:,}".format(p.nominal) }}</td>
