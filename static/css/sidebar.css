@@ -328,6 +328,14 @@ html.sekolah-open .menu-toggle::after {
     pointer-events: auto;
 }
 
+html.keuangan-open #keuangan-submenu {
+    max-height: 500px;
+}
+
+html.keuangan-open .menu-toggle[data-target="keuangan"]::after {
+    content: "▾";
+}
+
 /* =========================
    MOBILE SIDEBAR
 ========================= */
