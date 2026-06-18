@@ -1,0 +1,89 @@
+<div id="jenis-pembayaran-content">
+
+    <h3>Jenis Pembayaran</h3>
+
+    <div class="filter-container pembayaran-filter-bar">
+
+        <button class="btn btn-add" onclick="openTambahPembayaran()">
+            Tambah Jenis Pembayaran
+        </button>
+
+    </div>
+
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama Pembayaran</th>
+                <th>Keterangan</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for p in jenis_pembayaran %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ p.nama }}</td>
+                <td>{{ p.keterangan or '-' }}</td>
+                <td>
+                    <button class="btn-small edit-btn">Edit</button>
+                    <button class="btn-small delete-btn">Hapus</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+<!-- MODAL -->
+<div id="modalPembayaran" class="modal hidden">
+
+    <form method="POST"
+          action="{{ url_for('jenis_pembayaran.save') }}"
+          class="card">
+
+        <h3>Tambah Jenis Pembayaran</h3>
+
+        <div class="form-group">
+            <label>Nama Pembayaran</label>
+            <input type="text"
+                   name="nama"
+                   placeholder="Contoh: SPP"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Keterangan (Opsional)</label>
+            <textarea name="keterangan"
+                      placeholder="Contoh: Pembayaran bulanan siswa"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                Simpan
+            </button>
+
+            <button type="button" onclick="closeModal()">
+                Batal
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+
+<script>
+function openTambahPembayaran() {
+    document.getElementById("modalPembayaran")
+        .classList.remove("hidden");
+}
+
+function closeModal() {
+    document.getElementById("modalPembayaran")
+        .classList.add("hidden");
+}
+</script>

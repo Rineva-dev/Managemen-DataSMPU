@@ -14,6 +14,7 @@ from routes.kkm_routes import kkm_bp
 from routes.public import public_bp
 from routes.verifikasi_pembayaran import verifikasi_bp
 from routes.setting_pembayaran import setting_pembayaran
+from routes.jenis_pembayaran import jenis_pembayaran_bp
 
 ALL_BLUEPRINTS = [
     auth_bp,
@@ -31,5 +32,6 @@ ALL_BLUEPRINTS = [
     kkm_bp,
     public_bp,
     verifikasi_bp,
-    setting_pembayaran
+    setting_pembayaran,
+    jenis_pembayaran_bp
 ]
