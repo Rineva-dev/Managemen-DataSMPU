@@ -143,7 +143,37 @@
 /* ===== TABLE ======*/
 .table-set-pembayaran th:nth-child(2),
 .table-set-pembayaran td:nth-child(2){
-    width: 200px;
+    width: 250px;
+    text-align: center;
+}
+
+.table-set-pembayaran th:nth-child(3),
+.table-set-pembayaran td:nth-child(3){
+    width: 100px;
+    text-align: center;
+}
+
+.table-set-pembayaran th:nth-child(4),
+.table-set-pembayaran td:nth-child(4){
+    width: 150px;
+    text-align: right;
+}
+
+.table-set-pembayaran th:nth-child(5),
+.table-set-pembayaran td:nth-child(5){
+    width: 150px;
+    text-align: center;
+}
+
+.table-set-pembayaran th:nth-child(6),
+.table-set-pembayaran td:nth-child(6){
+    width: 150px;
+    text-align: center;
+}
+
+.table-set-pembayaran th:nth-child(7),
+.table-set-pembayaran td:nth-child(7){
+    width: 150px;
     text-align: center;
 }
 
