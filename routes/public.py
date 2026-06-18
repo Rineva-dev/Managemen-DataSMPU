@@ -175,9 +175,6 @@ def tagihan_spp():
             # ==============================================
             awal_tahun_ajaran = date(tahun_masuk_siswa, 7, 1)
 
-            if today < awal_tahun_ajaran:
-                return jsonify([])
-
             # ==============================================
             # 4. BATAS AKHIR
             # ==============================================
@@ -254,7 +251,12 @@ def tagihan_spp():
             # 8. GENERATE TAGIHAN
             # ==============================================
             tagihan = []
-            cur = date(tanggal_mulai.year, tanggal_mulai.month, 1) # Mulai tanggal 1
+            awal_wajib_spp = date(tahun_masuk_siswa, 7, 1)
+
+            cur = max(
+                date(tanggal_mulai.year, tanggal_mulai.month, 1),
+                awal_wajib_spp
+            )
 
             while cur <= tanggal_akhir:
                 if (cur.month, cur.year) not in lunas_set:
