@@ -92,6 +92,10 @@
 
 {% endif %}
 
+{% if active_page == "setting_pembayaran" %}
+    {% include "keuangan/setting-pembayaran.html" %}
+{% endif %}
+
 {% include "sections/profile-modal.html" %}
 
 {% endblock %}
@@ -128,8 +132,6 @@
 <script src="{{ url_for('static', filename='js/guru/kelas-ampu.js') }}"></script>
 {% endif %}
 
-
-
 {% endblock %}
 
 {% block extra_css %}
@@ -148,6 +150,11 @@
 
     {% if active_page == "pembayaran_siswa" %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pembayaran-siswa.css') }}">
+    {% endif %}
+
+    {% if active_page == "setting_pembayaran" %}
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/keuangan/setting-pembayaran.css') }}">
     {% endif %}
 
     {% if active_page == "pembayaran_siswa" and show_riwayat %}

@@ -1,0 +1,120 @@
+{% extends "layout/dashboard.html" %}
+
+{% block title %}
+Setting Pembayaran
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>⚙️ Setting Pembayaran</h1>
+    <p>Kelola metode pembayaran yang tersedia untuk siswa</p>
+</div>
+
+<form method="POST" action="{{ url_for('keuangan.save_setting_pembayaran') }}" class="card">
+
+    <!-- ================= METODE PEMBAYARAN ================= -->
+    <h3 class="section-title">Metode Pembayaran</h3>
+
+    <div class="grid-3">
+
+        <label class="toggle-card">
+            <input type="checkbox" name="metode_transfer" {{ 'checked' if setting.transfer }}>
+            <span>Transfer Bank</span>
+        </label>
+
+        <label class="toggle-card">
+            <input type="checkbox" name="metode_qris" {{ 'checked' if setting.qris }}>
+            <span>QRIS</span>
+        </label>
+
+        <label class="toggle-card">
+            <input type="checkbox" name="metode_va" {{ 'checked' if setting.va }}>
+            <span>Virtual Account</span>
+        </label>
+
+    </div>
+
+    <!-- ================= TRANSFER BANK ================= -->
+    <h3 class="section-title">Transfer Bank</h3>
+
+    <div class="form-group">
+        <label>Nama Bank</label>
+        <input type="text" name="bank_nama" value="{{ setting.bank_nama or '' }}" placeholder="Contoh: BRI">
+    </div>
+
+    <div class="form-group">
+        <label>Nomor Rekening</label>
+        <input type="text" name="bank_rekening" value="{{ setting.bank_rekening or '' }}">
+    </div>
+
+    <div class="form-group">
+        <label>Atas Nama</label>
+        <input type="text" name="bank_atas_nama" value="{{ setting.bank_atas_nama or '' }}">
+    </div>
+
+    <!-- ================= QRIS ================= -->
+    <h3 class="section-title">QRIS</h3>
+
+    <div class="form-group">
+        <label>Nama Merchant</label>
+        <input type="text" name="qris_merchant" value="{{ setting.qris_merchant or '' }}">
+    </div>
+
+    <div class="form-group">
+        <label>QRIS Static Code</label>
+        <textarea name="qris_code" rows="3" placeholder="Isi kode QRIS static">{{ setting.qris_code or '' }}</textarea>
+    </div>
+
+    <!-- ================= VIRTUAL ACCOUNT ================= -->
+    <h3 class="section-title">Virtual Account / Payment Gateway</h3>
+
+    <div class="form-group">
+        <label>Provider</label>
+        <select name="va_provider">
+            <option value="">-- Pilih Provider --</option>
+            <option value="midtrans" {{ 'selected' if setting.va_provider == 'midtrans' }}>Midtrans</option>
+            <option value="xendit" {{ 'selected' if setting.va_provider == 'xendit' }}>Xendit</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Server Key</label>
+        <input type="password" name="va_server_key" value="{{ setting.va_server_key or '' }}">
+    </div>
+
+    <div class="form-group">
+        <label>Client Key</label>
+        <input type="text" name="va_client_key" value="{{ setting.va_client_key or '' }}">
+    </div>
+
+    <!-- ================= BIAYA ADMIN ================= -->
+    <h3 class="section-title">Biaya Admin</h3>
+
+    <div class="grid-2">
+        <div class="form-group">
+            <label>Biaya Transfer Bank</label>
+            <input type="number" name="fee_transfer" value="{{ setting.fee_transfer or 0 }}">
+        </div>
+
+        <div class="form-group">
+            <label>Biaya QRIS</label>
+            <input type="number" name="fee_qris" value="{{ setting.fee_qris or 0 }}">
+        </div>
+
+        <div class="form-group">
+            <label>Biaya Virtual Account</label>
+            <input type="number" name="fee_va" value="{{ setting.fee_va or 0 }}">
+        </div>
+    </div>
+
+    <!-- ================= ACTION ================= -->
+    <div class="form-actions">
+        <button type="submit" class="btn-primary">
+            💾 Simpan Pengaturan
+        </button>
+    </div>
+
+</form>
+
+{% endblock %}
