@@ -1,61 +1,38 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from utils.db import db
 
-setting_pembayaran_bp = Blueprint(
+setting_pembayaran = Blueprint(
     "setting_pembayaran",
     __name__,
     url_prefix="/setting-pembayaran"
 )
 
-@setting_pembayaran_bp.route("/")
+@setting_pembayaran.route("/")
 def index():
     with db() as conn:
         cur = conn.cursor()
-        cur.execute("""
-            SELECT *
-            FROM setting_pembayaran
-            ORDER BY created_at DESC
-            LIMIT 1
-        """)
-        setting = cur.fetchone()
+        cur.execute("SELECT * FROM jenis_pembayaran ORDER BY id ASC")
+        pembayaran = cur.fetchall()
 
     return render_template(
         "dashboard.html",
-        setting=setting or {},
-        active_page="setting_pembayaran"
+        active_page="setting_pembayaran",
+        pembayaran=pembayaran
     )
 
 
-@setting_pembayaran_bp.route("/save", methods=["POST"])
-def save_setting_pembayaran():
-    transfer = bool(request.form.get("metode_transfer"))
-    qris = bool(request.form.get("metode_qris"))
-    va = bool(request.form.get("metode_va"))
+@setting_pembayaran.route("/save", methods=["POST"])
+def save_jenis_pembayaran():
+    nama = request.form["nama"]
+    kode = request.form["kode"]
+    nominal = request.form["nominal"]
+    tipe = request.form["tipe"]
 
     with db() as conn:
         cur = conn.cursor()
-        cur.execute("DELETE FROM setting_pembayaran")
         cur.execute("""
-            INSERT INTO setting_pembayaran (
-                transfer, qris, va,
-                bank_nama, bank_rekening, bank_atas_nama,
-                qris_merchant, qris_code,
-                va_provider, va_server_key, va_client_key,
-                fee_transfer, fee_qris, fee_va
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, (
-            transfer, qris, va,
-            request.form.get("bank_nama"),
-            request.form.get("bank_rekening"),
-            request.form.get("bank_atas_nama"),
-            request.form.get("qris_merchant"),
-            request.form.get("qris_code"),
-            request.form.get("va_provider"),
-            request.form.get("va_server_key"),
-            request.form.get("va_client_key"),
-            request.form.get("fee_transfer") or 0,
-            request.form.get("fee_qris") or 0,
-            request.form.get("fee_va") or 0,
-        ))
+            INSERT INTO jenis_pembayaran (nama, kode, nominal, tipe)
+            VALUES (?, ?, ?, ?)
+        """, (nama, kode, nominal, tipe))
 
     return redirect(url_for("setting_pembayaran.index"))

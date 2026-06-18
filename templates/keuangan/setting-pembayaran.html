@@ -1,111 +1,92 @@
-<div id="setting-pembayaran-content"
-    style="display: {{ 'block' if active_page == 'setting_pembayaran' else 'none' }}">
-    <h3>Pembayaran Siswa</h3>
+<div id="setting-pembayaran-content">
 
-    <form method="POST" action="{{ url_for('setting_pembayaran.save_setting_pembayaran') }}" class="card">
+    <h3>Setting Tagihan Pembayaran Siswa</h3>
 
-        <!-- ================= METODE PEMBAYARAN ================= -->
-        <h3 class="section-title">Metode Pembayaran</h3>
+    <button class="btn-primary" onclick="openTambahPembayaran()">
+        + Tambah Jenis Pembayaran
+    </button>
 
-        <div class="grid-3">
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Nama Pembayaran</th>
+                <th>Kode</th>
+                <th>Nominal</th>
+                <th>Tipe</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in pembayaran %}
+            <tr>
+                <td>{{ p.nama }}</td>
+                <td>{{ p.kode }}</td>
+                <td>Rp {{ "{:,}".format(p.nominal) }}</td>
+                <td>{{ p.tipe }}</td>
+                <td>
+                    {% if p.aktif %}
+                        <span class="badge success">Aktif</span>
+                    {% else %}
+                        <span class="badge danger">Nonaktif</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <button class="btn-small">Edit</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-            <label class="toggle-card">
-                <input type="checkbox" name="metode_transfer" {{ 'checked' if setting.transfer }}>
-                <span>Transfer Bank</span>
-            </label>
+</div>
 
-            <label class="toggle-card">
-                <input type="checkbox" name="metode_qris" {{ 'checked' if setting.qris }}>
-                <span>QRIS</span>
-            </label>
+<div id="modalPembayaran" class="modal hidden">
 
-            <label class="toggle-card">
-                <input type="checkbox" name="metode_va" {{ 'checked' if setting.va }}>
-                <span>Virtual Account</span>
-            </label>
+    <form method="POST"
+          action="{{ url_for('setting_pembayaran.save_jenis_pembayaran') }}"
+          class="card">
 
-        </div>
-
-        <!-- ================= TRANSFER BANK ================= -->
-        <h3 class="section-title">Transfer Bank</h3>
-
-        <div class="form-group">
-            <label>Nama Bank</label>
-            <input type="text" name="bank_nama" value="{{ setting.bank_nama or '' }}" placeholder="Contoh: BRI">
-        </div>
-
-        <div class="form-group">
-            <label>Nomor Rekening</label>
-            <input type="text" name="bank_rekening" value="{{ setting.bank_rekening or '' }}">
-        </div>
-
-        <div class="form-group">
-            <label>Atas Nama</label>
-            <input type="text" name="bank_atas_nama" value="{{ setting.bank_atas_nama or '' }}">
-        </div>
-
-        <!-- ================= QRIS ================= -->
-        <h3 class="section-title">QRIS</h3>
-
-        <div class="form-group">
-            <label>Nama Merchant</label>
-            <input type="text" name="qris_merchant" value="{{ setting.qris_merchant or '' }}">
-        </div>
+        <h3>Tambah Jenis Pembayaran</h3>
 
         <div class="form-group">
-            <label>QRIS Static Code</label>
-            <textarea name="qris_code" rows="3" placeholder="Isi kode QRIS static">{{ setting.qris_code or '' }}</textarea>
+            <label>Nama Pembayaran</label>
+            <input type="text" name="nama" required>
         </div>
 
-        <!-- ================= VIRTUAL ACCOUNT ================= -->
-        <h3 class="section-title">Virtual Account / Payment Gateway</h3>
+        <div class="form-group">
+            <label>Kode</label>
+            <input type="text" name="kode" placeholder="contoh: spp" required>
+        </div>
 
         <div class="form-group">
-            <label>Provider</label>
-            <select name="va_provider">
-                <option value="">-- Pilih Provider --</option>
-                <option value="midtrans" {{ 'selected' if setting.va_provider == 'midtrans' }}>Midtrans</option>
-                <option value="xendit" {{ 'selected' if setting.va_provider == 'xendit' }}>Xendit</option>
+            <label>Nominal</label>
+            <input type="number" name="nominal" required>
+        </div>
+
+        <div class="form-group">
+            <label>Tipe Pembayaran</label>
+            <select name="tipe">
+                <option value="bulanan">Bulanan</option>
+                <option value="sekali">Sekali</option>
             </select>
         </div>
 
-        <div class="form-group">
-            <label>Server Key</label>
-            <input type="password" name="va_server_key" value="{{ setting.va_server_key or '' }}">
-        </div>
-
-        <div class="form-group">
-            <label>Client Key</label>
-            <input type="text" name="va_client_key" value="{{ setting.va_client_key or '' }}">
-        </div>
-
-        <!-- ================= BIAYA ADMIN ================= -->
-        <h3 class="section-title">Biaya Admin</h3>
-
-        <div class="grid-2">
-            <div class="form-group">
-                <label>Biaya Transfer Bank</label>
-                <input type="number" name="fee_transfer" value="{{ setting.fee_transfer or 0 }}">
-            </div>
-
-            <div class="form-group">
-                <label>Biaya QRIS</label>
-                <input type="number" name="fee_qris" value="{{ setting.fee_qris or 0 }}">
-            </div>
-
-            <div class="form-group">
-                <label>Biaya Virtual Account</label>
-                <input type="number" name="fee_va" value="{{ setting.fee_va or 0 }}">
-            </div>
-        </div>
-
-        <!-- ================= ACTION ================= -->
         <div class="form-actions">
-            <button type="submit" class="btn-primary">
-                Simpan Pengaturan
-            </button>
+            <button type="submit" class="btn-primary">Simpan</button>
+            <button type="button" onclick="closeModal()">Batal</button>
         </div>
 
     </form>
 
 </div>
+
+<script>
+function openTambahPembayaran() {
+    document.getElementById("modalPembayaran").classList.remove("hidden");
+}
+
+function closeModal() {
+    document.getElementById("modalPembayaran").classList.add("hidden");
+}
+</script>
