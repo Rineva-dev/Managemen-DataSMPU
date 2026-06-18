@@ -6,7 +6,7 @@ from models.siswa import Siswa
 setting_pembayaran_bp = Blueprint(
     "setting_pembayaran",
     __name__,
-    url_prefix=""
+    url_prefix="/setting-pembayaran"
 )
 
 # =========================
