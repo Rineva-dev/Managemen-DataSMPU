@@ -140,61 +140,11 @@
     }
 }
 
-/* ===============================
-   TABLE SETTING PEMBAYARAN
-================================ */
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #ffffff;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-    margin-top: 20px;
-}
-
-/* ===== HEADER ===== */
-.table thead {
-    background: linear-gradient(
-        135deg,
-        #f59e0b,
-        #fbbf24
-    );
-}
-
-.table thead th {
-    padding: 14px 16px;
-    text-align: left;
-    font-size: 13px;
-    font-weight: 700;
-    color: #1e293b;
-    text-transform: uppercase;
-    letter-spacing: .4px;
-}
-
-/* ===== BODY ===== */
-.table tbody tr {
-    transition: background .2s ease;
-}
-
-.table tbody tr:hover {
-    background: #fff7ed;
-}
-
-.table tbody td {
-    padding: 14px 16px;
-    font-size: 14px;
-    color: #334155;
-    border-bottom: 1px solid #e5e7eb;
-    vertical-align: middle;
-}
-
-/* ===== NOMINAL ===== */
-.table tbody td:nth-child(3) {
-    text-align: right;
-    font-weight: 600;
-    color: #0f172a;
+/* ===== TABLE ======*/
+.table-set-pembayaran th:nth-child(2),
+.table-set-pembayaran td:nth-child(2){
+    width: 200px;
+    text-align: center;
 }
 
 /* ===== BADGE STATUS ===== */
