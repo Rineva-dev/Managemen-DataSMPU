@@ -169,6 +169,14 @@ def tagihan_spp():
 
             if not tanggal_mulai:
                 return jsonify([])
+            
+            # ==============================================
+            # 3.1 PENGAMAN SISWA BARU (WAJIB)
+            # ==============================================
+            awal_tahun_ajaran = date(tahun_masuk_siswa, 7, 1)
+
+            if today < awal_tahun_ajaran:
+                return jsonify([])
 
             # ==============================================
             # 4. BATAS AKHIR
@@ -257,6 +265,10 @@ def tagihan_spp():
                         "nominal": 400000,
                         "status": "BELUM"
                     })
+
+                if cur < date(tahun_masuk_siswa, 7, 1):
+                    cur = date(cur.year, cur.month + 1, 1)
+                    continue
 
                 # Pindah bulan
                 if cur.month == 12:
