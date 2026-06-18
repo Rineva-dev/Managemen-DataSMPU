@@ -2,7 +2,7 @@
     style="display: {{ 'block' if active_page == 'setting_pembayaran' else 'none' }}">
     <h3>Pembayaran Siswa</h3>
 
-    <form method="POST" action="{{ url_for('keuangan.save_setting_pembayaran') }}" class="card">
+    <form method="POST" action="{{ url_for('setting_pembayaran.save_setting_pembayaran') }}" class="card">
 
         <!-- ================= METODE PEMBAYARAN ================= -->
         <h3 class="section-title">Metode Pembayaran</h3>
