@@ -138,42 +138,7 @@ def tagihan_spp():
             # ==============================================
             # 3. LOGIKA BARU: AMBIL LANGSUNG BERDASARKAN TANGGAL
             # ==============================================
-            # Data kamu:
-            # 2025/2026 Ganjil = Mulai 2025-07-01
-            # 2025/2026 Genap = Mulai 2026-01-01
-            # 2026/2027 Ganjil = Mulai 2026-07-01
-
-            tanggal_mulai = None
-            nama_tp_mulai = ""
-
-            # Cari data yang TANGGAL MULAINYA SESUAI TAHUN MASUK & BULAN JULI (Awal Tahun Ajaran)
-            for tp in tp_all:
-                # Bersihkan tanggal
-                mulai_str = str(tp["semester_mulai"]).split("T")[0]
-                tgl_mulai = datetime.strptime(mulai_str, "%Y-%m-%d").date()
-
-                # SYARAT: Tahun sama dengan tahun masuk DAN bulan Juli (7) = GANJIL
-                if tgl_mulai.year == tahun_masuk_siswa and tgl_mulai.month == 7:
-                    tanggal_mulai = tgl_mulai
-                    nama_tp_mulai = tp["tahun_pelajaran"]
-                    break
-
-            # Jika tidak ketemu dengan cara di atas, cari lewat nama (Cadangan)
-            if not tanggal_mulai:
-                for tp in tp_all:
-                    nama_tp = str(tp["tahun_pelajaran"]).strip()
-                    if str(tahun_masuk_siswa) in nama_tp and ("2025/2026" in nama_tp or "2026/2027" in nama_tp):
-                        mulai_str = str(tp["semester_mulai"]).split("T")[0]
-                        tanggal_mulai = datetime.strptime(mulai_str, "%Y-%m-%d").date()
-                        break
-
-            if not tanggal_mulai:
-                return jsonify([])
-            
-            # ==============================================
-            # 3.1 PENGAMAN SISWA BARU (WAJIB)
-            # ==============================================
-            awal_tahun_ajaran = date(tahun_masuk_siswa, 7, 1)
+            tanggal_mulai = date(tahun_masuk_siswa, 7, 1)
 
             # ==============================================
             # 4. BATAS AKHIR
