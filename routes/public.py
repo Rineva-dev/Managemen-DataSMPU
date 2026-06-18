@@ -104,6 +104,9 @@ def tagihan_spp():
     if not siswa_id:
         return jsonify([])
 
+    today = date.today()
+    bulan_sekarang = date(today.year, today.month, 1)
+
     try:
         with db() as d:
 
@@ -111,7 +114,7 @@ def tagihan_spp():
             # 1. DATA SISWA
             # ==============================================
             siswa = d.execute("""
-                SELECT tahun_masuk, status, tanggal_nonaktif, nisn
+                SELECT tahun_masuk, tanggal_nonaktif, nisn
                 FROM siswa
                 WHERE id = %s
             """, (siswa_id,)).fetchone()
@@ -123,11 +126,11 @@ def tagihan_spp():
             nisn = siswa["nisn"]
 
             # ==============================================
-            # 2. RENTANG WAJIB SPP (FIX)
-            # Juli tahun masuk → Juni tahun berikutnya
+            # 2. RENTANG WAJIB SPP
+            # Juli tahun masuk → bulan sekarang
             # ==============================================
             tanggal_mulai = date(tahun_masuk, 7, 1)
-            tanggal_akhir = date(tahun_masuk + 1, 6, 1)
+            tanggal_akhir = bulan_sekarang
 
             # ==============================================
             # 3. STOP JIKA NONAKTIF
@@ -143,7 +146,7 @@ def tagihan_spp():
                 return jsonify([])
 
             # ==============================================
-            # 4. DATA PEMBAYARAN LUNAS
+            # 4. DATA BULAN YANG SUDAH LUNAS
             # ==============================================
             lunas = d.execute("""
                 SELECT 
@@ -184,26 +187,24 @@ def tagihan_spp():
                     pass
 
             # ==============================================
-            # 5. TAHUN PELAJARAN (LABEL SAJA)
+            # 5. LABEL TAHUN PELAJARAN (OPSIONAL)
             # ==============================================
             tp_all = d.execute("""
                 SELECT tahun_pelajaran, semester_mulai, semester_akhir
                 FROM tahun_pelajaran
             """).fetchall()
 
-            def get_tahun_pelajaran(tanggal):
+            def get_tahun_pelajaran(tgl):
                 for tp in tp_all:
                     try:
-                        sm = tp["semester_mulai"]
-                        sa = tp["semester_akhir"]
-                        if sm <= tanggal <= sa:
+                        if tp["semester_mulai"] <= tgl <= tp["semester_akhir"]:
                             return tp["tahun_pelajaran"]
                     except:
                         pass
-                return f"{tanggal.year}/{tanggal.year+1}"
+                return f"{tgl.year}/{tgl.year+1}"
 
             # ==============================================
-            # 6. GENERATE TAGIHAN
+            # 6. GENERATE TAGIHAN ROLLING
             # ==============================================
             tagihan = []
             cur = tanggal_mulai
