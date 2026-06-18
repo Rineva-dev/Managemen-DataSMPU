@@ -125,21 +125,28 @@ document.documentElement.classList.add("no-transition");
     </div>
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const toggle = document.querySelector(".menu-toggle");
-    if (!toggle) return;
+document.addEventListener("DOMContentLoaded", function () {
+    const toggles = document.querySelectorAll(".menu-toggle");
 
-    toggle.addEventListener("click", function() {
-        const html = document.documentElement;
-        const isOpen = html.classList.contains("sekolah-open");
+    toggles.forEach(toggle => {
+        const group = toggle.closest(".menu-group");
+        const key = "sidebar_" + toggle.dataset.target;
 
-        if (isOpen) {
-            html.classList.remove("sekolah-open");
-            localStorage.setItem("sekolahMenuOpen", "false");
-        } else {
-            html.classList.add("sekolah-open");
-            localStorage.setItem("sekolahMenuOpen", "true");
+        // restore state
+        if (localStorage.getItem(key) === "open") {
+            group.classList.add("open");
         }
+
+        toggle.addEventListener("click", function () {
+            const isOpen = group.classList.toggle("open");
+            localStorage.setItem(key, isOpen ? "open" : "closed");
+        });
+    });
+
+    // auto open jika submenu aktif
+    document.querySelectorAll(".submenu .active").forEach(active => {
+        const group = active.closest(".menu-group");
+        if (group) group.classList.add("open");
     });
 });
 </script>

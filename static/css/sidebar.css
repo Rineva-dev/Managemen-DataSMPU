@@ -267,11 +267,6 @@
     transition: max-height 0.3s ease;
 }
 
-html.keuangan-open #keuangan-submenu,
-html.sekolah-open #sekolah-submenu {
-    max-height: 500px;
-}
-
 .menu-group .submenu a {
     padding-left: 40px;
     font-size: 14px;
@@ -289,13 +284,38 @@ html.sekolah-open #sekolah-submenu {
     transition: transform 0.3s ease;
 }
 
-html.sekolah-open .menu-toggle[data-target="sekolah"]::after {
-    content: "▾";
+/* MENU DROPDOWN */
+.menu-group {
+    display: flex;
+    flex-direction: column;
 }
 
-/* KEUANGAN */
-html.keuangan-open .menu-toggle[data-target="keuangan"]::after {
-    content: "▾";
+.menu-group .submenu {
+    background: rgba(0, 0, 0, 0.319);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.menu-group.open .submenu {
+    max-height: 500px;
+}
+
+/* PANAH */
+.menu-toggle {
+    position: relative;
+}
+
+.menu-toggle::after {
+    content: "▸";
+    position: absolute;
+    right: 8px;
+    font-size: 22px;
+    transition: transform 0.3s ease;
+}
+
+.menu-group.open .menu-toggle::after {
+    transform: rotate(90deg);
 }
 
 /* ICON DATA_LUCIDA */
