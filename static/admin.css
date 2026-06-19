@@ -2395,6 +2395,8 @@ html {
     transition: 0.3s ease;
 }
 
+#jenis-pembayaran-content > h3,
+#setting-pembayaran-content > h3,
 #ekstrakurikuler-content > h3,
 #mata-pelajaran-content > h3,
 #pembayaran-siswa-content > h3,
@@ -2416,11 +2418,9 @@ html {
     inset: 0;
     background: rgba(15,15,15,0.65);
     backdrop-filter: blur(14px);
-
-    display: none; /* 🔥 jangan langsung tampil */
+    display: none;
     justify-content: center;
     align-items: center;
-
     z-index: 19999;
     opacity: 0;
 }
@@ -2431,7 +2431,6 @@ html {
 }
 
 /* Loader Box */
-
 .loader-content {
     display: flex;
     flex-direction: column;
@@ -2443,7 +2442,6 @@ html {
 }
 
 /* Modern Spinner Ring */
-
 .spinner-ring {
     width: 60px;
     height: 60px;
@@ -2454,7 +2452,6 @@ html {
 }
 
 /* Animation */
-
 @keyframes spin {
     to { transform: rotate(360deg); }
 }

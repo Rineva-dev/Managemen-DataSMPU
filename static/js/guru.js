@@ -52,8 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    // Panggil saat halaman pertama kali load
-    loadGuruFromAPI();
+    if (document.getElementById("guru-table")) {
+        loadGuruFromAPI();
+    }
 
     // ================================
     // HELPER TEXT
