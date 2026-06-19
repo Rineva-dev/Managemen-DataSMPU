@@ -44,6 +44,8 @@
         action="{{ url_for('jenis_pembayaran.save') }}"
         class="saas-modal add-akun-modern">
 
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
         <h3>Tambah Jenis Pembayaran</h3>
 
         <div class="form-group">
