@@ -76,16 +76,4 @@
 </div>
 
 
-<script>
-function openTambahPembayaran() {
-    document
-        .getElementById("modalPembayaran")
-        .classList.add("show");
-}
-
-function closeModal() {
-    document
-        .getElementById("modalPembayaran")
-        .classList.remove("show");
-}
-</script>
+<script src="{{ url_for('static', filename='js/keuangan/jenis-pembayaran.js') }}"></script>
