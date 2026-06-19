@@ -39,40 +39,38 @@
 
 
 <!-- MODAL -->
-<div id="modalPembayaran" class="saas-modal-overlay">
-    <div class="saas-modal add-akun-modern">
-        <form method="POST"
-            action="{{ url_for('jenis_pembayaran.save') }}"
-            class="saas-modal">
+<div id="modalPembayaran" class="saas-modal-overlay add-jenis">
+    <form method="POST"
+        action="{{ url_for('jenis_pembayaran.save') }}"
+        class="saas-modal">
 
-            <h3>Tambah Jenis Pembayaran</h3>
+        <h3>Tambah Jenis Pembayaran</h3>
 
-            <div class="form-group">
-                <label>Nama Pembayaran</label>
-                <input type="text"
-                    name="nama"
-                    placeholder="Contoh: SPP"
-                    required>
-            </div>
+        <div class="form-group">
+            <label>Nama Pembayaran</label>
+            <input type="text"
+                name="nama"
+                placeholder="Contoh: SPP"
+                required>
+        </div>
 
-            <div class="form-group">
-                <label>Keterangan (Opsional)</label>
-                <textarea name="keterangan"
-                        placeholder="Contoh: Pembayaran bulanan siswa"></textarea>
-            </div>
+        <div class="form-group">
+            <label>Keterangan (Opsional)</label>
+            <textarea name="keterangan"
+                    placeholder="Contoh: Pembayaran bulanan siswa"></textarea>
+        </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-add">
-                    Simpan
-                </button>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-add">
+                Simpan
+            </button>
 
-                <button type="button" class="btn btn-cancel" onclick="closeModal()">
-                    Batal
-                </button>
-            </div>
+            <button type="button" class="btn btn-cancel" onclick="closeModal()">
+                Batal
+            </button>
+        </div>
 
-        </form>
-    </div>
+    </form>
 
 </div>
 
