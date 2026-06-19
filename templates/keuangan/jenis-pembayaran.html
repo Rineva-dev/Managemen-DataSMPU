@@ -39,11 +39,11 @@
 
 
 <!-- MODAL -->
-<div id="modalPembayaran" class="modal hidden">
+<div id="modalPembayaran" class="saas-modal-overlay">
 
     <form method="POST"
           action="{{ url_for('jenis_pembayaran.save') }}"
-          class="card">
+          class="saas-modal">
 
         <h3>Tambah Jenis Pembayaran</h3>
 
@@ -78,12 +78,14 @@
 
 <script>
 function openTambahPembayaran() {
-    document.getElementById("modalPembayaran")
-        .classList.remove("hidden");
+    document
+        .getElementById("modalPembayaran")
+        .classList.add("show");
 }
 
 function closeModal() {
-    document.getElementById("modalPembayaran")
-        .classList.add("hidden");
+    document
+        .getElementById("modalPembayaran")
+        .classList.remove("show");
 }
 </script>
