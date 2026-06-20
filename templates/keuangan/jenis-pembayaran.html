@@ -29,7 +29,13 @@
                 <td>{{ p.nama }}</td>
                 <td>{{ p.kode }}</td>
                 <td>{{ p.kategori }}</td>
-                <td>{{ p.status }}</td>
+                <td>
+                    {% if p.aktif %}
+                        <span class="badge success">Aktif</span>
+                    {% else %}
+                        <span class="badge danger">Nonaktif</span>
+                    {% endif %}
+                </td>
                 <td>
                     <button class="btn-small edit-btn">Edit</button>
                 </td>

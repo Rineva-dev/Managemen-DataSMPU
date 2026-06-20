@@ -17,7 +17,7 @@ def index():
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT id, nama, kode, kategori, status
+        SELECT id, nama, kode, kategori, aktif
         FROM jenis_pembayaran
         ORDER BY id ASC
     """)
@@ -44,18 +44,18 @@ def index():
 def save():
 
     nama = request.form["nama"]
-    kode = request.form.get("kode")
+    kode = request.form["kode"].strip().lower()
     kategori = request.form.get("kategori")
-    status = request.form.get("status")
+    aktif = request.form.get("aktif")
 
     conn = db()
     cur = conn.cursor()
 
     cur.execute("""
         INSERT INTO jenis_pembayaran
-        (nama, kode, kategori, status)
-        VALUES (?, ?, ?, ?)
-    """, (nama, kode, kategori, status))
+        (nama, kode, kategori, aktif)
+        VALUES (%s, %s, %s, %s)
+    """, (nama, kode, kategori, aktif))
 
     conn.commit()
 
