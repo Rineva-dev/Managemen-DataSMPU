@@ -15,7 +15,9 @@
             <tr>
                 <th>No</th>
                 <th>Nama Pembayaran</th>
-                <th>Keterangan</th>
+                <th>Kode Pembayaran</th>
+                <th>Kategori</th>
+                <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -25,10 +27,11 @@
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ p.nama }}</td>
-                <td>{{ p.keterangan or '-' }}</td>
+                <td>{{ p.kode }}</td>
+                <td>{{ p.kategori }}</td>
+                <td>{{ p.status }}</td>
                 <td>
                     <button class="btn-small edit-btn">Edit</button>
-                    <button class="btn-small delete-btn">Hapus</button>
                 </td>
             </tr>
             {% endfor %}
@@ -39,7 +42,7 @@
 
 
 <!-- MODAL -->
-<div id="modalPembayaran" class="saas-modal-overlay">
+<div id="modalJenisPembayaran" class="saas-modal-overlay">
     <form method="POST"
         action="{{ url_for('jenis_pembayaran.save') }}"
         class="saas-modal add-akun-modern">
@@ -57,9 +60,32 @@
         </div>
 
         <div class="form-group">
-            <label>Keterangan (Opsional)</label>
-            <textarea name="keterangan"
-                    placeholder="Contoh: Pembayaran bulanan siswa"></textarea>
+            <label>Kode Pembayaran</label>
+            <input type="text"
+                name="kode"
+                placeholder="contoh: spp"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label>Kategori</label>
+
+            <select name="kategori" required>
+                <option value="bulanan">Bulanan</option>
+                <option value="tahunan">Tahunan</option>
+                <option value="sekali">Sekali Bayar</option>
+                <option value="cicilan">Cicilan</option>
+                <option value="ekskul">Ekstrakurikuler</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+
+            <select name="aktif">
+                <option value="1">Aktif</option>
+                <option value="0">Nonaktif</option>
+            </select>
         </div>
 
         <div class="form-actions">

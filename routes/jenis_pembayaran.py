@@ -13,11 +13,11 @@ jenis_pembayaran_bp = Blueprint(
 @jenis_pembayaran_bp.route("/jenis-pembayaran")
 def index():
 
-    conn = db()              # <-- panggil function
+    conn = db()
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT id, nama, keterangan
+        SELECT id, nama, kode, kategori, status
         FROM jenis_pembayaran
         ORDER BY id ASC
     """)
@@ -44,16 +44,18 @@ def index():
 def save():
 
     nama = request.form["nama"]
-    keterangan = request.form.get("keterangan")
+    kode = request.form.get("kode")
+    kategori = request.form.get("kategori")
+    status = request.form.get("status")
 
     conn = db()
     cur = conn.cursor()
 
     cur.execute("""
         INSERT INTO jenis_pembayaran
-        (nama, keterangan)
-        VALUES (?, ?)
-    """, (nama, keterangan))
+        (nama, kode, kategori, status)
+        VALUES (?, ?, ?, ?)
+    """, (nama, kode, kategori, status))
 
     conn.commit()
 

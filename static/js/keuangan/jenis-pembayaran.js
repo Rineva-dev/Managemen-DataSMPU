@@ -1,11 +1,11 @@
 function openTambahPembayaran() {
     document
-        .getElementById("modalPembayaran")
+        .getElementById("modalJenisPembayaran")
         .classList.add("show");
 }
 
 function closeModal() {
     document
-        .getElementById("modalPembayaran")
+        .getElementById("modalJenisPembayaran")
         .classList.remove("show");
 }
