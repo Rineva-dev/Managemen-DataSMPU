@@ -79,11 +79,29 @@
         </div>
 
         <div class="form-group">
-            <label>Tipe Pembayaran</label>
-            <select name="tipe">
+            <label>Kategori Pembayaran</label>
+
+            <select name="kategori" id="kategoriPembayaran">
+
                 <option value="bulanan">Bulanan</option>
-                <option value="sekali">Sekali</option>
+
+                <option value="tahunan">Tahunan</option>
+
+                <option value="sekali">1x Bayar</option>
+
+                <option value="termin">Cicilan / Termin</option>
+
             </select>
+        </div>
+
+
+        <div class="form-group" id="terminWrapper" style="display:none;">
+            <label>Jumlah Termin</label>
+
+            <input type="number"
+                name="jumlah_termin"
+                min="1"
+                value="2">
         </div>
 
         <div class="form-actions">
@@ -116,5 +134,18 @@ nominal.addEventListener("input", function () {
 
     this.value = new Intl.NumberFormat("id-ID")
         .format(angka);
+});
+
+const kategori = document.getElementById("kategoriPembayaran");
+const termin = document.getElementById("terminWrapper");
+
+kategori.addEventListener("change", function () {
+
+    if (this.value === "termin") {
+        termin.style.display = "block";
+    } else {
+        termin.style.display = "none";
+    }
+
 });
 </script>
