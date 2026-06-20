@@ -26,6 +26,7 @@ def save_jenis_pembayaran():
     nama = request.form["nama"]
     kode = request.form["kode"]
     nominal = request.form["nominal"]
+    nominal = nominal.replace(".", "")
     tipe = request.form["tipe"]
 
     with db() as conn:

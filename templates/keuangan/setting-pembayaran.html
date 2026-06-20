@@ -47,11 +47,15 @@
 
 </div>
 
-<div id="modalPembayaran" class="modal hidden">
+<div id="modalPembayaran" class="saas-modal-overlay">
 
     <form method="POST"
           action="{{ url_for('setting_pembayaran.save_jenis_pembayaran') }}"
-          class="card">
+          class="saas-modal add-akun-modern">
+
+        <input type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}">
 
         <h3>Tambah Jenis Pembayaran</h3>
 
@@ -67,7 +71,11 @@
 
         <div class="form-group">
             <label>Nominal</label>
-            <input type="number" name="nominal" required>
+            <input type="text"
+                    id="nominal"
+                    name="nominal"
+                    placeholder="150.000"
+                    required>
         </div>
 
         <div class="form-group">
@@ -89,10 +97,24 @@
 
 <script>
 function openTambahPembayaran() {
-    document.getElementById("modalPembayaran").classList.remove("hidden");
+    document
+        .getElementById("modalPembayaran")
+        .classList.add("show");
 }
 
 function closeModal() {
-    document.getElementById("modalPembayaran").classList.add("hidden");
+    document
+        .getElementById("modalPembayaran")
+        .classList.remove("show");
 }
+
+const nominal = document.getElementById("nominal");
+
+nominal.addEventListener("input", function () {
+
+    let angka = this.value.replace(/\D/g, "");
+
+    this.value = new Intl.NumberFormat("id-ID")
+        .format(angka);
+});
 </script>
