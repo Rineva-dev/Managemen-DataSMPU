@@ -26,4 +26,5 @@
 .table-jenis-pembayaran td:nth-child(6) {
     width: 100px;
     text-align: center;
+    align-items: center;
 }
