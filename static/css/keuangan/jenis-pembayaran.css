@@ -12,6 +12,18 @@
 
 .table-jenis-pembayaran th:nth-child(4),
 .table-jenis-pembayaran td:nth-child(4) {
+    width: 150px;
+    text-align: center;
+}
+
+.table-jenis-pembayaran th:nth-child(5),
+.table-jenis-pembayaran td:nth-child(5) {
+    width: 100px;
+    text-align: center;
+}
+
+.table-jenis-pembayaran th:nth-child(6),
+.table-jenis-pembayaran td:nth-child(6) {
     width: 100px;
     text-align: center;
 }
