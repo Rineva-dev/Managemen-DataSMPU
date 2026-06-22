@@ -27,6 +27,6 @@ def index():
 
     return render_template(
         "dashboard.html",
-        active_page="aturan_pembayaran",
+        active_page="setting_pembayaran",
         aturan_pembayaran=aturan
     )
