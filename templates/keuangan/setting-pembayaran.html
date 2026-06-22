@@ -1,87 +1,188 @@
-<div id="setting-pembayaran-content">
+<div id="aturan-pembayaran-content">
 
-    <h3>Setting Tagihan Pembayaran Siswa</h3>
+    <h3>Aturan Pembayaran</h3>
 
     <div class="filter-container pembayaran-filter-bar">
 
-        <button class="btn btn-add" onclick="openTambahPembayaran()">
-            Tambah Pembayaran
+        <button class="btn btn-add" onclick="openTambahAturan()">
+            Tambah Aturan
         </button>
 
     </div>
 
     <table class="table-set-pembayaran">
+
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Pembayaran</th>
-                <th>Kode</th>
+                <th>Nama Aturan</th>
+                <th>Jenis Pembayaran</th>
+                <th>Target</th>
                 <th>Nominal</th>
-                <th>Tipe</th>
+                <th>Periode</th>
                 <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
+
         <tbody>
-            {% for p in pembayaran %}
+
+            {% for a in aturan_pembayaran %}
             <tr>
+
                 <td>{{ loop.index }}</td>
-                <td>{{ p.nama }}</td>
-                <td>{{ p.kode }}</td>
-                <td>Rp {{ "{:,}".format(p.nominal) }}</td>
-                <td>{{ p.tipe }}</td>
+
+                <td>{{ a.nama_aturan }}</td>
+
+                <td>{{ a.jenis_nama }}</td>
+
                 <td>
-                    {% if p.aktif %}
+                    {{ a.target_type }}
+
+                    {% if a.target_id %}
+                        ({{ a.target_id }})
+                    {% endif %}
+                </td>
+
+                <td>
+                    Rp {{ "{:,}".format(a.nominal) }}
+                </td>
+
+                <td>
+                    {{ a.periode_type }}
+                </td>
+
+                <td>
+                    {% if a.aktif %}
                         <span class="badge success">Aktif</span>
                     {% else %}
                         <span class="badge danger">Nonaktif</span>
                     {% endif %}
                 </td>
+
                 <td>
-                    <button class="btn-small">Edit</button>
+                    <button class="btn-small edit-btn">
+                        Edit
+                    </button>
                 </td>
+
             </tr>
             {% endfor %}
+
         </tbody>
+
     </table>
 
 </div>
 
-<div id="modalPembayaran" class="saas-modal-overlay">
+
+
+<!-- MODAL -->
+
+<div id="modalAturanPembayaran" class="saas-modal-overlay">
 
     <form method="POST"
-          action="{{ url_for('setting_pembayaran.save_jenis_pembayaran') }}"
+          action="{{ url_for('aturan_pembayaran.save') }}"
           class="saas-modal add-akun-modern">
 
         <input type="hidden"
-            name="csrf_token"
-            value="{{ csrf_token() }}">
+               name="csrf_token"
+               value="{{ csrf_token() }}">
 
-        <h3>Tambah Jenis Pembayaran</h3>
 
-        <div class="form-group">
-            <label>Nama Pembayaran</label>
-            <input type="text" name="nama" required>
-        </div>
+        <h3>Tambah Aturan Pembayaran</h3>
 
-        <div class="form-group">
-            <label>Kode</label>
-            <input type="text" name="kode" placeholder="contoh: spp" required>
-        </div>
+
+        <!-- nama aturan -->
 
         <div class="form-group">
-            <label>Nominal</label>
+
+            <label>Nama Aturan</label>
+
             <input type="text"
-                    id="nominal"
-                    name="nominal"
-                    placeholder="150.000"
-                    required>
+                   name="nama_aturan"
+                   placeholder="SPP Angkatan 2026"
+                   required>
+
         </div>
 
-        <div class="form-group">
-            <label>Kategori Pembayaran</label>
 
-            <select name="kategori" id="kategoriPembayaran">
+        <!-- jenis pembayaran -->
+
+        <div class="form-group">
+
+            <label>Jenis Pembayaran</label>
+
+            <select name="jenis_pembayaran_id" required>
+
+                {% for j in jenis_pembayaran %}
+                <option value="{{ j.id }}">
+                    {{ j.nama }}
+                </option>
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <!-- target -->
+
+        <div class="form-group">
+
+            <label>Target Pembayaran</label>
+
+            <select name="target_type">
+
+                <option value="all">Semua Siswa</option>
+
+                <option value="angkatan">Per Angkatan</option>
+
+                <option value="kelas">Per Kelas</option>
+
+                <option value="siswa">Per Siswa</option>
+
+            </select>
+
+        </div>
+
+
+        <!-- target id -->
+
+        <div class="form-group">
+
+            <label>ID Target</label>
+
+            <input type="number"
+                   name="target_id"
+                   placeholder="Kosongkan jika semua siswa">
+
+        </div>
+
+
+        <!-- nominal -->
+
+        <div class="form-group">
+
+            <label>Nominal</label>
+
+            <input type="text"
+                   id="nominal"
+                   name="nominal"
+                   placeholder="150.000"
+                   required>
+
+        </div>
+
+
+        <!-- periode -->
+
+        <div class="form-group">
+
+            <label>Periode Pembayaran</label>
+
+            <select name="periode_type"
+                    id="periodePembayaran">
 
                 <option value="bulanan">Bulanan</option>
 
@@ -89,42 +190,74 @@
 
                 <option value="sekali">1x Bayar</option>
 
-                <option value="termin">Cicilan / Termin</option>
+                <option value="cicilan">Cicilan</option>
 
             </select>
+
         </div>
 
 
-        <div class="form-group" id="terminWrapper" style="display:none;">
-            <label>Jumlah Termin</label>
+        <!-- jumlah cicilan -->
+
+        <div class="form-group"
+             id="cicilanWrapper"
+             style="display:none;">
+
+            <label>Jumlah Cicilan</label>
 
             <input type="number"
-                name="jumlah_termin"
-                min="1"
-                value="2">
+                   name="jumlah_cicilan"
+                   min="1"
+                   value="2">
+
         </div>
 
+
         <div class="form-actions">
-            <button type="submit" class="btn btn-add">Simpan</button>
-            <button type="button" class="btn btn-cancel" onclick="closeModal()">Batal</button>
+
+            <button type="submit"
+                    class="btn btn-add">
+
+                Simpan
+
+            </button>
+
+            <button type="button"
+                    class="btn btn-cancel"
+                    onclick="closeModal()">
+
+                Batal
+
+            </button>
+
         </div>
 
     </form>
 
 </div>
 
+
+
 <script>
-function openTambahPembayaran() {
+
+function openTambahAturan() {
+
     document
-        .getElementById("modalPembayaran")
+        .getElementById("modalAturanPembayaran")
         .classList.add("show");
 }
 
+
 function closeModal() {
+
     document
-        .getElementById("modalPembayaran")
+        .getElementById("modalAturanPembayaran")
         .classList.remove("show");
 }
+
+
+
+/* format nominal */
 
 const nominal = document.getElementById("nominal");
 
@@ -136,16 +269,26 @@ nominal.addEventListener("input", function () {
         .format(angka);
 });
 
-const kategori = document.getElementById("kategoriPembayaran");
-const termin = document.getElementById("terminWrapper");
 
-kategori.addEventListener("change", function () {
 
-    if (this.value === "termin") {
-        termin.style.display = "block";
+/* cicilan */
+
+const periode = document.getElementById("periodePembayaran");
+
+const cicilan = document.getElementById("cicilanWrapper");
+
+
+periode.addEventListener("change", function () {
+
+    if (this.value === "cicilan") {
+
+        cicilan.style.display = "block";
+
     } else {
-        termin.style.display = "none";
+
+        cicilan.style.display = "none";
     }
 
 });
+
 </script>

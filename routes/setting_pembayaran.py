@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for
 from utils.db import db
 
 aturan_pembayaran_bp = Blueprint(
@@ -12,6 +12,7 @@ def index():
     conn = db()
     cur = conn.cursor()
 
+    # ambil aturan pembayaran
     cur.execute("""
         SELECT a.*, j.nama as jenis_nama
         FROM aturan_pembayaran a
@@ -22,11 +23,74 @@ def index():
 
     aturan = cur.fetchall()
 
+
+    # ambil master jenis pembayaran
+    cur.execute("""
+        SELECT id, nama
+        FROM jenis_pembayaran
+        WHERE aktif = TRUE
+        ORDER BY nama ASC
+    """)
+
+    jenis = cur.fetchall()
+
     cur.close()
     conn.close()
 
     return render_template(
         "dashboard.html",
         active_page="aturan_pembayaran",
-        aturan_pembayaran=aturan
+        aturan_pembayaran=aturan,
+        jenis_pembayaran=jenis
+    )
+
+@aturan_pembayaran_bp.route(
+    "/save-aturan-pembayaran",
+    methods=["POST"]
+)
+def save():
+
+    jenis_pembayaran_id = request.form["jenis_pembayaran_id"]
+    nama_aturan = request.form["nama_aturan"]
+    target_type = request.form["target_type"]
+    target_id = request.form.get("target_id") or None
+    nominal = request.form["nominal"]
+    periode_type = request.form["periode_type"]
+    jumlah_cicilan = request.form.get("jumlah_cicilan") or 1
+
+    # hilangkan titik ribuan
+    nominal = nominal.replace(".", "")
+
+    conn = db()
+    cur = conn.cursor()
+
+    cur.execute("""
+        INSERT INTO aturan_pembayaran
+        (
+            jenis_pembayaran_id,
+            nama_aturan,
+            target_type,
+            target_id,
+            nominal,
+            periode_type,
+            jumlah_cicilan
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (
+        jenis_pembayaran_id,
+        nama_aturan,
+        target_type,
+        target_id,
+        nominal,
+        periode_type,
+        jumlah_cicilan
+    ))
+
+    conn.commit()
+
+    cur.close()
+    conn.close()
+
+    return redirect(
+        url_for("aturan_pembayaran.index")
     )
