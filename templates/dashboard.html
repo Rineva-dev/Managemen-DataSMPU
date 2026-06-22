@@ -96,7 +96,7 @@
     {% include "keuangan/jenis-pembayaran.html" %}
 {% endif %}
 
-{% if active_page == "setting_pembayaran" %}
+{% if active_page == "aturan_pembayaran" %}
     {% include "keuangan/setting-pembayaran.html" %}
 {% endif %}
 
@@ -161,7 +161,7 @@
         href="{{ url_for('static', filename='css/keuangan/jenis-pembayaran.css') }}">
     {% endif %}
 
-    {% if active_page == "setting_pembayaran" %}
+    {% if active_page == "aturan_pembayaran" %}
     <link rel="stylesheet"
         href="{{ url_for('static', filename='css/keuangan/setting-pembayaran.css') }}">
     {% endif %}
