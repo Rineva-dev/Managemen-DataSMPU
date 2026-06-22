@@ -1,39 +1,32 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template
 from utils.db import db
 
-setting_pembayaran = Blueprint(
-    "setting_pembayaran",
-    __name__,
-    url_prefix="/setting-pembayaran"
+aturan_pembayaran_bp = Blueprint(
+    "aturan_pembayaran",
+    __name__
 )
 
-@setting_pembayaran.route("/")
+@aturan_pembayaran_bp.route("/aturan-pembayaran")
 def index():
-    with db() as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM jenis_pembayaran ORDER BY id ASC")
-        pembayaran = cur.fetchall()
+
+    conn = db()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT a.*, j.nama as jenis_nama
+        FROM aturan_pembayaran a
+        JOIN jenis_pembayaran j
+            ON j.id = a.jenis_pembayaran_id
+        ORDER BY a.id DESC
+    """)
+
+    aturan = cur.fetchall()
+
+    cur.close()
+    conn.close()
 
     return render_template(
         "dashboard.html",
-        active_page="setting_pembayaran",
-        pembayaran=pembayaran
+        active_page="aturan_pembayaran",
+        aturan_pembayaran=aturan
     )
-
-
-@setting_pembayaran.route("/save", methods=["POST"])
-def save_jenis_pembayaran():
-    nama = request.form["nama"]
-    kode = request.form["kode"]
-    nominal = request.form["nominal"]
-    nominal = nominal.replace(".", "")
-    tipe = request.form["tipe"]
-
-    with db() as conn:
-        cur = conn.cursor()
-        cur.execute("""
-            INSERT INTO jenis_pembayaran (nama, kode, nominal, tipe)
-            VALUES (?, ?, ?, ?)
-        """, (nama, kode, nominal, tipe))
-
-    return redirect(url_for("setting_pembayaran.index"))

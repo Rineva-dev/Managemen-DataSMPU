@@ -13,7 +13,7 @@ from routes.kelas_ampu import kelas_ampu_bp
 from routes.kkm_routes import kkm_bp
 from routes.public import public_bp
 from routes.verifikasi_pembayaran import verifikasi_bp
-from routes.setting_pembayaran import setting_pembayaran
+from routes.setting_pembayaran import aturan_pembayaran_bp
 from routes.jenis_pembayaran import jenis_pembayaran_bp
 
 ALL_BLUEPRINTS = [
@@ -32,6 +32,6 @@ ALL_BLUEPRINTS = [
     kkm_bp,
     public_bp,
     verifikasi_bp,
-    setting_pembayaran,
+    aturan_pembayaran_bp,
     jenis_pembayaran_bp
 ]
