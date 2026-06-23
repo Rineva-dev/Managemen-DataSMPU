@@ -415,3 +415,50 @@
     }
 
 }
+
+.custom-multi-select{
+    position:relative;
+}
+
+.select-box{
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    cursor:pointer;
+    background:white;
+}
+
+.dropdown-panel{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+    background:white;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-top:5px;
+    display:none;
+    z-index:999;
+    padding:10px;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+}
+
+.dropdown-panel.show{
+    display:block;
+}
+
+.dropdown-list{
+    max-height:220px;
+    overflow-y:auto;
+}
+
+.dropdown-list label{
+    display:block;
+    padding:6px;
+}
+
+#searchSiswa{
+    width:100%;
+    margin-bottom:10px;
+    padding:10px;
+}

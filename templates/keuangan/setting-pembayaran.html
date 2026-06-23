@@ -244,6 +244,26 @@ periode.addEventListener("change", function () {
 const targetType = document.getElementById("targetType");
 const wrapper = document.getElementById("targetWrapper");
 
+function toggleDropdown(id){
+
+    document
+        .getElementById(id)
+        .classList.toggle("show");
+
+}
+
+
+function updateSelected(type){
+
+    const checked =
+        document.querySelectorAll(
+            `input[name="target_ids"]:checked`
+        );
+
+    document
+        .getElementById("selectedText")
+        .innerText = checked.length + " dipilih";
+}
 
 targetType.addEventListener("change", function(){
 
@@ -262,21 +282,39 @@ targetType.addEventListener("change", function(){
 
                 <label>Pilih Angkatan</label>
 
-                <div class="checkbox-list">
+                <div class="custom-multi-select">
 
-                    {% for a in daftar_angkatan %}
+                    <div class="select-box"
+                         onclick="toggleDropdown('dropdownAngkatan')"
+                         id="selectedText">
 
-                        <label>
+                        Pilih angkatan
 
-                            <input type="checkbox"
-                                   name="target_ids"
-                                   value="{{ a.tahun_masuk }}">
+                    </div>
 
-                            Angkatan {{ a.tahun_masuk }}
+                    <div class="dropdown-panel"
+                         id="dropdownAngkatan">
 
-                        </label>
+                        <div class="dropdown-list">
 
-                    {% endfor %}
+                            {% for a in daftar_angkatan %}
+
+                            <label>
+
+                                <input type="checkbox"
+                                       name="target_ids"
+                                       value="{{ a.tahun_masuk }}"
+                                       onchange="updateSelected()">
+
+                                Angkatan {{ a.tahun_masuk }}
+
+                            </label>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -293,21 +331,39 @@ targetType.addEventListener("change", function(){
 
                 <label>Pilih Kelas</label>
 
-                <div class="checkbox-list">
+                <div class="custom-multi-select">
 
-                    {% for k in daftar_kelas %}
+                    <div class="select-box"
+                         onclick="toggleDropdown('dropdownKelas')"
+                         id="selectedText">
 
-                        <label>
+                        Pilih kelas
 
-                            <input type="checkbox"
-                                   name="target_ids"
-                                   value="{{ k.id }}">
+                    </div>
 
-                            {{ k.tingkat }} {{ k.sub_kelas }}
+                    <div class="dropdown-panel"
+                         id="dropdownKelas">
 
-                        </label>
+                        <div class="dropdown-list">
 
-                    {% endfor %}
+                            {% for k in daftar_kelas %}
+
+                            <label>
+
+                                <input type="checkbox"
+                                       name="target_ids"
+                                       value="{{ k.id }}"
+                                       onchange="updateSelected()">
+
+                                {{ k.tingkat }} {{ k.sub_kelas }}
+
+                            </label>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -322,54 +378,76 @@ targetType.addEventListener("change", function(){
 
             <div class="form-group">
 
-                <label>Cari Siswa</label>
+                <label>Pilih Siswa</label>
 
-                <input type="text"
-                    id="searchSiswa"
-                    placeholder="ketik nama siswa">
+                <div class="custom-multi-select">
 
-            </div>
+                    <div class="select-box"
+                         onclick="toggleDropdown('dropdownSiswa')"
+                         id="selectedText">
 
-            <div class="checkbox-list siswa-scroll"
-                id="listSiswa">
+                        Pilih siswa
 
-                {% for s in daftar_siswa %}
+                    </div>
 
-                    <label class="item-siswa">
+                    <div class="dropdown-panel"
+                         id="dropdownSiswa">
 
-                        <input type="checkbox"
-                            name="target_ids"
-                            value="{{ s.id }}">
+                        <input type="text"
+                               id="searchSiswa"
+                               placeholder="Cari siswa...">
 
-                        {{ s.nama }}
+                        <div class="dropdown-list">
 
-                    </label>
+                            {% for s in daftar_siswa %}
 
-                {% endfor %}
+                            <label class="item-siswa">
+
+                                <input type="checkbox"
+                                       name="target_ids"
+                                       value="{{ s.id }}"
+                                       onchange="updateSelected()">
+
+                                {{ s.nama }}
+
+                            </label>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
         `;
 
+
         setTimeout(() => {
 
-            const search = document.getElementById("searchSiswa");
+            const search =
+                document.getElementById("searchSiswa");
 
             search.addEventListener("keyup", function(){
 
-                let keyword = this.value.toLowerCase();
+                let keyword =
+                    this.value.toLowerCase();
 
-                document.querySelectorAll(".item-siswa")
+                document
+                    .querySelectorAll(".item-siswa")
                     .forEach(item => {
 
                         if(item.textContent
                             .toLowerCase()
                             .includes(keyword)){
 
-                            item.style.display = "block";
+                            item.style.display="block";
 
-                        } else {
+                        }else{
 
-                            item.style.display = "none";
+                            item.style.display="none";
+
                         }
 
                     });
@@ -377,6 +455,25 @@ targetType.addEventListener("change", function(){
             });
 
         },100);
+    }
+
+});
+
+document.addEventListener("click", function(e){
+
+    const multi =
+        document.querySelector(".custom-multi-select");
+
+    if(multi && !multi.contains(e.target)){
+
+        document
+            .querySelectorAll(".dropdown-panel")
+            .forEach(item => {
+
+                item.classList.remove("show");
+
+            });
+
     }
 
 });
