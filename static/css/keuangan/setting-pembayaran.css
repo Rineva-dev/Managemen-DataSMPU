@@ -196,6 +196,18 @@
     color: #ffffff;
 }
 
+.checkbox-list{
+    max-height:200px;
+    overflow-y:auto;
+    border:1px solid #ddd;
+    padding:10px;
+    border-radius:8px;
+}
+
+.siswa-scroll{
+    max-height:250px;
+}
+
 /* ===== RESPONSIVE TABLE ===== */
 @media (max-width: 768px) {
     .table thead {

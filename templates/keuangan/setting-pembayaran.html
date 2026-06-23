@@ -36,13 +36,7 @@
 
                 <td>{{ a.jenis_nama }}</td>
 
-                <td>
-                    {{ a.target_type }}
-
-                    {% if a.target_id %}
-                        ({{ a.target_id }})
-                    {% endif %}
-                </td>
+                <td>{{ a.target_summary }}</td>
 
                 <td>
                     Rp {{ "{:,}".format(a.nominal) }}
@@ -92,21 +86,6 @@
 
         <h3>Tambah Aturan Pembayaran</h3>
 
-
-        <!-- nama aturan -->
-
-        <div class="form-group">
-
-            <label>Nama Aturan</label>
-
-            <input type="text"
-                   name="nama_aturan"
-                   placeholder="SPP Angkatan 2026"
-                   required>
-
-        </div>
-
-
         <!-- jenis pembayaran -->
 
         <div class="form-group">
@@ -127,24 +106,18 @@
 
 
         <!-- target -->
-
         <div class="form-group">
+            <label>Berlaku Untuk</label>
 
-            <label>Target Pembayaran</label>
-
-            <select name="target_type">
-
+            <select name="target_type" id="targetType">
                 <option value="all">Semua Siswa</option>
-
                 <option value="angkatan">Per Angkatan</option>
-
                 <option value="kelas">Per Kelas</option>
-
                 <option value="siswa">Per Siswa</option>
-
             </select>
-
         </div>
+
+        <div id="targetWrapper"></div>
 
 
         <!-- target id -->
@@ -236,29 +209,20 @@
 
 </div>
 
-
-
 <script>
-
 function openTambahAturan() {
-
     document
         .getElementById("modalAturanPembayaran")
         .classList.add("show");
 }
 
-
 function closeModal() {
-
     document
         .getElementById("modalAturanPembayaran")
         .classList.remove("show");
 }
 
-
-
 /* format nominal */
-
 const nominal = document.getElementById("nominal");
 
 nominal.addEventListener("input", function () {
@@ -291,4 +255,116 @@ periode.addEventListener("change", function () {
 
 });
 
+const targetType = document.getElementById("targetType");
+const wrapper = document.getElementById("targetWrapper");
+
+
+targetType.addEventListener("change", function(){
+
+    if(this.value === "all"){
+
+        wrapper.innerHTML = "";
+
+    }
+
+
+    if(this.value === "angkatan"){
+
+        wrapper.innerHTML = `
+
+            <div class="form-group">
+
+                <label>Pilih Angkatan</label>
+
+                <div class="checkbox-list">
+
+                    {% for a in daftar_angkatan %}
+
+                        <label>
+
+                            <input type="checkbox"
+                                   name="target_ids"
+                                   value="{{ a.angkatan }}">
+
+                            Angkatan {{ a.angkatan }}
+
+                        </label>
+
+                        <br>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        `;
+    }
+
+
+    if(this.value === "kelas"){
+
+        wrapper.innerHTML = `
+
+            <div class="form-group">
+
+                <label>Pilih Kelas</label>
+
+                <div class="checkbox-list">
+
+                    {% for k in daftar_kelas %}
+
+                        <label>
+
+                            <input type="checkbox"
+                                   name="target_ids"
+                                   value="{{ k.id }}">
+
+                            {{ k.nama_kelas }}
+
+                        </label>
+
+                        <br>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        `;
+    }
+
+
+    if(this.value === "siswa"){
+
+        wrapper.innerHTML = `
+
+            <div class="form-group">
+
+                <label>Pilih Siswa</label>
+
+                <div class="checkbox-list siswa-scroll">
+
+                    {% for s in daftar_siswa %}
+
+                        <label>
+
+                            <input type="checkbox"
+                                   name="target_ids"
+                                   value="{{ s.id }}">
+
+                            {{ s.nama_lengkap }}
+
+                        </label>
+
+                        <br>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        `;
+    }
+
+});
 </script>
