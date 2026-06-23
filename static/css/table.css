@@ -18,6 +18,7 @@
     border-radius: none;
     overflow: hidden;
     box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    border-radius: 5px;
 }
 
 .table-mapel-kelas thead th {
@@ -57,7 +58,6 @@
     letter-spacing: 0.3px;
     border: none;
     text-align: center !important;
-    border-radius: 5px;
 }
 
 .table-jenis-pembayaran tbody td,
