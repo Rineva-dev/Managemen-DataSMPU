@@ -57,6 +57,7 @@
     letter-spacing: 0.3px;
     border: none;
     text-align: center !important;
+    border-radius: 5px;
 }
 
 .table-jenis-pembayaran tbody td,
