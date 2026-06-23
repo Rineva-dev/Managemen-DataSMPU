@@ -174,21 +174,13 @@ def save():
         RETURNING id
 
     """, (
-
         nama_program,
-
         jenis_pembayaran_id,
-
         target_type,
-
         jenis_pengurangan,
-
         nilai_pengurangan,
-
         tanggal_mulai,
-
         tanggal_selesai
-
     ))
 
 
