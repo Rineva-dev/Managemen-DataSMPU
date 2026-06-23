@@ -470,6 +470,10 @@ function closePenerimaBeasiswa(){
 
 }
 
+/* =========================
+   PREVIEW JENIS PEMBAYARAN
+========================= */
+
 const jenisPembayaran =
     document.getElementById("jenisPembayaranSelect");
 
@@ -484,17 +488,27 @@ jenisPembayaran.addEventListener("change", function(){
         let text =
             this.options[this.selectedIndex].text;
 
-        previewPembayaran.style.display = "inline-block";
+        previewPembayaran.style.display =
+            "inline-block";
 
         previewPembayaran.innerText =
             "Dipilih : " + text;
 
-    }else{
+    }
 
-        previewPembayaran.style.display = "none";
+    else{
+
+        previewPembayaran.style.display =
+            "none";
+
     }
 
 });
+
+
+/* =========================
+   PREVIEW PENERIMA
+========================= */
 
 const targetSelect =
     document.getElementById("beasiswaTargetType");
@@ -510,17 +524,27 @@ targetSelect.addEventListener("change", function(){
         let text =
             this.options[this.selectedIndex].text;
 
-        previewPenerima.style.display = "inline-block";
+        previewPenerima.style.display =
+            "inline-block";
 
         previewPenerima.innerText =
             "Dipilih : " + text;
 
-    }else{
+    }
 
-        previewPenerima.style.display = "none";
+    else{
+
+        previewPenerima.style.display =
+            "none";
+
     }
 
 });
+
+
+/* =========================
+   PREVIEW JENIS POTONGAN
+========================= */
 
 const potongan =
     document.getElementById("jenisPotonganSelect");
@@ -536,14 +560,19 @@ potongan.addEventListener("change", function(){
         let text =
             this.options[this.selectedIndex].text;
 
-        previewPotongan.style.display = "inline-block";
+        previewPotongan.style.display =
+            "inline-block";
 
         previewPotongan.innerText =
             "Dipilih : " + text;
 
-    }else{
+    }
 
-        previewPotongan.style.display = "none";
+    else{
+
+        previewPotongan.style.display =
+            "none";
+
     }
 
 });
