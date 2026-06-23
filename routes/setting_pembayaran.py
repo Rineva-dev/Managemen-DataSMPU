@@ -125,17 +125,15 @@ def save():
         INSERT INTO aturan_pembayaran
         (
             jenis_pembayaran_id,
-            nama_aturan,
             target_type,
             nominal,
             periode_type,
             jumlah_cicilan
         )
-        VALUES (%s, %s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s)
         RETURNING id
     """, (
         jenis_pembayaran_id,
-        nama_aturan,
         target_type,
         nominal,
         periode_type,
