@@ -196,14 +196,6 @@
     color: #ffffff;
 }
 
-.checkbox-list{
-    max-height:200px;
-    overflow-y:auto;
-    border:1px solid #ddd;
-    padding:10px;
-    border-radius:8px;
-}
-
 .siswa-scroll{
     max-height:250px;
 }
@@ -463,16 +455,6 @@
     padding:10px;
 }
 
-.search-dropdown{
-    border:1px solid #ddd;
-    border-radius:10px;
-    max-height:220px;
-    overflow-y:auto;
-    margin-top:8px;
-    padding:10px;
-    background:#fff;
-}
-
 .search-dropdown label{
     display:block;
     padding:8px;
@@ -494,4 +476,70 @@
     margin-top:6px;
     color:#64748b;
     font-size:13px;
+}
+
+/* ===========================
+   FLOATING SEARCH DROPDOWN
+=========================== */
+
+.target-search-wrapper{
+    position: relative;
+    width: 100%;
+}
+
+/* input */
+#searchTarget{
+    width:100%;
+    padding:12px;
+    border:1px solid #dbe2ea;
+    border-radius:10px;
+    font-size:14px;
+    background:#fff;
+}
+
+/* dropdown mengambang */
+.search-dropdown{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+
+    background:#fff;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+
+    margin-top:4px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    max-height:250px;
+    overflow-y:auto;
+
+    z-index:9999;
+
+    display:none;
+}
+
+/* tampil */
+.search-dropdown.show{
+    display:block;
+}
+
+.search-dropdown label{
+    display:block;
+    padding:10px 12px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.search-dropdown label:hover{
+    background:#f8fafc;
+}
+
+/* text jumlah dipilih */
+#selectedText{
+    margin-top:8px;
+    display:block;
+    font-size:13px;
+    color:#64748b;
 }

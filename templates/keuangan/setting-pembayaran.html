@@ -330,26 +330,31 @@ targetType.addEventListener("change", function(){
 
                 <label>Pilih Kelas</label>
 
-                <input type="text"
-                    id="searchTarget"
-                    placeholder="Cari kelas">
+                <div class="target-search-wrapper">
 
-                <div class="search-dropdown">
+                    <input type="text"
+                        id="searchTarget"
+                        placeholder="Cari kelas">
 
-                    {% for k in daftar_kelas %}
+                    <div class="search-dropdown"
+                        id="resultDropdown">
 
-                    <label class="item-target">
+                        {% for k in daftar_kelas %}
 
-                        <input type="checkbox"
-                            name="target_ids"
-                            value="{{ k.id }}"
-                            onchange="updateSelected()">
+                        <label class="item-target">
 
-                        {{ k.tingkat }} {{ k.sub_kelas }}
+                            <input type="checkbox"
+                                name="target_ids"
+                                value="{{ k.id }}"
+                                onchange="updateSelected()">
 
-                    </label>
+                            {{ k.tingkat }} {{ k.sub_kelas }}
 
-                    {% endfor %}
+                        </label>
+
+                        {% endfor %}
+
+                    </div>
 
                 </div>
 
@@ -359,6 +364,8 @@ targetType.addEventListener("change", function(){
 
             </div>
         `;
+
+        initSearchDropdown();
     }
 
 
@@ -370,27 +377,31 @@ targetType.addEventListener("change", function(){
 
                 <label>Pilih Siswa</label>
 
-                <input type="text"
-                    id="searchTarget"
-                    placeholder="Ketik nama siswa">
+                <div class="target-search-wrapper">
 
-                <div class="search-dropdown"
-                    id="resultDropdown">
+                    <input type="text"
+                        id="searchTarget"
+                        placeholder="Ketik nama siswa">
 
-                    {% for s in daftar_siswa %}
+                    <div class="search-dropdown"
+                        id="resultDropdown">
 
-                    <label class="item-target">
+                        {% for s in daftar_siswa %}
 
-                        <input type="checkbox"
-                            name="target_ids"
-                            value="{{ s.id }}"
-                            onchange="updateSelected()">
+                        <label class="item-target">
 
-                        {{ s.nama }}
+                            <input type="checkbox"
+                                name="target_ids"
+                                value="{{ s.id }}"
+                                onchange="updateSelected()">
 
-                    </label>
+                            {{ s.nama }}
 
-                    {% endfor %}
+                        </label>
+
+                        {% endfor %}
+
+                    </div>
 
                 </div>
 
@@ -402,40 +413,7 @@ targetType.addEventListener("change", function(){
         `;
 
 
-        setTimeout(()=>{
-
-            const search =
-                document.getElementById("searchTarget");
-
-            const items =
-                document.querySelectorAll(".item-target");
-
-
-            search.addEventListener("keyup", function(){
-
-                let keyword =
-                    this.value.toLowerCase();
-
-                items.forEach(item=>{
-
-                    if(item.textContent
-                        .toLowerCase()
-                        .includes(keyword)){
-
-                        item.style.display="block";
-
-                    }else{
-
-                        item.style.display="none";
-
-                    }
-
-                });
-
-            });
-
-        },100);
-
+        initSearchDropdown();
     }
 
 });
@@ -458,4 +436,62 @@ document.addEventListener("click", function(e){
     }
 
 });
+
+function initSearchDropdown(){
+
+    const search =
+        document.getElementById("searchTarget");
+
+    const dropdown =
+        document.getElementById("resultDropdown");
+
+    const items =
+        document.querySelectorAll(".item-target");
+
+
+    /* saat focus tampil */
+    search.addEventListener("focus", function(){
+
+        dropdown.classList.add("show");
+
+    });
+
+
+    /* filter */
+    search.addEventListener("keyup", function(){
+
+        let keyword =
+            this.value.toLowerCase();
+
+        items.forEach(item=>{
+
+            if(item.textContent
+                .toLowerCase()
+                .includes(keyword)){
+
+                item.style.display = "block";
+
+            }else{
+
+                item.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+
+    /* klik luar tutup */
+    document.addEventListener("click", function(e){
+
+        if(!search.parentElement.contains(e.target)){
+
+            dropdown.classList.remove("show");
+
+        }
+
+    });
+
+}
 </script>
