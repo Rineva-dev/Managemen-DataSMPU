@@ -286,19 +286,6 @@
     margin-bottom:16px;
 }
 
-/* input + select */
-#modalAturanPembayaran input,
-#modalAturanPembayaran select{
-    width:100%;
-    padding:12px 14px;
-    border:1px solid #dbe2ea;
-    border-radius:10px;
-    outline:none;
-    font-size:14px;
-    transition:.2s ease;
-    background:#fff;
-}
-
 #modalAturanPembayaran input:focus,
 #modalAturanPembayaran select:focus{
     border-color:#f59e0b;
