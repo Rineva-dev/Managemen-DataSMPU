@@ -119,12 +119,14 @@
 
 
     <!-- aturan pembayaran -->
-
     <div class="form-group">
 
         <label>Jenis Pembayaran</label>
 
-        <select name="jenis_pembayaran_id">
+        <select name="jenis_pembayaran_id"
+                id="jenisPembayaranSelect">
+
+            <option value="">Pilih Jenis Pembayaran</option>
 
             {% for j in jenis_pembayaran %}
             <option value="{{ j.id }}">
@@ -134,16 +136,22 @@
 
         </select>
 
+        <small id="selectedJenisPembayaran"
+            class="selected-preview"
+            style="display:none;">
+        </small>
+
     </div>
 
-
     <!-- penerima -->
-
     <div class="form-group">
 
         <label>Pilih Penerima</label>
 
-        <select id="beasiswaTargetType" name="target_type">
+        <select id="beasiswaTargetType"
+                name="target_type">
+
+            <option value="">Pilih Jenis Penerima</option>
 
             <option value="siswa">
                 Per Siswa
@@ -159,25 +167,22 @@
 
         </select>
 
-    </div>
-
-    <input type="hidden"
-       name="target_type"
-       id="hiddenTargetType"
-       value="siswa">
-
-    <div id="beasiswaTargetWrapper">
+        <small id="selectedPenerima"
+            class="selected-preview"
+            style="display:none;">
+        </small>
 
     </div>
-
 
     <!-- potongan -->
-
     <div class="form-group">
 
         <label>Jenis Potongan</label>
 
-        <select name="jenis_pengurangan">
+        <select name="jenis_pengurangan"
+                id="jenisPotonganSelect">
+
+            <option value="">Pilih Jenis Potongan</option>
 
             <option value="persen">
                 Persentase
@@ -192,6 +197,11 @@
             </option>
 
         </select>
+
+        <small id="selectedJenisPotongan"
+            class="selected-preview"
+            style="display:none;">
+        </small>
 
     </div>
 

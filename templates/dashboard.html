@@ -170,6 +170,11 @@
         href="{{ url_for('static', filename='css/keuangan/setting-pembayaran.css') }}">
     {% endif %}
 
+    {% if active_page == "beasiswa" %}
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/keuangan/beasiswa.css') }}">
+    {% endif %}
+
     {% if active_page == "pembayaran_siswa" and show_riwayat %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/riwayat-pembayaran.css') }}">
     {% endif %}

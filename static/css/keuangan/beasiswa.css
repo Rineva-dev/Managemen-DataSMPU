@@ -1,0 +1,10 @@
+.selected-preview{
+    display: inline-block;
+    margin-top: 6px;
+    padding: 4px 10px;
+    background: #eef6ff;
+    color: #2563eb;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+}
