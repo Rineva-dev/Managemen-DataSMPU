@@ -154,7 +154,9 @@
 }
 
 .table-set-pembayaran th:nth-child(7),
-.table-set-pembayaran td:nth-child(7){
+.table-set-pembayaran td:nth-child(7),
+.table-set-pembayaran th:nth-child(8),
+.table-set-pembayaran td:nth-child(8){
     width: 150px;
     text-align: center;
 }
