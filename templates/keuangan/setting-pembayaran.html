@@ -119,20 +119,6 @@
 
         <div id="targetWrapper"></div>
 
-
-        <!-- target id -->
-
-        <div class="form-group">
-
-            <label>ID Target</label>
-
-            <input type="number"
-                   name="target_id"
-                   placeholder="Kosongkan jika semua siswa">
-
-        </div>
-
-
         <!-- nominal -->
 
         <div class="form-group">
@@ -284,9 +270,9 @@ targetType.addEventListener("change", function(){
 
                             <input type="checkbox"
                                    name="target_ids"
-                                   value="{{ a.angkatan }}">
+                                   value="{{ a.tahun_masuk }}">
 
-                            Angkatan {{ a.angkatan }}
+                            Angkatan {{ a.tahun_masuk }}
 
                         </label>
 
@@ -319,7 +305,7 @@ targetType.addEventListener("change", function(){
                                    name="target_ids"
                                    value="{{ k.id }}">
 
-                            {{ k.nama_kelas }}
+                            {{ k.tingkat }} {{ k.sub_kelas }}
 
                         </label>
 
@@ -340,30 +326,63 @@ targetType.addEventListener("change", function(){
 
             <div class="form-group">
 
-                <label>Pilih Siswa</label>
+                <label>Cari Siswa</label>
 
-                <div class="checkbox-list siswa-scroll">
+                <input type="text"
+                    id="searchSiswa"
+                    placeholder="ketik nama siswa">
 
-                    {% for s in daftar_siswa %}
+            </div>
 
-                        <label>
+            <div class="checkbox-list siswa-scroll"
+                id="listSiswa">
 
-                            <input type="checkbox"
-                                   name="target_ids"
-                                   value="{{ s.id }}">
+                {% for s in daftar_siswa %}
 
-                            {{ s.nama_lengkap }}
+                    <label class="item-siswa">
 
-                        </label>
+                        <input type="checkbox"
+                            name="target_ids"
+                            value="{{ s.id }}">
 
-                        <br>
+                        {{ s.nama }}
 
-                    {% endfor %}
+                    </label>
 
-                </div>
+                    <br>
+
+                {% endfor %}
 
             </div>
         `;
+
+        setTimeout(() => {
+
+            const search = document.getElementById("searchSiswa");
+
+            search.addEventListener("keyup", function(){
+
+                let keyword = this.value.toLowerCase();
+
+                document.querySelectorAll(".item-siswa")
+                    .forEach(item => {
+
+                        if(item.textContent
+                            .toLowerCase()
+                            .includes(keyword)){
+
+                            item.style.display = "block";
+
+                        } else {
+
+                            item.style.display = "none";
+                        }
+
+                    });
+
+            });
+
+        },100);
     }
 
 });

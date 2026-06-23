@@ -6,16 +6,17 @@ aturan_pembayaran_bp = Blueprint(
     __name__
 )
 
-
 @aturan_pembayaran_bp.route("/aturan-pembayaran")
 def index():
 
     conn = db()
     cur = conn.cursor()
 
-    # daftar aturan
+    # ======================
+    # aturan pembayaran
+    # ======================
     cur.execute("""
-        SELECT a.*, j.nama AS jenis_nama
+        SELECT a.*, j.nama as jenis_nama
         FROM aturan_pembayaran a
         JOIN jenis_pembayaran j
             ON j.id = a.jenis_pembayaran_id
@@ -25,7 +26,9 @@ def index():
     aturan = cur.fetchall()
 
 
+    # ======================
     # jenis pembayaran
+    # ======================
     cur.execute("""
         SELECT id, nama
         FROM jenis_pembayaran
@@ -36,38 +39,45 @@ def index():
     jenis = cur.fetchall()
 
 
-    # angkatan
+    # ======================
+    # angkatan = tahun_masuk
+    # ======================
     cur.execute("""
-        SELECT DISTINCT angkatan
+        SELECT DISTINCT tahun_masuk
         FROM siswa
-        ORDER BY angkatan DESC
+        WHERE tahun_masuk IS NOT NULL
+        ORDER BY tahun_masuk DESC
     """)
 
     daftar_angkatan = cur.fetchall()
 
 
+    # ======================
     # kelas
+    # ======================
     cur.execute("""
-        SELECT id, nama_kelas
+        SELECT id, tingkat, sub_kelas
         FROM kelas
-        ORDER BY nama_kelas ASC
+        ORDER BY tingkat, sub_kelas
     """)
 
     daftar_kelas = cur.fetchall()
 
 
+    # ======================
     # siswa
+    # ======================
     cur.execute("""
-        SELECT id, nama_lengkap
+        SELECT id, nama
         FROM siswa
-        ORDER BY nama_lengkap ASC
+        ORDER BY nama ASC
     """)
 
     daftar_siswa = cur.fetchall()
 
+
     cur.close()
     conn.close()
-
 
     return render_template(
         "dashboard.html",
