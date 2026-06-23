@@ -126,7 +126,7 @@
         <select name="jenis_pembayaran_id"
                 id="jenisPembayaranSelect">
 
-            <option value="">Pilih Jenis Pembayaran</option>
+            <option value="" disabled selected hidden>Pilih Jenis Pembayaran</option>
 
             {% for j in jenis_pembayaran %}
             <option value="{{ j.id }}">
@@ -151,7 +151,7 @@
         <select id="beasiswaTargetType"
                 name="target_type">
 
-            <option value="">Pilih Jenis Penerima</option>
+            <option value="" disabled selected hidden>Pilih Jenis Penerima</option>
 
             <option value="siswa">
                 Per Siswa
@@ -182,7 +182,7 @@
         <select name="jenis_pengurangan"
                 id="jenisPotonganSelect">
 
-            <option value="">Pilih Jenis Potongan</option>
+            <option value="" disabled selected hidden>Pilih Jenis Potongan</option>
 
             <option value="persen">
                 Persentase
