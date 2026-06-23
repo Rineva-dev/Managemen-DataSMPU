@@ -335,9 +335,7 @@
     font-size:14px;
 }
 
-/* target wrapper animation */
 #targetWrapper{
-    margin-bottom:16px;
     animation:fadeIn .25s ease;
 }
 
