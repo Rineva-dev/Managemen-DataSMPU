@@ -124,11 +124,11 @@
 
         <label>Jenis Pembayaran</label>
 
-        <select name="aturan_pembayaran_id">
+        <select name="jenis_pembayaran_id">
 
-            {% for a in aturan_pembayaran %}
-            <option value="{{ a.id }}">
-                {{ a.nama_aturan }}
+            {% for j in jenis_pembayaran %}
+            <option value="{{ j.id }}">
+                {{ j.nama }}
             </option>
             {% endfor %}
 

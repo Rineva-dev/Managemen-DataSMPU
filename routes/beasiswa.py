@@ -24,12 +24,12 @@ def index():
 
         SELECT
             b.*,
-            a.nama_aturan
+            j.nama as jenis_pembayaran_nama
 
         FROM beasiswa b
 
-        JOIN aturan_pembayaran a
-            ON a.id = b.aturan_pembayaran_id
+        JOIN jenis_pembayaran j
+            ON j.id = b.jenis_pembayaran_id
 
         ORDER BY b.id DESC
 
@@ -38,22 +38,14 @@ def index():
     daftar_beasiswa = cur.fetchall()
 
 
-    # aturan pembayaran
     cur.execute("""
-
-        SELECT
-            id,
-            nama_aturan
-
-        FROM aturan_pembayaran
-
+        SELECT id, nama
+        FROM jenis_pembayaran
         WHERE aktif = TRUE
-
-        ORDER BY nama_aturan ASC
-
+        ORDER BY nama
     """)
 
-    aturan_pembayaran = cur.fetchall()
+    jenis_pembayaran = cur.fetchall()
 
 
     # siswa
@@ -110,21 +102,13 @@ def index():
 
 
     return render_template(
-
         "dashboard.html",
-
         active_page="beasiswa",
-
         daftar_beasiswa=daftar_beasiswa,
-
-        aturan_pembayaran=aturan_pembayaran,
-
+        jenis_pembayaran=jenis_pembayaran,
         daftar_siswa=daftar_siswa,
-
         daftar_kelas=daftar_kelas,
-
         daftar_angkatan=daftar_angkatan
-
     )
 
 """
@@ -140,8 +124,8 @@ def save():
 
     nama_program = request.form["nama_program"]
 
-    aturan_pembayaran_id = \
-        request.form["aturan_pembayaran_id"]
+    jenis_pembayaran_id = \
+        request.form["jenis_pembayaran_id"]
 
     target_type = \
         request.form["target_type"]
@@ -172,7 +156,7 @@ def save():
         INSERT INTO beasiswa
         (
             nama_program,
-            aturan_pembayaran_id,
+            jenis_pembayaran_id,
             target_type,
             jenis_pengurangan,
             nilai_pengurangan,
@@ -193,7 +177,7 @@ def save():
 
         nama_program,
 
-        aturan_pembayaran_id,
+        jenis_pembayaran_id,
 
         target_type,
 
