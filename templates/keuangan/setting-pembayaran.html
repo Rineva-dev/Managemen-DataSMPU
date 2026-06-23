@@ -15,7 +15,6 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Aturan</th>
                 <th>Jenis Pembayaran</th>
                 <th>Target</th>
                 <th>Nominal</th>
@@ -31,21 +30,14 @@
             <tr>
 
                 <td>{{ loop.index }}</td>
-
-                <td>{{ a.nama_aturan }}</td>
-
                 <td>{{ a.jenis_nama }}</td>
-
                 <td>{{ a.target_summary }}</td>
-
                 <td>
                     Rp {{ "{:,}".format(a.nominal) }}
                 </td>
-
                 <td>
                     {{ a.periode_type }}
                 </td>
-
                 <td>
                     {% if a.aktif %}
                         <span class="badge success">Aktif</span>
@@ -53,7 +45,6 @@
                         <span class="badge danger">Nonaktif</span>
                     {% endif %}
                 </td>
-
                 <td>
                     <button class="btn-small edit-btn">
                         Edit
@@ -125,11 +116,11 @@
 
             <label>Nominal</label>
 
-            <input type="text"
-                   id="nominal"
-                   name="nominal"
-                   placeholder="150.000"
-                   required>
+            <input  type="text"
+                    id="nominal"
+                    name="nominal"
+                    placeholder="150.000"
+                    required>
 
         </div>
 
@@ -144,11 +135,8 @@
                     id="periodePembayaran">
 
                 <option value="bulanan">Bulanan</option>
-
                 <option value="tahunan">Tahunan</option>
-
                 <option value="sekali">1x Bayar</option>
-
                 <option value="cicilan">Cicilan</option>
 
             </select>
