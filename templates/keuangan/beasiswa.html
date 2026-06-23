@@ -123,23 +123,44 @@
 
         <label>Jenis Pembayaran</label>
 
-        <select name="jenis_pembayaran_id"
-                id="jenisPembayaranSelect">
+        <div class="custom-dropdown"
+            id="jenisPembayaranDropdown">
 
-            <option value="" disabled selected hidden>Pilih Jenis Pembayaran</option>
+            <div class="dropdown-selected"
+                id="jenisPembayaranSelected">
 
-            {% for j in jenis_pembayaran %}
-            <option value="{{ j.id }}">
-                {{ j.nama }}
-            </option>
-            {% endfor %}
+                <span class="selected-text">
 
-        </select>
+                    Pilih Jenis Pembayaran
 
-        <small id="selectedJenisPembayaran"
-            class="selected-preview"
-            style="display:none;">
-        </small>
+                </span>
+
+                <span class="arrow">▾</span>
+
+            </div>
+
+
+            <div class="dropdown-options"
+                id="jenisPembayaranOptions">
+
+                {% for j in jenis_pembayaran %}
+
+                <div class="dropdown-option"
+                    data-value="{{ j.id }}">
+
+                    {{ j.nama }}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <input type="hidden"
+            name="jenis_pembayaran_id"
+            id="jenisPembayaranValue">
 
     </div>
 
@@ -148,29 +169,57 @@
 
         <label>Pilih Penerima</label>
 
-        <select id="beasiswaTargetType"
-                name="target_type">
+        <div class="custom-dropdown"
+            id="targetDropdown">
 
-            <option value="" disabled selected hidden>Pilih Jenis Penerima</option>
+            <div class="dropdown-selected"
+                id="targetSelected">
 
-            <option value="siswa">
-                Per Siswa
-            </option>
+                <span class="selected-text">
 
-            <option value="kelas">
-                Per Kelas
-            </option>
+                    Pilih Penerima
 
-            <option value="angkatan">
-                Per Angkatan
-            </option>
+                </span>
 
-        </select>
+                <span class="arrow">▾</span>
 
-        <small id="selectedPenerima"
-            class="selected-preview"
-            style="display:none;">
-        </small>
+            </div>
+
+
+            <div class="dropdown-options"
+                id="targetOptions">
+
+                <div class="dropdown-option"
+                    data-value="siswa">
+
+                    Per Siswa
+
+                </div>
+
+
+                <div class="dropdown-option"
+                    data-value="kelas">
+
+                    Per Kelas
+
+                </div>
+
+
+                <div class="dropdown-option"
+                    data-value="angkatan">
+
+                    Per Angkatan
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <input type="hidden"
+            name="target_type"
+            id="beasiswaTargetType">
 
     </div>
 
@@ -179,29 +228,56 @@
 
         <label>Jenis Potongan</label>
 
-        <select name="jenis_pengurangan"
-                id="jenisPotonganSelect">
+        <div class="custom-dropdown"
+            id="potonganDropdown">
 
-            <option value="" disabled selected hidden>Pilih Jenis Potongan</option>
+            <div class="dropdown-selected"
+                id="potonganSelected">
 
-            <option value="persen">
-                Persentase
-            </option>
+                <span class="selected-text">
 
-            <option value="nominal">
-                Nominal
-            </option>
+                    Pilih Jenis Potongan
 
-            <option value="gratis">
-                Gratis
-            </option>
+                </span>
 
-        </select>
+                <span class="arrow">▾</span>
 
-        <small id="selectedJenisPotongan"
-            class="selected-preview"
-            style="display:none;">
-        </small>
+            </div>
+
+
+            <div class="dropdown-options"
+                id="potonganOptions">
+
+                    <div class="dropdown-option"
+                        data-value="persen">
+
+                        Persentase
+
+                    </div>
+
+
+                    <div class="dropdown-option"
+                        data-value="nominal">
+
+                        Nominal
+
+                    </div>
+
+
+                    <div class="dropdown-option"
+                        data-value="gratis">
+
+                        Gratis
+
+                    </div>
+
+            </div>
+
+        </div>
+
+        <input type="hidden"
+            name="jenis_pengurangan"
+            id="jenisPotonganValue">
 
     </div>
 

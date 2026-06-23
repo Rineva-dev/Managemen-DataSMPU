@@ -576,3 +576,169 @@ potongan.addEventListener("change", function(){
     }
 
 });
+
+function initCustomDropdown(
+    dropdownId,
+    hiddenInputId,
+    callback = null
+){
+
+    const dropdown =
+        document.getElementById(
+            dropdownId
+        );
+
+    const selected =
+        dropdown.querySelector(
+            ".dropdown-selected"
+        );
+
+    const options =
+        dropdown.querySelectorAll(
+            ".dropdown-option"
+        );
+
+    const hiddenInput =
+        document.getElementById(
+            hiddenInputId
+        );
+
+
+    selected.addEventListener(
+        "click",
+
+        function(){
+
+            dropdown
+                .classList
+                .toggle("open");
+
+        }
+    );
+
+
+    options.forEach(option=>{
+
+        option.addEventListener(
+            "click",
+
+            function(){
+
+                let text =
+                    this.innerText;
+
+                let value =
+                    this.dataset.value;
+
+
+                selected.querySelector(
+                    ".selected-text"
+                ).innerText = text;
+
+
+                hiddenInput.value =
+                    value;
+
+
+                dropdown
+                    .classList
+                    .remove("open");
+
+
+                if(callback){
+
+                    callback(value);
+
+                }
+
+            }
+
+        );
+
+    });
+
+
+    document.addEventListener(
+        "click",
+
+        function(e){
+
+            if(
+                !dropdown.contains(
+                    e.target
+                )
+            ){
+
+                dropdown
+                    .classList
+                    .remove("open");
+
+            }
+
+        }
+
+    );
+
+}
+
+initCustomDropdown(
+    "jenisPembayaranDropdown",
+    "jenisPembayaranValue"
+);
+
+
+initCustomDropdown(
+    "potonganDropdown",
+    "jenisPotonganValue"
+);
+
+
+initCustomDropdown(
+    "targetDropdown",
+    "beasiswaTargetType",
+
+    function(value){
+
+        // callback untuk load siswa/kelas/angkatan
+
+        let data = [];
+        let mode = "";
+        let placeholder = "";
+
+
+        if(value === "siswa"){
+
+            data = daftarSiswa;
+            mode = "siswa";
+            placeholder = "Cari siswa";
+
+        }
+
+
+        if(value === "kelas"){
+
+            data = daftarKelas;
+            mode = "kelas";
+            placeholder = "Cari kelas";
+
+        }
+
+
+        if(value === "angkatan"){
+
+            data = daftarAngkatan;
+            mode = "angkatan";
+            placeholder = "Cari angkatan";
+
+        }
+
+
+        buildTargetDropdown(
+            data,
+            mode,
+            placeholder
+        );
+
+    }
+
+);
