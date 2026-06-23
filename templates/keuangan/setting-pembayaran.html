@@ -31,7 +31,7 @@
 
                 <td>{{ loop.index }}</td>
                 <td>{{ a.jenis_nama }}</td>
-                <td>{{ a.target_summary }}</td>
+                <td>{{ a.target_summary | safe }}</td>
                 <td>
                     Rp {{ "{:,}".format(a.nominal) }}
                 </td>
