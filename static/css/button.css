@@ -603,7 +603,7 @@
 }
 
 .dropdown-selected {
-    background: #fff;
+    background: #f9fbfd;
     border: 1px solid #ddd;
     padding: 0px 14px;
     border-radius: 8px;
@@ -612,7 +612,6 @@
     align-items: center;
     font-size: 13px;
     transition: 0.2s;
-    box-shadow: 0 12px 28px rgba(0,0,0,.15);
 }
 
 .selected-text-inner{
