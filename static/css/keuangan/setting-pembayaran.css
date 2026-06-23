@@ -266,13 +266,6 @@
     color: #1e293b;
 }
 
-/* tombol atas */
-.pembayaran-filter-bar{
-    display:flex;
-    justify-content:flex-end;
-    margin-bottom:20px;
-}
-
 /* modal khusus aturan pembayaran */
 #modalAturanPembayaran .saas-modal{
     width: 650px;
