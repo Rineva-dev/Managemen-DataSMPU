@@ -125,7 +125,7 @@
 /* ===== TABLE ======*/
 .table-set-pembayaran th:nth-child(2),
 .table-set-pembayaran td:nth-child(2){
-    width: 250px;
+    width: 200px;
     text-align: left;
 }
 
@@ -137,22 +137,18 @@
 
 .table-set-pembayaran th:nth-child(4),
 .table-set-pembayaran td:nth-child(4){
-    width: 130px;
+    width: 150px;
     text-align: right;
 }
 
 .table-set-pembayaran th:nth-child(5),
 .table-set-pembayaran td:nth-child(5){
-    width: 150px;
+    width: 100px;
     text-align: center;
 }
 
 .table-set-pembayaran th:nth-child(6),
-.table-set-pembayaran td:nth-child(6){
-    width: 150px;
-    text-align: center;
-}
-
+.table-set-pembayaran td:nth-child(6),
 .table-set-pembayaran th:nth-child(7),
 .table-set-pembayaran td:nth-child(7),
 .table-set-pembayaran th:nth-child(8),
