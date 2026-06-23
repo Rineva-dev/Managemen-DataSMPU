@@ -166,34 +166,23 @@ def index():
         "dashboard.html",
 
         active_page="aturan_pembayaran",
-
         aturan_pembayaran=aturan,
-
         jenis_pembayaran=jenis,
-
         daftar_angkatan=daftar_angkatan,
-
         daftar_kelas=daftar_kelas,
-
         daftar_siswa=daftar_siswa
     )
 
 @aturan_pembayaran_bp.route("/save-aturan-pembayaran", methods=["POST"])
 def save():
-    print("FORM DATA:", request.form)
 
     jenis_pembayaran_id = request.form["jenis_pembayaran_id"]
-
+    nama_aturan = request.form["nama_aturan"]
     target_type = request.form["target_type"]
-
     target_ids = request.form.getlist("target_ids")
-
     nominal = request.form["nominal"]
-
     periode_type = request.form["periode_type"]
-
     jumlah_cicilan = request.form.get("jumlah_cicilan") or 1
-
 
     # hapus format ribuan
     nominal = nominal.replace(".", "")
@@ -207,15 +196,17 @@ def save():
     cur.execute("""
         INSERT INTO aturan_pembayaran
         (
+            nama_aturan,
             jenis_pembayaran_id,
             target_type,
             nominal,
             periode_type,
             jumlah_cicilan
         )
-        VALUES (%s, %s, %s, %s, %s)
+        VALUES (%s, %s, %s, %s, %s, %s)
         RETURNING id
     """, (
+        nama_aturan,
         jenis_pembayaran_id,
         target_type,
         nominal,
