@@ -282,44 +282,42 @@ targetType.addEventListener("change", function(){
 
                 <label>Pilih Angkatan</label>
 
-                <div class="custom-multi-select">
+                <div class="target-search-wrapper">
 
-                    <div class="select-box"
-                         onclick="toggleDropdown('dropdownAngkatan')"
-                         id="selectedText">
+                    <input type="text"
+                        id="searchTarget"
+                        placeholder="Cari angkatan">
 
-                        Pilih angkatan
+                    <div class="search-dropdown"
+                        id="resultDropdown">
 
-                    </div>
+                        {% for a in daftar_angkatan %}
 
-                    <div class="dropdown-panel"
-                         id="dropdownAngkatan">
+                        <label class="item-target">
 
-                        <div class="dropdown-list">
+                            <input type="checkbox"
+                                name="target_ids"
+                                value="{{ a.tahun_masuk }}"
+                                onchange="updateSelected()">
 
-                            {% for a in daftar_angkatan %}
+                            Angkatan {{ a.tahun_masuk }}
 
-                            <label>
+                        </label>
 
-                                <input type="checkbox"
-                                       name="target_ids"
-                                       value="{{ a.tahun_masuk }}"
-                                       onchange="updateSelected()">
-
-                                Angkatan {{ a.tahun_masuk }}
-
-                            </label>
-
-                            {% endfor %}
-
-                        </div>
+                        {% endfor %}
 
                     </div>
 
                 </div>
 
+                <small id="selectedText">
+                    Belum ada dipilih
+                </small>
+
             </div>
         `;
+
+        initSearchDropdown();
     }
 
     if(this.value === "kelas"){
