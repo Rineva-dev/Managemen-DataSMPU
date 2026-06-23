@@ -462,3 +462,36 @@
     margin-bottom:10px;
     padding:10px;
 }
+
+.search-dropdown{
+    border:1px solid #ddd;
+    border-radius:10px;
+    max-height:220px;
+    overflow-y:auto;
+    margin-top:8px;
+    padding:10px;
+    background:#fff;
+}
+
+.search-dropdown label{
+    display:block;
+    padding:8px;
+    cursor:pointer;
+}
+
+.search-dropdown label:hover{
+    background:#f8fafc;
+}
+
+#searchTarget{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+#selectedText{
+    margin-top:6px;
+    color:#64748b;
+    font-size:13px;
+}

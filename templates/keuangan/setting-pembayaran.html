@@ -252,17 +252,17 @@ function toggleDropdown(id){
 
 }
 
-
-function updateSelected(type){
+function updateSelected(){
 
     const checked =
         document.querySelectorAll(
-            `input[name="target_ids"]:checked`
+            'input[name="target_ids"]:checked'
         );
 
     document
         .getElementById("selectedText")
-        .innerText = checked.length + " dipilih";
+        .innerText =
+        checked.length + " dipilih";
 }
 
 targetType.addEventListener("change", function(){
@@ -322,7 +322,6 @@ targetType.addEventListener("change", function(){
         `;
     }
 
-
     if(this.value === "kelas"){
 
         wrapper.innerHTML = `
@@ -331,41 +330,32 @@ targetType.addEventListener("change", function(){
 
                 <label>Pilih Kelas</label>
 
-                <div class="custom-multi-select">
+                <input type="text"
+                    id="searchTarget"
+                    placeholder="Cari kelas">
 
-                    <div class="select-box"
-                         onclick="toggleDropdown('dropdownKelas')"
-                         id="selectedText">
+                <div class="search-dropdown">
 
-                        Pilih kelas
+                    {% for k in daftar_kelas %}
 
-                    </div>
+                    <label class="item-target">
 
-                    <div class="dropdown-panel"
-                         id="dropdownKelas">
+                        <input type="checkbox"
+                            name="target_ids"
+                            value="{{ k.id }}"
+                            onchange="updateSelected()">
 
-                        <div class="dropdown-list">
+                        {{ k.tingkat }} {{ k.sub_kelas }}
 
-                            {% for k in daftar_kelas %}
+                    </label>
 
-                            <label>
-
-                                <input type="checkbox"
-                                       name="target_ids"
-                                       value="{{ k.id }}"
-                                       onchange="updateSelected()">
-
-                                {{ k.tingkat }} {{ k.sub_kelas }}
-
-                            </label>
-
-                            {% endfor %}
-
-                        </div>
-
-                    </div>
+                    {% endfor %}
 
                 </div>
+
+                <small id="selectedText">
+                    Belum ada dipilih
+                </small>
 
             </div>
         `;
@@ -380,81 +370,72 @@ targetType.addEventListener("change", function(){
 
                 <label>Pilih Siswa</label>
 
-                <div class="custom-multi-select">
+                <input type="text"
+                    id="searchTarget"
+                    placeholder="Ketik nama siswa">
 
-                    <div class="select-box"
-                         onclick="toggleDropdown('dropdownSiswa')"
-                         id="selectedText">
+                <div class="search-dropdown"
+                    id="resultDropdown">
 
-                        Pilih siswa
+                    {% for s in daftar_siswa %}
 
-                    </div>
+                    <label class="item-target">
 
-                    <div class="dropdown-panel"
-                         id="dropdownSiswa">
+                        <input type="checkbox"
+                            name="target_ids"
+                            value="{{ s.id }}"
+                            onchange="updateSelected()">
 
-                        <input type="text"
-                               id="searchSiswa"
-                               placeholder="Cari siswa...">
+                        {{ s.nama }}
 
-                        <div class="dropdown-list">
+                    </label>
 
-                            {% for s in daftar_siswa %}
-
-                            <label class="item-siswa">
-
-                                <input type="checkbox"
-                                       name="target_ids"
-                                       value="{{ s.id }}"
-                                       onchange="updateSelected()">
-
-                                {{ s.nama }}
-
-                            </label>
-
-                            {% endfor %}
-
-                        </div>
-
-                    </div>
+                    {% endfor %}
 
                 </div>
+
+                <small id="selectedText">
+                    Belum ada dipilih
+                </small>
 
             </div>
         `;
 
 
-        setTimeout(() => {
+        setTimeout(()=>{
 
             const search =
-                document.getElementById("searchSiswa");
+                document.getElementById("searchTarget");
+
+            const items =
+                document.querySelectorAll(".item-target");
+
 
             search.addEventListener("keyup", function(){
 
                 let keyword =
                     this.value.toLowerCase();
 
-                document
-                    .querySelectorAll(".item-siswa")
-                    .forEach(item => {
+                items.forEach(item=>{
 
-                        if(item.textContent
-                            .toLowerCase()
-                            .includes(keyword)){
+                    if(item.textContent
+                        .toLowerCase()
+                        .includes(keyword)){
 
-                            item.style.display="block";
+                        item.style.display="block";
 
-                        }else{
+                    }else{
 
-                            item.style.display="none";
+                        item.style.display="none";
 
-                        }
+                    }
 
-                    });
+                });
 
             });
 
         },100);
+
     }
 
 });
