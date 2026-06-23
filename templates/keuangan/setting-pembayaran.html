@@ -195,4 +195,10 @@
 
 </div>
 
+<script>
+    const daftarSiswa = {{ daftar_siswa | tojson }};
+    const daftarKelas = {{ daftar_kelas | tojson }};
+    const daftarAngkatan = {{ daftar_angkatan | tojson }};
+</script>
+
 <script src="{{ url_for('static', filename='js/keuangan/setting-pembayaran.js') }}"></script>

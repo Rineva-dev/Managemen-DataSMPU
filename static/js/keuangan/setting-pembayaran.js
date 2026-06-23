@@ -70,151 +70,103 @@ function updateSelected(){
 targetType.addEventListener("change", function(){
 
     if(this.value === "all"){
-
         wrapper.innerHTML = "";
-
+        return;
     }
 
+    let data = [];
+    let placeholder = "";
+    let mode = "";
 
     if(this.value === "angkatan"){
-
-        wrapper.innerHTML = `
-
-            <div class="form-group">
-
-                <label>Pilih Angkatan</label>
-
-                <div class="target-search-wrapper">
-
-                    <input type="text"
-                        id="searchTarget"
-                        placeholder="Cari angkatan">
-
-                    <div class="search-dropdown"
-                        id="resultDropdown">
-
-                        {% for a in daftar_angkatan %}
-
-                        <label class="item-target">
-
-                            <input type="checkbox"
-                                name="target_ids"
-                                value="{{ a.tahun_masuk }}"
-                                onchange="updateSelected(); sortCheckedItems()">
-
-                            Angkatan {{ a.tahun_masuk }}
-
-                        </label>
-
-                        {% endfor %}
-
-                    </div>
-
-                </div>
-
-                <small id="selectedText">
-                    Belum ada dipilih
-                </small>
-
-            </div>
-        `;
-
-        initSearchDropdown();
+        data = daftarAngkatan;
+        placeholder = "Cari angkatan";
+        mode = "angkatan";
     }
 
     if(this.value === "kelas"){
-
-        wrapper.innerHTML = `
-
-            <div class="form-group">
-
-                <label>Pilih Kelas</label>
-
-                <div class="target-search-wrapper">
-
-                    <input type="text"
-                        id="searchTarget"
-                        placeholder="Cari kelas">
-
-                    <div class="search-dropdown"
-                        id="resultDropdown">
-
-                        {% for k in daftar_kelas %}
-
-                        <label class="item-target">
-
-                            <input type="checkbox"
-                                name="target_ids"
-                                value="{{ k.id }}"
-                                onchange="updateSelected(); sortCheckedItems()">
-
-                            {{ k.tingkat }} {{ k.sub_kelas }}
-
-                        </label>
-
-                        {% endfor %}
-
-                    </div>
-
-                </div>
-
-                <small id="selectedText">
-                    Belum ada dipilih
-                </small>
-
-            </div>
-        `;
-
-        initSearchDropdown();
+        data = daftarKelas;
+        placeholder = "Cari kelas";
+        mode = "kelas";
     }
-
 
     if(this.value === "siswa"){
+        data = daftarSiswa;
+        placeholder = "Ketik nama siswa";
+        mode = "siswa";
+    }
 
-        wrapper.innerHTML = `
+    let htmlItems = "";
 
-            <div class="form-group">
+    data.forEach(item => {
 
-                <label>Pilih Siswa</label>
+        let label = "";
 
-                <div class="target-search-wrapper">
+        if(mode === "siswa"){
+            label = item.nama;
+        }
 
-                    <input type="text"
-                        id="searchTarget"
-                        placeholder="Ketik nama siswa">
+        if(mode === "kelas"){
+            label = item.tingkat + " " + item.sub_kelas;
+        }
 
-                    <div class="search-dropdown"
-                        id="resultDropdown">
+        if(mode === "angkatan"){
+            label = "Angkatan " + item.tahun_masuk;
+        }
 
-                        {% for s in daftar_siswa %}
+        let value =
+            mode === "siswa"
+                ? item.id
+                : mode === "kelas"
+                ? item.id
+                : item.tahun_masuk;
 
-                        <label class="item-target">
+        htmlItems += `
 
-                            <input type="checkbox"
-                                name="target_ids"
-                                value="{{ s.id }}"
-                                onchange="updateSelected(); sortCheckedItems()">
+            <label class="item-target">
 
-                            {{ s.nama }}
+                <input type="checkbox"
+                    name="target_ids"
+                    value="${value}"
+                    onchange="updateSelected(); sortCheckedItems()">
 
-                        </label>
+                ${label}
 
-                        {% endfor %}
+            </label>
 
-                    </div>
+        `;
+    });
+
+    wrapper.innerHTML = `
+
+        <div class="form-group">
+
+            <label>Pilih ${mode}</label>
+
+            <div class="target-search-wrapper">
+
+                <input type="text"
+                    id="searchTarget"
+                    placeholder="${placeholder}">
+
+                <div class="search-dropdown"
+                    id="resultDropdown">
+
+                    ${htmlItems}
 
                 </div>
 
-                <small id="selectedText">
-                    Belum ada dipilih
-                </small>
-
             </div>
-        `;
 
+            <small id="selectedText">
+                Belum ada dipilih
+            </small>
 
-        initSearchDropdown();
-    }
+        </div>
+
+    `;
+
+    initSearchDropdown();
 
 });
 
@@ -307,21 +259,23 @@ function sortCheckedItems(){
             dropdown.querySelectorAll(".item-target")
         );
 
-    items.sort((a,b)=>{
+    const checkedItems =
+        items.filter(item =>
+            item.querySelector("input").checked
+        );
 
-        const aChecked =
-            a.querySelector("input").checked;
+    const uncheckedItems =
+        items.filter(item =>
+            !item.querySelector("input").checked
+        );
 
-        const bChecked =
-            b.querySelector("input").checked;
+    dropdown.innerHTML = "";
 
-        return bChecked - aChecked;
-    });
+    checkedItems.forEach(item =>
+        dropdown.appendChild(item)
+    );
 
-    items.forEach(item => {
-
-        dropdown.appendChild(item);
-
-    });
-
+    uncheckedItems.forEach(item =>
+        dropdown.appendChild(item)
+    );
 }
