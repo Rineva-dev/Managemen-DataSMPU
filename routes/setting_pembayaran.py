@@ -27,6 +27,89 @@ def index():
 
 
     # ======================
+    # buat target summary
+    # ======================
+    for a in aturan:
+
+        # kalau berlaku untuk semua siswa
+        if a["target_type"] == "all":
+            a["target_summary"] = "Semua Siswa"
+            continue
+
+
+        # ambil target dari tabel relasi
+        cur.execute("""
+            SELECT target_id
+            FROM aturan_pembayaran_target
+            WHERE aturan_id = %s
+        """, (a["id"],))
+
+        targets = cur.fetchall()
+
+        nama_target = []
+
+
+        # ======================
+        # target siswa
+        # ======================
+        if a["target_type"] == "siswa":
+
+            for t in targets:
+
+                cur.execute("""
+                    SELECT nama
+                    FROM siswa
+                    WHERE id = %s
+                """, (t["target_id"],))
+
+                siswa = cur.fetchone()
+
+                if siswa:
+                    nama_target.append(
+                        siswa["nama"]
+                    )
+
+
+        # ======================
+        # target kelas
+        # ======================
+        elif a["target_type"] == "kelas":
+
+            for t in targets:
+
+                cur.execute("""
+                    SELECT tingkat, sub_kelas
+                    FROM kelas
+                    WHERE id = %s
+                """, (t["target_id"],))
+
+                kelas = cur.fetchone()
+
+                if kelas:
+                    nama_target.append(
+                        f'{kelas["tingkat"]} {kelas["sub_kelas"]}'
+                    )
+
+
+        # ======================
+        # target angkatan
+        # ======================
+        elif a["target_type"] == "angkatan":
+
+            for t in targets:
+
+                nama_target.append(
+                    f'Angkatan {t["target_id"]}'
+                )
+
+
+        # gabungkan jadi summary
+        a["target_summary"] = "<br>".join(
+            nama_target
+        )
+
+
+    # ======================
     # jenis pembayaran
     # ======================
     cur.execute("""
