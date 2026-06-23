@@ -496,32 +496,6 @@ jenisPembayaran.addEventListener("change", function(){
 
 });
 
-const jenisPembayaran =
-    document.getElementById("jenisPembayaranSelect");
-
-const previewPembayaran =
-    document.getElementById("selectedJenisPembayaran");
-
-
-jenisPembayaran.addEventListener("change", function(){
-
-    if(this.value){
-
-        let text =
-            this.options[this.selectedIndex].text;
-
-        previewPembayaran.style.display = "inline-block";
-
-        previewPembayaran.innerText =
-            "Dipilih : " + text;
-
-    }else{
-
-        previewPembayaran.style.display = "none";
-    }
-
-});
-
 const targetSelect =
     document.getElementById("beasiswaTargetType");
 
