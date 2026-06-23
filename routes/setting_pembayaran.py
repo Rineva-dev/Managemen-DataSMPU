@@ -95,15 +95,11 @@ def index():
         daftar_siswa=daftar_siswa
     )
 
-@aturan_pembayaran_bp.route(
-    "/save-aturan-pembayaran",
-    methods=["POST"]
-)
+@aturan_pembayaran_bp.route("/save-aturan-pembayaran", methods=["POST"])
 def save():
+    print("FORM DATA:", request.form)
 
     jenis_pembayaran_id = request.form["jenis_pembayaran_id"]
-
-    nama_aturan = request.form["nama_aturan"]
 
     target_type = request.form["target_type"]
 
