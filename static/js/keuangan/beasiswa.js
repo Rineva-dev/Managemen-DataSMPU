@@ -681,6 +681,95 @@ function initCustomDropdown(
 
 }
 
+const dropdown =
+    document.getElementById("akunGuruDropdown");
+
+const options =
+    dropdown.querySelectorAll(".dropdown-option");
+
+let currentIndex = -1;
+
+
+dropdown.addEventListener("keydown", function(e){
+
+    // buka dropdown
+    if(e.key === "Enter"){
+
+        dropdown.classList.toggle("open");
+    }
+
+    // panah bawah
+    if(e.key === "ArrowDown"){
+
+        e.preventDefault();
+
+        currentIndex++;
+
+        if(currentIndex >= options.length){
+
+            currentIndex = 0;
+        }
+
+        updateActiveOption();
+    }
+
+    // panah atas
+    if(e.key === "ArrowUp"){
+
+        e.preventDefault();
+
+        currentIndex--;
+
+        if(currentIndex < 0){
+
+            currentIndex =
+                options.length - 1;
+        }
+
+        updateActiveOption();
+    }
+
+    // Page Down
+    if(e.key === "PageDown"){
+
+        e.preventDefault();
+
+        currentIndex += 5;
+
+        if(currentIndex >= options.length){
+
+            currentIndex =
+                options.length - 1;
+        }
+
+        updateActiveOption();
+    }
+
+    // pilih
+    if(e.key === "Enter" && currentIndex >= 0){
+
+        options[currentIndex].click();
+    }
+
+});
+
+function updateActiveOption(){
+
+    options.forEach(o=>{
+
+        o.classList.remove("active");
+
+    });
+
+    options[currentIndex]
+        .classList.add("active");
+
+    options[currentIndex]
+        .scrollIntoView({
+            block: "nearest"
+        });
+}
+
 initCustomDropdown(
     "jenisPembayaranDropdown",
     "jenisPembayaranValue"
@@ -742,3 +831,4 @@ initCustomDropdown(
     }
 
 );
+
