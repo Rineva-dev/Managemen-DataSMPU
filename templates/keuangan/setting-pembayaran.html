@@ -29,8 +29,8 @@
 
             {% for a in aturan_pembayaran %}
             <tr>
-
                 <td>{{ loop.index }}</td>
+                <td>{{ a.nama_aturan }}</td>
                 <td>{{ a.jenis_nama }}</td>
                 <td>{{ a.target_summary | safe }}</td>
                 <td>
