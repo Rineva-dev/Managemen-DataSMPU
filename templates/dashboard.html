@@ -100,6 +100,10 @@
     {% include "keuangan/setting-pembayaran.html" %}
 {% endif %}
 
+{% if active_page == "beasiswa" %}
+    {% include "keuangan/beasiswa.html" %}
+{% endif %}
+
 {% include "sections/profile-modal.html" %}
 
 {% endblock %}

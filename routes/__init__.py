@@ -15,6 +15,7 @@ from routes.public import public_bp
 from routes.verifikasi_pembayaran import verifikasi_bp
 from routes.setting_pembayaran import aturan_pembayaran_bp
 from routes.jenis_pembayaran import jenis_pembayaran_bp
+from routes.beasiswa import beasiswa_bp
 
 ALL_BLUEPRINTS = [
     auth_bp,
@@ -33,5 +34,6 @@ ALL_BLUEPRINTS = [
     public_bp,
     verifikasi_bp,
     aturan_pembayaran_bp,
-    jenis_pembayaran_bp
+    jenis_pembayaran_bp,
+    beasiswa_bp
 ]
