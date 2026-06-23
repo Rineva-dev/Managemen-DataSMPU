@@ -491,6 +491,7 @@
     padding:8px 12px;
     cursor:pointer;
     font-size:14px;
+    transition: all .2s ease;
 }
 
 .search-dropdown label:hover{
@@ -510,6 +511,5 @@
     width:14px !important;
     height:14px !important;
     transform:none !important;
-    margin-right:8px;
     cursor:pointer;
 }
