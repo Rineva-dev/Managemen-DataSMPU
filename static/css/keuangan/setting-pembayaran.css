@@ -248,3 +248,190 @@
         text-align: left;
     }
 }
+
+/* =====================================
+   ATURAN PEMBAYARAN
+===================================== */
+
+/* container */
+#aturan-pembayaran-content{
+    margin-top: 20px;
+}
+
+/* title */
+#aturan-pembayaran-content h3{
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1e293b;
+}
+
+/* tombol atas */
+.pembayaran-filter-bar{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:20px;
+}
+
+/* modal khusus aturan pembayaran */
+#modalAturanPembayaran .saas-modal{
+    width: 650px;
+    max-width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* form dalam modal */
+#modalAturanPembayaran .form-group{
+    margin-bottom:16px;
+}
+
+/* input + select */
+#modalAturanPembayaran input,
+#modalAturanPembayaran select{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid #dbe2ea;
+    border-radius:10px;
+    outline:none;
+    font-size:14px;
+    transition:.2s ease;
+    background:#fff;
+}
+
+#modalAturanPembayaran input:focus,
+#modalAturanPembayaran select:focus{
+    border-color:#f59e0b;
+    box-shadow:0 0 0 3px rgba(245,158,11,.15);
+}
+
+/* checkbox area */
+.checkbox-list{
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:14px;
+    background:#f8fafc;
+    max-height:220px;
+    overflow-y:auto;
+}
+
+/* scrollbar */
+.checkbox-list::-webkit-scrollbar{
+    width:8px;
+}
+
+.checkbox-list::-webkit-scrollbar-thumb{
+    background:#cbd5e1;
+    border-radius:20px;
+}
+
+/* item checkbox */
+.checkbox-list label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.2s ease;
+    font-size:14px;
+}
+
+.checkbox-list label:hover{
+    background:#f1f5f9;
+}
+
+/* checkbox */
+.checkbox-list input[type="checkbox"]{
+    width:16px;
+    height:16px;
+    cursor:pointer;
+}
+
+/* khusus siswa */
+.siswa-scroll{
+    max-height:300px;
+}
+
+/* search siswa */
+#searchSiswa{
+    width:100%;
+    padding:12px;
+    border:1px solid #dbe2ea;
+    border-radius:10px;
+    margin-bottom:12px;
+    font-size:14px;
+}
+
+/* target wrapper animation */
+#targetWrapper{
+    margin-bottom:16px;
+    animation:fadeIn .25s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(-5px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* tabel aturan pembayaran */
+.table-set-pembayaran{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+
+.table-set-pembayaran th{
+    background:#f8fafc;
+    padding:14px;
+    font-size:13px;
+    text-transform:uppercase;
+    color:#64748b;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.table-set-pembayaran td{
+    padding:14px;
+    border-bottom:1px solid #f1f5f9;
+    font-size:14px;
+}
+
+/* target summary */
+.table-set-pembayaran td:nth-child(4){
+    max-width:250px;
+    word-break:break-word;
+}
+
+/* nominal */
+.table-set-pembayaran td:nth-child(5){
+    font-weight:600;
+    color:#0f172a;
+}
+
+/* responsive modal */
+@media(max-width:768px){
+
+    #modalAturanPembayaran .saas-modal{
+        width:95%;
+        padding:20px;
+    }
+
+    .checkbox-list{
+        max-height:180px;
+    }
+
+    .siswa-scroll{
+        max-height:180px;
+    }
+
+}
