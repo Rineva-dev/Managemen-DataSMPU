@@ -469,3 +469,107 @@ function closePenerimaBeasiswa(){
         .classList.remove("show");
 
 }
+
+const jenisPembayaran =
+    document.getElementById("jenisPembayaranSelect");
+
+const previewPembayaran =
+    document.getElementById("selectedJenisPembayaran");
+
+
+jenisPembayaran.addEventListener("change", function(){
+
+    if(this.value){
+
+        let text =
+            this.options[this.selectedIndex].text;
+
+        previewPembayaran.style.display = "inline-block";
+
+        previewPembayaran.innerText =
+            "Dipilih : " + text;
+
+    }else{
+
+        previewPembayaran.style.display = "none";
+    }
+
+});
+
+const jenisPembayaran =
+    document.getElementById("jenisPembayaranSelect");
+
+const previewPembayaran =
+    document.getElementById("selectedJenisPembayaran");
+
+
+jenisPembayaran.addEventListener("change", function(){
+
+    if(this.value){
+
+        let text =
+            this.options[this.selectedIndex].text;
+
+        previewPembayaran.style.display = "inline-block";
+
+        previewPembayaran.innerText =
+            "Dipilih : " + text;
+
+    }else{
+
+        previewPembayaran.style.display = "none";
+    }
+
+});
+
+const targetSelect =
+    document.getElementById("beasiswaTargetType");
+
+const previewPenerima =
+    document.getElementById("selectedPenerima");
+
+
+targetSelect.addEventListener("change", function(){
+
+    if(this.value){
+
+        let text =
+            this.options[this.selectedIndex].text;
+
+        previewPenerima.style.display = "inline-block";
+
+        previewPenerima.innerText =
+            "Dipilih : " + text;
+
+    }else{
+
+        previewPenerima.style.display = "none";
+    }
+
+});
+
+const potongan =
+    document.getElementById("jenisPotonganSelect");
+
+const previewPotongan =
+    document.getElementById("selectedJenisPotongan");
+
+
+potongan.addEventListener("change", function(){
+
+    if(this.value){
+
+        let text =
+            this.options[this.selectedIndex].text;
+
+        previewPotongan.style.display = "inline-block";
+
+        previewPotongan.innerText =
+            "Dipilih : " + text;
+
+    }else{
+
+        previewPotongan.style.display = "none";
+    }
+
+});
