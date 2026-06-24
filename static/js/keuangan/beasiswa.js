@@ -5,56 +5,6 @@ function openTambahBeasiswa(){document.getElementById("modalBeasiswa").classList
 function closeModalBeasiswa(){document.getElementById("modalBeasiswa").classList.remove("show");}
 
 /* =========================
-   TARGET SELECTOR
-========================= */
-const wrapper = document.getElementById("beasiswaTargetWrapper");
-
-document.addEventListener("DOMContentLoaded", function () {
-    const beasiswaTarget = document.getElementById("beasiswaTargetType");
-    beasiswaTarget.addEventListener("change", function(){
-
-            document.getElementById("hiddenTargetType").value = this.value;
-
-            let data = [];
-            let mode = "";
-            let placeholder = "";
-
-            if(this.value === "siswa"){
-
-                data = daftarSiswa;
-                mode = "siswa";
-                placeholder = "Cari siswa";
-
-            }
-
-            if(this.value === "kelas"){
-
-                data = daftarKelas;
-                mode = "kelas";
-                placeholder = "Cari kelas";
-
-            }
-
-            if(this.value === "angkatan"){
-
-                data = daftarAngkatan;
-                mode = "angkatan";
-                placeholder = "Cari angkatan";
-
-            }
-
-            buildTargetDropdown(
-                data,
-                mode,
-                placeholder
-            );
-
-        }
-    );
-});
-
-
-/* =========================
    BUILD DROPDOWN
 ========================= */
 function buildTargetDropdown(
@@ -454,26 +404,53 @@ const previewPenerima = document.getElementById("selectedPenerima");
 ========================= */
 const previewPotongan = document.getElementById("selectedJenisPotongan");
 
-function updateActiveOption(){
-
-    options.forEach(o => o.classList.remove("active"));
-
-    const el = options[currentIndex];
-
-    if (!el) return;
-
-    el.classList.add("active");
-
-    el.focus();
-
-    el.scrollIntoView({
-        block: "nearest"
-    });
-}
 
 initCustomDropdown(
     "jenisPembayaranDropdown",
     "jenisPembayaranValue"
+);
+
+initCustomDropdown(
+    "targetDropdown",
+    "beasiswaTargetType",
+
+    function(value){
+
+        let data = [];
+        let mode = "";
+        let placeholder = "";
+
+        if(value === "siswa"){
+
+            data = daftarSiswa;
+            mode = "siswa";
+            placeholder = "Cari siswa";
+
+        }
+
+        if(value === "kelas"){
+
+            data = daftarKelas;
+            mode = "kelas";
+            placeholder = "Cari kelas";
+
+        }
+
+        if(value === "angkatan"){
+
+            data = daftarAngkatan;
+            mode = "angkatan";
+            placeholder = "Cari angkatan";
+
+        }
+
+        buildTargetDropdown(
+            data,
+            mode,
+            placeholder
+        );
+
+    }
 );
 
 initCustomDropdown(
