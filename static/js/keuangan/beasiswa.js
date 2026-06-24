@@ -571,6 +571,7 @@ function initCustomDropdown(
                 }
 
                 highlightOption();
+                pilihOption(currentIndex);
 
             }
 
@@ -598,6 +599,7 @@ function initCustomDropdown(
                 }
 
                 highlightOption();
+                pilihOption(currentIndex);
 
             }
 
