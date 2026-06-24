@@ -571,7 +571,7 @@ function initCustomDropdown(
                 }
 
                 highlightOption();
-                pilihOption(currentIndex);
+                updateSelection(currentIndex);
 
             }
 
@@ -599,7 +599,7 @@ function initCustomDropdown(
                 }
 
                 highlightOption();
-                pilihOption(currentIndex);
+                updateSelection(currentIndex);
 
             }
 
@@ -660,8 +660,21 @@ function initCustomDropdown(
 
     }
 
-
     function pilihOption(index){
+
+        updateSelection(index);
+
+        dropdown.classList.remove("open");
+
+        selected.focus();
+
+        if(callback){
+
+            callback(hiddenInput.value);
+        }
+    }
+
+    function updateSelection(index){
 
         const option = options[index];
         const text = option.textContent.trim();
@@ -672,27 +685,11 @@ function initCustomDropdown(
         ).innerText = text;
 
         hiddenInput.value = value;
-
-        dropdown.classList.remove("open");
-
-        selected.focus();
-
         currentIndex = index;
-
-
-        if(callback){
-
-            callback(value);
-
-        }
-
     }
 
 
-    document.addEventListener(
-        "click",
-
-        function(e){
+    document.addEventListener("click", function(e){
 
             if(!dropdown.contains(e.target)){
 
