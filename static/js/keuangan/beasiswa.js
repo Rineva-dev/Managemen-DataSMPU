@@ -585,40 +585,231 @@ initCustomDropdown(
     "jenisPotonganValue"
 );
 
-initCustomDropdown(
-    "targetDropdown",
-    "beasiswaTargetType",
+function initCustomDropdown(
+    dropdownId,
+    hiddenInputId,
+    callback = null
+){
 
-    function(value){
-        let data = [];
-        let mode = "";
-        let placeholder = "";
+    const dropdown =
+        document.getElementById(dropdownId);
 
+    if(!dropdown) return;
 
-        if(value === "siswa"){
-            data = daftarSiswa;
-            mode = "siswa";
-            placeholder = "Cari siswa";
-        }
-
-        if(value === "kelas"){
-            data = daftarKelas;
-            mode = "kelas";
-            placeholder = "Cari kelas";
-        }
-
-
-        if(value === "angkatan"){
-            data = daftarAngkatan;
-            mode = "angkatan";
-            placeholder = "Cari angkatan";
-        }
-
-        buildTargetDropdown(
-            data,
-            mode,
-            placeholder
+    const selected =
+        dropdown.querySelector(
+            ".dropdown-selected"
         );
-    }
-);
 
+    const options =
+        dropdown.querySelectorAll(
+            ".dropdown-option"
+        );
+
+    const hiddenInput =
+        document.getElementById(
+            hiddenInputId
+        );
+
+    let currentIndex = -1;
+
+
+    /* CLICK OPEN */
+
+    selected.addEventListener(
+        "click",
+
+        function(){
+
+            dropdown.classList.toggle("open");
+
+        }
+
+    );
+
+
+    /* CLICK OPTION */
+
+    options.forEach((option,index)=>{
+
+        option.addEventListener(
+            "click",
+
+            function(){
+
+                pilihOption(index);
+
+            }
+
+        );
+
+    });
+
+
+    /* KEYBOARD */
+
+    dropdown.addEventListener(
+        "keydown",
+
+        function(e){
+
+            // bawah
+            if(e.key === "ArrowDown"){
+
+                e.preventDefault();
+
+                if(!dropdown.classList.contains("open")){
+
+                    dropdown.classList.add("open");
+
+                    currentIndex = 0;
+
+                }
+
+                else{
+
+                    if(currentIndex < options.length - 1){
+
+                        currentIndex++;
+
+                    }
+
+                }
+
+                highlightOption();
+
+            }
+
+
+            // atas
+            if(e.key === "ArrowUp"){
+
+                e.preventDefault();
+
+                if(!dropdown.classList.contains("open")){
+
+                    dropdown.classList.add("open");
+
+                    currentIndex =
+                        options.length - 1;
+
+                }
+
+                else{
+
+                    if(currentIndex > 0){
+
+                        currentIndex--;
+
+                    }
+
+                }
+
+                highlightOption();
+
+            }
+
+
+            // enter pilih
+            if(e.key === "Enter"){
+
+                e.preventDefault();
+
+                if(currentIndex >= 0){
+
+                    pilihOption(currentIndex);
+
+                }
+
+            }
+
+
+            // escape close
+            if(e.key === "Escape"){
+
+                dropdown.classList.remove("open");
+
+            }
+
+        }
+
+    );
+
+
+    function highlightOption(){
+
+        options.forEach(opt=>{
+
+            opt.classList.remove("active");
+
+        });
+
+
+        if(options[currentIndex]){
+
+            options[currentIndex]
+                .classList.add("active");
+
+            options[currentIndex]
+                .scrollIntoView({
+
+                    block: "nearest"
+
+                });
+
+        }
+
+    }
+
+
+    function pilihOption(index){
+
+        const option =
+            options[index];
+
+        const text =
+            option.innerText;
+
+        const value =
+            option.dataset.value;
+
+
+        selected.querySelector(
+            ".selected-text"
+        ).innerText = text;
+
+
+        hiddenInput.value = value;
+
+
+        dropdown.classList.remove("open");
+
+
+        currentIndex = index;
+
+
+        if(callback){
+
+            callback(value);
+
+        }
+
+    }
+
+
+    document.addEventListener(
+        "click",
+
+        function(e){
+
+            if(!dropdown.contains(e.target)){
+
+                dropdown.classList.remove("open");
+
+            }
+
+        }
+
+    );
+
+}
