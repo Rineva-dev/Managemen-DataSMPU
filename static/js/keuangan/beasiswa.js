@@ -492,6 +492,7 @@ function initCustomDropdown(
     selected.addEventListener("click", function(){
 
         dropdown.classList.toggle("open");
+        dropdown.classList.add("active");
 
         if(dropdown.classList.contains("open")){
 

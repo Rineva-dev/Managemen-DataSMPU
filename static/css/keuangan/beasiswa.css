@@ -15,3 +15,9 @@
     background: #e8f0fe;
 
 }
+
+.custom-dropdown .dropdown-selected:focus{
+    outline: none;
+    border-color: var(--orange-focus);
+    box-shadow: 0 0 0 3px rgba(246,156,59,0.15);
+}
