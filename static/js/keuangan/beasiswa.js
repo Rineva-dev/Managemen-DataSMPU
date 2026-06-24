@@ -512,16 +512,19 @@ function initCustomDropdown(
 
     /* CLICK OPEN */
 
-    selected.addEventListener(
-        "click",
+    selected.addEventListener("click", function(){
 
-        function(){
+        dropdown.classList.toggle("open");
 
-            dropdown.classList.toggle("open");
+        if(dropdown.classList.contains("open")){
+
+            currentIndex = 0;
+
+            highlightOption();
 
         }
 
-    );
+    });
 
 
     /* CLICK OPTION */
@@ -543,11 +546,7 @@ function initCustomDropdown(
 
 
     /* KEYBOARD */
-
-    dropdown.addEventListener(
-        "keydown",
-
-        function(e){
+    selected.addEventListener("keydown", function(e){
 
             // bawah
             if(e.key === "ArrowDown"){
@@ -557,7 +556,6 @@ function initCustomDropdown(
                 if(!dropdown.classList.contains("open")){
 
                     dropdown.classList.add("open");
-
                     currentIndex = 0;
 
                 }
@@ -585,9 +583,7 @@ function initCustomDropdown(
                 if(!dropdown.classList.contains("open")){
 
                     dropdown.classList.add("open");
-
-                    currentIndex =
-                        options.length - 1;
+                    currentIndex = options.length - 1;
 
                 }
 
@@ -605,8 +601,7 @@ function initCustomDropdown(
 
             }
 
-
-            // enter pilih
+            // enter
             if(e.key === "Enter"){
 
                 e.preventDefault();
@@ -620,15 +615,21 @@ function initCustomDropdown(
             }
 
 
-            // escape close
+            // escape
             if(e.key === "Escape"){
 
                 dropdown.classList.remove("open");
 
             }
 
-        }
+            // TAB → tutup lalu lanjut ke field berikutnya
+            if(e.key === "Tab"){
 
+                dropdown.classList.remove("open");
+
+            }
+
+        }
     );
 
 
@@ -660,26 +661,19 @@ function initCustomDropdown(
 
     function pilihOption(index){
 
-        const option =
-            options[index];
-
-        const text =
-            option.innerText;
-
-        const value =
-            option.dataset.value;
-
+        const option = options[index];
+        const text = option.innerText;
+        const value = option.dataset.value;
 
         selected.querySelector(
             ".selected-text"
         ).innerText = text;
 
-
         hiddenInput.value = value;
-
 
         dropdown.classList.remove("open");
 
+        selected.focus();
 
         currentIndex = index;
 
