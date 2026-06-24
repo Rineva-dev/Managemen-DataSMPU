@@ -1,32 +1,13 @@
 /* =========================
    OPEN CLOSE MODAL
 ========================= */
-
-function openTambahBeasiswa(){
-
-    document
-        .getElementById("modalBeasiswa")
-        .classList.add("show");
-
-}
-
-function closeModalBeasiswa(){
-
-    document
-        .getElementById("modalBeasiswa")
-        .classList.remove("show");
-
-}
-
+function openTambahBeasiswa(){document.getElementById("modalBeasiswa").classList.add("show");}
+function closeModalBeasiswa(){document.getElementById("modalBeasiswa").classList.remove("show");}
 
 /* =========================
    TARGET SELECTOR
 ========================= */
-
-const wrapper =
-    document.getElementById(
-        "beasiswaTargetWrapper"
-    );
+const wrapper = document.getElementById("beasiswaTargetWrapper");
 
 document.addEventListener("DOMContentLoaded", function () {
     const beasiswaTarget = document.getElementById("beasiswaTargetType");
@@ -76,7 +57,6 @@ document.addEventListener("DOMContentLoaded", function () {
 /* =========================
    BUILD DROPDOWN
 ========================= */
-
 function buildTargetDropdown(
     data,
     mode,
@@ -169,8 +149,6 @@ function buildTargetDropdown(
         </div>
 
     `;
-
-
     initSearchDropdown();
 
 }
@@ -464,25 +442,17 @@ function closePenerimaBeasiswa(){
 /* =========================
    PREVIEW JENIS PEMBAYARAN
 ========================= */
-
-const previewPembayaran =
-    document.getElementById("selectedJenisPembayaran");
-
+const previewPembayaran = document.getElementById("selectedJenisPembayaran");
 
 /* =========================
    PREVIEW PENERIMA
 ========================= */
-
-const previewPenerima =
-    document.getElementById("selectedPenerima");
+const previewPenerima = document.getElementById("selectedPenerima");
 
 /* =========================
    PREVIEW JENIS POTONGAN
 ========================= */
-
-const previewPotongan =
-    document.getElementById("selectedJenisPotongan");
-
+const previewPotongan = document.getElementById("selectedJenisPotongan");
 
 function updateActiveOption(){
 
@@ -494,7 +464,7 @@ function updateActiveOption(){
 
     el.classList.add("active");
 
-    el.focus(); // 🔥 ini penting (bukan scroll saja)
+    el.focus();
 
     el.scrollIntoView({
         block: "nearest"
@@ -610,60 +580,45 @@ initCustomDropdown(
     "jenisPembayaranValue"
 );
 
-
 initCustomDropdown(
     "potonganDropdown",
     "jenisPotonganValue"
 );
-
 
 initCustomDropdown(
     "targetDropdown",
     "beasiswaTargetType",
 
     function(value){
-
-        // callback untuk load siswa/kelas/angkatan
-
         let data = [];
         let mode = "";
         let placeholder = "";
 
 
         if(value === "siswa"){
-
             data = daftarSiswa;
             mode = "siswa";
             placeholder = "Cari siswa";
-
         }
 
-
         if(value === "kelas"){
-
             data = daftarKelas;
             mode = "kelas";
             placeholder = "Cari kelas";
-
         }
 
 
         if(value === "angkatan"){
-
             data = daftarAngkatan;
             mode = "angkatan";
             placeholder = "Cari angkatan";
-
         }
-
 
         buildTargetDropdown(
             data,
             mode,
             placeholder
         );
-
     }
-
 );
 
