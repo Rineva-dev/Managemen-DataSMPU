@@ -465,112 +465,24 @@ function closePenerimaBeasiswa(){
    PREVIEW JENIS PEMBAYARAN
 ========================= */
 
-const jenisPembayaran =
-    document.getElementById("jenisPembayaranSelect");
-
 const previewPembayaran =
     document.getElementById("selectedJenisPembayaran");
-
-
-jenisPembayaran.addEventListener("change", function(){
-
-    if(this.value){
-
-        let text =
-            this.options[this.selectedIndex].text;
-
-        previewPembayaran.style.display =
-            "inline-block";
-
-        previewPembayaran.innerText =
-            "Dipilih : " + text;
-
-    }
-
-    else{
-
-        previewPembayaran.style.display =
-            "none";
-
-    }
-
-});
 
 
 /* =========================
    PREVIEW PENERIMA
 ========================= */
 
-const targetSelect =
-    document.getElementById("beasiswaTargetType");
-
 const previewPenerima =
     document.getElementById("selectedPenerima");
-
-
-targetSelect.addEventListener("change", function(){
-
-    if(this.value){
-
-        let text =
-            this.options[this.selectedIndex].text;
-
-        previewPenerima.style.display =
-            "inline-block";
-
-        previewPenerima.innerText =
-            "Dipilih : " + text;
-
-    }
-
-    else{
-
-        previewPenerima.style.display =
-            "none";
-
-    }
-
-});
-
 
 /* =========================
    PREVIEW JENIS POTONGAN
 ========================= */
 
-const potongan =
-    document.getElementById("jenisPotonganSelect");
-
 const previewPotongan =
     document.getElementById("selectedJenisPotongan");
 
-
-potongan.addEventListener("change", function(){
-
-    if(this.value){
-
-        let text =
-            this.options[this.selectedIndex].text;
-
-        previewPotongan.style.display =
-            "inline-block";
-
-        previewPotongan.innerText =
-            "Dipilih : " + text;
-
-    }
-
-    else{
-
-        previewPotongan.style.display =
-            "none";
-
-    }
-
-});
-
-options.forEach(opt => {
-    opt.setAttribute("tabindex", "0");
-});
 
 function updateActiveOption(){
 
@@ -587,20 +499,6 @@ function updateActiveOption(){
     el.scrollIntoView({
         block: "nearest"
     });
-}
-
-if (e.key === "PageDown") {
-
-    e.preventDefault();
-
-    const pageSize = 5;
-
-    currentIndex = Math.min(
-        currentIndex + pageSize,
-        options.length - 1
-    );
-
-    updateActiveOption();
 }
 
 function initCustomDropdown(
