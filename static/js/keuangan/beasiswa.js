@@ -23,63 +23,54 @@ function closeModalBeasiswa(){
    TARGET SELECTOR
 ========================= */
 
-const beasiswaTarget =
-    document.getElementById(
-        "beasiswaTargetType"
-    );
-
 const wrapper =
     document.getElementById(
         "beasiswaTargetWrapper"
     );
 
+document.addEventListener("DOMContentLoaded", function () {
+    const beasiswaTarget = document.getElementById("beasiswaTargetType");
+    beasiswaTarget.addEventListener("change", function(){
 
-beasiswaTarget.addEventListener(
-    "change",
+            document.getElementById("hiddenTargetType").value = this.value;
 
-    function(){
+            let data = [];
+            let mode = "";
+            let placeholder = "";
 
-        document
-            .getElementById("hiddenTargetType")
-            .value = this.value;
+            if(this.value === "siswa"){
 
-        let data = [];
-        let mode = "";
-        let placeholder = "";
+                data = daftarSiswa;
+                mode = "siswa";
+                placeholder = "Cari siswa";
 
-        if(this.value === "siswa"){
+            }
 
-            data = daftarSiswa;
-            mode = "siswa";
-            placeholder = "Cari siswa";
+            if(this.value === "kelas"){
+
+                data = daftarKelas;
+                mode = "kelas";
+                placeholder = "Cari kelas";
+
+            }
+
+            if(this.value === "angkatan"){
+
+                data = daftarAngkatan;
+                mode = "angkatan";
+                placeholder = "Cari angkatan";
+
+            }
+
+            buildTargetDropdown(
+                data,
+                mode,
+                placeholder
+            );
 
         }
-
-        if(this.value === "kelas"){
-
-            data = daftarKelas;
-            mode = "kelas";
-            placeholder = "Cari kelas";
-
-        }
-
-        if(this.value === "angkatan"){
-
-            data = daftarAngkatan;
-            mode = "angkatan";
-            placeholder = "Cari angkatan";
-
-        }
-
-        buildTargetDropdown(
-            data,
-            mode,
-            placeholder
-        );
-
-    }
-);
-
+    );
+});
 
 
 /* =========================
