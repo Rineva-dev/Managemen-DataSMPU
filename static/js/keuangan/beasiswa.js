@@ -568,6 +568,41 @@ potongan.addEventListener("change", function(){
 
 });
 
+options.forEach(opt => {
+    opt.setAttribute("tabindex", "0");
+});
+
+function updateActiveOption(){
+
+    options.forEach(o => o.classList.remove("active"));
+
+    const el = options[currentIndex];
+
+    if (!el) return;
+
+    el.classList.add("active");
+
+    el.focus(); // 🔥 ini penting (bukan scroll saja)
+
+    el.scrollIntoView({
+        block: "nearest"
+    });
+}
+
+if (e.key === "PageDown") {
+
+    e.preventDefault();
+
+    const pageSize = 5;
+
+    currentIndex = Math.min(
+        currentIndex + pageSize,
+        options.length - 1
+    );
+
+    updateActiveOption();
+}
+
 function initCustomDropdown(
     dropdownId,
     hiddenInputId,
