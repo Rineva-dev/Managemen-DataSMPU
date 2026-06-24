@@ -36,15 +36,10 @@
             <tr>
 
                 <td>{{ loop.index }}</td>
-
                 <td>{{ b.nama_program }}</td>
-
                 <td>{{ b.nama_aturan }}</td>
-
                 <td>{{ b.jenis_pengurangan }}</td>
-
                 <td>{{ b.nilai_pengurangan }}</td>
-
                 <td>
                     {{ b.tanggal_mulai }}
                     <br>
@@ -127,11 +122,7 @@
             <div class="dropdown-selected"
                 id="jenisPembayaranSelected" tabindex="0">
 
-                <span class="selected-text">
-
-                    Pilih Jenis Pembayaran
-
-                </span>
+                <span class="selected-text">Pilih Jenis Pembayaran</span>
 
                 <span class="arrow">▾</span>
 
@@ -142,14 +133,7 @@
                 id="jenisPembayaranOptions">
 
                 {% for j in jenis_pembayaran %}
-
-                <div class="dropdown-option"
-                    data-value="{{ j.id }}">
-
-                    {{ j.nama }}
-
-                </div>
-
+                <div class="dropdown-option" data-value="{{ j.id }}">{{ j.nama }}</div>
                 {% endfor %}
 
             </div>

@@ -664,7 +664,7 @@ function initCustomDropdown(
     function pilihOption(index){
 
         const option = options[index];
-        const text = option.innerText;
+        const text = option.textContent.trim();
         const value = option.dataset.value;
 
         selected.querySelector(
