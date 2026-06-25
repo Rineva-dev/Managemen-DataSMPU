@@ -22,6 +22,32 @@
     box-shadow: 0 0 0 3px rgba(246,156,59,0.15);
 }
 
-.custom-dropdown.active .dropdown-options {
+/* FORCE CUSTOM DROPDOWN DI MODAL BEASISWA */
+
+#modalBeasiswa .custom-dropdown{
+    position: relative;
+    overflow: visible !important;
+}
+
+#modalBeasiswa .dropdown-options{
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+
+    background: white;
+
+    z-index: 99999 !important;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    max-height: 180px;
+
+    overflow-y: auto;
+}
+
+#modalBeasiswa .custom-dropdown.active .dropdown-options{
     display: block !important;
 }
