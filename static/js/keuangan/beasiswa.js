@@ -453,13 +453,6 @@ initCustomDropdown(
     "jenisPotonganValue"
 );
 
-document.getElementById("jenisPembayaranDropdown")
-.addEventListener("mousedown", function(){
-
-    this.classList.add("active");
-
-});
-
 function initCustomDropdown(
     dropdownId,
     hiddenInputId,
@@ -666,7 +659,6 @@ function initCustomDropdown(
         hiddenInput.value = value;
         currentIndex = index;
     }
-
 }
 
 document.addEventListener(
