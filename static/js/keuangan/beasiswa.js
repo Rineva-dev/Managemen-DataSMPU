@@ -374,8 +374,6 @@ function openPenerimaBeasiswa(id){
 
 }
 
-
-
 function closePenerimaBeasiswa(){
 
     document
@@ -493,11 +491,13 @@ function initCustomDropdown(
 
     /* CLICK OPEN */
     selected.addEventListener("click", function(e){
-        console.log("CLICK FIRED");
+        console.log("SELECTED CLICK");
+
+        e.preventDefault();
         e.stopPropagation();
 
         dropdown.classList.add("active");
-        console.log(dropdown.className);
+        console.log("AFTER ADD", dropdown.className);
 
         if(dropdown.classList.contains("active")){
 
@@ -667,7 +667,14 @@ function initCustomDropdown(
         currentIndex = index;
     }
 
-
- 
-
 }
+
+document.addEventListener(
+    "click",
+    function(e){
+
+        console.log("DOCUMENT CLICK:", e.target);
+
+    },
+    true
+);
