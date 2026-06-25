@@ -70,7 +70,7 @@ html, body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin-left: 240px;
+    margin-left: 280px;
     background: var(--bg-soft);
 }
 
