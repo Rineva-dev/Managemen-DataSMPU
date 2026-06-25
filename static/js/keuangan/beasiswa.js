@@ -493,15 +493,11 @@ function initCustomDropdown(
 
     /* CLICK OPEN */
     selected.addEventListener("click", function(e){
+        console.log("CLICK FIRED");
         e.stopPropagation();
 
-        dropdown.classList.toggle("active");
+        dropdown.classList.add("active");
         console.log(dropdown.className);
-
-        console.log(
-            "ACTIVE?",
-            dropdown.classList.contains("active")
-        );
 
         if(dropdown.classList.contains("active")){
 
