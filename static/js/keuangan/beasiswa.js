@@ -455,6 +455,15 @@ initCustomDropdown(
     "jenisPotonganValue"
 );
 
+document.getElementById("jenisPembayaranDropdown")
+.addEventListener("mousedown", function(){
+
+    console.log("MOUSEDOWN TEST");
+
+    this.classList.add("active");
+
+});
+
 function initCustomDropdown(
     dropdownId,
     hiddenInputId,
@@ -486,13 +495,14 @@ function initCustomDropdown(
 
     /* CLICK OPEN */
     selected.addEventListener("click", function(e){
-        console.log("CLICK JALAN");
-
         e.stopPropagation();
 
         dropdown.classList.toggle("active");
 
-        console.log(dropdown.className);
+        console.log(
+            "ACTIVE?",
+            dropdown.classList.contains("active")
+        );
 
         if(dropdown.classList.contains("active")){
 
