@@ -22,3 +22,8 @@
     box-shadow: 0 0 0 3px rgba(246,156,59,0.15);
 }
 
+.custom-dropdown.active .dropdown-options{
+    display:block !important;
+    background:red !important;
+    border:3px solid blue !important;
+}
