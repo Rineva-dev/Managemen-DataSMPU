@@ -287,12 +287,9 @@ function sortCheckedItems(){
 
 }
 
-
-
 /* =========================
    MODAL PENERIMA
 ========================= */
-
 function openPenerimaBeasiswa(id){
 
     fetch(
@@ -489,11 +486,11 @@ function initCustomDropdown(
 
     /* CLICK OPEN */
     selected.addEventListener("click", function(e){
+        console.log("CLICK JALAN");
 
         e.stopPropagation();
 
         dropdown.classList.toggle("active");
-        dropdown.classList.add("active");
 
         if(dropdown.classList.contains("active")){
 
