@@ -492,6 +492,8 @@ function initCustomDropdown(
 
         dropdown.classList.toggle("active");
 
+        console.log(dropdown.className);
+
         if(dropdown.classList.contains("active")){
 
             currentIndex = 0;
