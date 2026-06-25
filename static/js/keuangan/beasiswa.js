@@ -459,205 +459,126 @@ function initCustomDropdown(
     callback = null
 ){
 
-    const dropdown =
-        document.getElementById(dropdownId);
-
+    const dropdown = document.getElementById(dropdownId);
     if(!dropdown) return;
 
-    const selected =
-        dropdown.querySelector(
-            ".dropdown-selected"
-        );
-
-    const options =
-        dropdown.querySelectorAll(
-            ".dropdown-option"
-        );
-
-    const hiddenInput =
-        document.getElementById(
-            hiddenInputId
-        );
+    const selected = dropdown.querySelector(".dropdown-selected");
+    const options = dropdown.querySelectorAll(".dropdown-option");
+    const hiddenInput = document.getElementById(hiddenInputId);
 
     let currentIndex = -1;
 
 
-    /* CLICK OPEN */
+    /* ----------------------
+       KLIK UNTUK BUKA/TUTUP
+    ---------------------- */
     selected.addEventListener("click", function(e){
-        console.log("SELECTED CLICK");
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        dropdown.classList.add("active");
-        console.log("AFTER ADD", dropdown.className);
+        e.stopPropagation(); // ✅ cegah klik menyebar ke luar
+        dropdown.classList.toggle("active");
 
         if(dropdown.classList.contains("active")){
-
             currentIndex = 0;
             highlightOption();
-
+        } else {
+            currentIndex = -1;
         }
-
     });
 
 
-    /* CLICK OPTION */
-
-    options.forEach((option,index)=>{
-
+    /* ----------------------
+       PILIH OPSI SAAT DIKLIK
+    ---------------------- */
+    options.forEach((option, index)=>{
         option.addEventListener("click", function(e){
-
             e.stopPropagation();
-
             pilihOption(index);
-
         });
-
     });
 
 
-    /* KEYBOARD */
-    selected.addEventListener("keydown", function(e){
-
-            // bawah
-            if(e.key === "ArrowDown"){
-
-                e.preventDefault();
-
-                if(!dropdown.classList.contains("active")){
-
-                    dropdown.classList.add("active");
-                    currentIndex = 0;
-
-                }
-
-                else{
-
-                    if(currentIndex < options.length - 1){
-
-                        currentIndex++;
-
-                    }
-
-                }
-
-                highlightOption();
-                updateSelection(currentIndex);
-
-            }
-
-
-            // atas
-            if(e.key === "ArrowUp"){
-
-                e.preventDefault();
-
-                if(!dropdown.classList.contains("active")){
-
-                    dropdown.classList.add("active");
-                    currentIndex = options.length - 1;
-
-                }
-
-                else{
-
-                    if(currentIndex > 0){
-
-                        currentIndex--;
-
-                    }
-
-                }
-
-                highlightOption();
-                updateSelection(currentIndex);
-
-            }
-
-            // enter
-            if(e.key === "Enter"){
-
-                e.preventDefault();
-
-                if(currentIndex >= 0){
-
-                    pilihOption(currentIndex);
-
-                }
-
-            }
-
-
-            // escape
-            if(e.key === "Escape"){
-
-                dropdown.classList.remove("active");
-
-            }
-
-            // TAB → tutup lalu lanjut ke field berikutnya
-            if(e.key === "Tab"){
-
-                dropdown.classList.remove("active");
-
-            }
-
+    /* ----------------------
+       TUTUP JIKA KLIK DI LUAR
+    ---------------------- */
+    document.addEventListener("click", function(e){
+        if(!dropdown.contains(e.target)){
+            dropdown.classList.remove("active");
+            currentIndex = -1;
         }
-    );
+    });
+
+
+    /* ----------------------
+       NAVIGASI DENGAN KEYBOARD
+    ---------------------- */
+    selected.addEventListener("keydown", function(e){
+        // Bawah
+        if(e.key === "ArrowDown"){
+            e.preventDefault();
+            if(!dropdown.classList.contains("active")){
+                dropdown.classList.add("active");
+                currentIndex = 0;
+            } else {
+                if(currentIndex < options.length - 1) currentIndex++;
+            }
+            highlightOption();
+        }
+
+        // Atas
+        if(e.key === "ArrowUp"){
+            e.preventDefault();
+            if(!dropdown.classList.contains("active")){
+                dropdown.classList.add("active");
+                currentIndex = options.length - 1;
+            } else {
+                if(currentIndex > 0) currentIndex--;
+            }
+            highlightOption();
+        }
+
+        // Enter
+        if(e.key === "Enter"){
+            e.preventDefault();
+            if(currentIndex >= 0) pilihOption(currentIndex);
+        }
+
+        // Escape
+        if(e.key === "Escape"){
+            dropdown.classList.remove("active");
+            selected.focus();
+            currentIndex = -1;
+        }
+
+        // Tab
+        if(e.key === "Tab"){
+            dropdown.classList.remove("active");
+            currentIndex = -1;
+        }
+    });
 
 
     function highlightOption(){
-
-        options.forEach(opt=>{
-
-            opt.classList.remove("active");
-
-        });
-
-
+        options.forEach(opt => opt.classList.remove("active"));
         if(options[currentIndex]){
-
-            options[currentIndex]
-                .classList.add("active");
-
-            options[currentIndex]
-                .scrollIntoView({
-
-                    block: "nearest"
-
-                });
-
+            options[currentIndex].classList.add("active");
+            options[currentIndex].scrollIntoView({ block: "nearest" });
         }
-
     }
 
     function pilihOption(index){
-
         updateSelection(index);
-
         dropdown.classList.remove("active");
-
         selected.focus();
-
-        if(callback){
-
-            callback(hiddenInput.value);
-        }
+        currentIndex = -1;
+        if(callback) callback(hiddenInput.value);
     }
 
     function updateSelection(index){
-
         const option = options[index];
         const text = option.textContent.trim();
         const value = option.dataset.value;
 
-        selected.querySelector(
-            ".selected-text"
-        ).innerText = text;
-
+        selected.querySelector(".selected-text").innerText = text;
         hiddenInput.value = value;
-        currentIndex = index;
     }
 }
 
