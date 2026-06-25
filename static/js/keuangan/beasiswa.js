@@ -488,15 +488,14 @@ function initCustomDropdown(
 
 
     /* CLICK OPEN */
-
     selected.addEventListener("click", function(e){
 
         e.stopPropagation();
 
-        dropdown.classList.toggle("open");
+        dropdown.classList.toggle("active");
         dropdown.classList.add("active");
 
-        if(dropdown.classList.contains("open")){
+        if(dropdown.classList.contains("active")){
 
             currentIndex = 0;
             highlightOption();
@@ -529,9 +528,9 @@ function initCustomDropdown(
 
                 e.preventDefault();
 
-                if(!dropdown.classList.contains("open")){
+                if(!dropdown.classList.contains("active")){
 
-                    dropdown.classList.add("open");
+                    dropdown.classList.add("active");
                     currentIndex = 0;
 
                 }
@@ -557,9 +556,9 @@ function initCustomDropdown(
 
                 e.preventDefault();
 
-                if(!dropdown.classList.contains("open")){
+                if(!dropdown.classList.contains("active")){
 
-                    dropdown.classList.add("open");
+                    dropdown.classList.add("active");
                     currentIndex = options.length - 1;
 
                 }
@@ -596,14 +595,14 @@ function initCustomDropdown(
             // escape
             if(e.key === "Escape"){
 
-                dropdown.classList.remove("open");
+                dropdown.classList.remove("active");
 
             }
 
             // TAB → tutup lalu lanjut ke field berikutnya
             if(e.key === "Tab"){
 
-                dropdown.classList.remove("open");
+                dropdown.classList.remove("active");
 
             }
 
@@ -640,7 +639,7 @@ function initCustomDropdown(
 
         updateSelection(index);
 
-        dropdown.classList.remove("open");
+        dropdown.classList.remove("active");
 
         selected.focus();
 
@@ -669,7 +668,7 @@ function initCustomDropdown(
 
             if(!dropdown.contains(e.target)){
 
-                dropdown.classList.remove("open");
+                dropdown.classList.remove("active");
 
             }
 
