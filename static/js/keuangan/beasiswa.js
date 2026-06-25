@@ -7,34 +7,23 @@ function closeModalBeasiswa(){document.getElementById("modalBeasiswa").classList
 /* =========================
    BUILD DROPDOWN
 ========================= */
-function buildTargetDropdown(
-    data,
-    mode,
-    placeholder
-){
-
+function buildTargetDropdown(data, mode, placeholder){
     let htmlItems = "";
-
-    data.forEach(item=>{
-
+    data.forEach(item => {
         let label = "";
         let value = "";
-
         if(mode === "siswa"){
             label = item.nama;
             value = item.id;
         }
-
         if(mode === "kelas"){
             label = item.tingkat + " " + item.sub_kelas;
             value = item.id;
         }
-
         if(mode === "angkatan"){
             label = "Angkatan " + item.tahun_masuk;
             value = item.tahun_masuk;
         }
-
         htmlItems += `
             <label class="item-target">
                 <input type="checkbox" name="target_ids" value="${value}"
@@ -67,7 +56,8 @@ function buildTargetDropdown(
 ========================= */
 function updateSelected(){
     const checked = document.querySelectorAll('input[name="target_ids"]:checked');
-    document.getElementById("selectedText").innerText = checked.length + " dipilih";
+    const el = document.getElementById("selectedText");
+    if(el) el.innerText = checked.length + " dipilih";
 }
 
 /* =========================
@@ -76,31 +66,25 @@ function updateSelected(){
 function initSearchDropdown(){
     const search = document.getElementById("searchTarget");
     const dropdown = document.getElementById("resultDropdown");
-    const items = document.querySelectorAll(".item-target");
-
     if(!search || !dropdown) return;
 
-    search.addEventListener("focus", function(){
+    const items = dropdown.querySelectorAll(".item-target");
+
+    // Hapus event lama agar tidak menumpuk
+    search.onfocus = null;
+    search.onkeyup = null;
+
+    search.addEventListener("focus", function(e){
+        e.stopPropagation();
         sortCheckedItems();
         dropdown.classList.add("show");
     });
 
     search.addEventListener("keyup", function(){
-        let keyword = this.value.toLowerCase();
+        const keyword = this.value.toLowerCase();
         items.forEach(item => {
-            if(item.textContent.toLowerCase().includes(keyword)){
-                item.style.display = "block";
-            } else {
-                item.style.display = "none";
-            }
+            item.style.display = item.textContent.toLowerCase().includes(keyword) ? "block" : "none";
         });
-    });
-
-    // Tutup jika klik luar → pakai pengecekan aman
-    document.addEventListener("click", function(e){
-        if(!search.parentElement.contains(e.target)){
-            dropdown.classList.remove("show");
-        }
     });
 }
 
@@ -112,12 +96,12 @@ function sortCheckedItems(){
     if(!dropdown) return;
 
     const items = Array.from(dropdown.querySelectorAll(".item-target"));
-    const checkedItems = items.filter(item => item.querySelector("input").checked);
-    const uncheckedItems = items.filter(item => !item.querySelector("input").checked);
+    const checked = items.filter(i => i.querySelector("input").checked);
+    const unchecked = items.filter(i => !i.querySelector("input").checked);
 
     dropdown.innerHTML = "";
-    checkedItems.forEach(item => dropdown.appendChild(item));
-    uncheckedItems.forEach(item => dropdown.appendChild(item));
+    checked.forEach(i => dropdown.appendChild(i));
+    unchecked.forEach(i => dropdown.appendChild(i));
 }
 
 /* =========================
@@ -129,14 +113,7 @@ function openPenerimaBeasiswa(id){
     .then(data => {
         let html = `
             <table>
-                <thead>
-                    <tr>
-                        <th>NISN</th>
-                        <th>Nama</th>
-                        <th>Kelas</th>
-                        <th>Alamat</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>NISN</th><th>Nama</th><th>Kelas</th><th>Alamat</th></tr></thead>
                 <tbody>
         `;
         data.forEach(item => {
@@ -149,10 +126,7 @@ function openPenerimaBeasiswa(id){
                 </tr>
             `;
         });
-        html += `
-                </tbody>
-            </table>
-        `;
+        html += `</tbody></table>`;
         document.getElementById("listPenerimaBeasiswa").innerHTML = html;
         document.getElementById("modalPenerimaBeasiswa").classList.add("show");
     });
@@ -169,29 +143,36 @@ const previewPembayaran = document.getElementById("selectedJenisPembayaran");
 const previewPenerima = document.getElementById("selectedPenerima");
 const previewPotongan = document.getElementById("selectedJenisPotongan");
 
-initCustomDropdown("jenisPembayaranDropdown", "jenisPembayaranValue");
-initCustomDropdown("targetDropdown", "beasiswaTargetType", function(value){
-    let data = [];
-    let mode = "";
-    let placeholder = "";
-    if(value === "siswa") {
-        data = daftarSiswa;
-        mode = "siswa";
-        placeholder = "Cari siswa";
-    }
-    if(value === "kelas") {
-        data = daftarKelas;
-        mode = "kelas";
-        placeholder = "Cari kelas";
-    }
-    if(value === "angkatan") {
-        data = daftarAngkatan;
-        mode = "angkatan";
-        placeholder = "Cari angkatan";
-    }
-    buildTargetDropdown(data, mode, placeholder);
+// Jalankan inisialisasi saat modal selesai dibuka
+document.addEventListener("DOMContentLoaded", function(){
+    initCustomDropdown("jenisPembayaranDropdown", "jenisPembayaranValue");
+    initCustomDropdown("targetDropdown", "beasiswaTargetType", function(value){
+        let data = [], mode = "", placeholder = "";
+        if(value === "siswa") { data = daftarSiswa; mode = "siswa"; placeholder = "Cari siswa"; }
+        if(value === "kelas") { data = daftarKelas; mode = "kelas"; placeholder = "Cari kelas"; }
+        if(value === "angkatan") { data = daftarAngkatan; mode = "angkatan"; placeholder = "Cari angkatan"; }
+        buildTargetDropdown(data, mode, placeholder);
+    });
+    initCustomDropdown("potonganDropdown", "jenisPotonganValue");
 });
-initCustomDropdown("potonganDropdown", "jenisPotonganValue");
+
+// Inisialisasi ulang setiap kali modal dibuka
+const originalOpenTambah = openTambahBeasiswa;
+openTambahBeasiswa = function(){
+    originalOpenTambah();
+    // Beri jeda sebentar agar elemen sudah terlihat
+    setTimeout(() => {
+        initCustomDropdown("jenisPembayaranDropdown", "jenisPembayaranValue");
+        initCustomDropdown("targetDropdown", "beasiswaTargetType", function(value){
+            let data = [], mode = "", placeholder = "";
+            if(value === "siswa") { data = daftarSiswa; mode = "siswa"; placeholder = "Cari siswa"; }
+            if(value === "kelas") { data = daftarKelas; mode = "kelas"; placeholder = "Cari kelas"; }
+            if(value === "angkatan") { data = daftarAngkatan; mode = "angkatan"; placeholder = "Cari angkatan"; }
+            buildTargetDropdown(data, mode, placeholder);
+        });
+        initCustomDropdown("potonganDropdown", "jenisPotonganValue");
+    }, 50);
+};
 
 /* =========================
    CUSTOM DROPDOWN UTAMA
@@ -203,22 +184,22 @@ function initCustomDropdown(dropdownId, hiddenInputId, callback = null){
     const selected = dropdown.querySelector(".dropdown-selected");
     const options = dropdown.querySelectorAll(".dropdown-option");
     const hiddenInput = document.getElementById(hiddenInputId);
-
     let currentIndex = -1;
 
-    // Buka/Tutup saat diklik
+    // Hapus event lama agar tidak menumpuk
+    selected.onclick = null;
+    selected.onkeydown = null;
+    options.forEach(opt => opt.onclick = null);
+
+    // Buka/Tutup
     selected.addEventListener("click", function(e){
         e.stopPropagation();
         e.preventDefault();
-
-        // Cek dulu apakah sudah aktif → jika belum, buka
-        const isActive = dropdown.classList.contains("active");
-        if(!isActive){
-            dropdown.classList.add("active");
+        dropdown.classList.toggle("active");
+        if(dropdown.classList.contains("active")){
             currentIndex = 0;
             highlightOption();
         } else {
-            dropdown.classList.remove("active");
             currentIndex = -1;
         }
     });
@@ -230,16 +211,6 @@ function initCustomDropdown(dropdownId, hiddenInputId, callback = null){
             pilihOption(index);
         });
     });
-
-    // Tutup jika klik di luar → Didaftarkan SATU KALI saja per dropdown
-    function closeIfClickOutside(e){
-        if(!dropdown.contains(e.target)){
-            dropdown.classList.remove("active");
-            currentIndex = -1;
-        }
-    }
-    document.removeEventListener("click", closeIfClickOutside);
-    document.addEventListener("click", closeIfClickOutside);
 
     // Navigasi keyboard
     selected.addEventListener("keydown", function(e){
@@ -267,13 +238,9 @@ function initCustomDropdown(dropdownId, hiddenInputId, callback = null){
             e.preventDefault();
             if(currentIndex >= 0) pilihOption(currentIndex);
         }
-        if(e.key === "Escape"){
+        if(e.key === "Escape" || e.key === "Tab"){
             dropdown.classList.remove("active");
             selected.focus();
-            currentIndex = -1;
-        }
-        if(e.key === "Tab"){
-            dropdown.classList.remove("active");
             currentIndex = -1;
         }
     });
@@ -303,5 +270,21 @@ function initCustomDropdown(dropdownId, hiddenInputId, callback = null){
     }
 }
 
-// Hapus log klik yang bikin gangguan, atau ubah jadi tidak pakai capture
-// document.addEventListener("click", function(e){console.log("DOCUMENT CLICK:", e.target);}, true);
+/* =========================
+   PENUTUP KLIK LUAR (SATU KALI SAJA)
+========================= */
+document.addEventListener("click", function(e){
+    // Tutup semua dropdown jika klik di luar
+    document.querySelectorAll(".custom-dropdown.active").forEach(drop => {
+        if(!drop.contains(e.target)){
+            drop.classList.remove("active");
+        }
+    });
+
+    // Tutup search dropdown
+    const searchDropdown = document.getElementById("resultDropdown");
+    const searchInput = document.getElementById("searchTarget");
+    if(searchDropdown && searchInput && !searchInput.parentElement.contains(e.target)){
+        searchDropdown.classList.remove("show");
+    }
+});
