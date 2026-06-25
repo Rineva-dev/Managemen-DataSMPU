@@ -3,41 +3,40 @@
     <h3>Aturan Pembayaran</h3>
 
     <div class="filter-container pembayaran-filter-bar">
-
         <button class="btn btn-add" onclick="openTambahAturan()">
             Tambah Aturan
         </button>
-
     </div>
 
     <table class="table-set-pembayaran">
-
         <thead>
             <tr>
                 <th>No</th>
                 <th>Nama Aturan</th>
+                <th>Tahun Pelajaran</th>
                 <th>Jenis Pembayaran</th>
-                <th>Target</th>
+                <th>Berlaku Untuk</th>
                 <th>Nominal</th>
-                <th>Tipe</th>
+                <th>Cara Bayar</th>
                 <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
-
         <tbody>
-
             {% for a in aturan_pembayaran %}
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ a.nama_aturan }}</td>
+                <td>{{ a.tahun_pelajaran_nama }}</td>
                 <td>{{ a.jenis_nama }}</td>
                 <td>{{ a.target_summary | safe }}</td>
+                <td>Rp {{ "{:,}".format(a.nominal) }}</td>
                 <td>
-                    Rp {{ "{:,}".format(a.nominal) }}
-                </td>
-                <td>
-                    {{ a.periode_type }}
+                    {% if a.jumlah_cicilan > 1 %}
+                        {{ a.jumlah_cicilan }} Kali
+                    {% else %}
+                        Sekali
+                    {% endif %}
                 </td>
                 <td>
                     {% if a.aktif %}
@@ -47,69 +46,69 @@
                     {% endif %}
                 </td>
                 <td>
-                    <button class="btn-small edit-btn">
+                    <button class="btn-small edit-btn" onclick="openEditAturan({{ a.id }})">
                         Edit
                     </button>
                 </td>
-
             </tr>
             {% endfor %}
-
         </tbody>
-
     </table>
 
 </div>
 
-
-
 <!-- MODAL -->
-
 <div id="modalAturanPembayaran" class="saas-modal-overlay">
-
     <form method="POST"
           action="{{ url_for('aturan_pembayaran.save') }}"
           class="saas-modal add-akun-modern">
 
-        <input type="hidden"
-               name="csrf_token"
-               value="{{ csrf_token() }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="id" id="idAturan" value="">
 
-
-        <h3>Tambah Aturan Pembayaran</h3>
-
-        <!-- jenis pembayaran -->
+        <h3 id="judulAturan">Tambah Aturan Pembayaran</h3>
 
         <div class="form-group">
             <label>Nama Aturan</label>
-
             <input type="text"
                 name="nama_aturan"
-                placeholder="Contoh: SPP Bulanan"
+                id="namaAturan"
+                placeholder="Contoh: Program Unggulan 2025/2026"
                 required>
         </div>
 
         <div class="form-group">
-
-            <label>Jenis Pembayaran</label>
-
-            <select name="jenis_pembayaran_id" required>
-
-                {% for j in jenis_pembayaran %}
-                <option value="{{ j.id }}">
-                    {{ j.nama }}
-                </option>
+            <label>Tahun Pelajaran</label>
+            <select name="tahun_pelajaran_id" id="tahunPelajaran" required>
+                {% for tp in daftar_tahun_pelajaran %}
+                <option value="{{ tp.id }}">{{ tp.nama }}</option>
                 {% endfor %}
-
             </select>
-
         </div>
 
+        <div class="form-group">
+            <label>Jenis Pembayaran</label>
+            <select name="jenis_pembayaran_id" id="jenisPembayaran" required>
+                {% for j in jenis_pembayaran %}
+                <option value="{{ j.id }}" data-kategori="{{ j.kategori }}">{{ j.nama }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <!-- target -->
+        <div class="form-group">
+            <label>Frekuensi Pembayaran</label>
+            <input type="text" id="frekuensiTampil" readonly placeholder="Pilih Jenis Pembayaran terlebih dahulu">
+            <input type="hidden" name="periode_type" id="periodeType">
+        </div>
+
+        <div class="form-group" id="cicilanWrapper" style="display:none;">
+            <label>Dibayar Berapa Kali?</label>
+            <input type="number" name="jumlah_cicilan" id="jumlahCicilan" min="2" max="12" value="2">
+            <small>Contoh: 2 kali = Semester 1 & Semester 2</small>
+        </div>
+
         <div class="form-group">
             <label>Berlaku Untuk</label>
-
             <select name="target_type" id="targetType">
                 <option value="all">Semua Siswa</option>
                 <option value="angkatan">Per Angkatan</option>
@@ -120,77 +119,30 @@
 
         <div id="targetWrapper"></div>
 
-        <!-- nominal -->
-
         <div class="form-group">
-
-            <label>Nominal</label>
-
-            <input  type="text"
-                    id="nominal"
-                    name="nominal"
-                    placeholder="150.000"
-                    required>
-
+            <label>Nominal Pembayaran</label>
+            <input type="text"
+                id="nominal"
+                name="nominal"
+                placeholder="Contoh: 1.500.000"
+                required
+                oninput="formatRibuan(this)">
         </div>
 
-
-        <!-- periode -->
-
         <div class="form-group">
-
-            <label>Periode Pembayaran</label>
-
-            <select name="periode_type"
-                    id="periodePembayaran">
-
-                <option value="bulanan">Bulanan</option>
-                <option value="tahunan">Tahunan</option>
-                <option value="sekali">1x Bayar</option>
-                <option value="cicilan">Cicilan</option>
-
+            <label>Status</label>
+            <select name="aktif">
+                <option value="1" selected>Aktif</option>
+                <option value="0">Nonaktif</option>
             </select>
-
         </div>
-
-
-        <!-- jumlah cicilan -->
-
-        <div class="form-group"
-             id="cicilanWrapper"
-             style="display:none;">
-
-            <label>Jumlah Cicilan</label>
-
-            <input type="number"
-                   name="jumlah_cicilan"
-                   min="1"
-                   value="2">
-
-        </div>
-
 
         <div class="form-actions">
-
-            <button type="submit"
-                    class="btn btn-add">
-
-                Simpan
-
-            </button>
-
-            <button type="button"
-                    class="btn btn-cancel"
-                    onclick="closeModal()">
-
-                Batal
-
-            </button>
-
+            <button type="submit" class="btn btn-add">Simpan</button>
+            <button type="button" class="btn btn-cancel" onclick="closeModal()">Batal</button>
         </div>
 
     </form>
-
 </div>
 
 <script>
@@ -198,5 +150,4 @@
     const daftarKelas = {{ daftar_kelas | tojson }};
     const daftarAngkatan = {{ daftar_angkatan | tojson }};
 </script>
-
 <script src="{{ url_for('static', filename='js/keuangan/setting-pembayaran.js') }}"></script>

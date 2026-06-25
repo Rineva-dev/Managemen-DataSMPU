@@ -3,11 +3,9 @@
     <h3>Jenis Pembayaran</h3>
 
     <div class="filter-container pembayaran-filter-bar">
-
         <button class="btn btn-add" onclick="openTambahPembayaran()">
             Tambah Jenis Pembayaran
         </button>
-
     </div>
 
     <table class="table-jenis-pembayaran">
@@ -28,7 +26,7 @@
                 <td>{{ loop.index }}</td>
                 <td>{{ p.nama }}</td>
                 <td>{{ p.kode }}</td>
-                <td>{{ p.kategori }}</td>
+                <td>{{ p.kategori | capitalize }}</td>
                 <td>
                     {% if p.aktif %}
                         <span class="badge success">Aktif</span>
@@ -37,7 +35,9 @@
                     {% endif %}
                 </td>
                 <td>
-                    <button class="action-btn edit-btn"><i data-lucide="pencil"></i></button>
+                    <button class="action-btn edit-btn" onclick="openEditPembayaran({{ p.id }})">
+                        <i data-lucide="pencil"></i>
+                    </button>
                 </td>
             </tr>
             {% endfor %}
@@ -46,7 +46,6 @@
 
 </div>
 
-
 <!-- MODAL -->
 <div id="modalJenisPembayaran" class="saas-modal-overlay">
     <form method="POST"
@@ -54,14 +53,16 @@
         class="saas-modal add-akun-modern">
 
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="id" id="idJenisPembayaran" value="">
 
-        <h3>Tambah Jenis Pembayaran</h3>
+        <h3 id="judulModalPembayaran">Tambah Jenis Pembayaran</h3>
 
         <div class="form-group">
             <label>Nama Pembayaran</label>
             <input type="text"
                 name="nama"
-                placeholder="Contoh: SPP"
+                id="namaPembayaran"
+                placeholder="Contoh: SPP, Program Unggulan, Seragam"
                 required>
         </div>
 
@@ -69,27 +70,29 @@
             <label>Kode Pembayaran</label>
             <input type="text"
                 name="kode"
-                placeholder="contoh: spp"
-                required>
+                id="kodePembayaran"
+                placeholder="Contoh: spp, unggulan, seragam"
+                required
+                pattern="[a-z0-9_]+"
+                title="Gunakan huruf kecil, angka, atau garis bawah saja">
+            <small>Gunakan huruf kecil tanpa spasi</small>
         </div>
 
         <div class="form-group">
             <label>Kategori</label>
-
-            <select name="kategori" required>
+            <select name="kategori" id="kategoriPembayaran" required>
                 <option value="bulanan">Bulanan</option>
                 <option value="tahunan">Tahunan</option>
                 <option value="sekali">Sekali Bayar</option>
-                <option value="cicilan">Cicilan</option>
-                <option value="ekskul">Ekstrakurikuler</option>
+                <option value="bertahap">Bertahap / Bisa Dicicil</option>
+                <option value="ekstrakurikuler">Ekstrakurikuler</option>
             </select>
         </div>
 
         <div class="form-group">
             <label>Status</label>
-
-            <select name="aktif">
-                <option value="1">Aktif</option>
+            <select name="aktif" id="statusPembayaran">
+                <option value="1" selected>Aktif</option>
                 <option value="0">Nonaktif</option>
             </select>
         </div>
@@ -98,15 +101,12 @@
             <button type="submit" class="btn btn-add">
                 Simpan
             </button>
-
             <button type="button" class="btn btn-cancel" onclick="closeModal()">
                 Batal
             </button>
         </div>
 
     </form>
-
 </div>
-
 
 <script src="{{ url_for('static', filename='js/keuangan/jenis-pembayaran.js') }}"></script>

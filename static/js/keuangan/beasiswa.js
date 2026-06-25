@@ -274,14 +274,12 @@ function initCustomDropdown(dropdownId, hiddenInputId, callback = null){
    PENUTUP KLIK LUAR (SATU KALI SAJA)
 ========================= */
 document.addEventListener("click", function(e){
-    // Tutup semua dropdown jika klik di luar
     document.querySelectorAll(".custom-dropdown.active").forEach(drop => {
         if(!drop.contains(e.target)){
             drop.classList.remove("active");
         }
     });
 
-    // Tutup search dropdown
     const searchDropdown = document.getElementById("resultDropdown");
     const searchInput = document.getElementById("searchTarget");
     if(searchDropdown && searchInput && !searchInput.parentElement.contains(e.target)){

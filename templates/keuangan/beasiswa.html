@@ -3,315 +3,172 @@
     <h3>Beasiswa / Keringanan</h3>
 
     <div class="filter-container pembayaran-filter-bar">
-
-        <button class="btn btn-add"
-                onclick="openTambahBeasiswa()">
-
-            Tambah Beasiswa
-
+        <button class="btn btn-add" onclick="openTambahBeasiswa()">
+            Tambah Beasiswa / Keringanan
         </button>
-
     </div>
 
-
     <table class="table-beasiswa">
-
         <thead>
             <tr>
                 <th>No</th>
                 <th>Nama Program</th>
-                <th>Pembayaran</th>
-                <th>Potongan</th>
-                <th>Nilai</th>
-                <th>Periode</th>
+                <th>Aturan Pembayaran</th>
+                <th>Jenis Potongan</th>
+                <th>Nilai Potongan</th>
+                <th>Berlaku</th>
                 <th>Penerima</th>
                 <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
-
         <tbody>
-
             {% for b in daftar_beasiswa %}
             <tr>
-
                 <td>{{ loop.index }}</td>
                 <td>{{ b.nama_program }}</td>
                 <td>{{ b.nama_aturan }}</td>
-                <td>{{ b.jenis_pengurangan }}</td>
-                <td>{{ b.nilai_pengurangan }}</td>
+                <td>{{ b.jenis_pengurangan | capitalize }}</td>
+                <td>
+                    {% if b.jenis_pengurangan == 'persen' %}
+                        {{ b.nilai_pengurangan }}%
+                    {% elif b.jenis_pengurangan == 'nominal' %}
+                        Rp {{ "{:,}".format(b.nilai_pengurangan) }}
+                    {% else %}
+                        Gratis
+                    {% endif %}
+                </td>
                 <td>
                     {{ b.tanggal_mulai }}
-                    <br>
-                    s/d
-                    <br>
+                    <br>s/d<br>
                     {{ b.tanggal_selesai }}
                 </td>
-
                 <td>
-
-                    <button
-                        class="btn-small"
-                        onclick="openPenerimaBeasiswa({{ b.id }})">
-
+                    <button class="btn-small" onclick="openPenerimaBeasiswa({{ b.id }})">
                         Lihat
-
                     </button>
-
                 </td>
-
                 <td>
-
                     {% if b.aktif %}
-                    Aktif
+                        <span class="badge success">Aktif</span>
                     {% else %}
-                    Nonaktif
+                        <span class="badge danger">Nonaktif</span>
                     {% endif %}
-
                 </td>
-
                 <td>
-
-                    <button class="btn-small">
+                    <button class="btn-small edit-btn" onclick="openEditBeasiswa({{ b.id }})">
                         Edit
                     </button>
-
                 </td>
-
             </tr>
             {% endfor %}
-
         </tbody>
-
     </table>
 
 </div>
 
-<div id="modalBeasiswa"
-     class="saas-modal-overlay">
+<div id="modalBeasiswa" class="saas-modal-overlay">
+<form method="POST" action="/save-beasiswa" class="saas-modal add-akun-modern">
+    <input type="hidden" name="id" id="idBeasiswa" value="">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-<form method="POST"
-      action="/save-beasiswa"
-      class="saas-modal add-akun-modern">
-
-    <h3>Tambah Beasiswa</h3>
-
-
-    <!-- nama program -->
+    <h3 id="judulBeasiswa">Tambah Beasiswa / Keringanan</h3>
 
     <div class="form-group">
-
         <label>Nama Program</label>
-
-        <input type="text"
-               name="nama_program"
-               placeholder="Contoh: Beasiswa Tahfidz"
-               required>
-
+        <input type="text" name="nama_program" placeholder="Contoh: Keringanan Program Unggulan" required>
     </div>
 
-
-    <!-- aturan pembayaran -->
     <div class="form-group">
-
-        <label>Jenis Pembayaran</label>
-
-        <div class="custom-dropdown"
-            id="jenisPembayaranDropdown">
-
-            <div class="dropdown-selected"
-                id="jenisPembayaranSelected" tabindex="0">
-
-                <span class="selected-text">Pilih Jenis Pembayaran</span>
-
+        <label>Berlaku Untuk Aturan Pembayaran</label>
+        <div class="custom-dropdown" id="aturanPembayaranDropdown">
+            <div class="dropdown-selected" tabindex="0">
+                <span class="selected-text">Pilih Aturan Pembayaran</span>
                 <span class="arrow">▾</span>
-
             </div>
-
-
-            <div class="dropdown-options"
-                id="jenisPembayaranOptions">
-
-                {% for j in jenis_pembayaran %}
-                <div class="dropdown-option" data-value="{{ j.id }}">{{ j.nama }}</div>
+            <div class="dropdown-options">
+                {% for a in aturan_pembayaran %}
+                <div class="dropdown-option" data-value="{{ a.id }}">
+                    {{ a.nama_aturan }} - Rp {{ "{:,}".format(a.nominal) }}
+                </div>
                 {% endfor %}
-
             </div>
-
         </div>
-
-        <input type="hidden"
-            name="jenis_pembayaran_id"
-            id="jenisPembayaranValue">
-
+        <input type="hidden" name="aturan_pembayaran_id" id="aturanPembayaranValue" required>
     </div>
 
-    <!-- penerima -->
     <div class="form-group">
-
-        <label>Pilih Penerima</label>
-
-        <div class="custom-dropdown"
-            id="targetDropdown">
-
-            <div class="dropdown-selected"
-                id="targetSelected" tabindex="0">
-
+        <label>Penerima</label>
+        <div class="custom-dropdown" id="targetDropdown">
+            <div class="dropdown-selected" tabindex="0">
                 <span class="selected-text">Pilih Penerima</span>
                 <span class="arrow">▾</span>
-
             </div>
-
-
-            <div    class="dropdown-options"
-                    id="targetOptions">
-
-                <div class="dropdown-option" data-value="siswa">Per Siswa</div>
-                <div class="dropdown-option" data-value="kelas">Per Kelas</div>
+            <div class="dropdown-options">
                 <div class="dropdown-option" data-value="angkatan">Per Angkatan</div>
-
+                <div class="dropdown-option" data-value="kelas">Per Kelas</div>
+                <div class="dropdown-option" data-value="siswa">Per Siswa</div>
             </div>
-
         </div>
-
-
-        <input  type="hidden"
-                name="target_type"
-                id="beasiswaTargetType">
-
+        <input type="hidden" name="target_type" id="beasiswaTargetType">
     </div>
 
-    <!-- potongan -->
+    <div id="targetWrapper"></div>
+
     <div class="form-group">
-
         <label>Jenis Potongan</label>
-
-        <div class="custom-dropdown"
-            id="potonganDropdown">
-
-            <div class="dropdown-selected"
-                id="potonganSelected" tabindex="0">
-
+        <div class="custom-dropdown" id="potonganDropdown">
+            <div class="dropdown-selected" tabindex="0">
                 <span class="selected-text">Pilih Jenis Potongan</span>
                 <span class="arrow">▾</span>
-
             </div>
-
-
-            <div class="dropdown-options"
-                id="potonganOptions">
-
-                    <div class="dropdown-option"
-                        data-value="persen">
-
-                        Persentase
-
-                    </div>
-
-
-                    <div class="dropdown-option"
-                        data-value="nominal">
-
-                        Nominal
-
-                    </div>
-
-
-                    <div class="dropdown-option"
-                        data-value="gratis">
-
-                        Gratis
-
-                    </div>
-
+            <div class="dropdown-options">
+                <div class="dropdown-option" data-value="persen">Persentase (%)</div>
+                <div class="dropdown-option" data-value="nominal">Nominal Tetap</div>
+                <div class="dropdown-option" data-value="gratis">Gratis / Bebas Biaya</div>
             </div>
-
         </div>
-
-        <input type="hidden"
-            name="jenis_pengurangan"
-            id="jenisPotonganValue">
-
+        <input type="hidden" name="jenis_pengurangan" id="jenisPotonganValue" required>
     </div>
 
-
-    <!-- nilai -->
+    <div class="form-group" id="nilaiPotonganWrapper">
+        <label>Nilai Potongan</label>
+        <input type="number" name="nilai_pengurangan" id="nilaiPotongan" min="0" placeholder="Masukkan angka">
+        <small id="ketNilai"></small>
+    </div>
 
     <div class="form-group">
-
-        <label>Nilai</label>
-
-        <input type="number"
-               name="nilai_pengurangan">
-
+        <label>Tanggal Mulai Berlaku</label>
+        <input type="date" name="tanggal_mulai" required>
     </div>
-
-
-    <!-- tanggal -->
 
     <div class="form-group">
-
-        <label>Tanggal Mulai</label>
-
-        <input type="date"
-               name="tanggal_mulai">
-
+        <label>Tanggal Selesai Berlaku</label>
+        <input type="date" name="tanggal_selesai" required>
     </div>
-
 
     <div class="form-group">
-
-        <label>Tanggal Selesai</label>
-
-        <input type="date"
-               name="tanggal_selesai">
-
+        <label>Status</label>
+        <select name="aktif">
+            <option value="1" selected>Aktif</option>
+            <option value="0">Nonaktif</option>
+        </select>
     </div>
-
 
     <div class="form-actions">
-
-        <button type="submit"
-                class="btn btn-add">
-
-            Simpan
-
-        </button>
-
-        <button type="button"
-                class="btn btn-cancel"
-                onclick="closeModalBeasiswa()">
-
-            Batal
-
-        </button>
-
+        <button type="submit" class="btn btn-add">Simpan</button>
+        <button type="button" class="btn btn-cancel" onclick="closeModalBeasiswa()">Batal</button>
     </div>
 
 </form>
-
 </div>
 
-<div id="modalPenerimaBeasiswa"
-     class="saas-modal-overlay">
-
+<div id="modalPenerimaBeasiswa" class="saas-modal-overlay">
     <div class="saas-modal add-akun-modern">
-
         <h3>Daftar Penerima</h3>
-
-        <div id="listPenerimaBeasiswa">
-
-        </div>
-
-        <button
-            onclick="closePenerimaBeasiswa()">
-
-            Tutup
-
-        </button>
-
+        <div id="listPenerimaBeasiswa"></div>
+        <button type="button" onclick="closePenerimaBeasiswa()" class="btn btn-cancel">Tutup</button>
     </div>
-
 </div>
 
 <script>
@@ -319,5 +176,4 @@
     const daftarKelas = {{ daftar_kelas | tojson }};
     const daftarAngkatan = {{ daftar_angkatan | tojson }};
 </script>
-
 <script src="{{ url_for('static', filename='js/keuangan/beasiswa.js') }}"></script>
