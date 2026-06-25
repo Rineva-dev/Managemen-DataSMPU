@@ -496,6 +496,7 @@ function initCustomDropdown(
         e.stopPropagation();
 
         dropdown.classList.toggle("active");
+        console.log(dropdown.className);
 
         console.log(
             "ACTIVE?",
