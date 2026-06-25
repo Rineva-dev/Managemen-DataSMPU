@@ -458,8 +458,6 @@ initCustomDropdown(
 document.getElementById("jenisPembayaranDropdown")
 .addEventListener("mousedown", function(){
 
-    console.log("MOUSEDOWN TEST");
-
     this.classList.add("active");
 
 });
