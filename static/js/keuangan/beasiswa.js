@@ -489,7 +489,9 @@ function initCustomDropdown(
 
     /* CLICK OPEN */
 
-    selected.addEventListener("click", function(){
+    selected.addEventListener("click", function(e){
+
+        e.stopPropagation();
 
         dropdown.classList.toggle("open");
         dropdown.classList.add("active");
@@ -497,7 +499,6 @@ function initCustomDropdown(
         if(dropdown.classList.contains("open")){
 
             currentIndex = 0;
-
             highlightOption();
 
         }
@@ -509,16 +510,13 @@ function initCustomDropdown(
 
     options.forEach((option,index)=>{
 
-        option.addEventListener(
-            "click",
+        option.addEventListener("click", function(e){
 
-            function(){
+            e.stopPropagation();
 
-                pilihOption(index);
+            pilihOption(index);
 
-            }
-
-        );
+        });
 
     });
 
